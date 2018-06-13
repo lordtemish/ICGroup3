@@ -34,21 +34,16 @@ public class DrawerFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_drawer, container, false);;
-        nameText=(TextView) view.findViewById(R.id.drawerNameText);
-        nameText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/AvenirNext-Medium.ttf"));
-
-        positionText=(TextView) view.findViewById(R.id.drawerPositionText);
-
         drawerRV=(RecyclerView) view.findViewById(R.id.drawerRecycle);
         RecyclerView.LayoutManager mLayoutManager=new LinearLayoutManager(getActivity());
         drawerRV.setLayoutManager(mLayoutManager);
         drawerRV.setItemAnimator(new DefaultItemAnimator());
         ArrayList<RowFormPTN> rowFormPTNS=new ArrayList<>();
-        rowFormPTNS.add(new RowFormPTN(R.drawable.ic_launcher_foreground,"Объекты",34));
-        rowFormPTNS.add(new RowFormPTN(R.drawable.ic_launcher_foreground,"Задачи",47));
-        rowFormPTNS.add(new RowFormPTN(R.drawable.ic_launcher_foreground,"Сотрудники",-1));
-        rowFormPTNS.add(new RowFormPTN(R.drawable.ic_launcher_foreground,"Клиенты",-1));
-        rowFormPTNS.add(new RowFormPTN(R.drawable.ic_launcher_foreground,"Инвентарь",47));
+        rowFormPTNS.add(new RowFormPTN(R.drawable.ic_box,"Объекты",34));
+        rowFormPTNS.add(new RowFormPTN(R.drawable.ic_solvves,"Задачи",47));
+        rowFormPTNS.add(new RowFormPTN(R.drawable.ic_people,"Сотрудники",-1));
+        rowFormPTNS.add(new RowFormPTN(R.drawable.ic_clients,"Клиенты",-1));
+        rowFormPTNS.add(new RowFormPTN(R.drawable.ic_inventory,"Инвентарь",47));
         drawerRV.setAdapter(new DrawerAdapter(rowFormPTNS,getActivity()));
 
         return view;

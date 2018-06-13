@@ -13,92 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100sp"
-            android:orientation="vertical"
-            android:id="@+id/linearNames">
-            <TextView
-                android:id="@+id/drawerNameText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:maxLines="2"
-                android:layout_weight="1"
-                android:gravity="center|bottom"
-                android:textSize="20sp"
-                android:textColor="@color/black"
-                android:text="@string/nameExample"
-                />
-            <TextView
-                android:id="@+id/drawerPositionText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:textSize="12sp"
-                android:gravity="center_horizontal"
-                android:text="@string/positionExample"
-                />
-        </LinearLayout>
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="100sp">
-            <FrameLayout
-                android:id="@+id/greenFrameDrawer"
-                android:layout_width="100sp"
-                android:layout_height="100sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:background="@drawable/green_circle">
-            </FrameLayout>
-            <ImageView
-                android:layout_width="50sp"
-                android:layout_height="50sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/greenFrameDrawer"
-                app:layout_constraintEnd_toStartOf="@+id/greenFrameDrawer"
-                android:src="@drawable/ic_launcher_foreground"
-                />
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/greenFrameDrawer"
-                app:layout_constraintStart_toEndOf="@+id/greenFrameDrawer"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                >
-            <ImageView
-                android:layout_width="50sp"
-                android:layout_height="50sp"
-                android:src="@drawable/ic_launcher_foreground"
-                />
-                <TextView
-                    android:layout_width="20sp"
-                    android:layout_height="20sp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/green_circle"
-                    android:textSize="12sp"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:text="34"/>
 
-            </LinearLayout>
-
-        </android.support.constraint.ConstraintLayout>
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/drawerRecycle"
-            android:layout_marginTop="50sp">
+            android:id="@+id/drawerRecycle">
 
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>

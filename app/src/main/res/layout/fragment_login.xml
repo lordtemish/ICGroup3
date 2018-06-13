@@ -23,11 +23,13 @@
             app:layout_constraintTop_toTopOf="parent"
             >
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="20dp"
+                android:layout_height="25dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_launcher_foreground"/>
+                android:src="@drawable/ic_login_login"/>
             <EditText
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:id="@+id/logintextLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -54,11 +56,13 @@
             android:layout_weight="1">
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="20dp"
+                android:layout_height="25dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_launcher_foreground" />
+                android:src="@drawable/ic_login_pas" />
             <EditText
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:id="@+id/passwordLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

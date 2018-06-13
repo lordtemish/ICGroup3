@@ -18,7 +18,7 @@ import com.studio.dynamica.icgroup.R;
 
 import java.util.ArrayList;
 
-public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.MyViewHolder> {
+public class    DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     ArrayList<RowFormPTN> rowFormPTNS;
     Context context;
 
@@ -36,19 +36,32 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.MyViewHold
             name.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/AvenirNext-Medium.ttf"));
         }
     }
+    public class FirstHolder extends RecyclerView.ViewHolder{
+        TextView name;
+        TextView position;
+        TextView notifications;
+        public FirstHolder(View view){
+            super(view);
+            name=(TextView) view.findViewById(R.id.drawerNameText);
+            position=(TextView) view.findViewById(R.id.drawerPositionText);
+            notifications=(TextView) view.findViewById(R.id.notificationNum);
+        }
+    }
     public DrawerAdapter(ArrayList<RowFormPTN> rowFormPTNS,Context context){
         this.rowFormPTNS=rowFormPTNS;
         this.context=context;
     }
     @Override
-    public  void onBindViewHolder(MyViewHolder holder,final int position){
-        RowFormPTN rowFormPTN=rowFormPTNS.get(position);
+    public  void onBindViewHolder(RecyclerView.ViewHolder holder1, final int position){
+        if(getItemViewType(position)>0){
+           MyViewHolder holder=(MyViewHolder)holder1;
+        RowFormPTN rowFormPTN=rowFormPTNS.get(position-1);
         holder.name.setText(rowFormPTN.getName());
         holder.iv.setImageResource(rowFormPTN.getDrawable());
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) context).setPage(position);
+                ((MainActivity) context).setPage(position-1);
             }
         });
         if(rowFormPTN.getNum()>=0)
@@ -56,14 +69,35 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.MyViewHold
         else{
             holder.num.setVisibility(View.INVISIBLE);
         }
+        }
+        else{
+            FirstHolder holder=(FirstHolder)holder1;
+            holder.name.setText("Ерасыл\nМухамеди");
+        }
     }
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup groupm, int viewType){
-        View itemView= LayoutInflater.from(groupm.getContext()).inflate(R.layout.drawer_raw,groupm,false);
-        return new MyViewHolder(itemView);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup groupm, int viewType){
+        if(viewType>0) {
+            View itemView = LayoutInflater.from(groupm.getContext()).inflate(R.layout.drawer_raw, groupm, false);
+            return new DrawerAdapter.MyViewHolder(itemView);
+        }
+        else {
+            View itemView = LayoutInflater.from(groupm.getContext()).inflate(R.layout.drawer_start_row, groupm, false);
+            return new DrawerAdapter.FirstHolder(itemView);
+        }
     }
     @Override
     public int getItemCount() {
-        return rowFormPTNS.size();
+        return rowFormPTNS.size()+1;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(position==0){
+            return 0;
+        }
+        else {
+            return 1;
+        }
     }
 }
