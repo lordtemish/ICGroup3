@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ObjectFragments.AttendanceMainFragment"
+    android:orientation="vertical">
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="50sp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/backArrow"
+            android:layout_width="20sp"
+            android:layout_height="20sp"
+            android:layout_marginLeft="10sp"
+            android:layout_marginStart="10sp"
+            android:onClick="onBackPressed"
+            android:src="@drawable/ic_backarr"
+            android:tag="0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/mainObjectTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Посещения"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="20sp"
+            android:layout_height="20sp"
+            android:layout_marginEnd="10sp"
+            android:layout_marginRight="10sp"
+            android:onClick="openDrawerOn"
+            android:src="@drawable/ic_menu_main"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="60sp"
+        android:background="@color/white">
+        <ImageView
+            android:id="@+id/ImageLeftView"
+            android:layout_width="35sp"
+            android:layout_height="35sp"
+            android:padding="9sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/green_circle"
+            android:src="@drawable/ic_arrowwhiteleft"
+            android:layout_marginLeft="10sp"
+            android:layout_marginStart="10sp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:text="Смена 1"
+            app:layout_constraintStart_toEndOf="@+id/ImageLeftView"
+            app:layout_constraintEnd_toStartOf="@+id/ImageRightView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+        <ImageView
+            android:id="@+id/ImageRightView"
+            android:layout_width="35sp"
+            android:layout_height="35sp"
+            android:padding="9sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/green_circle"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="10sp"
+            android:layout_marginRight="10sp"
+            android:src="@drawable/ic_arrowwhiteright"
+            />
+    </android.support.constraint.ConstraintLayout>
+</LinearLayout>

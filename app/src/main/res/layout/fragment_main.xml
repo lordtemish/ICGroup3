@@ -31,6 +31,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Объекты"
+                    android:textSize="17sp"
                     android:textColor="@color/black"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -69,6 +70,8 @@
                     android:layout_height="match_parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginLeft="10sp"
                     >
                 <ImageView
                     android:layout_width="15sp"
@@ -88,7 +91,7 @@
                     android:layout_marginLeft="5sp"
                     android:id="@+id/mainObjectRegionTextView"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="17sp"
                     />
             </android.support.constraint.ConstraintLayout>
             <android.support.constraint.ConstraintLayout
@@ -100,8 +103,11 @@
                     android:id="@+id/typeObjectArrowFrame"
                     android:layout_width="30sp"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginLeft="10sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
+
                     >
                     <ImageView
                         android:layout_width="15sp"
@@ -121,7 +127,7 @@
                     android:layout_marginStart="5sp"
                     android:layout_marginLeft="5sp"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="17sp"
                     />
 
             </android.support.constraint.ConstraintLayout>

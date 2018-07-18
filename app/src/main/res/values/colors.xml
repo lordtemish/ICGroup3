@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#3BA76F</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="icgGreen">#49a870</color>
+    <color name="icgGreen">#3BA76F</color>
+    <color name="darkyGreen">#2f915e</color>
+    <color name="lightGteen">#53b683</color>
     <color name="black">#111</color>
+    <color name="darkgrey">#838383</color>
     <color name="greyy">#cfcfcf</color>
     <color name="light_grey">#efefef</color>
     <color name="white">#FFF</color>
-    <color name="whiteGreen">#90dcaf</color>
+    <color name="whiteGreen">#87c8a6</color>
+    <color name="failedGreen">#869a8f</color>
+    <color name="failedLDarkGreen">#728a7d</color>
+    <color name="failedVDarkGreen">#4f695a</color>
+    <color name="failedred">#81453e</color>
+    <color name="relateDarkGreen">#0a4225</color>
+    <color name="inwaitYellow">#ffb602</color>
+    <color name="inprocessGreen">#6cb829</color>
+
+    <color name="failedProgressStart">#ff3315</color>
+    <color name="failedProgressStop">#ff8702</color>
 </resources>

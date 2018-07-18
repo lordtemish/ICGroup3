@@ -1,6 +1,7 @@
 package com.studio.dynamica.icgroup.Forms;
 
 public class MainObjectRowForm {
+    String id;
     String name;
     int percentage;
     int people;
@@ -11,6 +12,17 @@ public class MainObjectRowForm {
     }
     public MainObjectRowForm(String name,int percentage, int people, int falses, int categories){
         this.categories=categories;this.name=name;this.people=people;this.percentage=percentage;this.falses=falses;
+    }
+    public MainObjectRowForm(String id, String name,int percentage, int people, int falses, int categories){
+        this.categories=categories;this.name=name;this.people=people;this.percentage=percentage;this.falses=falses;this.id=id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getName() {

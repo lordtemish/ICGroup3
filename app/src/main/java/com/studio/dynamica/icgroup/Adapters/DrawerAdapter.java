@@ -38,12 +38,12 @@ public class    DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
     public class FirstHolder extends RecyclerView.ViewHolder{
         TextView name;
-        TextView position;
+        TextView position1;
         TextView notifications;
         public FirstHolder(View view){
             super(view);
             name=(TextView) view.findViewById(R.id.drawerNameText);
-            position=(TextView) view.findViewById(R.id.drawerPositionText);
+            position1=(TextView) view.findViewById(R.id.drawerPositionText);
             notifications=(TextView) view.findViewById(R.id.notificationNum);
         }
     }
@@ -86,10 +86,10 @@ public class    DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             return new DrawerAdapter.FirstHolder(itemView);
         }
     }
-    @Override
-    public int getItemCount() {
-        return rowFormPTNS.size()+1;
-    }
+        @Override
+        public int getItemCount() {
+            return rowFormPTNS.size()+1;
+        }
 
     @Override
     public int getItemViewType(int position) {

@@ -45,8 +45,11 @@ public class MainObjectFragment extends Fragment {
 
         mainObjectRecycle=(RecyclerView) view.findViewById(R.id.mainObjectRecycle);
         ArrayList<MainObjectRowForm> list=new ArrayList<>();
-        list.add(new MainObjectRowForm("WEREWR",55,4,25,21));
-        list.add(new MainObjectRowForm("WEREWR",23,1,25,21));
+        list.add(new MainObjectRowForm("125","ТРЦ Moskva metropoliten",55,4,25,21));
+        list.add(new MainObjectRowForm("002","Mega SILKWAY",2,1,5,21));
+        list.add(new MainObjectRowForm("022","Mega SILKWAY",100,2,15,2));
+        list.add(new MainObjectRowForm("042","Mega SILKWAY",88,3,35,23));
+        list.add(new MainObjectRowForm("005","Mega SILKWAY",14,4,15,2));
         mainObjectAdapter=new MainObjectAdapter(list,getActivity());
         RecyclerView.LayoutManager mLayoutManager=new LinearLayoutManager(getActivity());
         mainObjectRecycle.setLayoutManager(mLayoutManager);

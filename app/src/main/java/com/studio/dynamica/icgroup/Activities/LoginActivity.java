@@ -27,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         lorem.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/avenir-light.ttf"));
         Fragment fragment=new LoginFragment();
         FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
+        ft.addToBackStack(null);
         ft.replace(R.id.inputLoginFrame,fragment);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();

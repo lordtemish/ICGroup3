@@ -18,10 +18,15 @@ public class MainActivity extends AppCompatActivity {
     Intent loginIntent;
     DrawerLayout drawerLayout;
     LinearLayout drawerLinearLayout;
+    MainObjectFragment mainObjectFragment;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mainObjectFragment=new MainObjectFragment();
 
         drawerLinearLayout=(LinearLayout) findViewById(R.id.drawerLayout);
         drawerLayout=(DrawerLayout) findViewById(R.id.drawerLayoutAct);
@@ -44,16 +49,22 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.closeDrawer(drawerLinearLayout);
         switch (page){
             case 0:
-                MainObjectFragment mainObjectFragment=new MainObjectFragment();
                 FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
+                ft.addToBackStack(null);
                 ft.replace(R.id.content_frame,mainObjectFragment);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 ft.commit();
                 break;
         }
     }
+    public void setPage(View view){
+        String tag = view.getTag().toString();
+        int money = Integer.parseInt(tag);
+        this.setPage(money);
+    }
     public void setFragment(int id,Fragment fragment){
         FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
+        ft.addToBackStack(null);
         ft.replace(id,fragment);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
@@ -63,5 +74,13 @@ public class MainActivity extends AppCompatActivity {
     }
     public void openDrawerOn(View view){
         drawerLayout.openDrawer(drawerLinearLayout);
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+    }
+    public void onBackPressed(View view){
+        onBackPressed();
     }
 }
