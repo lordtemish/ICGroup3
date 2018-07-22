@@ -1,13 +1,15 @@
 package com.studio.dynamica.icgroup.Forms;
 
-public class OlkForm {
-    String date;
-    String name;
-    String position;
-    public OlkForm(String d, String n, String p){
+public class OlkForm  {
+    private String date;
+    private String name;
+    private String position;
+    private int mark;
+    public OlkForm(String d, String n, String p,int  m){
         date=d;
         name=n;
         position=p;
+        mark=m;
     }
 
     public String getDate() {
@@ -20,5 +22,9 @@ public class OlkForm {
 
     public String getPosition() {
         return position;
+    }
+
+    public int getMark() {
+        return mark;
     }
 }

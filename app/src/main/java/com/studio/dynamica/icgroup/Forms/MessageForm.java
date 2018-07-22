@@ -1,10 +1,10 @@
 package com.studio.dynamica.icgroup.Forms;
 
 public class MessageForm {
-    String text;
-    String date, FIO;
-    int rate;
-    boolean full;
+    private String text;
+    private String date, FIO;
+    private int rate;
+    private boolean full;
     public MessageForm(String text){
         this.text=text;
         full=false;

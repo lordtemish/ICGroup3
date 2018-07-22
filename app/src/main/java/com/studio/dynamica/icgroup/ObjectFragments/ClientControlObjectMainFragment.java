@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.studio.dynamica.icgroup.Adapters.ClientControlAdapter;
+import com.studio.dynamica.icgroup.Forms.CheckListForm;
 import com.studio.dynamica.icgroup.Forms.OlkForm;
 import com.studio.dynamica.icgroup.R;
 
@@ -34,7 +35,7 @@ public class ClientControlObjectMainFragment extends Fragment {
     ConstraintLayout rateLayout;
     ImageView left, right;
     RecyclerView recyclerView;
-    ClientControlAdapter OlkAdapter;
+    ClientControlAdapter OlkAdapter, svodkaAdapter, checkListAdapter;
     public ClientControlObjectMainFragment() {
         // Required empty public constructor
     }
@@ -50,11 +51,18 @@ public class ClientControlObjectMainFragment extends Fragment {
 
         setAllListeners();
 
-        List<OlkForm> olkForms=new ArrayList<>();
-        olkForms.add(new OlkForm("","",""));
-        olkForms.add(new OlkForm("","",""));
-        olkForms.add(new OlkForm("","",""));
-        OlkAdapter=new ClientControlAdapter(olkForms);
+        List<Object> olkForms=new ArrayList<>();
+        List<Object> checkListForms=new ArrayList<>();
+
+        olkForms.add(new OlkForm("","","",1));
+        olkForms.add(new OlkForm("","","",1));
+        olkForms.add(new OlkForm("","","",1));
+        checkListForms.add(new CheckListForm("","",1));
+        checkListForms.add(new CheckListForm("","",1));
+        checkListForms.add(new CheckListForm("","",1));
+
+        OlkAdapter=new ClientControlAdapter(olkForms, 0);
+        checkListAdapter=new ClientControlAdapter(checkListForms,1);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(OlkAdapter);
@@ -114,10 +122,12 @@ public class ClientControlObjectMainFragment extends Fragment {
             case 0:
                 s="ОЛК";
                 setProgressLayout();
+                recyclerView.setAdapter(OlkAdapter);
                 break;
             case 1:
                 s="Чек лист";
                 setProgressLayout();
+                recyclerView.setAdapter(checkListAdapter);
                 break;
             case 2:
                 s="сводку";

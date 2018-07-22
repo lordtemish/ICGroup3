@@ -18,24 +18,55 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
             super(v);
         }
     }
+    private class checkListHolder extends RecyclerView.ViewHolder{
+        private checkListHolder(View v){
+            super(v);
+        }
+    }
     Context context;
     int page;
-    List<OlkForm> list;
-    public ClientControlAdapter(List<OlkForm> list){
+    List<Object> list;
+    public ClientControlAdapter(List<Object> list, int page){
         this.list=list;
-        page=0;
+        this.page=page;
     }
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
        context= parent.getContext();
-        View view= LayoutInflater.from(context).inflate(R.layout.olk_row,parent,false);
-        return new OlkHolder(view);
+       int layout=R.layout.olk_row;
+
+       if(page==1){
+           layout=R.layout.check_list_row;
+       }
+       if(page==2){
+           layout=R.layout.olk_row;
+       }
+        View view= LayoutInflater.from(context).inflate(layout,parent,false);
+        RecyclerView.ViewHolder holder;
+        switch (page){
+            case 1:
+                holder=new checkListHolder(view);
+                break;
+                default:
+                    holder=new OlkHolder(view);
+                    break;
+        }
+        return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder1, int position) {
-
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder3, int position) {
+        switch (page){
+            case 0:
+                OlkHolder holder=(OlkHolder)holder3;
+                break;
+            case 1:
+                checkListHolder holder1=(checkListHolder) holder3;
+                break;
+            case 2:
+                break;
+        }
     }
 
     @Override
