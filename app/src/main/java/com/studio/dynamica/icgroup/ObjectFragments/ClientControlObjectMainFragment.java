@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.studio.dynamica.icgroup.Adapters.ClientControlAdapter;
 import com.studio.dynamica.icgroup.Forms.CheckListForm;
 import com.studio.dynamica.icgroup.Forms.OlkForm;
+import com.studio.dynamica.icgroup.Forms.svodkaRateForm;
 import com.studio.dynamica.icgroup.R;
 
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ public class ClientControlObjectMainFragment extends Fragment {
 
         List<Object> olkForms=new ArrayList<>();
         List<Object> checkListForms=new ArrayList<>();
+        List<Object> svodkaRateForms=new ArrayList<>();
 
         olkForms.add(new OlkForm("","","",1));
         olkForms.add(new OlkForm("","","",1));
@@ -60,9 +62,13 @@ public class ClientControlObjectMainFragment extends Fragment {
         checkListForms.add(new CheckListForm("","",1));
         checkListForms.add(new CheckListForm("","",1));
         checkListForms.add(new CheckListForm("","",1));
+        svodkaRateForms.add(new svodkaRateForm("","","",1));
+        svodkaRateForms.add(new svodkaRateForm("","","",1));
+        svodkaRateForms.add(new svodkaRateForm("","","",1));
 
         OlkAdapter=new ClientControlAdapter(olkForms, 0);
         checkListAdapter=new ClientControlAdapter(checkListForms,1);
+        svodkaAdapter=new ClientControlAdapter(svodkaRateForms,2);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(OlkAdapter);
@@ -132,6 +138,7 @@ public class ClientControlObjectMainFragment extends Fragment {
             case 2:
                 s="сводку";
                 setSvodkaRate();
+                recyclerView.setAdapter(svodkaAdapter);
                 break;
         }
         addNewSetText(cr+s);
