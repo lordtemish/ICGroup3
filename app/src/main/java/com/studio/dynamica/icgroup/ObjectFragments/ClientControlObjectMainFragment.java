@@ -14,7 +14,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Adapters.ClientControlAdapter;
+import com.studio.dynamica.icgroup.Forms.CheckListBoxForm;
+import com.studio.dynamica.icgroup.Forms.CheckListBoxRowForm;
 import com.studio.dynamica.icgroup.Forms.CheckListForm;
 import com.studio.dynamica.icgroup.Forms.OlkForm;
 import com.studio.dynamica.icgroup.Forms.svodkaRateForm;
@@ -32,11 +35,12 @@ public class ClientControlObjectMainFragment extends Fragment {
     List<String> pages;
     View view;
     TextView pageInfo, addNewTextView;
-    LinearLayout progressLayout;
+    LinearLayout progressLayout, createNewLayout;
     ConstraintLayout rateLayout;
     ImageView left, right;
     RecyclerView recyclerView;
     ClientControlAdapter OlkAdapter, svodkaAdapter, checkListAdapter;
+    View.OnClickListener createOlkListener, createCheckListListener, svodkaListener;
     public ClientControlObjectMainFragment() {
         // Required empty public constructor
     }
@@ -90,6 +94,7 @@ public class ClientControlObjectMainFragment extends Fragment {
         left=(ImageView) view.findViewById(R.id.ImageLeftView);
         right=(ImageView) view.findViewById(R.id.ImageRightView);
         progressLayout=(LinearLayout) view.findViewById(R.id.progressLayout);
+        createNewLayout=(LinearLayout) view.findViewById(R.id.createNewLayout);
         rateLayout=(ConstraintLayout) view.findViewById(R.id.rateLayout);
         recyclerView=(RecyclerView) view.findViewById(R.id.CCRecyclerView);
     }
@@ -107,6 +112,27 @@ public class ClientControlObjectMainFragment extends Fragment {
                 setPagePlus(true);
             }
         });
+
+        createOlkListener=new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity)view.getContext()).setFragment(R.id.content_frame,new AddNewOlkFragment());
+            }
+        };
+        createNewLayout.setOnClickListener(createOlkListener);
+
+        createCheckListListener=new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity) getActivity()).setFragment(R.id.content_frame,new AddNewCheckListFragment());
+            }
+        };
+        svodkaListener=new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity) getActivity()).setFragment(R.id.content_frame,new AddNewSvodkaFragment());
+            }
+        };
     }
 
 
@@ -129,16 +155,19 @@ public class ClientControlObjectMainFragment extends Fragment {
                 s="ОЛК";
                 setProgressLayout();
                 recyclerView.setAdapter(OlkAdapter);
+                createNewLayout.setOnClickListener(createOlkListener);
                 break;
             case 1:
                 s="Чек лист";
                 setProgressLayout();
                 recyclerView.setAdapter(checkListAdapter);
+                createNewLayout.setOnClickListener(createCheckListListener);
                 break;
             case 2:
                 s="сводку";
                 setSvodkaRate();
                 recyclerView.setAdapter(svodkaAdapter);
+                createNewLayout.setOnClickListener(svodkaListener);
                 break;
         }
         addNewSetText(cr+s);

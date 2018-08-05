@@ -13,12 +13,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Forms.AcceptForm;
 import com.studio.dynamica.icgroup.Forms.CommentForm;
 import com.studio.dynamica.icgroup.Forms.MessageForm;
 import com.studio.dynamica.icgroup.Forms.OlkForm;
 import com.studio.dynamica.icgroup.Forms.PhonesRowForm;
 import com.studio.dynamica.icgroup.Forms.svodkaRateForm;
+import com.studio.dynamica.icgroup.ObjectFragments.CheckListInfoFragment;
 import com.studio.dynamica.icgroup.R;
 
 import java.util.ArrayList;
@@ -38,7 +40,6 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
             wrapTextView=(TextView) v.findViewById(R.id.wrapTextView);
             markLayout=(ConstraintLayout) v.findViewById(R.id.markLayout);
             commentsRecyclerView=(RecyclerView) v.findViewById(R.id.commentsRecyclerView);
-
             wrapTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -61,8 +62,10 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
     private class checkListHolder extends RecyclerView.ViewHolder{
+        LinearLayout wholeLayout;
         private checkListHolder(View v){
             super(v);
+            wholeLayout=(LinearLayout) v.findViewById(R.id.wholeLayout);
         }
     }
     private class svodkaRateHolder extends RecyclerView.ViewHolder{
@@ -103,7 +106,7 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
     Context context;
-    int page;
+    private int page;
     List<Object> list;
     public ClientControlAdapter(List<Object> list, int page){
         this.list=list;
@@ -114,13 +117,8 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
        context= parent.getContext();
        int layout=R.layout.olk_row;
-
-       if(page==1){
-           layout=R.layout.check_list_row;
-       }
-       if(page==2){
-           layout=R.layout.svodka_rate_row;
-       }
+       if(page==1){ layout=R.layout.check_list_row; }
+       if(page==2){ layout=R.layout.svodka_rate_row; }
         View view= LayoutInflater.from(context).inflate(layout,parent,false);
         RecyclerView.ViewHolder holder;
         switch (page){
@@ -174,35 +172,35 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
                 break;
             case 1:
                 checkListHolder holder1=(checkListHolder) holder3;
+                holder1.wholeLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ((MainActivity) context).setFragment(R.id.content_frame,new CheckListInfoFragment());
+                    }
+                });
                 break;
             case 2:
                 svodkaRateForm form2=(svodkaRateForm) list.get(position);
 
                 svodkaRateHolder holder2=(svodkaRateHolder) holder3;
-                RecyclerView.LayoutManager manager=new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false);
-                RecyclerView.LayoutManager manager1=new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false);
                 RecyclerView recyclerView=holder2.rateStartRecycler;
                 RecyclerView commentsRecycler=holder2.commentsRecyclerView;
                 RecyclerView accceptReycler0=holder2.acceptRecyclerView;
-                RecyclerView.LayoutManager manager12=new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false);
 
                 List<MessageForm> messageForms=new ArrayList<>();messageForms.add(new MessageForm("Fuck that shitasdlfhjkashfjkashfjhaskjfhaslfhj"));
                 List<AcceptForm> acceptForms0=new ArrayList<>();acceptForms0.add(new AcceptForm("","","","",true));acceptForms0.add(new AcceptForm("","","","",true));acceptForms0.add(new AcceptForm("","","","",true));
 
 
                 MessageAdapter adapter1=new MessageAdapter(messageForms);
-                commentsRecycler.setLayoutManager(manager1);
-                commentsRecycler.setItemAnimator(new DefaultItemAnimator());
+                ((MainActivity) context).setRecyclerViewOrientation(commentsRecycler,LinearLayoutManager.VERTICAL);
                 commentsRecycler.setAdapter(adapter1);
 
                 RateStarsAdapter adapter=new RateStarsAdapter(form2.getRate());
-                recyclerView.setItemAnimator(new DefaultItemAnimator());
-                recyclerView.setLayoutManager(manager);
+                ((MainActivity) context).setRecyclerViewOrientation(recyclerView,LinearLayoutManager.VERTICAL);
                 recyclerView.setAdapter(adapter);
 
                 AcceptAdapter acceptAdapter0=new AcceptAdapter(acceptForms0);
-                accceptReycler0.setItemAnimator(new DefaultItemAnimator());
-                accceptReycler0.setLayoutManager(manager12);
+                ((MainActivity) context).setRecyclerViewOrientation(accceptReycler0,LinearLayoutManager.HORIZONTAL);
                 accceptReycler0.setAdapter(acceptAdapter0);
 
 

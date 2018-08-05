@@ -2,10 +2,10 @@
 <resources>
     <color name="colorPrimary">#3BA76F</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#87c8a6</color>
     <color name="icgGreen">#3BA76F</color>
     <color name="darkyGreen">#2f915e</color>
-    <color name="lightGteen">#53b683</color>
+    <color name="lightGteen">#6bce9b</color>
     <color name="black">#111</color>
     <color name="darkgrey">#838383</color>
     <color name="greyy">#cfcfcf</color>
@@ -23,3 +23,4 @@
     <color name="failedProgressStart">#ff3315</color>
     <color name="failedProgressStop">#ff8702</color>
 </resources>
+<!--    <color name="lightGteen">#53b683</color>     -->
