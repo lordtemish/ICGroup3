@@ -38,18 +38,21 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="100sp">
-            <FrameLayout
-                android:id="@+id/greenFrameDrawer"
+            <ImageView
+                android:id="@+id/greenImageDrawer"
                 android:layout_width="100sp"
                 android:layout_height="100sp"
+                android:padding="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:background="@drawable/green_circle">
-            </FrameLayout>
+                android:background="@drawable/circle_image"
+                android:src="@drawable/grey_circle"
+                >
+            </ImageView>
             <ImageView
                 android:layout_width="35sp"
                 android:layout_height="35sp"
@@ -57,8 +60,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/greenFrameDrawer"
-                app:layout_constraintEnd_toStartOf="@+id/greenFrameDrawer"
+                app:layout_constraintRight_toLeftOf="@+id/greenImageDrawer"
+                app:layout_constraintEnd_toStartOf="@+id/greenImageDrawer"
                 android:src="@drawable/ic_settings"
                 />
             <LinearLayout
@@ -67,8 +70,8 @@
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/greenFrameDrawer"
-                app:layout_constraintStart_toEndOf="@+id/greenFrameDrawer"
+                app:layout_constraintLeft_toRightOf="@+id/greenImageDrawer"
+                app:layout_constraintStart_toEndOf="@+id/greenImageDrawer"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 >

@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import com.studio.dynamica.icgroup.Forms.MessageForm;
 import com.studio.dynamica.icgroup.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
@@ -26,7 +27,10 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public MessageAdapter(List<MessageForm> forms){
         list=forms;
     }
-
+    public MessageAdapter(MessageForm form){
+        list=new ArrayList<>();
+        list.add(form);
+    }
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holderq, int position) {
         myHolder holder=(myHolder) holderq;

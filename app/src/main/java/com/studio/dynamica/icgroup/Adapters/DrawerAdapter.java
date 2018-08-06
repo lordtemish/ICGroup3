@@ -37,6 +37,7 @@ public class    DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
     public class FirstHolder extends RecyclerView.ViewHolder{
+        ImageView greenImage;
         TextView name;
         TextView position1;
         TextView notifications;
@@ -45,6 +46,7 @@ public class    DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             name=(TextView) view.findViewById(R.id.drawerNameText);
             position1=(TextView) view.findViewById(R.id.drawerPositionText);
             notifications=(TextView) view.findViewById(R.id.notificationNum);
+            greenImage=(ImageView) view.findViewById(R.id.greenImageDrawer);
         }
     }
     public DrawerAdapter(ArrayList<RowFormPTN> rowFormPTNS,Context context){
@@ -73,6 +75,7 @@ public class    DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         else{
             FirstHolder holder=(FirstHolder)holder1;
             holder.name.setText("Ерасыл\nМухамеди");
+            ((MainActivity) context).setPhoto("https://classic105.s3.amazonaws.com/wp-content/uploads/2014/08/kim-passport.jpg",holder.greenImage);
         }
     }
     @Override
