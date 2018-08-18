@@ -2,6 +2,7 @@ package com.studio.dynamica.icgroup.Adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,20 +20,29 @@ import java.util.List;
 
 public class UserRowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private class myHolder extends RecyclerView.ViewHolder{
-        TextView nameTextView, positionTextView, dateTextView;
+        TextView nameTextView, positionTextView, dateTextView, jalobaLabelTextView, jalobaInfoTextView;
         ImageView mainPhotoImageView;
+        ConstraintLayout wholeLayout;
         private myHolder(View view){
             super(view);
             nameTextView=(TextView) view.findViewById(R.id.nameTextView);
             positionTextView=(TextView) view.findViewById(R.id.positionTextView);
             dateTextView=(TextView) view.findViewById(R.id.dateTextView);
             mainPhotoImageView=(ImageView) view.findViewById(R.id.mainPhotoImageView);
+            jalobaInfoTextView=(TextView) view.findViewById(R.id.jalobaInfoTextView);
+            jalobaLabelTextView=(TextView) view.findViewById(R.id.jalobaLabelTextView);
+            wholeLayout=(ConstraintLayout) view.findViewById(R.id.wholeLayout);
         }
 
         private void setInfo(UserRowForm form){
             nameTextView.setText(form.getName());
             positionTextView.setText(form.getPosition());
             dateTextView.setText(form.getDate());
+            jalobaLabelTextView.setText(form.getTypeLabel());
+            jalobaInfoTextView.setText(form.getType());
+            if(!form.isFull()){
+                wholeLayout.setVisibility(View.GONE);
+            }
         }
 
     }

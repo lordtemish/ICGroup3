@@ -90,6 +90,9 @@ public class MainActivity extends AppCompatActivity {
     public void openDrawer(){
         drawerLayout.openDrawer(drawerLinearLayout);
     }
+    public void closeDrawer(){
+        drawerLayout.closeDrawer(drawerLinearLayout);
+    }
     public void openDrawerOn(View view){
         drawerLayout.openDrawer(drawerLinearLayout);
     }

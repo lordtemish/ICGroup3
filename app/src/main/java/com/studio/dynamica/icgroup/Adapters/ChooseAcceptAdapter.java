@@ -3,7 +3,9 @@ package com.studio.dynamica.icgroup.Adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,8 +81,10 @@ public class ChooseAcceptAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         final myHolder holder=(myHolder)holder1;
         for(int i=0;i<2;i++){
             final int j=(position*2)+i;
+            //Log.d("ChooseAcceptAdapter"," p="+position+", j="+j);
             if(j==list.size()){
                 holder.setSecondDelete();
+                Log.d("ChooseAcceptAdapter",(holder.wholeLayout.get(1).getVisibility()== View.VISIBLE )+ " p="+position+", j="+j);
                 break;
             }
             holder.setClickListener(i,list.get(j).isChose());
@@ -88,7 +92,8 @@ public class ChooseAcceptAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 @Override
                 public void onClick(View view) {
                     list.get(j).setChose(!list.get(j).isChose());
-                    notifyItemChanged(position);
+                    //notifyItemChanged(position);
+                    notifyDataSetChanged();
                 }
             });
 

@@ -1,9 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_marginBottom="10dp"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:id="@+id/jalobaLabelTextView"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="11sp"
+            android:text="Жалоба"
+            />
+        <TextView
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/jalobaInfoTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="11sp"
+            android:text="Качество услуг"
+            />
+    </LinearLayout>
+<android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="80sp"
     android:id="@+id/wholeLayout"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:background="@drawable/grey_corners_page"
     android:layout_marginTop="15sp"
     android:layout_marginBottom="5sp"
@@ -70,3 +102,4 @@
         android:background="@drawable/green_circle"
         />
 </android.support.constraint.ConstraintLayout>
+</LinearLayout>

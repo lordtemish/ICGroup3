@@ -18,6 +18,19 @@ public class AcceptAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         TextView nameTextView, placeTextView, positionTextView, statusTextView;
         private myHolder(View view){
             super(view);
+            statusTextView=(TextView) view.findViewById(R.id.statusTextView);
+        }
+
+        private void setInfo(AcceptForm form){
+            setStatus(form.isGreen());
+        }
+        private void setStatus(boolean a){
+            if(a){
+                statusTextView.setBackgroundResource(R.drawable.greenbutton_rec);
+            }
+            else{
+                statusTextView.setBackgroundResource(R.drawable.greybutton_rec);
+            }
         }
     }
     List<AcceptForm> list;
@@ -36,6 +49,7 @@ public class AcceptAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder1, int position) {
             myHolder holder=(myHolder) holder1;
+            holder.setInfo(list.get(position));
     }
 
     @Override

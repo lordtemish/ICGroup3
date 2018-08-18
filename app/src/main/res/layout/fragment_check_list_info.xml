@@ -91,13 +91,13 @@
                 android:textSize="11sp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/infoMarkTextView"
+                app:layout_constraintEnd_toStartOf="@+id/rateSpinner"
                 android:text="Общая оценка:"
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
                 android:id="@+id/totalMarkLabelTextView"
                 />
-            <TextView
+         <!--   <TextView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -109,7 +109,20 @@
                 android:textSize="30sp"
                 android:text="5"
                 android:textColor="@color/black"
-                />
+                /> -->
+            <Spinner
+                android:id="@+id/rateSpinner"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:spinnerMode="dropdown"
+                >
+
+            </Spinner>
         </android.support.constraint.ConstraintLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -158,6 +171,8 @@
                 android:textSize="13sp"
                 />
             <android.support.v7.widget.RecyclerView
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:id="@+id/infoAcceptRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

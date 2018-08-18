@@ -9,11 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Forms.RowFormPTN;
+import com.studio.dynamica.icgroup.NotificationFragments.NotificationFragment;
 import com.studio.dynamica.icgroup.R;
 
 import java.util.ArrayList;
@@ -41,12 +43,14 @@ public class    DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         TextView name;
         TextView position1;
         TextView notifications;
+        LinearLayout notificationLayout;
         public FirstHolder(View view){
             super(view);
             name=(TextView) view.findViewById(R.id.drawerNameText);
             position1=(TextView) view.findViewById(R.id.drawerPositionText);
             notifications=(TextView) view.findViewById(R.id.notificationNum);
             greenImage=(ImageView) view.findViewById(R.id.greenImageDrawer);
+            notificationLayout=(LinearLayout) view.findViewById(R.id.notificationLayout);
         }
     }
     public DrawerAdapter(ArrayList<RowFormPTN> rowFormPTNS,Context context){
@@ -76,6 +80,13 @@ public class    DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             FirstHolder holder=(FirstHolder)holder1;
             holder.name.setText("Ерасыл\nМухамеди");
             ((MainActivity) context).setPhoto("https://classic105.s3.amazonaws.com/wp-content/uploads/2014/08/kim-passport.jpg",holder.greenImage);
+            holder.notificationLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((MainActivity) context).setFragment(R.id.content_frame,new NotificationFragment());
+                    ((MainActivity) context).closeDrawer();
+                }
+            });
         }
     }
     @Override

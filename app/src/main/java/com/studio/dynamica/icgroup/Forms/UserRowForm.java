@@ -5,11 +5,34 @@ public class UserRowForm {
         String position;
         String url="";
         String date;
-        public UserRowForm(String name, String position, String date){
+        String typeLabel;
+        String type;
+        boolean full=false;
+        public UserRowForm(String name, String position, String date, String tl, String t){
             this.name=name;
             this.position=position;
             this.date=date;
+            typeLabel=tl;
+            type=t;
+            full=true;
         }
+        public UserRowForm(String tl, String t){
+            typeLabel=tl;
+            type=t;
+            full=false;
+        }
+
+    public boolean isFull() {
+        return full;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getTypeLabel() {
+        return typeLabel;
+    }
 
     public String getUrl() {
         return url;

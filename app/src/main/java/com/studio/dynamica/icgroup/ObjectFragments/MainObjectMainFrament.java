@@ -101,9 +101,9 @@ public class MainObjectMainFrament extends Fragment {
         listeners.add(serviceListener);
         listeners.add(TechnoMapListener);
         listeners.add(ClientControlListener);
-        listeners.add(AttendanceListener);
-        listeners.add(CommentsListener);
         listeners.add(listener);
+        listeners.add(CommentsListener);
+        listeners.add( AttendanceListener);
         ButtonAdapter buttonAdapter=new ButtonAdapter(buttonsList,getActivity(),listeners,R.drawable.ic_arrowrightgreen);
         RecyclerView.LayoutManager mLayoutManagerq=new LinearLayoutManager(getActivity());
         buttons.setLayoutManager(mLayoutManagerq);
