@@ -1,59 +1,56 @@
 package com.studio.dynamica.icgroup.Adapters;
 
-
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.studio.dynamica.icgroup.Activities.MainActivity;
-import com.studio.dynamica.icgroup.Forms.OrderForm;
-import com.studio.dynamica.icgroup.ObjectFragments.InventoryEquipmentInfoFragment;
+import com.studio.dynamica.icgroup.Forms.InventorizationForm;
+import com.studio.dynamica.icgroup.ObjectFragments.InventoryInventorizationInfoFragment;
 import com.studio.dynamica.icgroup.R;
 
 import java.util.List;
 
-public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class InventorizationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private class myHolder extends RecyclerView.ViewHolder{
-        LinearLayout wholeLayout;
+        ConstraintLayout infoLayout;
         Context context;
         private myHolder(View view){
             super(view);
+            infoLayout=(ConstraintLayout)view.findViewById(R.id.infoLayout);
             context=view.getContext();
-            wholeLayout=(LinearLayout) view.findViewById(R.id.wholeLayout);
-        }
-        private void setWholeLayoutListener(final Fragment fragment){
-            wholeLayout.setOnClickListener(new View.OnClickListener() {
+            infoLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ((MainActivity) context).setFragment(R.id.content_frame,fragment);
+                    onClicked();
                 }
             });
         }
+        private void onClicked(){
+            ((MainActivity)context).setFragment(R.id.content_frame,new InventoryInventorizationInfoFragment());
+        }
+    }
+    List<InventorizationForm> list;
+    Context context;
+    public InventorizationAdapter(List<InventorizationForm> forms){
+        list=forms;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context=parent.getContext();
-        View view= LayoutInflater.from(context).inflate(R.layout.order_row,parent,false);
+        View view= LayoutInflater.from(context).inflate(R.layout.inventorization_row,parent,false);
         return new myHolder(view);
     }
-    Context context;
-    List<OrderForm> list;
-    Fragment fragment;
-    public OrderAdapter(List<OrderForm> forms, Fragment fragment){
-        list=forms;
-        this.fragment=fragment;
-    }
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder1, int position) {
         myHolder holder=(myHolder) holder1;
-        holder.setWholeLayoutListener(fragment);
     }
 
     @Override

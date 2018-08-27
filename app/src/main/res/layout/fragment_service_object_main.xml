@@ -174,15 +174,16 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
                             >
+
                             <ImageView
                                 android:id="@+id/addNewServiceImageView"
                                 android:layout_width="30sp"
                                 android:layout_height="30sp"
-                                android:gravity="center"
                                 android:layout_gravity="center"
                                 android:background="@drawable/green_circle"
-                                android:src="@drawable/ic_arrowdown"
+                                android:gravity="center"
                                 android:padding="7sp"
+                                android:src="@drawable/ic_plus"
 
                                 />
                         </FrameLayout>

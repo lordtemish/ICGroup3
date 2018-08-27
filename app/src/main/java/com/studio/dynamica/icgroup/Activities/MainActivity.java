@@ -87,6 +87,12 @@ public class MainActivity extends AppCompatActivity {
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
     }
+    public void setFragmentNoBackStack(int id,Fragment fragment){
+        FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
+        ft.replace(id,fragment);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.commit();
+    }
     public void openDrawer(){
         drawerLayout.openDrawer(drawerLinearLayout);
     }

@@ -245,23 +245,23 @@ public class AddNewServiceFragment extends Fragment {
         setSimple(calendarLayouts.get(x).get(y),calendarTexts.get(x).get(y),calendarImages.get(x).get(y));
     }
     public void setSimple(ConstraintLayout layout, TextView textView,ImageView iv){
-        layout.setBackground(getActivity().getResources().getDrawable(R.drawable.calendar_simple_dr));
+        layout.setBackgroundResource((R.drawable.calendar_simple_dr));
 
         textView.setTextColor(getActivity().getResources().getColor(R.color.black));
         iv.setVisibility(View.GONE);
     }
     public void setGrey(ConstraintLayout layout,TextView textView,ImageView iv){
-        layout.setBackground(getActivity().getResources().getDrawable(R.drawable.calendar_grey_dr));
+        layout.setBackgroundResource((R.drawable.calendar_grey_dr));
         textView.setTextColor(getActivity().getResources().getColor(R.color.greyy));
         iv.setVisibility(View.GONE);
     }
     public void setGreenActive(ConstraintLayout layout,TextView textView, ImageView iv){
-        layout.setBackground(getActivity().getResources().getDrawable(R.drawable.calendar_greenactive_dr));
+        layout.setBackgroundResource((R.drawable.calendar_greenactive_dr));
         textView.setTextColor(getActivity().getResources().getColor(R.color.white));
         iv.setVisibility(View.VISIBLE);
     }
     public void setGreenInside(ConstraintLayout layout,TextView textView,ImageView iv){
-        layout.setBackground(getActivity().getResources().getDrawable(R.drawable.calendar_greeninside_dr));
+        layout.setBackgroundResource((R.drawable.calendar_greeninside_dr));
         textView.setTextColor(getActivity().getResources().getColor(R.color.white));
         iv.setVisibility(View.GONE);
     }
@@ -295,7 +295,7 @@ public class AddNewServiceFragment extends Fragment {
             commentEditText.setHintTextColor(getActivity().getResources().getColor(R.color.greyy));
             commentEditText.setFocusableInTouchMode(false);
             commentEditText.setFocusable(false);
-            commentLayout.setBackground(getActivity().getResources().getDrawable(R.drawable.grey_line));
+            commentLayout.setBackgroundResource((R.drawable.grey_line));
             media=false;
         }
         else{
@@ -303,7 +303,7 @@ public class AddNewServiceFragment extends Fragment {
             commentEditText.setHintTextColor(getActivity().getResources().getColor(R.color.black));
             commentEditText.setFocusableInTouchMode(true);
             commentEditText.setFocusable(true);
-            commentLayout.setBackground(getActivity().getResources().getDrawable(R.drawable.black_line));
+            commentLayout.setBackgroundResource((R.drawable.black_line));
             media=true;
         }
 
