@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Forms.AcceptForm;
 import com.studio.dynamica.icgroup.R;
 
@@ -16,13 +17,28 @@ import java.util.List;
 public class AcceptAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private class myHolder extends RecyclerView.ViewHolder{
         TextView nameTextView, placeTextView, positionTextView, statusTextView;
+        Context context;
         private myHolder(View view){
             super(view);
+            context=view.getContext();
             statusTextView=(TextView) view.findViewById(R.id.statusTextView);
+            nameTextView=(TextView) view.findViewById(R.id.nameTextView);
+            placeTextView=(TextView) view.findViewById(R.id.placeTextView);
+            positionTextView=(TextView) view.findViewById(R.id.positionTextView);
+            setFonts();
         }
-
+        private void setFonts(){
+            positionTextView.setTypeface(((MainActivity) context).getTypeFace("light"));
+            placeTextView.setTypeface(((MainActivity) context).getTypeFace("light"));
+            nameTextView.setTypeface(((MainActivity) context).getTypeFace("demibold"));
+            statusTextView.setTypeface(((MainActivity) context).getTypeFace("demibold"));
+        }
         private void setInfo(AcceptForm form){
             setStatus(form.isGreen());
+            nameTextView.setText(form.getName());
+            statusTextView.setText(form.getStatus());
+            placeTextView.setText(form.getPlace());
+            positionTextView.setText(form.getPosition());
         }
         private void setStatus(boolean a){
             if(a){

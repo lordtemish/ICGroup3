@@ -29,7 +29,7 @@
             android:id="@+id/mainObjectTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Технологическая карта"
+            android:text="Чек-лист"
             android:textColor="@color/black"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -82,7 +82,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:id="@+id/infoDateTextView"
+                    android:id="@+id/infoDateTextView"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -91,7 +91,7 @@
                 android:textSize="11sp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/rateSpinner"
+                app:layout_constraintEnd_toStartOf="@+id/rateTextView"
                 android:text="Общая оценка:"
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
@@ -110,19 +110,20 @@
                 android:text="5"
                 android:textColor="@color/black"
                 /> -->
-            <Spinner
-                android:id="@+id/rateSpinner"
+
+            <TextView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:id="@+id/rateTextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:background="@android:color/transparent"
+                android:background="@drawable/green_circle_line"
                 android:gravity="center"
-                android:spinnerMode="dropdown"
-                >
-
-            </Spinner>
+                android:textColor="@color/black"
+                android:textSize="32sp"
+                android:text="5"
+                />
         </android.support.constraint.ConstraintLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -166,6 +167,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
+                android:id="@+id/tookLabel"
                 android:text="Принял чек-лист"
                 android:textColor="@color/black"
                 android:textSize="13sp"
@@ -182,6 +184,7 @@
         </LinearLayout>
     </LinearLayout>
     <android.support.v7.widget.RecyclerView
+        android:layout_marginBottom="20dp"
         android:id="@+id/checkListRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

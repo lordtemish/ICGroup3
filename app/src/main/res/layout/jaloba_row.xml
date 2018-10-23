@@ -139,7 +139,7 @@
                 android:textColor="@color/black"
                 android:textSize="13sp"
                 android:text="Ответить на жалобу"
-
+                android:id="@+id/answerTextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

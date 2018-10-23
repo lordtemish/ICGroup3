@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_grey"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ObjectFragments.ServiceObjectMainFragment"
-    android:orientation="vertical">
-
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:background="@color/white"
@@ -76,6 +80,7 @@
             android:layout_weight="1">
                 <ImageView
                     android:id="@+id/allOtdelsImageVIew"
+                    android:padding="2sp"
                     android:layout_width="20sp"
                     android:layout_height="20sp"
                     app:layout_constraintTop_toTopOf="parent"
@@ -106,6 +111,7 @@
             <ImageView
                 android:id="@+id/allEmployeesImageView"
                 android:layout_width="20sp"
+                android:padding="2sp"
                 android:layout_height="20sp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/allEmployeesTextView"
@@ -145,8 +151,9 @@
                         android:layout_height="50sp">
                         <ImageView
                             android:id="@+id/arrowCalendarImageView"
-                            android:layout_width="20sp"
-                            android:layout_height="20sp"
+                            android:layout_width="40sp"
+                            android:layout_height="40sp"
+                            android:padding="10dp"
                             android:src="@drawable/ic_arrowdown_green"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -155,17 +162,45 @@
                             android:layout_marginLeft="10sp"
                             />
                         <TextView
+                            android:id="@+id/calendarTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/arrowCalendarImageView"
-                            android:layout_marginStart="10sp"
-                            android:layout_marginLeft="10sp"
+
                             android:textSize="16sp"
                             android:textColor="@color/black"
                             android:text="Январь 2018"
                             />
+                        <com.shawnlin.numberpicker.NumberPicker
+                            android:id="@+id/monthPicker"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:visibility="gone"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/arrowCalendarImageView"
+                            app:np_textColor="@color/greyy"
+                            app:np_textSize="11sp"
+                            app:np_selectedTextColor="@color/black"
+                            app:np_selectedTextSize="15sp"
+                            >
+                        </com.shawnlin.numberpicker.NumberPicker>
+                        <com.shawnlin.numberpicker.NumberPicker
+                            android:id="@+id/yearPicker"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:visibility="gone"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/monthPicker"
+                            app:np_textColor="@color/greyy"
+                            app:np_textSize="11sp"
+                            app:np_selectedTextColor="@color/black"
+                            app:np_selectedTextSize="15sp"
+                            >
+                        </com.shawnlin.numberpicker.NumberPicker>
                         <FrameLayout
                             android:id="@+id/addNewServiceFrameLayout"
                             android:layout_width="50sp"
@@ -266,6 +301,7 @@
                     android:layout_marginEnd="10sp"
                     >
                     <TextView
+                        android:id="@+id/allServicesTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
@@ -303,4 +339,16 @@
             </android.support.v7.widget.RecyclerView>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
-</LinearLayout>
+    </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="@color/icgGreenTra"
+        android:onClick="onClick"
+        android:id="@+id/progressLayout"><ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        /></FrameLayout>
+</FrameLayout>

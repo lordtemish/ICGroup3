@@ -54,471 +54,1332 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/whiterow_page"
-                >
+                android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
-                    android:paddingTop="10dp"
+                    android:orientation="horizontal"
                     android:paddingBottom="10dp"
-                    android:paddingStart="20dp"
                     android:paddingEnd="20dp"
-                    android:orientation="horizontal">
+                    android:paddingStart="20dp"
+                    android:paddingTop="10dp">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="2"
-                        android:orientation="vertical"
-                        >
+                        android:orientation="vertical">
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:textSize="11sp"
+                            android:text="Номер заявки"
                             android:textColor="@color/darkgrey"
-                            android:text="Отдел"
-                            />
+                            android:textSize="11sp" />
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:textSize="11sp"
+                            android:text="ICG0458745512"
                             android:textColor="@color/black"
-                            android:text="Снабжение"
-                            />
+                            android:textSize="11sp" />
                     </LinearLayout>
+
                     <LinearLayout
+                        android:id="@+id/statusLayout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:orientation="horizontal"
                         android:background="@drawable/icgreen_page"
-                        android:paddingTop="5dp"
+                        android:orientation="horizontal"
                         android:paddingBottom="5dp"
-                        android:paddingStart="10dp"
                         android:paddingEnd="10dp"
-                        >
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:orientation="vertical">
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:gravity="center_vertical"
-                                android:textSize="11sp"
-                                android:textColor="@color/white"
                                 android:text="Приоритет"
-                                />
+                                android:textColor="@color/white"
+                                android:textSize="11sp" />
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:gravity="center_vertical"
-                                android:textSize="11sp"
-                                android:textColor="@color/white"
                                 android:text="Важный"
-                                />
+                                android:textColor="@color/white"
+                                android:textSize="11sp" />
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:orientation="vertical">
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:gravity="center_vertical"
-                                android:textSize="11sp"
-                                android:textColor="@color/white"
                                 android:text="Статус"
-                                />
+                                android:textColor="@color/white"
+                                android:textSize="11sp" />
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:gravity="center_vertical"
-                                android:textSize="11sp"
-                                android:textColor="@color/white"
+                                android:id="@+id/statusTextView"
                                 android:text="Актуально"
-                                />
+                                android:textColor="@color/white"
+                                android:textSize="11sp" />
                         </LinearLayout>
 
                     </LinearLayout>
 
                 </LinearLayout>
+
                 <LinearLayout
-                    android:visibility="visible"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:paddingTop="20dp"
                     android:paddingBottom="20dp"
-                    >
+
+                    android:paddingTop="20dp"
+                    android:visibility="visible">
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="11sp"
-                        android:textColor="@color/darkgrey"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
                         android:text="Тип задачи"
-                        />
+                        android:textColor="@color/darkgrey"
+                        android:textSize="11sp" />
+
                     <TextView
-                        android:layout_marginTop="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
                         android:maxWidth="150dp"
-                        android:textSize="15sp"
-                        android:textColor="@color/black"
                         android:text="Заявка на ремонт оборудования"
-                        />
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
                     <LinearLayout
-                        android:layout_marginTop="20dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        >
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
+
                         <LinearLayout
-                            android:layout_weight="1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:orientation="vertical">
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="30dp"
-                                android:textColor="@color/darkgrey"
-                                android:textSize="11sp"
+                                android:gravity="center_vertical"
                                 android:text="Ответственный за исполнение"
-                                android:gravity="center_vertical"
-                                />
+                                android:textColor="@color/darkgrey"
+                                android:textSize="11sp" />
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/black"
-                                android:textSize="11sp"
                                 android:text="@string/nameString"
-                                />
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
                         </LinearLayout>
+
                         <LinearLayout
-                            android:layout_weight="1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:orientation="vertical">
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="30dp"
-                                android:textColor="@color/darkgrey"
-                                android:textSize="11sp"
-                                android:text="Отдел"
                                 android:gravity="center_vertical"
-                                />
+                                android:text="Отдел"
+                                android:textColor="@color/darkgrey"
+                                android:textSize="11sp" />
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/black"
-                                android:textSize="11sp"
                                 android:text="Снабжение\n города Алматы"
-                                />
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
                         </LinearLayout>
                     </LinearLayout>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
                         android:layout_marginTop="40dp"
-                        android:textSize="11sp"
-                        android:textColor="@color/black"
                         android:text="@string/datestring"
-                        />
+                        android:textColor="@color/black"
+                        android:textSize="11sp" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
                         android:layout_marginTop="10dp"
-                        >
+                        android:orientation="vertical">
+
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="2"
-                            >
+                            android:layout_weight="2">
+
                             <ProgressBar
                                 android:id="@+id/ProgressBar"
-                                android:paddingTop="5sp"
-                                android:paddingBottom="5sp"
+                                style="?android:attr/progressBarStyleHorizontal"
                                 android:layout_width="match_parent"
                                 android:layout_height="15sp"
                                 android:layout_gravity="center"
-                                android:progress="60"
+                                android:paddingBottom="5sp"
+                                android:paddingTop="5sp"
 
+                                android:progress="60"
                                 android:progressDrawable="@drawable/green_progress_perc"
-                                android:secondaryProgress="100"
-                                style="?android:attr/progressBarStyleHorizontal"
-                                />
+                                android:secondaryProgress="100" />
                         </FrameLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="11sp"
-                                android:textColor="@color/black"
                                 android:text="до окончания периода исполнения:"
-                                />
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
+
                             <TextView
-                                android:layout_marginStart="5dp"
-                                android:layout_marginLeft="5dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="11sp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginStart="5dp"
+                                android:text="Осталось дней: 1/4"
                                 android:textColor="@color/black"
-                                android:text="Осталось дней: 1/4"/>
+                                android:textSize="11sp" />
                         </LinearLayout>
                     </LinearLayout>
+
                     <android.support.constraint.ConstraintLayout
-                        android:layout_marginTop="20dp"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp">
+                        android:layout_height="100dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp">
+
                         <TextView
                             android:id="@+id/kolvoLabelTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="center_vertical"
+                            android:maxWidth="130dp"
+                            android:text="Запрашиваемое\nколичество"
                             android:textColor="@color/black"
                             android:textSize="13sp"
-                            android:text="Запрашиваемое\nколичество"
-                            android:maxWidth="130dp"
                             app:layout_constraintStart_toStartOf="parent"
 
                             />
+
                         <TextView
                             android:id="@+id/kolvoTextView"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
                             android:layout_width="80dp"
                             android:layout_height="match_parent"
-                            app:layout_constraintEnd_toStartOf="@+id/volumeTextView"
-                            app:layout_constraintStart_toEndOf="@+id/kolvoLabelTextView"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/light_grey_circle"
                             android:gravity="center"
+                            android:text="8"
                             android:textColor="@color/black"
                             android:textSize="35sp"
-                            android:text="8"
-                            android:background="@drawable/light_grey_circle"
-                            />
+                            app:layout_constraintEnd_toStartOf="@+id/volumeTextView"
+                            app:layout_constraintStart_toEndOf="@+id/kolvoLabelTextView" />
+
                         <TextView
                             android:id="@+id/volumeTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/kolvoTextView"
+                            android:gravity="center_vertical"
+                            android:text="литра"
                             android:textColor="@color/black"
                             android:textSize="17sp"
-                            android:text="литра"
-                            android:gravity="center_vertical"/>
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/kolvoTextView" />
                     </android.support.constraint.ConstraintLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/light_grey"
+                        android:orientation="vertical">
+
+                        <android.support.constraint.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="90dp"
+                            android:paddingEnd="20dp"
+                            android:paddingStart="20dp">
+
+                            <ImageView
+                                android:id="@+id/relatedClocksImageView"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:src="@drawable/ic_related_clocks"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginStart="10dp"
+                                android:maxWidth="200dp"
+                                android:text="Время исполнения задачи истекло"
+                                android:textColor="@color/black"
+                                android:textSize="17sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/relatedClocksImageView"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </android.support.constraint.ConstraintLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:orientation="horizontal"
+                            android:paddingBottom="10dp">
+
+                            <TextView
+                                android:layout_width="140dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="20dp"
+                                android:layout_marginStart="20dp"
+                                android:background="@drawable/failed_green_page"
+                                android:gravity="center"
+                                android:text="Отказано"
+                                android:textColor="@color/white"
+                                android:textSize="15sp"
+
+                                />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:maxWidth="200dp"
+                                android:text="Обязательно оставьте оценку проделанной работе прежде чем закрывать задачу"
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/commentaryRecyclerView"
-                        android:layout_marginTop="30dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="30dp"></android.support.v7.widget.RecyclerView>
                 </LinearLayout>
+
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="@color/light_grey"
-                    />
+                    android:background="@color/light_grey" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
                         android:layout_marginBottom="30dp"
-                        >
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp">
+
                         <TextView
                             android:id="@+id/nameTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:maxWidth="180dp"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
+                            android:text="Aqua clean"
                             android:textColor="@color/black"
                             android:textSize="19sp"
-                            android:text="Aqua clean"
-                            />
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
                         <TextView
                             android:id="@+id/idTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@+id/nameTextView"
-                            app:layout_constraintStart_toStartOf="parent"
                             android:layout_marginTop="5dp"
+                            android:text="OKK138400145"
                             android:textColor="@color/darkgrey"
                             android:textSize="11sp"
-                            android:text="OKK138400145"
-                            />
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
                     </android.support.constraint.ConstraintLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        >
+                        android:orientation="vertical">
+
                         <android.support.constraint.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
                             android:layout_marginEnd="20dp"
-                            >
+                            android:layout_marginStart="20dp">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:maxWidth="150dp"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
                                 android:gravity="start"
+                                android:maxWidth="150dp"
+                                android:text="Период пользования\n1шт./1 ОПУ на 1 месяц"
                                 android:textColor="@color/black"
                                 android:textSize="11sp"
-                                android:text="Период пользования\n1шт./1 ОПУ на 1 месяц"
-                                />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintEnd_toStartOf="@+id/num1TextView"
                                 app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
                                 android:id="@+id/numbersTextView"
-                                android:textSize="13sp"
-                                android:textColor="@color/black"
-                                android:text="Расход на сегодня "/>
-                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:layout_constraintEnd_toStartOf="@+id/num2TextView"
+                                android:text="Расход на сегодня "
+                                android:textColor="@color/black"
+                                android:textSize="13sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/num1TextView" />
+
+                            <TextView
                                 android:id="@+id/num1TextView"
-                                android:textSize="13sp"
-                                android:textColor="@color/black"
-                                android:text="11/"/>
-                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                android:id="@+id/num2TextView"
+                                android:text="11/"
+                                android:textColor="@color/black"
                                 android:textSize="13sp"
-                                android:textColor="@color/darkgrey"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/num2TextView" />
+
+                            <TextView
+                                android:id="@+id/num2TextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:text="13"
-                                />
+                                android:textColor="@color/darkgrey"
+                                android:textSize="13sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
                         </android.support.constraint.ConstraintLayout>
+
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="2"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginEnd="20dp"
-                            android:layout_marginTop="10dp"
                             android:layout_marginBottom="20dp"
-                            >
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="2">
+
                             <ProgressBar
                                 android:id="@+id/ProgressBar1"
-                                android:paddingTop="5sp"
-                                android:paddingBottom="5sp"
+                                style="?android:attr/progressBarStyleHorizontal"
                                 android:layout_width="match_parent"
                                 android:layout_height="15sp"
                                 android:layout_gravity="center"
+                                android:paddingBottom="5sp"
+                                android:paddingTop="5sp"
                                 android:progress="60"
                                 android:progressDrawable="@drawable/green_progress_perc"
-                                android:secondaryProgress="100"
-                                style="?android:attr/progressBarStyleHorizontal"
-                                />
+                                android:secondaryProgress="100" />
                         </FrameLayout>
                     </LinearLayout>
-                </LinearLayout>  <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/light_grey"
-                />
-                <android.support.constraint.ConstraintLayout
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/cancelledOrderTableLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:paddingBottom="20dp"
-                    >
+                    android:background="@color/light_grey"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="120dp"
-                        android:layout_height="30dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:background="@drawable/greenbutton"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        android:textSize="11sp"
-                        android:text="Отменить заявку"
-                        />
-                </android.support.constraint.ConstraintLayout>
+                        android:layout_width="wrap_content"
+                        android:layout_height="80sp"
+                        android:gravity="center_vertical"
+                        android:maxWidth="250dp"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="20dp"
+                        android:text="Отказано в запросе по причине перерасхода"
+                        android:textColor="@color/black"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:orientation="horizontal"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
+
+                        <TextView
+                            android:layout_width="140dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginStart="20dp"
+                            android:background="@drawable/failed_green_page"
+                            android:gravity="center"
+                            android:text="Отказано"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+
+                            />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:maxWidth="200dp"
+                            android:text="Обязательно оставьте оценку проделанной работе прежде чем закрывать задачу"
+                            android:textColor="@color/black"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
+
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginStart="20dp"
+                            android:button="@drawable/radiobutton3"
+                            android:checked="true"
+                            android:clickable="false"
+                            android:text="  Перерасхода"
+                            android:textColor="@color/black"
+                            android:textSize="13sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </android.support.constraint.ConstraintLayout>
+                </LinearLayout>
+
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="@color/light_grey"
-                    />
+                    android:background="@color/light_grey" />
+
+                <LinearLayout
+                    android:id="@+id/dateCloseCommentLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="20dp">
+
+                        <TextView
+                            android:id="@+id/dateCloseCommentTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/datestring"
+                            android:textColor="@color/black"
+                            android:textSize="13sp"
+                            app:layout_constraintBottom_toTopOf="@+id/nameCloseCommentTextView"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/nameCloseCommentTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Заявка закрыта исполнителем"
+                            android:textColor="@color/black"
+                            android:textSize="13sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/dateCloseCommentTextView" />
+                    </android.support.constraint.ConstraintLayout>
+
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="20dp">
+
+                        <ImageView
+                            android:id="@+id/closeCommentImageView"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/green_circle"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginStart="10dp"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/closeCommentImageView"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/nameString"
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/positionExample"
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+                    </android.support.constraint.ConstraintLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="20dp"
+                        android:text="@string/commentText"
+                        android:textColor="@color/black"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/orderCancelLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/orderCancelLabelTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:gravity="center_vertical"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="20dp"
+                        android:text="Отменить заявку"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+
+                    <FrameLayout
+                        android:id="@+id/orderCancelEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/grey_line"
+                        android:minHeight="50dp">
+
+                        <EditText
+                            android:id="@+id/commentEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@null"
+                            android:gravity="start"
+                            android:hint="Вводить сюда"
+                            android:inputType="text"
+                            android:textColorHint="@color/black"
+                            android:textSize="13sp" />
+                    </FrameLayout>
+
+                    <RadioGroup
+                        android:id="@+id/orderCancelRadioGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="20dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="vertical"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="20dp">
+
+                        <RadioButton
+                            android:id="@+id/cancelButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:button="@drawable/radiobutton2"
+                            android:checked="true"
+                            android:text=" Отменить за ненадобностью"
+                            android:textColor="@color/black"
+                            android:textSize="11sp" />
+
+                        <RadioButton
+                            android:id="@+id/foundButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:button="@drawable/radiobutton2"
+                            android:text=" Нашли альтернативу"
+                            android:textColor="@color/black"
+                            android:textSize="11sp" />
+
+                        <RadioButton
+                            android:id="@+id/soonButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:button="@drawable/radiobutton2"
+                            android:text=" Отложили на потом"
+                            android:textColor="@color/black"
+                            android:textSize="11sp" />
+                    </RadioGroup>
+
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="20dp"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="20dp">
+
+                        <TextView
+                            android:id="@+id/orderChangeButtonTextView"
+                            android:layout_width="120dp"
+                            android:layout_height="35dp"
+                            android:background="@drawable/greenbutton"
+                            android:gravity="center"
+                            android:text="Отменить заявку"
+                            android:textColor="@color/white"
+                            android:textSize="11sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </android.support.constraint.ConstraintLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/closedCommentLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <android.support.constraint.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:layout_weight="1"
+                            android:paddingLeft="20dp"
+                            android:paddingStart="20dp">
+
+                            <TextView
+                                android:id="@+id/dateClosedCommentTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/datestring"
+                                android:textColor="@color/black"
+                                android:textSize="11sp"
+                                app:layout_constraintBottom_toTopOf="@+id/nameClosedCommentTextView"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/nameClosedCommentTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Заявка закрыта исполнителем"
+                                android:textColor="@color/black"
+                                android:textSize="11sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/dateClosedCommentTextView" />
+                        </android.support.constraint.ConstraintLayout>
+
+                        <android.support.constraint.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:layout_weight="1"
+                            android:paddingEnd="10dp"
+                            android:paddingRight="10dp">
+
+                            <ImageView
+                                android:id="@+id/closedCommentImageView"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/green_circle"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginStart="10dp"
+                                android:orientation="vertical"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/closedCommentImageView"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/nameString"
+                                    android:textColor="@color/black"
+                                    android:textSize="11sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/positionExample"
+                                    android:textColor="@color/black"
+                                    android:textSize="11sp" />
+                            </LinearLayout>
+                        </android.support.constraint.ConstraintLayout>
+                    </LinearLayout>
+
+                    <RadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:button="@drawable/radiobutton"
+                        android:checked="true"
+                        android:clickable="false"
+                        android:text="  Похвалить за отличную работу"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="20dp"
+                        android:text="@string/commentText"
+                        android:textColor="@color/black"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/orderAcceptCloseLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/orderCloseLabelTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:gravity="center_vertical"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="20dp"
+                        android:text="Принять заявку"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+
+                    <FrameLayout
+                        android:id="@+id/orderCloseEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/grey_line"
+                        android:minHeight="50dp">
+
+                        <EditText
+                            android:id="@+id/closeEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@null"
+                            android:gravity="start"
+                            android:hint="Вводить сюда"
+                            android:inputType="text"
+                            android:textColorHint="@color/black"
+                            android:textSize="13sp" />
+                    </FrameLayout>
+
+                    <RadioGroup
+                        android:id="@+id/orderCloseRadioGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="20dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="vertical"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="20dp">
+
+                        <RadioButton
+                            android:id="@+id/cancelButton1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:button="@drawable/radiobutton2"
+                            android:checked="true"
+                            android:text=" Похвалить за отличную работу"
+                            android:textColor="@color/black"
+                            android:textSize="11sp" />
+
+                        <RadioButton
+                            android:id="@+id/foundButton1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:button="@drawable/radiobutton2"
+                            android:text=" Нашли альтернативу"
+                            android:textColor="@color/black"
+                            android:textSize="11sp" />
+
+                        <RadioButton
+                            android:id="@+id/soonButton1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:button="@drawable/radiobutton2"
+                            android:text=" Отложили на потом"
+                            android:textColor="@color/black"
+                            android:textSize="11sp" />
+                    </RadioGroup>
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:text="@string/needed"
+                        android:textColor="@color/darkgrey"
+                        android:textSize="11sp" />
+
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:paddingBottom="20dp"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="20dp">
+
+                        <TextView
+                            android:id="@+id/orderCloseButtonTextView"
+                            android:layout_width="120dp"
+                            android:layout_height="35dp"
+                            android:background="@drawable/greenbutton"
+                            android:gravity="center"
+                            android:text="Отменить заявку"
+                            android:textColor="@color/white"
+                            android:textSize="11sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </android.support.constraint.ConstraintLayout>
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/light_grey" />
+
+                <LinearLayout
+                    android:id="@+id/acceptDeclineLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:orientation="horizontal"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:id="@+id/declineTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Отклонить заявку"
+                        android:textColor="@color/greyy"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/acceptTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/greenbutton"
+                        android:gravity="center"
+                        android:text="Принять заявку"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center_vertical"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="20dp"
+                        android:text="Отказать в заявке"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:text="По причине:"
+                        android:textColor="@color/black"
+                        android:textSize="11sp" />
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp">
+
+                        <RadioButton
+                            android:id="@+id/cancelledButton1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="20dp"
+                            android:button="@drawable/radiobutton3"
+                            android:checked="true"
+                            android:text="  Перерасхода"
+                            android:textColor="@color/black"
+                            android:textSize="13sp" />
+
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="20dp"
+                            android:button="@drawable/radiobutton3"
+                            android:text="  Отсутствия на складе"
+                            android:textColor="@color/black"
+                            android:textSize="13sp" />
+
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="20dp"
+                            android:button="@drawable/radiobutton3"
+                            android:text="  Недостатчно в наличии"
+                            android:textColor="@color/black"
+                            android:textSize="13sp" />
+                    </RadioGroup>
+
+                    <FrameLayout
+                        android:id="@+id/cancelledEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/grey_line"
+                        android:minHeight="50dp">
+
+                        <EditText
+                            android:id="@+id/cancelledEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:background="@null"
+                            android:gravity="start"
+                            android:hint="Вводить сюда"
+                            android:inputType="text"
+                            android:textColorHint="@color/black"
+                            android:textSize="13sp" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="130dp"
+                        android:layout_height="35dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/greenbutton"
+                        android:gravity="center"
+                        android:text="Отказать в заявке"
+                        android:textColor="@color/white"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/askingSendLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="vertical"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="20dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:gravity="center_vertical"
+                            android:text="Прошение продления"
+                            android:textColor="@color/black"
+                            android:textSize="13sp"
+
+                            />
+
+                        <RadioGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp">
+
+                            <RadioButton
+                                android:id="@+id/firstButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:button="@drawable/radiobutton2"
+                                android:checked="true"
+                                android:text="Техническому директору"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+
+                            <RadioButton
+                                android:id="@+id/secondButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:button="@drawable/radiobutton2"
+                                android:text="Техническому директору"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+
+                            <RadioButton
+
+                                android:id="@+id/thirdButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:button="@drawable/radiobutton2"
+                                android:text="Техническому директору"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+                        </RadioGroup>
+
+                        <FrameLayout
+                            android:id="@+id/askingSendEditTextLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/grey_line"
+                            android:minHeight="50dp">
+
+                            <EditText
+                                android:id="@+id/askingSendEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@null"
+                                android:gravity="start"
+                                android:hint="Вводить сюда"
+                                android:inputType="text"
+                                android:textColorHint="@color/black"
+                                android:textSize="13sp" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="200dp"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/greenbutton"
+                            android:gravity="center"
+                            android:text="Отправить прошение"
+                            android:textColor="@color/white"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/light_grey"
+                            android:orientation="vertical"
+                            android:paddingBottom="20dp"
+                            android:paddingEnd="20dp"
+                            android:paddingStart="20dp"
+                            android:paddingTop="20dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="50dp"
+                                android:maxWidth="200dp"
+                                android:text="Запрос на повторное возобновление задачи"
+                                android:textColor="@color/black"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:layout_width="200dp"
+                                android:layout_height="45dp"
+                                android:layout_marginTop="20dp"
+                                android:background="@drawable/greenbutton"
+                                android:gravity="center"
+                                android:text="Принять прошение"
+                                android:textColor="@color/white"
+                                android:textSize="17sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/cancelAskingLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="20dp"
+                            android:orientation="vertical"
+                            android:paddingEnd="20dp"
+                            android:paddingStart="20dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:gravity="center_vertical"
+                                android:text="Отклонить запрос"
+                                android:textColor="@color/black"
+                                android:textSize="13sp"
+
+                                />
+
+                            <FrameLayout
+                                android:id="@+id/cancelAskingEditTextLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/grey_line"
+                                android:minHeight="50dp">
+
+                                <EditText
+                                    android:id="@+id/cancelAskingEditText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:background="@null"
+                                    android:gravity="start"
+                                    android:hint="Вводить сюда"
+                                    android:inputType="text"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="13sp" />
+                            </FrameLayout>
+
+                            <TextView
+                                android:layout_width="200dp"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="20dp"
+                                android:background="@drawable/greenbutton"
+                                android:gravity="center"
+                                android:text="Отклонить прошение"
+                                android:textColor="@color/white"
+                                android:textSize="17sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
 
                 <android.support.constraint.ConstraintLayout
+                    android:id="@+id/BottomStatusLayout"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:paddingBottom="10dp"
                     android:background="@drawable/transparent_grey_clicked_background"
-                    android:padding="5dp">
+                    android:padding="5dp"
+                    android:paddingBottom="10dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:textColor="@color/black"
+                        android:layout_marginLeft="15sp"
+                        android:layout_marginStart="15sp"
                         android:text="В процессе"
-                        app:layout_constraintTop_toTopOf="parent"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:layout_marginStart="15sp"
-                        android:layout_marginLeft="15sp"
-                        />
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginEnd="15sp"
                         android:layout_marginRight="15sp"
-                        android:src="@drawable/ic_white_galochka"
-                        android:padding="7dp"
                         android:background="@drawable/green_circle"
-                        />
+                        android:padding="7dp"
+                        android:src="@drawable/ic_white_galochka"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
                 </android.support.constraint.ConstraintLayout>
             </LinearLayout>
         </LinearLayout>

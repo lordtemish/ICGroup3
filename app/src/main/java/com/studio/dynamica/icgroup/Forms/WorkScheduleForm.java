@@ -1,17 +1,20 @@
 package com.studio.dynamica.icgroup.Forms;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class WorkScheduleForm {
     String dayType;
     String dayInfo;
-    String smena1;
-    String smena2;
-    public WorkScheduleForm(String a, String b, String c, String d){
+    List<ShiftForm> shiftForms;
+    int shifts;
+    public WorkScheduleForm(String a, String b, List<ShiftForm> shiftForms){
+        this.shiftForms=new ArrayList<>();
         dayType=a;
         dayInfo=b;
-        smena1=c;
-        smena2=d;
+        this.shiftForms.addAll(shiftForms);
+        shifts=shiftForms.size();
     }
-
     public String getDayInfo() {
         return dayInfo;
     }
@@ -20,11 +23,11 @@ public class WorkScheduleForm {
         return dayType;
     }
 
-    public String getSmena1() {
-        return smena1;
+    public int getShifts() {
+        return shifts;
     }
 
-    public String getSmena2() {
-        return smena2;
+    public List<ShiftForm> getShiftForms() {
+        return shiftForms;
     }
 }

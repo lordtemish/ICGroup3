@@ -1,7 +1,9 @@
 package com.studio.dynamica.icgroup.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Forms.PhonesRowForm;
 import com.studio.dynamica.icgroup.R;
 
@@ -27,8 +30,12 @@ public class PhonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         TextView positionTextView;
         ImageView imageView;
         ImageView imageView1;
+        Context context;
         public MyHolder(View view){
             super(view);
+            context=view.getContext();
+            imageView=(ImageView) view.findViewById(R.id.phonesRowPhoneClickedImageView);
+            imageView1=(ImageView) view.findViewById(R.id.phonesRowPhoneImageView);
             layout=(ConstraintLayout) view.findViewById(R.id.phonesRowLayout);
             layout1=(ConstraintLayout) view.findViewById(R.id.phonesRowLayout1);
 
@@ -42,6 +49,31 @@ public class PhonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             positionTextView1=(TextView) view.findViewById(R.id.phonesRowPositionTextView1);
             positionTextView1.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/AvenirNextLTPro-Regular.ttf"));
         }
+        private void setInfo(final PhonesRowForm form){
+            if(form.isType()){
+                positionTextView1.setText(form.getPosition());
+                nameTextView1.setText(form.getName());
+                if(form.getPhone().length()>0){
+                imageView1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ((MainActivity)view.getContext()).callPhone(form.getPhone());
+                    }
+                });}
+            }
+            else {
+                layout1.setVisibility(View.GONE);
+                positionTextView.setText(form.getPosition());
+                nameTextView.setText(form.getName());
+                if(form.getPhone().length()>0){
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ((MainActivity)view.getContext()).callPhone("+"+form.getPhone());
+                    }
+                });}
+            }
+        }
     }
 
     public PhonesAdapter(List<PhonesRowForm> list, Context context){
@@ -53,15 +85,7 @@ public class PhonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(RecyclerView.ViewHolder holder1, int position){
             MyHolder holder=(MyHolder)holder1;
             PhonesRowForm form=list.get(position);
-            if(form.isType()){
-                holder.positionTextView1.setText(form.getPosition());
-                holder.nameTextView1.setText(form.getName());
-            }
-            else {
-                holder.layout1.setVisibility(View.GONE);
-                holder.positionTextView.setText(form.getPosition());
-                holder.nameTextView.setText(form.getName());
-            }
+            holder.setInfo(form);
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup groupm, int viewType){

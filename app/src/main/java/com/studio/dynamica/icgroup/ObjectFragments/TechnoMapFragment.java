@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Adapters.DaysAdapter;
 import com.studio.dynamica.icgroup.Adapters.TechnoMapAdapter;
 import com.studio.dynamica.icgroup.Forms.TechnoMapForm;
@@ -28,12 +29,9 @@ import java.util.List;
  */
 public class TechnoMapFragment extends Fragment {
     List<String> pages;
-    ConstraintLayout fullDateLayout;
-    LinearLayout infoDateLayout;
-    ImageView fullDateImage, rightPage, leftPage;
-    TextView pageInfo;
-    com.shawnlin.numberpicker.NumberPicker numberPicker, yearPicker;
-    RecyclerView dayReycler, techoMapRec;
+    ImageView rightPage, leftPage;
+    TextView pageInfo, mainObjectTitle,extraText, period, service, category, status;
+    RecyclerView  techoMapRec;
     int page;
     public TechnoMapFragment() {
         // Required empty public constructor
@@ -50,82 +48,27 @@ public class TechnoMapFragment extends Fragment {
         pages.add("Подоконники и разные у оконныз зоны");
         pages.add("Полы в коридорах");
         View view= inflater.inflate(R.layout.fragment_techno_map_fragment, container, false);
-        rightPage=(ImageView) view.findViewById(R.id.rightPageImageView);
+        createViews(view);
+        setFonttype();
         rightPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setPagePlus(true);
             }
         });
-        leftPage=(ImageView) view.findViewById(R.id.leftPageImageView);
         leftPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setPagePlus(false);
             }
         });
-        pageInfo=(TextView) view.findViewById(R.id.pageInfoTextView);
-
-        numberPicker=(com.shawnlin.numberpicker.NumberPicker) view.findViewById(R.id.numberPicker);
-        yearPicker=(com.shawnlin.numberpicker.NumberPicker) view.findViewById(R.id.yearPicker);
-
-        techoMapRec=(RecyclerView) view.findViewById(R.id.technoMapRecyclerView);
-        dayReycler=(RecyclerView) view.findViewById(R.id.dayRecycler);
-        fullDateLayout=(ConstraintLayout) view.findViewById(R.id.fullDateLayout);
-        fullDateImage=(ImageView) view.findViewById(R.id.fullDateImageView);
-        infoDateLayout=(LinearLayout) view.findViewById(R.id.dateInfoLayout);
-
-        infoDateLayout.setVisibility(View.GONE);
-        fullDateLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dateClicked();
-            }
-        });
-
-        numberPicker.setDividerColor(getResources().getColor(android.R.color.transparent));
-        numberPicker.setDividerColorResource(android.R.color.transparent);
-        yearPicker.setDividerColor(getActivity().getResources().getColor( R.color.white));
-        yearPicker.setDividerColorResource(R.color.white);
-
-// Set formatter
 
 
-// Set selected text color
-        numberPicker.setSelectedTextColor(getActivity().getResources().getColor( R.color.colorPrimary));
-        numberPicker.setSelectedTextColorResource(R.color.colorPrimary);
-        yearPicker.setSelectedTextColor(getActivity().getResources().getColor( R.color.darkgrey));
-        yearPicker.setSelectedTextColorResource(R.color.darkgrey);
-
-// Set selected text size
 
 
-// Set text color
-        numberPicker.setTextColor(getActivity().getResources().getColor( R.color.darkgrey));
-        numberPicker.setTextColorResource(R.color.darkgrey);
-        yearPicker.setTextColor(getActivity().getResources().getColor(R.color.greyy));
-        yearPicker.setTextColorResource(R.color.greyy);
-
-// Set text size
-
-// Set typeface
 
 
-// Set value
-        String[] data = {"Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"};
-        numberPicker.setMinValue(1);
-        numberPicker.setMaxValue(data.length);
-        numberPicker.setDisplayedValues(data);
-        numberPicker.setValue(7);
-        yearPicker.setMinValue(2015);
-        yearPicker.setMaxValue(2019);
-        yearPicker.setValue(2018);
 
-        RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getActivity(), LinearLayout.HORIZONTAL,false);
-        DaysAdapter adapter=new DaysAdapter(30);
-        dayReycler.setLayoutManager(layoutManager);
-        dayReycler.setItemAnimator(new DefaultItemAnimator());
-        dayReycler.setAdapter(adapter);
         RecyclerView.LayoutManager layoutManager1=new LinearLayoutManager(getActivity());
         List<TechnoMapForm> forms=new ArrayList<>();
         forms.add(new TechnoMapForm("13:00-16:00","Подоконник", "1","Полы мытб","50 мин",0));
@@ -139,14 +82,26 @@ public class TechnoMapFragment extends Fragment {
         techoMapRec.setAdapter(adapter1);
         return view;
     }
-    public void dateClicked(){
-        if(infoDateLayout.getVisibility()==View.VISIBLE){
-            infoDateLayout.setVisibility(View.GONE);
-            fullDateImage.setImageResource(R.drawable.ic_arrowdown_green);
-        }
-        else {
-            infoDateLayout.setVisibility(View.VISIBLE);
-            fullDateImage.setImageResource(R.drawable.ic_arrowup_green);
+    private void createViews(View view){
+        rightPage=(ImageView) view.findViewById(R.id.rightPageImageView);
+        leftPage=(ImageView) view.findViewById(R.id.leftPageImageView);
+        pageInfo=(TextView) view.findViewById(R.id.pageInfoTextView);
+        extraText=(TextView) view.findViewById(R.id.extraText);
+        period=(TextView) view.findViewById(R.id.period);
+        category=(TextView) view.findViewById(R.id.category);
+        service=(TextView) view.findViewById(R.id.service);
+        status=(TextView) view.findViewById(R.id.status);
+        mainObjectTitle=(TextView) view.findViewById(R.id.mainObjectTitle);
+        techoMapRec=(RecyclerView) view.findViewById(R.id.technoMapRecyclerView);
+    }
+    private void setFonttype(){
+        setTypeFace("demibold", pageInfo);
+        setTypeFace("light", extraText, period, status, category, service);
+        setTypeFace("it", mainObjectTitle);
+    }
+    private void setTypeFace(String s, TextView... textViews){
+        for(int i=0;i<textViews.length;i++){
+            textViews[i].setTypeface(((MainActivity) getActivity()).getTypeFace(s));
         }
     }
     public void setPagePlus(boolean plus){

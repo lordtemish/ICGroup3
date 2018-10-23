@@ -17,8 +17,8 @@ import com.shawnlin.numberpicker.NumberPicker;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Adapters.AddOrderAdapter;
 import com.studio.dynamica.icgroup.Adapters.EquipmentAdapter;
+import com.studio.dynamica.icgroup.Adapters.EquipmentReqAdapter;
 import com.studio.dynamica.icgroup.Adapters.InventorizationAdapter;
-import com.studio.dynamica.icgroup.Adapters.InventoryPassInventorizationFragment;
 import com.studio.dynamica.icgroup.Adapters.MaterialAdapter;
 import com.studio.dynamica.icgroup.Forms.AddOrderForm;
 import com.studio.dynamica.icgroup.Forms.EquipmentForm;
@@ -39,8 +39,8 @@ public class InventoryMainFragment extends Fragment {
     TextView pageTextView, archiveOrderTextView, newOrderTextView;
     LinearLayout textsLayout;
     ConstraintLayout progressLayout, dateLayout;
-    RecyclerView inventoryRecycler;
-    String[] a={"Оборудование", "Расходный материал","Инвентаризация","Заявки на пополнение"}, months = {"Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"};
+    RecyclerView inventoryRecycler, equipmentReq;
+    String[] a={"Оборудование","Инвентаризация","Заявки на пополнение"}, months = {"Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"};
 
     int page=0;
 
@@ -50,6 +50,8 @@ public class InventoryMainFragment extends Fragment {
     List<InventorizationForm> inventorizationForms;
     AddOrderAdapter addOrderAdapter;
     List<AddOrderForm> addOrderForms, newOrderForms, archOrderForms;
+    EquipmentReqAdapter reqAdapter;
+    List<String> reqList;
 
     NumberPicker datePicker, yearPicker;
     public InventoryMainFragment() {
@@ -67,7 +69,8 @@ public class InventoryMainFragment extends Fragment {
 
         ((MainActivity) getActivity()).setRecyclerViewOrientation(inventoryRecycler, LinearLayoutManager.VERTICAL);
         inventoryRecycler.setAdapter(equipmentAdapter);
-
+        ((MainActivity)getActivity()).setRecyclerViewOrientation(equipmentReq,LinearLayout.HORIZONTAL);
+        equipmentReq.setAdapter(reqAdapter);
         pickerSettings();
         createListeners();
 
@@ -103,6 +106,7 @@ public class InventoryMainFragment extends Fragment {
         textsLayout=(LinearLayout) view.findViewById(R.id.textsLayout);
         progressLayout=(ConstraintLayout) view.findViewById(R.id.progressLayout);
         inventoryRecycler=(RecyclerView) view.findViewById(R.id.inventoryRecycler);
+        equipmentReq=(RecyclerView) view.findViewById(R.id.equipmentRec);
         datePicker=(NumberPicker) view.findViewById(R.id.datePicker);
         yearPicker=(NumberPicker) view.findViewById(R.id.yearPicker);
         dateLayout=(ConstraintLayout) view.findViewById(R.id.dateLayout);
@@ -110,6 +114,7 @@ public class InventoryMainFragment extends Fragment {
         newOrderTextView=(TextView) view.findViewById(R.id.newOrderTextView);
 
         plusImageView=(ImageView) view.findViewById(R.id.plusImageView);
+
     }
 
     private void createAdapters(){
@@ -134,11 +139,38 @@ public class InventoryMainFragment extends Fragment {
         inventorizationAdapter=new InventorizationAdapter(this.inventorizationForms);
 
         List<AddOrderForm> addOrderForms=new ArrayList<>();
-        addOrderForms.add(new AddOrderForm("","","","","","",2,5));addOrderForms.add(new AddOrderForm("","","","","","",2,5));addOrderForms.add(new AddOrderForm("","","","","","",2,5));
+        addOrderForms.add(new AddOrderForm("","","","","actual","",2,5));addOrderForms.add(new AddOrderForm("","","","","finished","",2,5));addOrderForms.add(new AddOrderForm("","","","","accepted","",4,4));
+        addOrderForms.add(new AddOrderForm("","","","","cancel","",4,4));addOrderForms.add(new AddOrderForm("","","","","waiting","",4,4));addOrderForms.add(new AddOrderForm("","","","","timeout","",4,4));
         this.addOrderForms=new ArrayList<>();this.addOrderForms.addAll(addOrderForms);
         newOrderForms=addOrderForms;archOrderForms=new ArrayList<>();
 
         addOrderAdapter=new AddOrderAdapter(this.addOrderForms);
+
+        reqList=new ArrayList<>();
+        reqList.add("Оборудование");
+        reqList.add("Расходный материал");
+        reqList.add("Инвентарь");
+        reqList.add("УМС");
+        reqList.add("Сезонный инвентарь");
+        reqList.add("Спец. одежда");
+        reqAdapter=new EquipmentReqAdapter(reqList);
+        reqAdapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setEquip(reqAdapter.getClicked());
+            }
+        });
+    }
+    private void setEquip(int a){
+        switch (a){
+            case 0:
+                inventoryRecycler.setAdapter(equipmentAdapter);
+                break;
+            case 1:
+                inventoryRecycler.setAdapter(materialAdapter);
+                break;
+                default:
+        }
     }
     private void createListeners(){
         newOrderTextView.setOnClickListener(new View.OnClickListener() {
@@ -164,20 +196,26 @@ public class InventoryMainFragment extends Fragment {
         page+=a;
         checkPage();
     }
+    /*
+
+               case 1:
+                setProgressLayout();
+                inventoryRecycler.setAdapter(materialAdapter);
+                break;
+     */
     private void checkPage(){
         if(page<0) page=a.length-1;
         if(page==a.length) page=0;
         pageTextView.setText(a[page]);
+        equipmentReq.setVisibility(View.GONE);
         switch (page){
             case 0:
                 setProgressLayout();
+                equipmentReq.setVisibility(View.VISIBLE);
                 inventoryRecycler.setAdapter(equipmentAdapter);
                 break;
+
             case 1:
-                setProgressLayout();
-                inventoryRecycler.setAdapter(materialAdapter);
-                break;
-            case 2:
                 setProgressLayout(true);
                 inventoryRecycler.setAdapter(inventorizationAdapter);
                 break;

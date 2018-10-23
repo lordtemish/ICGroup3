@@ -42,7 +42,7 @@ public class ProgressPhonesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             positionTextView.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/AvenirNextLTPro-Regular.ttf"));
             progressBar=(ProgressBar) view.findViewById(R.id.ProgressBar);
             PercentageTextView=(TextView) view.findViewById(R.id.PercentageTextView);
-            PercentageTextView.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/AvenirNextLTPro-Bold.ttf"));
+            PercentageTextView.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/AVENIRNEXT-DEMIBOLD.ttf"));
             nameChangeText=(TextView) view.findViewById(R.id.nameChangeTextView);
             nameChangeText.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/AvenirNextLTPro-Bold.ttf"));
             PositionText=(TextView) view.findViewById(R.id.positionChangeTextView);

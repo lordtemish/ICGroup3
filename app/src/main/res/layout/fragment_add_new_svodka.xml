@@ -87,20 +87,21 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
+                    android:id="@+id/cityTextView"
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
-                    android:textColor="@color/darkgrey"
+                    android:textColor="@color/black"
                     android:textSize="11sp"
                     android:text="Город"
                     />
                 <FrameLayout
-                    android:id="@+id/commentEditTextLayout"
+                    android:id="@+id/cityEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="50sp"
                     android:background="@drawable/black_line"
                     >
                     <EditText
-                        android:id="@+id/commentEditText"
+                        android:id="@+id/cityEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
@@ -123,18 +124,19 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
-                    android:textColor="@color/darkgrey"
+                    android:textColor="@color/black"
                     android:textSize="11sp"
-                    android:text="Город"
+                    android:text="Адрес"
+                    android:id="@+id/addressTextView"
                     />
                 <FrameLayout
-                    android:id="@+id/commentEditTextLayout1"
+                    android:id="@+id/addressEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="50sp"
                     android:background="@drawable/black_line"
                     >
                     <EditText
-                        android:id="@+id/commentEditText1"
+                        android:id="@+id/addressEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
@@ -147,6 +149,76 @@
                         />
                 </FrameLayout>
             </LinearLayout>
+                <LinearLayout
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        android:textColor="@color/black"
+                        android:textSize="11sp"
+                        android:text="Представитель клиента"
+                        android:id="@+id/clientTextView"
+                        />
+                    <FrameLayout
+                        android:id="@+id/clientEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="50sp"
+                        android:background="@drawable/black_line"
+                        >
+                        <EditText
+                            android:id="@+id/clientEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:inputType="text"
+                            android:textSize="13sp"
+                            android:layout_gravity="center"
+                            android:gravity="start"
+                            android:hint="Вводить сюда"
+                            android:textColorHint="@color/black"
+                            />
+                    </FrameLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        android:textColor="@color/black"
+                        android:textSize="11sp"
+                        android:text="Должность(позиция)"
+                        android:id="@+id/positionTextView"
+                        />
+                    <FrameLayout
+                        android:id="@+id/positionEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="50sp"
+                        android:background="@drawable/black_line"
+                        >
+                        <EditText
+                            android:id="@+id/positionEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:inputType="text"
+                            android:textSize="13sp"
+                            android:layout_gravity="center"
+                            android:gravity="start"
+                            android:hint="Вводить сюда"
+                            android:textColorHint="@color/black"
+                            />
+                    </FrameLayout>
+                </LinearLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_marginBottom="20dp"
@@ -156,6 +228,7 @@
                 android:orientation="vertical"
                 >
                 <TextView
+                    android:id="@+id/acceptLabelTextView"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_width="match_parent"
@@ -189,6 +262,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <TextView
+                        android:id="@+id/commentsLabelTextView"
                         android:layout_width="match_parent"
                         android:layout_height="20dp"
                         android:textColor="@color/darkgrey"
@@ -196,7 +270,6 @@
                         android:text="написать комментарий"
                         />
                     <FrameLayout
-                        android:layout_marginTop="20dp"
                         android:id="@+id/commentEditTextLayout2"
                         android:layout_width="match_parent"
                         android:layout_height="50sp"
@@ -233,6 +306,7 @@
                     android:padding="10dp"
                     >
                     <TextView
+                        android:id="@+id/addNewTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="17sp"

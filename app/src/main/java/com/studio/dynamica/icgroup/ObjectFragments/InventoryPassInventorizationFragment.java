@@ -1,4 +1,4 @@
-package com.studio.dynamica.icgroup.Adapters;
+package com.studio.dynamica.icgroup.ObjectFragments;
 
 
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.studio.dynamica.icgroup.Activities.MainActivity;
+import com.studio.dynamica.icgroup.Adapters.PassInventorizationAdapter;
 import com.studio.dynamica.icgroup.Forms.PassInventorizationForm;
 import com.studio.dynamica.icgroup.R;
 

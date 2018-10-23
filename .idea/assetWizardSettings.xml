@@ -14,8 +14,11 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_plus" />
-                            <entry key="sourceFile" value="$USER_HOME$/Downloads/Group.svg" />
+                            <entry key="height" value="52" />
+                            <entry key="outputName" value="ic_books" />
+                            <entry key="overrideSize" value="true" />
+                            <entry key="sourceFile" value="$USER_HOME$/Desktop/books.svg" />
+                            <entry key="width" value="54" />
                           </map>
                         </option>
                       </PersistentState>

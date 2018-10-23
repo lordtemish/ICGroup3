@@ -1,6 +1,7 @@
 package com.studio.dynamica.icgroup.Adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +23,7 @@ public class JalobaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private class myHolder extends RecyclerView.ViewHolder{
         ConstraintLayout answerLayout;
         LinearLayout jalobaInfoLayout;
-        TextView  senderTextView, senderInfoTextView,nameTextView, positionTextView, textTextView, dateTextView;
+        TextView  senderTextView, senderInfoTextView,nameTextView, positionTextView, textTextView, dateTextView,answerTextView;
         ImageView mainPhotoImageView;
         private myHolder(View view){
             super(view);
@@ -31,6 +32,11 @@ public class JalobaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             answerLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Bundle bundle=new Bundle();
+                    bundle.putBoolean("answerable",true);
+                    JalobaInfoFragment infoFragment=new JalobaInfoFragment();
+                    infoFragment.setArguments(bundle);
+                    ((MainActivity) context).setFragment(R.id.content_frame,infoFragment);
 
                 }
             });
@@ -39,7 +45,10 @@ public class JalobaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             nameTextView=(TextView) view.findViewById(R.id.nameTextView);positionTextView=(TextView) view.findViewById(R.id.positionTextView);
             dateTextView=(TextView) view.findViewById(R.id.dateTextView);
             textTextView=(TextView) view.findViewById(R.id.textTextView);
+            answerTextView=(TextView) view.findViewById(R.id.answerTextView);
             mainPhotoImageView=(ImageView) view.findViewById(R.id.mainPhotoImageView);
+
+            setFonttype();
         }
 
         private void setInfo(JalobaForm f){
@@ -48,12 +57,32 @@ public class JalobaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             textTextView.setText(f.getText());
             senderInfoTextView.setText(f.getClients());
             dateTextView.setText(f.getDate());
+            if(!answer){
+                answerLayout.setVisibility(View.GONE);
+            }
+            else answerLayout.setVisibility(View.VISIBLE);
+        }
+        private void setFonttype(){
+            setTypeFace("it");
+            setTypeFace("demibold", dateTextView, senderInfoTextView, nameTextView, positionTextView, answerTextView);
+            setTypeFace("light", senderTextView, textTextView);
+        }
+        private void setTypeFace(String s, TextView... textViews){
+            for(int i=0;i<textViews.length;i++){
+                textViews[i].setTypeface((((MainActivity)context).getTypeFace(s)));
+            }
         }
     }
     Context context;
     List<JalobaForm> list;
-    public JalobaAdapter(List<JalobaForm> forms){
+    boolean answer;
+    public JalobaAdapter(List<JalobaForm> forms, boolean f){
         list=forms;
+        answer=f;
+    }
+
+    public void setAnswer(boolean answer) {
+        this.answer = answer;
     }
 
     @Override
@@ -63,7 +92,10 @@ public class JalobaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         holder.jalobaInfoLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle bundle=new Bundle();
+                bundle.putBoolean("answerable",false);
                 JalobaInfoFragment infoFragment=new JalobaInfoFragment();
+                infoFragment.setArguments(bundle);
                 ((MainActivity) context).setFragment(R.id.content_frame,infoFragment);
             }
         });

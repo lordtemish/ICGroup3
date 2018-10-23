@@ -6,7 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Forms.WashForm;
 import com.studio.dynamica.icgroup.R;
 
@@ -16,8 +18,16 @@ public class WashAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     List<WashForm> list;
     Context context;
     private class myHolder extends RecyclerView.ViewHolder{
+        TextView nameTextView, idTextView, numberTextView;
         public myHolder(View v){
             super(v);
+            numberTextView=(TextView) v.findViewById(R.id.numberTextView);
+            nameTextView=(TextView) v.findViewById(R.id.nameTextView);
+            idTextView=(TextView) v.findViewById(R.id.idTextView);
+
+            numberTextView.setTypeface(((MainActivity)v.getContext()).getTypeFace("demibold"));
+            idTextView.setTypeface(((MainActivity)v.getContext()).getTypeFace("demibold"));
+            nameTextView.setTypeface(((MainActivity)v.getContext()).getTypeFace("light"));
         }
     }
     public WashAdapter(List<WashForm> forms){

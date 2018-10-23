@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Adapters.AcceptAdapter;
@@ -32,6 +33,7 @@ import java.util.List;
 public class CheckListInfoFragment extends Fragment {
     RecyclerView recyclerView, messagesInfoRecyclerView, infoAcceptRecyclerView;
     Spinner spinner;
+    TextView mainObjectTitle,infoDateTextView, totalMarkLabelTextView, rateTextView, revisorLabelTextView, nameInfoLayout,tookLabel;
     public CheckListInfoFragment() {
         // Required empty public constructor
     }
@@ -43,12 +45,13 @@ public class CheckListInfoFragment extends Fragment {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_check_list_info, container, false);
         createViews(view);
+        setFonttype();
         List<CheckListBoxForm> boxForms=new ArrayList<>();
         List<CheckListBoxRowForm> boxRowForms=new ArrayList<>();
 
-        boxRowForms.add(new CheckListBoxRowForm("","",4));
-        boxRowForms.add(new CheckListBoxRowForm("","",4));
-        boxRowForms.add(new CheckListBoxRowForm("","",4));
+        boxRowForms.add(new CheckListBoxRowForm("Тима Машуров","",4));
+        boxRowForms.add(new CheckListBoxRowForm("","",3));
+        boxRowForms.add(new CheckListBoxRowForm("","",2));
 
         boxForms.add(new CheckListBoxForm("",true, boxRowForms));
         boxForms.add(new CheckListBoxForm("",false, boxRowForms));
@@ -58,37 +61,40 @@ public class CheckListInfoFragment extends Fragment {
         ((MainActivity) getActivity()).setRecyclerViewOrientation(messagesInfoRecyclerView, LinearLayoutManager.VERTICAL);
         ((MainActivity) getActivity()).setRecyclerViewOrientation(infoAcceptRecyclerView, LinearLayoutManager.HORIZONTAL);
 
-        CheckListBoxAdapter adapter=new CheckListBoxAdapter(boxForms);
+        CheckListBoxAdapter adapter=new CheckListBoxAdapter(boxForms, true);
         recyclerView.setAdapter(adapter);
 
         MessageAdapter messageAdapter=new MessageAdapter(new MessageForm(getActivity().getResources().getString(R.string.bigtext)));
         messagesInfoRecyclerView.setAdapter(messageAdapter);
 
         List<AcceptForm> acceptForms=new ArrayList<>();
-        acceptForms.add(new AcceptForm("","","","",false));acceptForms.add(new AcceptForm("","","","",false));acceptForms.add(new AcceptForm("","","","",false));acceptForms.add(new AcceptForm("","","","",true));
+        acceptForms.add(new AcceptForm("Темирлан Алмасов","Отдел уборки","ОПУ","Провалено",false));acceptForms.add(new AcceptForm("","","","",false));acceptForms.add(new AcceptForm("","","","",false));acceptForms.add(new AcceptForm("","","","",true));
         AcceptAdapter acceptAdapter=new AcceptAdapter(acceptForms);
         infoAcceptRecyclerView.setAdapter(acceptAdapter);
-
-
-        String[] numbers={"1","2","3","4","5"};
-        ArrayAdapter<String> spinnerAdapter=new ArrayAdapter<String>(getActivity(),R.layout.rate_spinner_item,numbers){
-            @Override
-            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View view=null;
-                view=super.getDropDownView(position, convertView, parent);
-
-                return view;
-            }
-        };
-        spinner.setAdapter(spinnerAdapter);
 
         return view;
     }
 
-
+    private void setFonttype(){
+        setTypeFace("it",mainObjectTitle);
+        setTypeFace("demibold", infoDateTextView, rateTextView, nameInfoLayout,tookLabel);
+        setTypeFace("light", totalMarkLabelTextView, revisorLabelTextView);
+    }
+    private void setTypeFace(String s, TextView... textViews){
+        for(int i=0;i<textViews.length;i++){
+            textViews[i].setTypeface((((MainActivity)getActivity()).getTypeFace(s)));
+        }
+    }
     private void createViews(View view){
         recyclerView=(RecyclerView) view.findViewById(R.id.checkListRecyclerView);
-        spinner=(Spinner) view.findViewById(R.id.rateSpinner);
+        mainObjectTitle=(TextView) view.findViewById(R.id.mainObjectTitle);
+        infoDateTextView=(TextView) view.findViewById(R.id.infoDateTextView);
+        totalMarkLabelTextView=(TextView) view.findViewById(R.id.totalMarkLabelTextView);
+        rateTextView=(TextView) view.findViewById(R.id.rateTextView);
+        revisorLabelTextView=(TextView) view.findViewById(R.id.revisorLabelTextView);
+        tookLabel=(TextView) view.findViewById(R.id.tookLabel);
+        nameInfoLayout=(TextView) view.findViewById(R.id.nameInfoLayout);
+
         messagesInfoRecyclerView=(RecyclerView) view.findViewById(R.id.messagesInfoRecyclerView);
         infoAcceptRecyclerView=(RecyclerView) view.findViewById(R.id.infoAcceptRecyclerView);
     }

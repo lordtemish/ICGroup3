@@ -97,9 +97,10 @@
                <android.support.constraint.ConstraintLayout
                    android:id="@+id/uborka"
                    android:layout_width="match_parent"
-                   android:layout_height="80dp"
-                   android:background="@drawable/grey_line">
+                   android:layout_height="82dp"
+                   android:background="@drawable/lightgrey_line">
                         <TextView
+                            android:id="@+id/rateTextView0"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:layout_constraintStart_toStartOf="parent"
@@ -111,23 +112,93 @@
                             android:textSize="13sp"
                             android:text="Качество уборки"
                             />
+                   <Spinner
+                       android:id="@+id/rateSpinner0"
+                       android:layout_width="60dp"
+                       android:layout_height="60dp"
+                       android:layout_marginEnd="20dp"
+                       android:layout_marginRight="20dp"
+                       app:layout_constraintEnd_toEndOf="parent"
+                       app:layout_constraintTop_toTopOf="parent"
+                       app:layout_constraintBottom_toBottomOf="parent"
+                       android:background="@android:color/transparent"
+                       android:gravity="center"
+                       android:spinnerMode="dropdown"
+                       >
+
+                   </Spinner>
+               </android.support.constraint.ConstraintLayout>
+               <android.support.constraint.ConstraintLayout
+                   android:id="@+id/looking"
+                   android:layout_width="match_parent"
+                   android:layout_height="82dp"
+                   android:background="@drawable/lightgrey_line">
                         <TextView
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            android:layout_marginEnd="20dp"
-                            android:layout_marginRight="20dp"
+                            android:id="@+id/rateTextView1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            android:background="@drawable/green_circle_line"
-                            android:text="3"
-                            android:gravity="center"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginLeft="20dp"
                             android:textColor="@color/black"
-                            android:textSize="33sp"
+                            android:textSize="13sp"
+                            android:text="Внешний вид ОПУ/ОПУ-ТП"
                             />
+                   <Spinner
+                       android:id="@+id/rateSpinner1"
+                       android:layout_width="60dp"
+                       android:layout_height="60dp"
+                       android:layout_marginEnd="20dp"
+                       android:layout_marginRight="20dp"
+                       app:layout_constraintEnd_toEndOf="parent"
+                       app:layout_constraintTop_toTopOf="parent"
+                       app:layout_constraintBottom_toBottomOf="parent"
+                       android:background="@android:color/transparent"
+                       android:gravity="center"
+                       android:spinnerMode="dropdown"
+                       >
+
+                   </Spinner>
+               </android.support.constraint.ConstraintLayout>
+               <android.support.constraint.ConstraintLayout
+                   android:id="@+id/inventory"
+                   android:layout_width="match_parent"
+                   android:layout_height="82dp"
+                   android:background="@drawable/lightgrey_line">
+                        <TextView
+                            android:id="@+id/rateTextView2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:textColor="@color/black"
+                            android:textSize="13sp"
+                            android:text="Инвентаризация оборудования"
+                            />
+                   <Spinner
+                       android:id="@+id/rateSpinner2"
+                       android:layout_width="60dp"
+                       android:layout_height="60dp"
+                       android:layout_marginEnd="20dp"
+                       android:layout_marginRight="20dp"
+                       app:layout_constraintEnd_toEndOf="parent"
+                       app:layout_constraintTop_toTopOf="parent"
+                       app:layout_constraintBottom_toBottomOf="parent"
+                       android:background="@android:color/transparent"
+                       android:gravity="center"
+                       android:spinnerMode="dropdown"
+                       >
+
+                   </Spinner>
                </android.support.constraint.ConstraintLayout>
            </LinearLayout>
         <TextView
+                android:id="@+id/acceptLabelTextView"
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:layout_margin="10dp"
@@ -143,6 +214,7 @@
         </android.support.v7.widget.RecyclerView>
 
         <TextView
+            android:id="@+id/commentsLabelTextView"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginStart="10dp"
@@ -193,11 +265,13 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginTop="10dp"
+            android:id="@+id/createNewLayout"
             android:layout_marginBottom="20dp"
             android:background="@drawable/green_circle"
             android:padding="10dp"
             >
                 <TextView
+                    android:id="@+id/createNewTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="17sp"

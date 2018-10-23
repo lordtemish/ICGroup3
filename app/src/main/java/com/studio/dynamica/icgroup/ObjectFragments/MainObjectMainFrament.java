@@ -3,29 +3,44 @@ package com.studio.dynamica.icgroup.ObjectFragments;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Adapters.ButtonAdapter;
 import com.studio.dynamica.icgroup.Adapters.MainFramentProgressRecycleAdapter;
 import com.studio.dynamica.icgroup.Adapters.PhonesAdapter;
+import com.studio.dynamica.icgroup.Adapters.RateStarsAdapter;
 import com.studio.dynamica.icgroup.Forms.MainFramentProgressForm;
+import com.studio.dynamica.icgroup.Forms.MainObjectRowForm;
 import com.studio.dynamica.icgroup.Forms.PhonesRowForm;
 import com.studio.dynamica.icgroup.R;
 import com.studio.dynamica.icgroup.StartFragments.StartPage;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,11 +52,19 @@ public class MainObjectMainFrament extends Fragment {
     TextView employees;
     TextView coms;
     TextView category;
-    List<ImageView> stars;
-    RecyclerView progresses;
+    ConstraintLayout progressBar;
+    RecyclerView progresses, rateRecyclerView;
     RecyclerView buttons;
     RecyclerView phonesRecycler;
+    RateStarsAdapter rateStarsAdapter;
 
+    List<MainFramentProgressForm> progresList;
+    MainFramentProgressRecycleAdapter progressRecycleAdapter;
+    List<PhonesRowForm> phonesRowFormList;
+    PhonesAdapter adapter;
+    String id;
+    boolean client;
+    int rate=3;
     public MainObjectMainFrament() {
         // Required empty public constructor
     }
@@ -52,45 +75,50 @@ public class MainObjectMainFrament extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_main_object_main_frament, container, false);
-        mainObjectTitle=(TextView) view.findViewById(R.id.mainObjectTitle);
+        createViews(view);
+
         mainObjectTitle.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/AvenirNextLTPro-It.ttf"));
-        name=(TextView) view.findViewById(R.id.mainObjectMainFragmentNameTextView);
+
         name.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/AVENIRNEXT-DEMIBOLD.ttf"));
         name.setText(this.getArguments().getString("name"));
 
-        employees=(TextView) view.findViewById(R.id.mainObjectMainFramentEmployeesTextView);
-        employees.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/AVENIRNEXT-DEMIBOLD.ttf"));
-        coms=(TextView) view.findViewById(R.id.mainObjectMainFramentCommsTextView);
-        coms.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/AVENIRNEXT-DEMIBOLD.ttf"));
-        category=(TextView) view.findViewById(R.id.mainObjectMainFramentCategoryTextView);
-        category.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/AVENIRNEXT-DEMIBOLD.ttf"));
+        employees.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/AvenirNextLTPro-Medium.ttf"));
 
-        stars=new ArrayList<>();
-        stars.add((ImageView) view.findViewById(R.id.mainObjectMainFragmentFav0));stars.add((ImageView) view.findViewById(R.id.mainObjectMainFragmentFav1));stars.add((ImageView) view.findViewById(R.id.mainObjectMainFragmentFav2));stars.add((ImageView) view.findViewById(R.id.mainObjectMainFragmentFav3));stars.add((ImageView) view.findViewById(R.id.mainObjectMainFragmentFav4));
+        coms.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/AvenirNextLTPro-Medium.ttf"));
 
-        progresses=(RecyclerView) view.findViewById(R.id.mainObjectMainFramentProgressRecycler);
-        List<MainFramentProgressForm> progresList=new ArrayList<>();
+        category.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/AvenirNextLTPro-Medium.ttf"));
+
+
+
+        progresList=new ArrayList<>();
         progresList.add(new MainFramentProgressForm("Успеваемость",55));
         progresList.add(new MainFramentProgressForm("Посещаемость",85));
         progresList.add(new MainFramentProgressForm("Качество",15));
         progresList.add(new MainFramentProgressForm("Инветарь",38));
-        MainFramentProgressRecycleAdapter progressRecycleAdapter=new MainFramentProgressRecycleAdapter(progresList,getActivity());
+        progressRecycleAdapter=new MainFramentProgressRecycleAdapter(progresList,getActivity());
         RecyclerView.LayoutManager mLayoutManager=new LinearLayoutManager(getActivity());
         progresses.setLayoutManager(mLayoutManager);
         progresses.setItemAnimator(new DefaultItemAnimator());
         progresses.setAdapter(progressRecycleAdapter);
 
-        buttons=(RecyclerView) view.findViewById(R.id.mainObjectMainFramentButtonsRecycler);
+
         List<String> buttonsList=new ArrayList<>();
         buttonsList.add("Паспорт объекта");
         buttonsList.add("Задачи");
         buttonsList.add("Технологическая карта");
         buttonsList.add("Контроль качества");
+        if(!client)
         buttonsList.add("Инвентарь");
         buttonsList.add("Жалобы");
+        if(!client)
         buttonsList.add("Посещения");
         List<View.OnClickListener> listeners=new ArrayList<>();
-        View.OnClickListener listenerPassport=new View.OnClickListener() {@Override public void onClick(View v) { ((MainActivity)getActivity()).setFragment(R.id.content_frame,new PasportObjectMainFragment()); }};
+        View.OnClickListener listenerPassport=new View.OnClickListener() {@Override public void onClick(View v) {
+            PasportObjectMainFragment fragment=new PasportObjectMainFragment();
+            Bundle bundle=new Bundle();bundle.putString("id",id);
+            fragment.setArguments(bundle);
+            ((MainActivity)getActivity()).setFragment(R.id.content_frame,fragment);
+        }};
         View.OnClickListener serviceListener=new View.OnClickListener() {@Override public void onClick(View v) { ((MainActivity)getActivity()).setFragment(R.id.content_frame,new ServiceObjectMainFragment()); }};
         View.OnClickListener TechnoMapListener=new View.OnClickListener() {@Override public void onClick(View v) { ((MainActivity)getActivity()).setFragment(R.id.content_frame,new TechnoMapFragment()); }};
         View.OnClickListener ClientControlListener=new View.OnClickListener() {@Override public void onClick(View v) { ((MainActivity)getActivity()).setFragment(R.id.content_frame,new ClientControlObjectMainFragment()); }};
@@ -101,8 +129,10 @@ public class MainObjectMainFrament extends Fragment {
         listeners.add(serviceListener);
         listeners.add(TechnoMapListener);
         listeners.add(ClientControlListener);
+        if(!client)
         listeners.add(listener);
         listeners.add(CommentsListener);
+        if(!client)
         listeners.add( AttendanceListener);
         ButtonAdapter buttonAdapter=new ButtonAdapter(buttonsList,getActivity(),listeners,R.drawable.ic_arrowrightgreen);
         RecyclerView.LayoutManager mLayoutManagerq=new LinearLayoutManager(getActivity());
@@ -110,29 +140,128 @@ public class MainObjectMainFrament extends Fragment {
         buttons.setItemAnimator(new DefaultItemAnimator());
         buttons.setAdapter(buttonAdapter);
 
-        phonesRecycler=(RecyclerView) view.findViewById(R.id.phonesRecyclerView);
-        List<PhonesRowForm> phonesRowFormList=new ArrayList<>();
-        phonesRowFormList.add(new PhonesRowForm(false,"Рыскулова А","Представитель клиента"));
-        phonesRowFormList.add(new PhonesRowForm(true,"Сыздыков Н","Начальник производства"));
-        phonesRowFormList.add(new PhonesRowForm(true,"Сыздыков Н","Куратор"));
-        phonesRowFormList.add(new PhonesRowForm(true,"Сыздыков Н","Администратор"));
-        PhonesAdapter adapter=new PhonesAdapter(phonesRowFormList,getActivity());
+
+        phonesRowFormList=new ArrayList<>();
+         adapter=new PhonesAdapter(phonesRowFormList,getActivity());
         RecyclerView.LayoutManager mLayoutManagerp=new LinearLayoutManager(getActivity());
         phonesRecycler.setLayoutManager(mLayoutManagerp);
         phonesRecycler.setItemAnimator(new DefaultItemAnimator());
         phonesRecycler.setAdapter(adapter);
+
+        ((MainActivity) getActivity()).setRecyclerViewOrientation(rateRecyclerView,LinearLayoutManager.HORIZONTAL);
+        rateStarsAdapter=new RateStarsAdapter(rate);
+        rateRecyclerView.setAdapter(rateStarsAdapter);
         setRate(3);
+
+        getRequest("points/"+id);
         return view;
+    }
+    private void setInfo(JSONObject object){
+            progressBar.setVisibility(View.GONE);
+            try {
+                setRate(object.getInt("result_rate"));
+                double mark1=object.getDouble("score_rate")*5;
+                int mark=(int)Math.round(mark1);
+                setRate(mark);
+                int empl=object.getInt("workers_count");
+                int comms=object.getInt("complaints_count");
+                int categories=object.getInt("tasks_count");
+                employees.setText(empl+"");
+                coms.setText(comms+"");
+                category.setText(categories+"");
+
+                int usp=object.getInt("performance_rate");
+                int pos=object.getInt("attendance_rate");
+                int kac=object.getInt("quality_rate");
+                int inv=object.getInt("inventory_rate");
+                if(client){
+                    setProgresses(usp);
+                }
+                else
+                setProgresses(usp, pos, kac, inv);
+
+                List<PhonesRowForm> rowForms=new ArrayList<>();
+                JSONObject contactor=getJsObject(object,"contactor");
+                JSONObject producer=getJsObject(object,"producer");
+                JSONObject curator=getJsObject(object,"curator");
+                JSONObject administrator=getJsObject(object,"administrator");
+                if(contactor!=null && !client)
+                    rowForms.add(new PhonesRowForm(false, contactor.getString("fullname"), "Представитель клиента", contactor.getString("phone")));
+                if(producer!=null)
+                rowForms.add(new PhonesRowForm(true,producer.getString("fullname"),"Начальник производства", producer.getString("phone")));
+                if(curator!=null)
+                rowForms.add(new PhonesRowForm(true,curator.getString("fullname"),"Куратор", curator.getString("phone")));
+                if(administrator!=null)
+                rowForms.add(new PhonesRowForm(true,administrator.getString("fullname"),"Администратор", administrator.getString("phone")));
+                setRowPhones(rowForms);
+            }
+            catch (JSONException e){
+                e.printStackTrace();
+            }
+    }
+    private JSONObject getJsObject(JSONObject object,String s){
+        try{
+            return object.getJSONObject(s);
+        }
+        catch (JSONException e){
+            return null;
+        }
+    }
+    private void getRequest(String url1){
+        final String url=((MainActivity)getActivity()).MAIN_URL+url1;
+
+        JsonObjectRequest objectRequest=new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                        setInfo(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        (((MainActivity)getActivity()).requestQueue).add(objectRequest);
+    }
+
+    private void createViews(View view){
+        client=((MainActivity) getActivity()).client;
+        mainObjectTitle=(TextView) view.findViewById(R.id.mainObjectTitle);
+        category=(TextView) view.findViewById(R.id.mainObjectMainFramentCategoryTextView);
+        coms=(TextView) view.findViewById(R.id.mainObjectMainFramentCommsTextView);
+        name=(TextView) view.findViewById(R.id.mainObjectMainFragmentNameTextView);
+        employees=(TextView) view.findViewById(R.id.mainObjectMainFramentEmployeesTextView);
+        progresses=(RecyclerView) view.findViewById(R.id.mainObjectMainFramentProgressRecycler);
+        buttons=(RecyclerView) view.findViewById(R.id.mainObjectMainFramentButtonsRecycler);
+        phonesRecycler=(RecyclerView) view.findViewById(R.id.phonesRecyclerView);
+        rateRecyclerView=(RecyclerView) view.findViewById(R.id.rateRecyclerView);
+        progressBar=(ConstraintLayout) view.findViewById(R.id.progressLayout);
+
+        id=getArguments().getString("id");
+    }
+
+    private void setRowPhones(List<PhonesRowForm> rowForms){
+        phonesRowFormList.clear();
+        phonesRowFormList.addAll(rowForms);
+        adapter.notifyDataSetChanged();
     }
 
     public void setRate(int a){
-        for(int i=0;i<5;i++){
-            if(i<a){
-                stars.get(i).setImageResource(R.drawable.ic_staryellow);
-            }
-            else{
-                stars.get(i).setImageResource(R.drawable.ic_stargrey);
-            }
-        }
+        rateStarsAdapter.setRate(a);
+        rateStarsAdapter.notifyDataSetChanged();
+    }
+
+    public void setProgresses(int a, int b, int c, int d){
+        progresList.clear();
+        progresList.add(new MainFramentProgressForm("Успеваемость",a));
+        progresList.add(new MainFramentProgressForm("Посещаемость",b));
+        progresList.add(new MainFramentProgressForm("Качество",c));
+        progresList.add(new MainFramentProgressForm("Инветарь",d));
+        progressRecycleAdapter.notifyDataSetChanged();
+    }
+    public void setProgresses(int a){
+        progresList.clear();
+        progresList.add(new MainFramentProgressForm("Успеваемость",a));
+        progressRecycleAdapter.notifyDataSetChanged();
     }
 }

@@ -32,16 +32,28 @@ public class UserRowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             jalobaInfoTextView=(TextView) view.findViewById(R.id.jalobaInfoTextView);
             jalobaLabelTextView=(TextView) view.findViewById(R.id.jalobaLabelTextView);
             wholeLayout=(ConstraintLayout) view.findViewById(R.id.wholeLayout);
+            setFonttype();
         }
 
         private void setInfo(UserRowForm form){
             nameTextView.setText(form.getName());
             positionTextView.setText(form.getPosition());
-            dateTextView.setText(form.getDate());
+            //dateTextView.setText(form.getDate());
             jalobaLabelTextView.setText(form.getTypeLabel());
             jalobaInfoTextView.setText(form.getType());
             if(!form.isFull()){
                 wholeLayout.setVisibility(View.GONE);
+            }
+        }
+
+        private void setFonttype(){
+            setTypeFace("it");
+            setTypeFace("demibold", dateTextView, nameTextView, jalobaInfoTextView);
+            setTypeFace("light", jalobaLabelTextView,positionTextView);
+        }
+        private void setTypeFace(String s, TextView... textViews){
+            for(int i=0;i<textViews.length;i++){
+                textViews[i].setTypeface((((MainActivity)context).getTypeFace(s)));
             }
         }
 

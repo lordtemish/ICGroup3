@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.studio.dynamica.icgroup.Forms.MainFramentProgressForm;
+import com.studio.dynamica.icgroup.Forms.PhonesRowForm;
 import com.studio.dynamica.icgroup.R;
 
 import java.util.List;
@@ -22,8 +23,11 @@ public class MainFramentProgressRecycleAdapter extends RecyclerView.Adapter<Recy
             public myHolder(View view){
                 super(view);
                 name=(TextView) view.findViewById(R.id.mainFramentProgressRowTextView);name.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/avenir-light.ttf"));
-                percentage=(TextView) view.findViewById(R.id.mainFramentProgressRowPercentageTextView);percentage.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/Avenir-Black.ttf"));
+                percentage=(TextView) view.findViewById(R.id.mainFramentProgressRowPercentageTextView);percentage.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/AVENIRNEXT-DEMIBOLD.ttf"));
                 progressBar=(ProgressBar) view.findViewById(R.id.mainFramentProgressRowProgressBar);
+            }
+            private void setInfo(MainFramentProgressForm form){
+
             }
     }
     List<MainFramentProgressForm> list;

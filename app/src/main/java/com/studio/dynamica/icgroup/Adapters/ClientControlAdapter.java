@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Forms.AcceptForm;
+import com.studio.dynamica.icgroup.Forms.CheckListForm;
 import com.studio.dynamica.icgroup.Forms.CommentForm;
 import com.studio.dynamica.icgroup.Forms.MessageForm;
 import com.studio.dynamica.icgroup.Forms.OlkForm;
@@ -30,14 +31,28 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
     private class OlkHolder extends RecyclerView.ViewHolder{
         ConstraintLayout markLayout;
         RecyclerView commentsRecyclerView, acceptRecycler, phonesRecyclerView;
-        TextView wrapTextView;
+        TextView wrapTextView, dateTextView, nameTextView, positionTextView, infoLabel, averageMarkTextView, quality, qualityMark, looking, lookingMark, inventory, inventoryMark,olkTook;
         LinearLayout extraLayout;
+        Context context;
         private OlkHolder(View v){
             super(v);
+            context=v.getContext();
             acceptRecycler=(RecyclerView) v.findViewById(R.id.acceptRecyclerView);
             phonesRecyclerView=(RecyclerView) v.findViewById(R.id.phonesRecyclerView);
             extraLayout=(LinearLayout) v.findViewById(R.id.extraLayout);
             wrapTextView=(TextView) v.findViewById(R.id.wrapTextView);
+            dateTextView=(TextView) v.findViewById(R.id.dateTextView);
+            nameTextView=(TextView) v.findViewById(R.id.nameTextView);
+            infoLabel=(TextView) v.findViewById(R.id.infoLabel);
+            positionTextView=(TextView) v.findViewById(R.id.positionTextView);
+            quality=(TextView) v.findViewById(R.id.quality);
+            qualityMark=(TextView) v.findViewById(R.id.qualityMark);
+            looking=(TextView) v.findViewById(R.id.looking);
+            lookingMark=(TextView) v.findViewById(R.id.lookingMark);
+            inventory=(TextView) v.findViewById(R.id.inventory);
+            inventoryMark=(TextView) v.findViewById(R.id.inventoryMark);
+            averageMarkTextView=(TextView) v.findViewById(R.id.averageMarkTextView);
+            olkTook=(TextView) v.findViewById(R.id.olkTook);
             markLayout=(ConstraintLayout) v.findViewById(R.id.markLayout);
             commentsRecyclerView=(RecyclerView) v.findViewById(R.id.commentsRecyclerView);
             wrapTextView.setOnClickListener(new View.OnClickListener() {
@@ -46,8 +61,20 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
                     clicked();
                 }
             });
+            setFontType();
         }
+        private void setFontType(){
+            setTypeFace("demibold", nameTextView, infoLabel, averageMarkTextView, qualityMark, lookingMark, inventoryMark,olkTook);
+            setTypeFace("light", wrapTextView, dateTextView, positionTextView, quality, looking, inventory);
+        }
+        private void setTypeFace(String s, TextView... textViews){
+            for(int i=0;i<textViews.length;i++){
+                textViews[i].setTypeface(((MainActivity)context).getTypeFace(s));
+            }
+        }
+        private void setInfo(OlkForm form){
 
+        }
         private void clicked(){
             if(markLayout.getVisibility()==View.VISIBLE){
                 markLayout.setVisibility(View.GONE);
@@ -63,13 +90,34 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
     private class checkListHolder extends RecyclerView.ViewHolder{
         LinearLayout wholeLayout;
+        TextView dateTextView,revisorTextView, nameTextView, rateTextView;
         private checkListHolder(View v){
             super(v);
             wholeLayout=(LinearLayout) v.findViewById(R.id.wholeLayout);
+            dateTextView=(TextView) v.findViewById(R.id.dateTextView);
+            revisorTextView=(TextView) v.findViewById(R.id.revisorTextView);
+            nameTextView=(TextView) v.findViewById(R.id.nameTextView);
+            rateTextView=(TextView) v.findViewById(R.id.rateTextView);
+            setFontType();
+        }
+        private void setInfo(CheckListForm form){
+            dateTextView.setText(form.getDate());
+            nameTextView.setText(form.getFIO());
+            rateTextView.setText(form.getMark()+"");
+        }
+        private void setFontType(){
+            setTypeFace("demibold", dateTextView, nameTextView, rateTextView);
+            setTypeFace("light", revisorTextView);
+        }
+        private void setTypeFace(String s, TextView... textViews){
+            for(int i=0;i<textViews.length;i++){
+                textViews[i].setTypeface(((MainActivity)context).getTypeFace(s));
+            }
         }
     }
     private class svodkaRateHolder extends RecyclerView.ViewHolder{
         RecyclerView rateStartRecycler, commentsRecyclerView, acceptRecyclerView;
+        TextView dateTextView, positionTextView, nameTextView, placeNum, placeNumLabel, cityLabel, city, address, addressLabel, clientLabel, clientName, clientPosition,tookLabel;
         ImageView arrowImage;
         LinearLayout extraLayout;
         private svodkaRateHolder(View view){
@@ -79,6 +127,19 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
             rateStartRecycler=(RecyclerView) view.findViewById(R.id.starsRecyclerView);
             commentsRecyclerView=(RecyclerView) view.findViewById(R.id.commentsRecyclerView);
             acceptRecyclerView=(RecyclerView) view.findViewById(R.id.acceptRecyclerView);
+            dateTextView=(TextView) view.findViewById(R.id.dateTextView);
+            nameTextView=(TextView) view.findViewById(R.id.nameTextView);
+            positionTextView=(TextView) view.findViewById(R.id.positionTextView);
+            placeNum=(TextView) view.findViewById(R.id.placeNum);
+            placeNumLabel=(TextView) view.findViewById(R.id.placeNumLabel);
+            cityLabel=(TextView) view.findViewById(R.id.cityLabel);
+            city=(TextView) view.findViewById(R.id.city);
+            address=(TextView) view.findViewById(R.id.address);
+            addressLabel=(TextView) view.findViewById(R.id.addressLabel);
+            clientLabel=(TextView) view.findViewById(R.id.clientLabel);
+            clientName=(TextView) view.findViewById(R.id.clientName);
+            clientPosition=(TextView) view.findViewById(R.id.clientPosition );
+            tookLabel=(TextView) view.findViewById(R.id.tookLabel );
 
             arrowImage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -86,6 +147,16 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
                     buttonClicked();
                 }
             });
+            setFontType();
+        }
+        private void setFontType(){
+            setTypeFace("demibold", nameTextView, dateTextView, placeNum, city, address, clientName);
+            setTypeFace("light",positionTextView, placeNumLabel, cityLabel, addressLabel, clientLabel, clientPosition, tookLabel);
+        }
+        private void setTypeFace(String s, TextView... textViews){
+            for(int i=0;i<textViews.length;i++){
+                textViews[i].setTypeface(((MainActivity)context).getTypeFace(s));
+            }
         }
         private void setArrowResource(int resource){
             arrowImage.setImageResource(resource);
@@ -140,7 +211,8 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
         switch (page){
             case 0:
                 OlkHolder holder=(OlkHolder)holder3;
-
+                OlkForm olkForm=(OlkForm) list.get(position);
+                holder.setInfo(olkForm);
                 RecyclerView commentsRecycle=holder.commentsRecyclerView;
                 RecyclerView.LayoutManager manager0=new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false);
 
@@ -150,9 +222,9 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
                 RecyclerView accceptReycler=holder.acceptRecycler;
                 RecyclerView.LayoutManager manager02=new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false);
 
-                List<MessageForm> messageForm=new ArrayList<>();messageForm.add(new MessageForm("Fuck that shitasdlfhjkashfjkashfjhaskjfhaslfhj"));
-                List<PhonesRowForm> rowForms=new ArrayList<>();rowForms.add(new PhonesRowForm(false,"qweqwe","123123123123"));
-                List<AcceptForm> acceptForms=new ArrayList<>();acceptForms.add(new AcceptForm("","","","",true));acceptForms.add(new AcceptForm("","","","",true));acceptForms.add(new AcceptForm("","","","",true));
+                List<MessageForm> messageForm=new ArrayList<>();messageForm.add(new MessageForm(context.getResources().getString(R.string.bigtext)));
+                List<PhonesRowForm> rowForms=new ArrayList<>();rowForms.add(new PhonesRowForm(false,"Темирлан Алмасов","ОПУ","87017000154"));
+                List<AcceptForm> acceptForms=new ArrayList<>();acceptForms.add(new AcceptForm("Темирлан Алмасов","Отдел продаж","ОПУ","Выполнил",true));acceptForms.add(new AcceptForm("Темирлан Алмасов","Отдел продаж","ОПУ","Выполнил",true));acceptForms.add(new AcceptForm("Темирлан Алмасов","Отдел продаж","ОПУ","Выполнил",true));
 
                 PhonesAdapter adapter01=new PhonesAdapter(rowForms, context);
                 phonesRecycle.setLayoutManager(manager01);
@@ -172,6 +244,8 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
                 break;
             case 1:
                 checkListHolder holder1=(checkListHolder) holder3;
+                CheckListForm form=(CheckListForm) list.get(position);
+                holder1.setInfo(form);
                 holder1.wholeLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -188,7 +262,7 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
                 RecyclerView accceptReycler0=holder2.acceptRecyclerView;
 
                 List<MessageForm> messageForms=new ArrayList<>();messageForms.add(new MessageForm("Fuck that shitasdlfhjkashfjkashfjhaskjfhaslfhj"));
-                List<AcceptForm> acceptForms0=new ArrayList<>();acceptForms0.add(new AcceptForm("","","","",true));acceptForms0.add(new AcceptForm("","","","",true));acceptForms0.add(new AcceptForm("","","","",true));
+                List<AcceptForm> acceptForms0=new ArrayList<>();acceptForms0.add(new AcceptForm("Темирлан Алмасов","Отдел продаж","ОПУ","Выполнил",true));acceptForms0.add(new AcceptForm("Темирлан Алмасов","Отдел продаж","ОПУ","Выполнил",true));acceptForms0.add(new AcceptForm("Темирлан Алмасов","Отдел продаж","ОПУ","Выполнил",true));
 
 
                 MessageAdapter adapter1=new MessageAdapter(messageForms);

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Forms.ServicePeriodForm;
 import com.studio.dynamica.icgroup.R;
 
@@ -26,6 +27,7 @@ public class ServicePeriodAdapter extends RecyclerView.Adapter<RecyclerView.View
             super(view);
             context=view.getContext();
             textView=(TextView) view.findViewById(R.id.text);
+            textView.setTypeface(((MainActivity)context).getTypeFace("medium"));
             textConstratint=(ConstraintLayout) view.findViewById(R.id.textConstraintLayout);
             recyclerView=(RecyclerView) view.findViewById(R.id.recyclerView);
             RecyclerView.LayoutManager manager=new LinearLayoutManager(view.getContext());
@@ -35,9 +37,11 @@ public class ServicePeriodAdapter extends RecyclerView.Adapter<RecyclerView.View
         public void setColor(int a){
             if(a%2==0){
                 textConstratint.setBackground(context.getDrawable(R.drawable.lightgreen_corners_page));
+                textConstratint.setBackgroundResource((R.drawable.lightgreen_corners_page));
             }
             else{
                 textConstratint.setBackground(context.getDrawable(R.drawable.green_corners_page));
+                textConstratint.setBackgroundResource((R.drawable.green_corners_page));
             }
         }
     }

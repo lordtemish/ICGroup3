@@ -4,7 +4,7 @@ public class ProgressPhoneForm {
     PhonesRowForm form;
     int progress;
     boolean change;
-    String text;
+    String text, id;
     PhonesRowForm changeForm;
     public ProgressPhoneForm(PhonesRowForm form, int progress){
         this.form=form;
@@ -17,6 +17,14 @@ public class ProgressPhoneForm {
         this.text=text;
         this.changeForm=form2;
         change=true;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public int getProgress() {

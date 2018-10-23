@@ -17,6 +17,7 @@
         android:layout_marginEnd="20dp"
         >
                 <TextView
+                    android:id="@+id/dateTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
@@ -48,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:textSize="13sp"
+            android:textSize="11sp"
             android:text="Менеджер отдела контроля"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -121,9 +122,11 @@
                             android:gravity="center_vertical"
                             android:text="№ отделения"
                             android:textColor="@color/darkgrey"
-                            android:textSize="13sp"
+                            android:textSize="11sp"
+                            android:id="@+id/placeNumLabel"
                             />
                         <TextView
+                            android:id="@+id/placeNum"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:minHeight="30dp"
@@ -145,7 +148,8 @@
                             android:gravity="center_vertical"
                             android:text="Город"
                             android:textColor="@color/darkgrey"
-                            android:textSize="13sp"
+                            android:textSize="11sp"
+                            android:id="@+id/cityLabel"
                             />
                         <TextView
                             android:layout_width="match_parent"
@@ -155,6 +159,7 @@
                             android:gravity="center_vertical"
                             android:textSize="13sp"
                             android:text="Алматы"
+                            android:id="@+id/city"
                             />
                     </LinearLayout>
                     <LinearLayout
@@ -164,14 +169,16 @@
                         android:layout_weight="1"
                         >
                         <TextView
+                            android:id="@+id/addressLabel"
                             android:layout_width="match_parent"
                             android:layout_height="20dp"
                             android:gravity="center_vertical"
                             android:text="Адрес"
                             android:textColor="@color/darkgrey"
-                            android:textSize="13sp"
+                            android:textSize="11sp"
                             />
                         <TextView
+                            android:id="@+id/address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:minHeight="30dp"
@@ -191,12 +198,13 @@
                     android:orientation="horizontal"
                     >
                     <TextView
+                        android:id="@+id/clientLabel"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_weight="1"
                         android:gravity="start"
                         android:textColor="@color/darkgrey"
-                        android:textSize="13sp"
+                        android:textSize="11sp"
                         android:text="Представитель клиента"
 
                         />
@@ -209,20 +217,15 @@
                         android:layout_weight="1"
                         >
                         <TextView
+                            android:id="@+id/clientName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
                             android:textSize="15sp"
-                            android:text="Алмасов"
+                            android:text="Алмасов Темирлан "
                             />
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            android:text="Темирлан"
-                            />
-                        <TextView
+                            android:id="@+id/clientPosition"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/darkgrey"
@@ -237,13 +240,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/tookLabel"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:gravity="center_vertical"
                 android:text="Приняли результат обзвона"
-                android:textSize="13sp"
+                android:textSize="11sp"
 
                 />
             <android.support.v7.widget.RecyclerView

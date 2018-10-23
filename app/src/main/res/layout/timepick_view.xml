@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="70sp"
+        android:padding="5sp">
+        <TextView
+            android:id="@+id/makeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/black"
+            android:text="Выполнить до:"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="180sp"
+            android:padding="10sp"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toEndOf="@+id/makeTextView"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/minusImageView"
+                android:layout_width="35sp"
+                android:layout_height="40sp"
+                android:padding="10sp"
+                android:background="@drawable/grey_rectangle"
+                android:src="@drawable/ic_congreen_left"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/timeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/minusImageView"
+                app:layout_constraintEnd_toStartOf="@+id/plusImageView"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:text="14:00"
+                />
+            <ImageView
+                android:id="@+id/plusImageView"
+                android:layout_width="35sp"
+                android:layout_height="40sp"
+                android:background="@drawable/grey_rectangle"
+                android:padding="10sp"
+                android:src="@drawable/ic_congreen_right"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+</FrameLayout>

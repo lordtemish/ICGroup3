@@ -1,21 +1,35 @@
 package com.studio.dynamica.icgroup.ObjectFragments;
 
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.studio.dynamica.icgroup.Activities.MainActivity;
+import com.studio.dynamica.icgroup.Adapters.ChooseAcceptServiceAdapter;
+import com.studio.dynamica.icgroup.Adapters.FilesAdapter;
+import com.studio.dynamica.icgroup.ExtraFragments.CalendarView;
+import com.studio.dynamica.icgroup.ExtraFragments.TimePickView;
+import com.studio.dynamica.icgroup.Forms.ChooseAcceptForm;
 import com.studio.dynamica.icgroup.R;
 
 import java.util.ArrayList;
@@ -24,27 +38,28 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class AddNewServiceFragment extends Fragment {
-    int[][] layouts={{R.id.m00Layout,R.id.m01Layout,R.id.m02Layout,R.id.m03Layout,R.id.m04Layout,R.id.m05Layout,R.id.m06Layout}, {R.id.m10Layout,R.id.m11Layout,R.id.m12Layout,R.id.m13Layout,R.id.m14Layout,R.id.m15Layout,R.id.m16Layout}, {R.id.m20Layout,R.id.m21Layout,R.id.m22Layout,R.id.m23Layout,R.id.m24Layout,R.id.m25Layout,R.id.m26Layout}, {R.id.m30Layout,R.id.m31Layout,R.id.m32Layout,R.id.m33Layout,R.id.m34Layout,R.id.m35Layout,R.id.m36Layout}, {R.id.m40Layout,R.id.m41Layout,R.id.m42Layout,R.id.m43Layout,R.id.m44Layout,R.id.m45Layout,R.id.m46Layout}, {R.id.m50Layout,R.id.m51Layout,R.id.m52Layout,R.id.m53Layout,R.id.m54Layout,R.id.m55Layout,R.id.m56Layout}};
-    int[] linearLayouts={R.id.m0Layout,R.id.m1Layout,R.id.m2Layout,R.id.m3Layout,R.id.m4Layout,R.id.m5Layout};
-    int[][] texts={{R.id.m00TextView,R.id.m01TextView,R.id.m02TextView,R.id.m03TextView,R.id.m04TextView,R.id.m05TextView,R.id.m06TextView}, {R.id.m10TextView,R.id.m11TextView,R.id.m12TextView,R.id.m13TextView,R.id.m14TextView,R.id.m15TextView,R.id.m16TextView}, {R.id.m20TextView,R.id.m21TextView,R.id.m22TextView,R.id.m23TextView,R.id.m24TextView,R.id.m25TextView,R.id.m26TextView}, {R.id.m30TextView,R.id.m31TextView,R.id.m32TextView,R.id.m33TextView,R.id.m34TextView,R.id.m35TextView,R.id.m36TextView}, {R.id.m40TextView,R.id.m41TextView,R.id.m42TextView,R.id.m43TextView,R.id.m44TextView,R.id.m45TextView,R.id.m46TextView}, {R.id.m50TextView,R.id.m51TextView,R.id.m52TextView,R.id.m53TextView,R.id.m54TextView,R.id.m55TextView,R.id.m56TextView}};
-    int[][] images={{R.id.m00ImageView,R.id.m01ImageView,R.id.m02ImageView,R.id.m03ImageView,R.id.m04ImageView,R.id.m05ImageView,R.id.m06ImageView}, {R.id.m10ImageView,R.id.m11ImageView,R.id.m12ImageView,R.id.m13ImageView,R.id.m14ImageView,R.id.m15ImageView,R.id.m16ImageView}, {R.id.m20ImageView,R.id.m21ImageView,R.id.m22ImageView,R.id.m23ImageView,R.id.m24ImageView,R.id.m25ImageView,R.id.m26ImageView}, {R.id.m30ImageView,R.id.m31ImageView,R.id.m32ImageView,R.id.m33ImageView,R.id.m34ImageView,R.id.m35ImageView,R.id.m36ImageView}, {R.id.m40ImageView,R.id.m41ImageView,R.id.m42ImageView,R.id.m43ImageView,R.id.m44ImageView,R.id.m45ImageView,R.id.m46ImageView}, {R.id.m50ImageView,R.id.m51ImageView,R.id.m52ImageView,R.id.m53ImageView,R.id.m54ImageView,R.id.m55ImageView,R.id.m56ImageView}};
-    String[] months={"Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"};
-    List<List<ConstraintLayout>> calendarLayouts;
-    List<LinearLayout> calendarMainLayouts;
-    List<List<TextView>> calendarTexts;
-    List<List<ImageView>> calendarImages;
-    List<List<Calendar>> days;
-    TextView monthTextView;
-    ConstraintLayout monthLayout;
+    RecyclerView filesRecyclerView;
+    CalendarView calendarView;
+    TimePickView timePickView;
     FrameLayout commentLayout;
     EditText nameEditText, commentEditText;
     RadioGroup radioGroup;
-    RadioButton todayRadio, dateRadio, mediaRadio;
-    boolean media=false;
+    RadioButton todayRadio, dateRadio, mediaRadio, photoRadio;
+    RadioButton[] priorityRadios={null,null,null};
+    TextView ObjectTitle,priorityLabelTextView, DirectorObjectLabelTextView, placeLabelTextView, serviceTypeLabeLTextView, otvLabelTextView, dateLabelTextView, opisanieLabelTextView, cancelTextView, addTextView, filesTextView, needAcceptTextView;
+    Spinner DirectorObjectLabelSpinner;
+    List<Spinner> spinners;
+    List<FrameLayout> spinnerButtonFrames;
+    List<ArrayList<String>> spinnerLists;
+    RecyclerView answerUserRecyclerView;
+    boolean media=false, photo=false;
+    View.OnClickListener photoListener;
     int[][] choseindexes={{0,0},{0,0}};
      int click=0, clickx=0, clicky=0, xmax=0, ymax=0;
     Calendar cal;
@@ -58,236 +73,189 @@ public class AddNewServiceFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_add_new_service, container, false);
+
         click=0;
         Calendar cal=Calendar.getInstance();
         cal.setTime(new Date());
         this.cal=new GregorianCalendar(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),1);
-        commentEditText=(EditText) view.findViewById(R.id.commentEditText);
-        commentLayout=(FrameLayout) view.findViewById(R.id.commentLayout);
-        nameEditText=(EditText) view.findViewById(R.id.nameEditText);
-        monthTextView=(TextView) view.findViewById(R.id.monthTextView);
-        monthLayout=(ConstraintLayout) view.findViewById(R.id.monthLayout);
-        setMonth(cal.get(Calendar.MONTH));
-        radioGroup=(RadioGroup) view.findViewById(R.id.dateRadioGroup);
-        mediaRadio=(RadioButton) view.findViewById(R.id.mediaRadioButton);
+        createViews(view);
+        setFonttype();
+        setSpinners();
         mediaRadio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mediaClicked();
             }
         });
-        todayRadio=(RadioButton) view.findViewById(R.id.radioButton);
+        photoListener=new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/*");
+                String[] mimeTypes = {"image/*", "video/*"};
+                intent.putExtra(Intent.EXTRA_MIME_TYPES,mimeTypes);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                ((MainActivity)getActivity()).startActivityForResult(intent,1);
+
+            }
+        };
+        photoRadio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                photoclicked();
+            }
+        });
         todayRadio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clearRadioButtons();
                 todayRadio.setChecked(true);
+                timePickView.setVisibility(View.VISIBLE);
             }
         });
-        dateRadio=(RadioButton) view.findViewById(R.id.radioButton1);
+
         dateRadio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clearRadioButtons();
                 dateRadio.setChecked(true);
+                calendarView.setVisibility(View.VISIBLE);
             }
         });
 
-        calendarImages=new ArrayList<>();calendarLayouts=new ArrayList<>(); calendarTexts=new ArrayList<>();calendarMainLayouts=new ArrayList<>();days=new ArrayList<>();
-        for (int i=0;i<6;i++){
-            calendarImages.add(new ArrayList<ImageView>());
-            calendarTexts.add(new ArrayList<TextView>());
-            calendarLayouts.add(new ArrayList<ConstraintLayout>());
-            calendarMainLayouts.add((LinearLayout) view.findViewById(linearLayouts[i]));
-            for(int j=0;j<7;j++){
-                calendarImages.get(i).add((ImageView) view.findViewById(images[i][j]));
-                calendarTexts.get(i).add((TextView) view.findViewById(texts[i][j]));
-                calendarLayouts.get(i).add((ConstraintLayout) view.findViewById(layouts[i][j]));
-                calendarLayouts.get(i).get(j).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        clicked(v);
-                    }
-                });
-            }
-        }
-        clearAllDays();
-        setDay();
-        setEmptyDays();
+
+        ((MainActivity)getActivity()).setRecyclerViewOrientation(filesRecyclerView,LinearLayoutManager.HORIZONTAL);
+        List<Bitmap> bitmaps=new ArrayList<Bitmap>();
+        FilesAdapter filesAdapter=new FilesAdapter(bitmaps);
+        filesRecyclerView.setAdapter(filesAdapter);
+        ((MainActivity)getActivity()).setFileAdapterOs(bitmaps,filesAdapter);
+
+
+        ((MainActivity) getActivity()).setRecyclerViewOrientation(answerUserRecyclerView, LinearLayoutManager.VERTICAL);
+        List<ChooseAcceptForm> acceptForms=new ArrayList<>();
+        acceptForms.add(new ChooseAcceptForm("Отдел производства","Темирлан Алмасович","ОПУ",false));
+        acceptForms.add(new ChooseAcceptForm("Отдел производства","1Темирлан Алмасович","ОПУ",false));
+        acceptForms.add(new ChooseAcceptForm("Отдел производства","2Темирлан Алмасович","ОПУ",true));
+        acceptForms.add(new ChooseAcceptForm("Отдел производства","3Темирлан Алмасович","ОПУ",true));
+        acceptForms.add(new ChooseAcceptForm("Отдел производства","4Темирлан Алмасович","ОПУ",false));
+        ChooseAcceptServiceAdapter serviceAdapter=new ChooseAcceptServiceAdapter(acceptForms);
+        answerUserRecyclerView.setAdapter(serviceAdapter);
+
         return view;
     }
-    public void setMonth(int m){
-        monthTextView.setText(months[m]+" "+cal.get(Calendar.YEAR));
-    }
+    private void setSpinners(){
+        for(int i=0;i<4;i++){
+            ArrayAdapter<String> adapter=new ArrayAdapter<String>(getActivity(),R.layout.simple_spinner_item,spinnerLists.get(i)){
+                public View getView(int position, View convertView,ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setTypeface(((MainActivity) getContext()).getTypeFace("demibold"));
 
-    public void clicked(View view){
-        int x=0, y=0;
-        for(int i=0;i<6;i++){
-            if(calendarLayouts.get(i).contains(view)){
-                x=i;
-                y=calendarLayouts.get(i).indexOf(view);
+                return v;
             }
-        }
-        clicked(x,y);
-    }
-    public void clicked(int x, int y){
-        switch (click){
-            case 0:
-                setGreenActive(calendarLayouts.get(x).get(y),calendarTexts.get(x).get(y),calendarImages.get(x).get(y));
-                clickx=x;
-                clicky=y;
-                choseindexes[0][0]=x;
-                choseindexes[0][1]=y;
-                break;
-            case 1:
-                setGreenActive(calendarLayouts.get(x).get(y),calendarTexts.get(x).get(y),calendarImages.get(x).get(y));
-                setGreenInside(clickx, clicky, x, y);
-                choseindexes[1][0]=x;
-                choseindexes[1][1]=y;
-                break;
-            case 2:
-                int x1=choseindexes[0][0],y1=choseindexes[0][1],x2=choseindexes[1][0],y2=choseindexes[1][1];
-                if((x1>x2) || (x1==x2 && y1>=y2)){
-                    setSimple(x1,y1);
-                    setSimple(x2,y2);
-                }
-                else {
-                    setSimple(choseindexes[0][0], choseindexes[0][1], choseindexes[1][0], choseindexes[1][1]);
-                }
-                break;
-        }
-        click++;
-        click=click%3;
-    }
-    public void clearAllDays(){
-        for(int i=0;i<6;i++){
-            days.add(new ArrayList<Calendar>());
-            for(int j=0;j<7;j++){
-                setGrey(calendarLayouts.get(i).get(j),calendarTexts.get(i).get(j), calendarImages.get(i).get(j));
-                days.get(i).add(Calendar.getInstance());
-            }
-        }
-    }
-    public void setEmptyDays(){
-        int max=cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-        int weekday=(cal.get(Calendar.DAY_OF_WEEK)+5)%7;
-        Calendar cal=this.cal;
-        for(int i=weekday-1;i>=0;i--){
-            cal.add(Calendar.DATE,-1);
-            int day=cal.get(Calendar.DAY_OF_MONTH);
-            TextView t=calendarTexts.get(0).get(i);
-            t.setText(day+"");
-            ConstraintLayout l=calendarLayouts.get(0).get(i);
-            l.setOnClickListener(null);
-        }
-        cal=days.get(xmax).get(ymax);
-        cal.set(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),max);
-        for(int i=ymax+1;i<7;i++){
-            int day=cal.get(Calendar.DAY_OF_MONTH);
-            TextView t=calendarTexts.get(xmax).get(i);
-            t.setText(day+"");
-            ConstraintLayout l=calendarLayouts.get(xmax).get(i);
-            l.setOnClickListener(null);
-            cal.add(Calendar.DATE,+1);
-        }
-    }
-    public void setDay(){
-        int max=cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-        int weekday=(cal.get(Calendar.DAY_OF_WEEK)+5)%7;
-        for(int i=0;i<6;i++){
-            xmax=i;
-            if(i==5){
-                calendarMainLayouts.get(i).setVisibility(View.VISIBLE);
-            }
-            for(int j=weekday;j<7;j++){
-                ymax=j;
-                int day=cal.get(Calendar.DAY_OF_MONTH);
-                days.get(i).set(j,cal);
-                ConstraintLayout l=calendarLayouts.get(i).get(j);
-                TextView t=calendarTexts.get(i).get(j);
-                t.setText(day+"");
-                ImageView iv=calendarImages.get(i).get(j);
-                setSimple(l,t,iv);
-                max--;
-                if(max==0){
-                    break;
-                }
-                cal.add(Calendar.DATE,+1);
-            }
-            if(max==0){
-                break;
-            }
-            weekday=0;
-        }
-        cal.set(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),1);
-    }
-    public void setSimple(int x1, int y1, int x2, int y2){
-            int x=x1;
-            int y=y1;
+                public View getDropDownView(int position, View convertView, ViewGroup parent) {
 
-            for(int i=x;i<=x2;i++){
-                int last;
-                if(i==x2)
-                    last=y2;
-                else{
-                    last=6;
-                }
-                for(int j=y;j<=last;j++){
-                    ConstraintLayout layout=calendarLayouts.get(i).get(j);
-                    ImageView imageView=calendarImages.get(i).get(j);
-                    TextView textView=calendarTexts.get(i).get(j);
-                    setSimple(layout,textView,imageView);
-                }
-                y=0;
-            }
-    }
-    public void setSimple(int x, int y){
-        setSimple(calendarLayouts.get(x).get(y),calendarTexts.get(x).get(y),calendarImages.get(x).get(y));
-    }
-    public void setSimple(ConstraintLayout layout, TextView textView,ImageView iv){
-        layout.setBackgroundResource((R.drawable.calendar_simple_dr));
+                    View v = super.getView(position,convertView,parent);
+                    ((TextView) v).setTypeface(((MainActivity) getContext()).getTypeFace("demibold"));
 
-        textView.setTextColor(getActivity().getResources().getColor(R.color.black));
-        iv.setVisibility(View.GONE);
-    }
-    public void setGrey(ConstraintLayout layout,TextView textView,ImageView iv){
-        layout.setBackgroundResource((R.drawable.calendar_grey_dr));
-        textView.setTextColor(getActivity().getResources().getColor(R.color.greyy));
-        iv.setVisibility(View.GONE);
-    }
-    public void setGreenActive(ConstraintLayout layout,TextView textView, ImageView iv){
-        layout.setBackgroundResource((R.drawable.calendar_greenactive_dr));
-        textView.setTextColor(getActivity().getResources().getColor(R.color.white));
-        iv.setVisibility(View.VISIBLE);
-    }
-    public void setGreenInside(ConstraintLayout layout,TextView textView,ImageView iv){
-        layout.setBackgroundResource((R.drawable.calendar_greeninside_dr));
-        textView.setTextColor(getActivity().getResources().getColor(R.color.white));
-        iv.setVisibility(View.GONE);
-    }
-    public void setGreenInside(int x1, int y1, int x2, int y2){
-        int x=x1;
-        int y=y1+1;
+                    return v;
 
-        for(int i=x;i<=x2;i++){
-            int last;
-            if(i==x2)
-            last=y2;
-            else{
-                last=7;
-            }
-            for(int j=y;j<last;j++){
-                ConstraintLayout layout=calendarLayouts.get(i).get(j);
-                ImageView imageView=calendarImages.get(i).get(j);
-                TextView textView=calendarTexts.get(i).get(j);
-                setGreenInside(layout,textView,imageView);
-            }
-            y=0;
+                }};
+            spinnerButtonFrames.get(i).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    spinners.get(spinnerButtonFrames.indexOf(view)).performClick();
+                }
+            });
+            spinners.get(i).setAdapter(adapter);
         }
+    }
+    private void setFonttype(){
+        ObjectTitle.setTypeface(((MainActivity)getActivity()).getTypeFace("it"));
+        priorityLabelTextView.setTypeface(((MainActivity)getActivity()).getTypeFace("light"));
+        nameEditText.setTypeface(((MainActivity)getActivity()).getTypeFace("light"));
+        commentEditText.setTypeface(((MainActivity)getActivity()).getTypeFace("light"));
+        filesTextView.setTypeface(((MainActivity)getActivity()).getTypeFace("light"));
+        DirectorObjectLabelTextView.setTypeface(((MainActivity)getActivity()).getTypeFace("light"));
+        placeLabelTextView.setTypeface(((MainActivity)getActivity()).getTypeFace("light"));
+        serviceTypeLabeLTextView.setTypeface(((MainActivity)getActivity()).getTypeFace("light"));
+        otvLabelTextView.setTypeface(((MainActivity)getActivity()).getTypeFace("light"));
+        cancelTextView.setTypeface(((MainActivity)getActivity()).getTypeFace("light"));
+        addTextView.setTypeface(((MainActivity)getActivity()).getTypeFace("light"));
+        dateLabelTextView.setTypeface(((MainActivity)getActivity()).getTypeFace("demibold"));
+        todayRadio.setTypeface(((MainActivity)getActivity()).getTypeFace("demibold"));
+        dateRadio.setTypeface(((MainActivity)getActivity()).getTypeFace("demibold"));
+        opisanieLabelTextView.setTypeface(((MainActivity)getActivity()).getTypeFace("demibold"));
+        mediaRadio.setTypeface(((MainActivity)getActivity()).getTypeFace("demibold"));
+        photoRadio.setTypeface(((MainActivity)getActivity()).getTypeFace("demibold"));
+        needAcceptTextView.setTypeface(((MainActivity)getActivity()).getTypeFace("demibold"));
+        for(RadioButton i:priorityRadios){
+            i.setTypeface(((MainActivity)getActivity()).getTypeFace("demibold"));
+        }
+    }
+    private void createViews(View view){
+        spinners=new ArrayList<>();
+        spinnerButtonFrames=new ArrayList<>();
+        spinnerLists=new ArrayList<>();for(int i=0;i<4;i++){
+            spinnerLists.add(new ArrayList<String>());
+            spinnerLists.get(i).add("Выберите объект");
+        }
+        spinners.add((Spinner) view.findViewById(R.id.DirectorObjectLabelSpinner));spinners.add((Spinner) view.findViewById(R.id.employeeChangeSpinner1));spinners.add((Spinner) view.findViewById(R.id.employeeChangeSpinner2));spinners.add((Spinner) view.findViewById(R.id.employeeChangeSpinner3));
+        spinnerButtonFrames.add((FrameLayout) view.findViewById(R.id.spinnerFrameImage));spinnerButtonFrames.add((FrameLayout) view.findViewById(R.id.spinnerFrameImage1));spinnerButtonFrames.add((FrameLayout) view.findViewById(R.id.spinnerFrameImage2));spinnerButtonFrames.add((FrameLayout) view.findViewById(R.id.spinnerFrameImage3));
+        filesRecyclerView=(RecyclerView) view.findViewById(R.id.filesRecyclerView);
+        commentEditText=(EditText) view.findViewById(R.id.commentEditText);
+        commentLayout=(FrameLayout) view.findViewById(R.id.commentLayout);
+        nameEditText=(EditText) view.findViewById(R.id.nameEditText);
+
+        radioGroup=(RadioGroup) view.findViewById(R.id.radioGroup);
+        mediaRadio=(RadioButton) view.findViewById(R.id.mediaRadioButton);
+        photoRadio=(RadioButton) view.findViewById(R.id.photoRadioButton);
+        todayRadio=(RadioButton) view.findViewById(R.id.radioButton);
+        dateRadio=(RadioButton) view.findViewById(R.id.radioButton1);
+
+        calendarView=(CalendarView) view.findViewById(R.id.calendarView);
+        timePickView=(TimePickView) view.findViewById(R.id.timePickView);
+        ObjectTitle=(TextView) view.findViewById(R.id.mainObjectTitle);
+        priorityLabelTextView=(TextView) view.findViewById(R.id.priorityLabelTextView);
+        DirectorObjectLabelTextView=(TextView) view.findViewById(R.id.DirectorObjectLabelTextView);
+        placeLabelTextView=(TextView) view.findViewById(R.id.placeLabelTextView);
+        serviceTypeLabeLTextView=(TextView) view.findViewById(R.id.serviceTypeLabelTextView);
+        otvLabelTextView=(TextView) view.findViewById(R.id.otvLabelTextView);
+        dateLabelTextView=(TextView) view.findViewById(R.id.dateLabelTextView);
+        opisanieLabelTextView=(TextView) view.findViewById(R.id.opisanieLabelTextView);
+        cancelTextView=(TextView) view.findViewById(R.id.cancelTextView);
+        addTextView=(TextView) view.findViewById(R.id.addTextView);
+        needAcceptTextView=(TextView) view.findViewById(R.id.needAcceptTextView);
+        filesTextView=(TextView) view.findViewById(R.id.filesTextView);
+        answerUserRecyclerView=(RecyclerView) view.findViewById(R.id.answerUserRecyclerView);
+
+        priorityRadios[0]=(RadioButton) view.findViewById(R.id.priority1);
+        priorityRadios[1]=(RadioButton) view.findViewById(R.id.priority2);
+        priorityRadios[2]=(RadioButton) view.findViewById(R.id.priority3);
     }
     public void clearRadioButtons(){
         dateRadio.setChecked(false);
         todayRadio.setChecked(false);
+        calendarView.setVisibility(View.GONE);
+        timePickView.setVisibility(View.GONE);
+    }
+    private void photoclicked()
+    {
+        if(photo){
+           photo=false;
+           filesTextView.setTypeface(((MainActivity)getActivity()).getTypeFace("light"));
+           filesTextView.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View view) {
+
+               }
+           });
+        }
+        else{
+            photo=true;
+            filesTextView.setTypeface(((MainActivity)getActivity()).getTypeFace("demibold"));
+            filesTextView.setOnClickListener(photoListener);
+        }
+        photoRadio.setChecked(photo);
     }
     public void mediaClicked(){
         if(media){
@@ -295,6 +263,7 @@ public class AddNewServiceFragment extends Fragment {
             commentEditText.setHintTextColor(getActivity().getResources().getColor(R.color.greyy));
             commentEditText.setFocusableInTouchMode(false);
             commentEditText.setFocusable(false);
+            commentEditText.setText("");
             commentLayout.setBackgroundResource((R.drawable.grey_line));
             media=false;
         }
@@ -306,6 +275,6 @@ public class AddNewServiceFragment extends Fragment {
             commentLayout.setBackgroundResource((R.drawable.black_line));
             media=true;
         }
-
     }
+
 }

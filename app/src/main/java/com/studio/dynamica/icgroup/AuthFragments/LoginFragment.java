@@ -30,6 +30,7 @@ public class LoginFragment extends Fragment {
         // Required empty public constructor
     }
     public void logIn(String login, String password) throws NullPointerException{
+        ((LoginActivity)getActivity()).setInfo();
         getActivity().finish();
     }
 
@@ -60,4 +61,13 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
+    public String getLogin(){
+        return login.getText()+"";
+    }
+    public String getPassword(){
+        return password.getText()+"";
+    }
+    public boolean isClient(){
+        return (login.getText()+"").equals("client");
+    }
 }

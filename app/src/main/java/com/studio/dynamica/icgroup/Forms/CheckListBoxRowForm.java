@@ -13,6 +13,10 @@ public class CheckListBoxRowForm {
         return rate;
     }
 
+    public void setRate(int rate) {
+        this.rate = rate;
+    }
+
     public String getInfo() {
         return info;
     }

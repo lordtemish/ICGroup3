@@ -4,11 +4,22 @@ public class PhonesRowForm {
     boolean type;
     String name;
     String position;
+    String phone="";
     public  PhonesRowForm(){}
     public PhonesRowForm(boolean type, String name, String position){
         this.type=type;
         this.name=name;
         this.position=position;
+    }
+    public PhonesRowForm(boolean type, String name, String position, String phone){
+        this.type=type;
+        this.name=name;
+        this.position=position;
+        this.phone=phone;
+    }
+
+    public String getPhone() {
+        return phone;
     }
 
     public String getName() {

@@ -1,5 +1,6 @@
 package com.studio.dynamica.icgroup.Adapters;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.R;
 
 import java.util.List;
@@ -14,9 +16,12 @@ import java.util.List;
 public class TextListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public class myHolder extends RecyclerView.ViewHolder{
         TextView textView;
+        Context context;
         public myHolder(View view){
             super(view);
+            context=view.getContext();
             textView=(TextView) view.findViewById(R.id.text);
+            textView.setTypeface(((MainActivity)context).getTypeFace("regular"));
         }
     }
     List<String> list;

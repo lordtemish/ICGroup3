@@ -3,11 +3,27 @@ package com.studio.dynamica.icgroup.Forms;
 public class ChooseAcceptForm {
     boolean chose;
     String place, name, position;
+    boolean client;
     public ChooseAcceptForm(String place, String name, String position){
         this.place=place;
         this.name=name;
         this.position=position;
         chose=false;
+        client=false;
+    }
+    public ChooseAcceptForm(String place, String name, String position, boolean c){
+        this.place=place;
+        this.name=name;
+        this.position=position;
+        chose=false;
+        client=c;
+    }
+    public void setClient(boolean client) {
+        this.client = client;
+    }
+
+    public boolean isClient() {
+        return client;
     }
 
     public boolean isChose() {

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Adapters.AcceptAdapter;
@@ -32,6 +33,8 @@ public class JalobaInfoFragment extends Fragment {
     RecyclerView userRecyclerView, messageRecyclerView, radioRecyclerView, acceptRecyclerView;
     ConstraintLayout makeAnswerLayout;
     LinearLayout answerLayout;
+    TextView mainObjectTitle, dateTextView,consultationTextView, jalobaAnswerLabelTextView, jalobaDateTextView, answerNameTextView, answerMessageTextView, answerPositionTextView,makeAnswerTextView;
+    boolean answerable;
     public JalobaInfoFragment() {
         // Required empty public constructor
     }
@@ -41,8 +44,10 @@ public class JalobaInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        answerable=getArguments().getBoolean("answerable",false);
         View view=inflater.inflate(R.layout.fragment_jaloba_info, container, false);
         createViews(view);
+        setFonttype();
         ((MainActivity)getActivity()).setRecyclerViewOrientation(userRecyclerView, LinearLayoutManager.VERTICAL);
         ((MainActivity)getActivity()).setRecyclerViewOrientation(messageRecyclerView, LinearLayoutManager.VERTICAL);
         ((MainActivity)getActivity()).setRecyclerViewOrientation(radioRecyclerView, LinearLayoutManager.VERTICAL);
@@ -58,7 +63,7 @@ public class JalobaInfoFragment extends Fragment {
         radioForms.add(new RadioForm(false,"Не соответствующий внешний вид"));
         radioForms.add(new RadioForm(true,"Хамит на работе"));
         List<AcceptForm> acceptForms=new ArrayList<>();
-        acceptForms.add(new AcceptForm("","","","",true));
+        acceptForms.add(new AcceptForm("Темирлан","Отдел продаж","ОПУ","Выполнил",true));
         acceptForms.add(new AcceptForm("","","","",false));
         acceptForms.add(new AcceptForm("","","","",true));
         acceptForms.add(new AcceptForm("","","","",true));
@@ -73,7 +78,7 @@ public class JalobaInfoFragment extends Fragment {
         radioRecyclerView.setAdapter(radioAdapter);
         acceptRecyclerView.setAdapter(acceptAdapter);
 
-        setAnswerable(false);
+        setAnswerable(answerable);
 
         return view;
     }
@@ -86,6 +91,25 @@ public class JalobaInfoFragment extends Fragment {
 
         makeAnswerLayout=(ConstraintLayout) view.findViewById(R.id.makeAnswerLayout);
         answerLayout=(LinearLayout) view.findViewById(R.id.answerLayout);
+        mainObjectTitle=(TextView) view.findViewById(R.id.mainObjectTitle);
+        dateTextView=(TextView) view.findViewById(R.id.dateTextView);
+        consultationTextView=(TextView) view.findViewById(R.id.consultationTextView);
+        jalobaAnswerLabelTextView=(TextView) view.findViewById(R.id.jalobaAnswerLabelTextView);
+        jalobaDateTextView=(TextView) view.findViewById(R.id.jalobaDateTextView);
+        answerNameTextView=(TextView) view.findViewById(R.id.answerNameTextView);
+        answerMessageTextView=(TextView) view.findViewById(R.id.answerMessageTextView);
+        answerPositionTextView=(TextView) view.findViewById(R.id.answerPositionTextView);
+        makeAnswerTextView=(TextView) view.findViewById(R.id.makeAnswerTextView);
+    }
+    private void setFonttype(){
+        setTypeFace("it",mainObjectTitle);
+        setTypeFace("demibold", dateTextView, jalobaAnswerLabelTextView, answerNameTextView);
+        setTypeFace("light",consultationTextView, jalobaDateTextView, answerPositionTextView, answerMessageTextView);
+    }
+    private void setTypeFace(String s, TextView... textViews){
+        for(int i=0;i<textViews.length;i++){
+            textViews[i].setTypeface((((MainActivity)getActivity()).getTypeFace(s)));
+        }
     }
     public void setAnswerable(boolean a){
         if(a){

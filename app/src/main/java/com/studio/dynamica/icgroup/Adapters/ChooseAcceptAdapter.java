@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Forms.ChooseAcceptForm;
 import com.studio.dynamica.icgroup.R;
 
@@ -23,13 +24,25 @@ public class ChooseAcceptAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         List<ConstraintLayout> wholeLayout=new ArrayList<>();
         List<ImageView> galochkaImageView=new ArrayList<>();
         List<TextView> nameTextView=new ArrayList<>(),placeTextView=new ArrayList<>(), positionTextView=new ArrayList<>();
+        Context context;
         private myHolder(View view){
             super(view);
+            context=view.getContext();
             wholeLayout.add((ConstraintLayout) view.findViewById(R.id.firstWholeLayout));wholeLayout.add((ConstraintLayout) view.findViewById(R.id.secondWholeLayout));
             galochkaImageView.add((ImageView) view.findViewById(R.id.firstGalochkaImageView));galochkaImageView.add((ImageView) view.findViewById(R.id.secondGalochkaImageView));
             nameTextView.add((TextView) view.findViewById(R.id.firstNameTextView));nameTextView.add((TextView) view.findViewById(R.id.secondNameTextView));
             placeTextView.add((TextView) view.findViewById(R.id.firstPlaceTextView));placeTextView.add((TextView) view.findViewById(R.id.secondPlaceTextView));
             positionTextView.add((TextView) view.findViewById(R.id.firstPositionTextView));positionTextView.add((TextView) view.findViewById(R.id.secondPositionTextView));
+            setFonttype();
+        }
+        private void setFonttype(){
+            setTypeface("demibold",nameTextView.get(0),nameTextView.get(1));
+            setTypeface("light",positionTextView.get(0),positionTextView.get(1),placeTextView.get(0),placeTextView.get(1));
+        }
+        private void setTypeface(String s, TextView... textViews){
+            for(int i=0;i<textViews.length;i++){
+                textViews[i].setTypeface(((MainActivity)context).getTypeFace(s));
+            }
         }
         private void setClickListener(int b,boolean a){
                     if(!a){

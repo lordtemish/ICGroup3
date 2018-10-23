@@ -1,5 +1,6 @@
 package com.studio.dynamica.icgroup.Adapters;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Forms.ServiceListForm;
 import com.studio.dynamica.icgroup.R;
 
@@ -23,9 +25,12 @@ public class ServiceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         ImageView imageView;
         RecyclerView recyclerView;
         ConstraintLayout constraintLayout;
+        Context context;
         public myHolder(View view){
             super(view);
+            context=view.getContext();
             textView=(TextView) view.findViewById(R.id.text);
+            textView.setTypeface(((MainActivity)context).getTypeFace("bold"));
             imageView=(ImageView) view.findViewById(R.id.arrowImageView);
             recyclerView=(RecyclerView) view.findViewById(R.id.recyclerView);
             RecyclerView.LayoutManager manager=new LinearLayoutManager(view.getContext());

@@ -17,7 +17,10 @@
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
         android:background="@drawable/greenbutton_rec"
-        android:padding="10dp"
+        android:paddingTop="10dp"
+        android:paddingStart="10dp"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"
         >
             <ImageView
                 android:id="@+id/firstGalochkaImageView"
@@ -76,7 +79,10 @@
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/grey_corners_line"
-        android:padding="10dp"
+        android:paddingTop="10dp"
+        android:paddingStart="10dp"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"
         >
         <ImageView
             android:id="@+id/secondGalochkaImageView"

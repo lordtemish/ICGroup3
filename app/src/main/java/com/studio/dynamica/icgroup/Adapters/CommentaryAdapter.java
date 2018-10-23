@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.studio.dynamica.icgroup.Forms.CommentaryForm;
 import com.studio.dynamica.icgroup.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommentaryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -25,13 +26,16 @@ public class CommentaryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private void setInfo(CommentaryForm form){
             nameTextView.setText(form.getName());
             dateTextView.setText(form.getDate());
-            textTextView.setText(form.getText());
+            textTextView.setText("Комментарий:\n\n"+form.getText());
         }
     }
     List<CommentaryForm> list;
     Context context;
     public CommentaryAdapter(List<CommentaryForm> forms){
         list=forms;
+    }
+    public CommentaryAdapter(CommentaryForm forms){
+        list=new ArrayList<>();list.add(forms);
     }
     @NonNull
     @Override

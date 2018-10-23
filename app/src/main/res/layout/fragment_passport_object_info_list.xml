@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/light_grey"
     tools:context=".ObjectFragments.PassportObjectInfoListFragment">
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -70,7 +73,7 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         android:layout_marginStart="20sp"
                         android:layout_marginLeft="20sp"
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:textColor="@color/darkgrey"
                         android:text="Наименование объекта"
                         android:layout_weight="1"
@@ -86,7 +89,7 @@
                         app:layout_constraintBottom_toTopOf="@+id/infoListObjectAreaTextView"
                         android:layout_marginStart="20sp"
                         android:layout_marginLeft="20sp"
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:textColor="@color/darkgrey"
                         android:text="Регион"
                         android:layout_weight="1"
@@ -101,7 +104,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginStart="20sp"
                         android:layout_marginLeft="20sp"
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:textColor="@color/darkgrey"
                         android:text="Адрес объекта"
                         android:layout_weight="1"
@@ -118,7 +121,7 @@
                         android:id="@+id/infoListObjectName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:textColor="@color/black"
                         android:text="Адрес объекта"
                         android:layout_weight="1"
@@ -128,7 +131,7 @@
                         android:id="@+id/infoListRegion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:textColor="@color/black"
                         android:text="Адрес объекта"
                         android:layout_weight="1"
@@ -140,7 +143,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
 
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:textColor="@color/black"
                         android:text="Адрес объекта"
                         android:layout_weight="1"
@@ -170,7 +173,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:layout_marginStart="20sp"
                     android:layout_marginLeft="20sp"
-                    android:textSize="12sp"
+                    android:textSize="11sp"
                     android:textColor="@color/darkgrey"
                     android:text="Начало работы"
                     android:layout_weight="1"
@@ -186,7 +189,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/infoListObjectAreaTextView"
                     android:layout_marginStart="20sp"
                     android:layout_marginLeft="20sp"
-                    android:textSize="12sp"
+                    android:textSize="11sp"
                     android:textColor="@color/darkgrey"
                     android:text="Конец работы"
                     android:layout_weight="1"
@@ -201,7 +204,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginStart="20sp"
                     android:layout_marginLeft="20sp"
-                    android:textSize="12sp"
+                    android:textSize="11sp"
                     android:textColor="@color/darkgrey"
                     android:text="Площадь объекта"
                     android:layout_weight="1"
@@ -218,7 +221,7 @@
                     android:id="@+id/infoListWorkStart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
+                    android:textSize="11sp"
                     android:textColor="@color/black"
                     android:text="Адрес объекта"
                     android:layout_weight="1"
@@ -228,7 +231,7 @@
                     android:id="@+id/infoListWorkStop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
+                    android:textSize="11sp"
                     android:textColor="@color/black"
                     android:text="Адрес объекта"
                     android:layout_weight="1"
@@ -240,7 +243,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:textSize="12sp"
+                    android:textSize="11sp"
                     android:textColor="@color/black"
                     android:text="Адрес объекта"
                     android:layout_weight="1"
@@ -270,7 +273,7 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         android:layout_marginStart="20sp"
                         android:layout_marginLeft="20sp"
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:textColor="@color/darkgrey"
                         android:text="Начальник производства"
                         android:layout_weight="1"
@@ -286,7 +289,7 @@
                         app:layout_constraintBottom_toTopOf="@+id/infoListObjectAreaTextView"
                         android:layout_marginStart="20sp"
                         android:layout_marginLeft="20sp"
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:textColor="@color/darkgrey"
                         android:text="Куратор"
                         android:layout_weight="1"
@@ -301,7 +304,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginStart="20sp"
                         android:layout_marginLeft="20sp"
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:textColor="@color/darkgrey"
                         android:text="Администратор"
                         android:layout_weight="1"
@@ -318,7 +321,7 @@
                         android:id="@+id/infoListHead"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:textColor="@color/black"
                         android:text="Адрес объекта"
                         android:layout_weight="1"
@@ -328,7 +331,7 @@
                         android:id="@+id/infoListAdvisor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:textColor="@color/black"
                         android:text="Адрес объекта"
                         android:layout_weight="1"
@@ -340,7 +343,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
 
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:textColor="@color/black"
                         android:text="Адрес объекта"
                         android:layout_weight="1"
@@ -370,7 +373,7 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         android:layout_marginStart="20sp"
                         android:layout_marginLeft="20sp"
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:textColor="@color/darkgrey"
                         android:text="Клиент"
                         android:layout_weight="1"
@@ -386,7 +389,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginStart="20sp"
                         android:layout_marginLeft="20sp"
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:textColor="@color/darkgrey"
                         android:text="Ответсвенное лицо"
                         android:layout_weight="1"
@@ -403,7 +406,7 @@
                         android:id="@+id/infoListClient"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:textColor="@color/black"
                         android:text="Адрес объекта"
                         android:layout_weight="1"
@@ -415,7 +418,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
 
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:textColor="@color/black"
                         android:text="Адрес объекта"
                         android:layout_weight="1"
@@ -436,8 +439,8 @@
             android:layout_marginBottom="20sp"
             android:layout_width="match_parent"
             android:layout_height="30sp"
-            android:paddingEnd="40sp"
-            android:paddingRight="40sp"
+            android:paddingEnd="20sp"
+            android:paddingRight="20sp"
             android:orientation="horizontal">
             <TextView
                 android:tag="0"
@@ -463,6 +466,17 @@
                 />
             <TextView
                 android:tag="2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/greyy"
+                android:textSize="13sp"
+                android:text="3-яя смена"
+                android:id="@+id/thirdSmena"
+                />
+            <TextView
+                android:tag="3"
                 android:id="@+id/interns"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -479,6 +493,52 @@
             android:layout_height="wrap_content">
 
         </android.support.v7.widget.RecyclerView>
-
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/addNewEmployeeLayout"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:background="@drawable/greenbutton">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:text="Добавить сотрудника"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                   android:src="@drawable/ic_plus_lightgreen"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+        </android.support.constraint.ConstraintLayout>
     </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.NestedScrollView>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="@color/icgGreenTra"
+        android:onClick="onClick"
+        android:id="@+id/progressLayout"
+        >
+            <ProgressBar
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:id="@+id/progressBar"
+                />
+    </android.support.constraint.ConstraintLayout>
+</FrameLayout>

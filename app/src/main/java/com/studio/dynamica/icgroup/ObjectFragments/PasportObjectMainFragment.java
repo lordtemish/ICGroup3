@@ -6,20 +6,35 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.studio.dynamica.icgroup.Activities.MainActivity;
+import com.studio.dynamica.icgroup.Adapters.EquipmentReqAdapter;
 import com.studio.dynamica.icgroup.R;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class PasportObjectMainFragment extends Fragment {
     TextView Tittle;
-
+    RecyclerView recyclerView;
+    EquipmentReqAdapter reqAdapter;
+    View.OnClickListener listener;
     ConstraintLayout infoListLayout;
     ConstraintLayout scheduleWorkLayout;
     ConstraintLayout serviceLayout;
@@ -36,6 +51,8 @@ public class PasportObjectMainFragment extends Fragment {
     PassportObjectWorkScheduleFragment workScheduleFragment;
     PassportObjectServiceListFragment serviceListFragment;
 
+    String id;
+
     public PasportObjectMainFragment() {
         // Required empty public constructor
     }
@@ -46,77 +63,60 @@ public class PasportObjectMainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_pasport_object_main, container, false);
-        Tittle=(TextView) view.findViewById(R.id.mainObjectTitle);
+        createViews(view);
 
-        infoListLayout=(ConstraintLayout) view.findViewById(R.id.infoListLayout);
-        infoListFrame=(FrameLayout) view.findViewById(R.id.infoListGreenFrameLayout);
-        infoListTextView=(TextView) view.findViewById(R.id.infoListTextView);
-        infoListTextView.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/AvenirNextLTPro-MediumCn.ttf"));
-        infoListLayout.setOnClickListener(new View.OnClickListener() {
+        ((MainActivity) getActivity()).setRecyclerViewOrientation(recyclerView, LinearLayoutManager.HORIZONTAL);
+        List<String> strings=new ArrayList<>();
+        reqAdapter=new EquipmentReqAdapter(strings);strings.add("Информационный лист");strings.add("График работы");strings.add("Перечень услуг");
+        listener=new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                setPage(0);
+            public void onClick(View view) {
+                setPage(reqAdapter.getClicked());
             }
-        });
-        scheduleWorkLayout=(ConstraintLayout) view.findViewById(R.id.scheduleWorkLayout);
-        scheduleWorkFrame=(FrameLayout) view.findViewById(R.id.scheduleWorkGreenFrameLayout);
-        scheduleWorkTextView=(TextView) view.findViewById(R.id.scheduleWorkTextView);
-        scheduleWorkTextView.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/AvenirNextLTPro-MediumCn.ttf"));
-        scheduleWorkLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setPage(1);
-            }
-        });
-        serviceLayout=(ConstraintLayout) view.findViewById(R.id.servicesLayout);
-        serviceFrame=(FrameLayout) view.findViewById(R.id.servicesFrameLayout);
-        servicesTextView=(TextView) view.findViewById(R.id.servicesTextView);
-        servicesTextView.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/AvenirNextLTPro-MediumCn.ttf"));
-        serviceLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setPage(2);
-            }
-        });
+        };
+        reqAdapter.setOnClickListener(listener);
+        recyclerView.setAdapter(reqAdapter);
 
         infoListFragment=new PassportObjectInfoListFragment();
         workScheduleFragment=new PassportObjectWorkScheduleFragment();
         serviceListFragment=new PassportObjectServiceListFragment();
 
+        Tittle.setTypeface(((MainActivity)getActivity()).getTypeFace("it"));
+
         setPage(0);
         return view;
     }
+    private void createViews(View view){
+        recyclerView=(RecyclerView) view.findViewById(R.id.recyclerView);
+        Tittle=(TextView) view.findViewById(R.id.mainObjectTitle);
+        id=getArguments().getString("id");
+    }
+    private void setInfo(JSONObject object){
+
+    }
+
+
+
 
     public void clear(){
-        infoListFrame.setVisibility(View.GONE);
-        infoListTextView.setTextColor(getActivity().getResources().getColor(R.color.greyy));
-        scheduleWorkFrame.setVisibility(View.GONE);
-        scheduleWorkTextView.setTextColor(getActivity().getResources().getColor(R.color.greyy));
-        serviceFrame.setVisibility(View.GONE);
-        servicesTextView.setTextColor(getActivity().getResources().getColor(R.color.greyy));
     }
     public void setPage(int a){
-        clear();
         switch (a){
             case 0:
-                infoListFrame.setVisibility(View.VISIBLE);
-                infoListTextView.setTextColor(getActivity().getResources().getColor(R.color.black));
                 SetFragment(infoListFragment);
                 break;
             case 1:
-                scheduleWorkFrame.setVisibility(View.VISIBLE);
-                scheduleWorkTextView.setTextColor(getActivity().getResources().getColor(R.color.black));
                 SetFragment(workScheduleFragment);
                 break;
             case 2 :
-                serviceFrame.setVisibility(View.VISIBLE);
-                servicesTextView.setTextColor(getActivity().getResources().getColor(R.color.black));
                 SetFragment(serviceListFragment);
                 break;
         }
     }
 
     public void SetFragment(Fragment fragment){
+        Bundle bundle=new Bundle();bundle.putString("id",id);
+        fragment.setArguments(bundle);
         FragmentTransaction t = getActivity().getSupportFragmentManager().beginTransaction();
         t.replace(R.id.PassportObjectFrameLayout, fragment);
         t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);

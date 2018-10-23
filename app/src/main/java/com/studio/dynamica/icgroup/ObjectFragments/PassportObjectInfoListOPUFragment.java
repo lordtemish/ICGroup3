@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Adapters.CommentAdapter;
 import com.studio.dynamica.icgroup.Forms.CommentForm;
 import com.studio.dynamica.icgroup.R;
@@ -32,7 +33,7 @@ public class PassportObjectInfoListOPUFragment extends Fragment {
     List<CommentForm> commentForms, newCommentsList, allCommentsList;
     CommentAdapter commentAdapter;
     LinearLayout newComments,allComments;
-    TextView newCommentTextView,allCommentTextView;
+    TextView newCommentTextView,allCommentTextView, mainObjectTitle, nameTextView, positionTextView, attendanceTextView,dateTextView, PercentageTextView, jalobaTextView, employeeChangeTextView, emplChangeButton, emplDropTextView;
     FrameLayout newCommentFrame, allCommentFrame;
 
     public PassportObjectInfoListOPUFragment() {
@@ -45,8 +46,8 @@ public class PassportObjectInfoListOPUFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_passport_object_info_list_opu, container, false);
-
-        commentsRecycler=(RecyclerView) view.findViewById(R.id.commentsRecyclerView);
+        createViews(view);
+        setTypeFace(view.getContext());
         RecyclerView.LayoutManager mLayoutManager=new LinearLayoutManager(getActivity());
         commentsRecycler.setLayoutManager(mLayoutManager);
         commentsRecycler.setItemAnimator(new DefaultItemAnimator());
@@ -55,15 +56,14 @@ public class PassportObjectInfoListOPUFragment extends Fragment {
         newCommentsList=new ArrayList<>();
         newCommentsList.add(new CommentForm("Kopbay Dauren","02.08.2018"));
         newCommentsList.add(new CommentForm("Kopbay Dauren","02.08.2018"));
-        newComments=(LinearLayout) view.findViewById(R.id.newCommentLinearLayout);
-        newCommentFrame=(FrameLayout) view.findViewById(R.id.newCommentFrameLayout);
+
         newComments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setComment(false);
             }
         });
-        newCommentTextView=(TextView) view.findViewById(R.id.newCommentTextView);
+
 
         allCommentsList=new ArrayList<>();
         allCommentsList.add(new CommentForm("Temirlan Almassov","23.09.2015"));
@@ -71,15 +71,13 @@ public class PassportObjectInfoListOPUFragment extends Fragment {
         allCommentsList.add(new CommentForm("Temirlan Almassov","23.09.2015"));
 
         commentForms.addAll(newCommentsList);
-        allComments=(LinearLayout) view.findViewById(R.id.allCommentsLinearLayout);
-        allCommentFrame=(FrameLayout) view.findViewById(R.id.allCommentsFrameLayout);
+
         allComments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setComment(true);
             }
         });
-        allCommentTextView=(TextView) view.findViewById(R.id.allCommentsTextView);
 
 
 
@@ -87,7 +85,23 @@ public class PassportObjectInfoListOPUFragment extends Fragment {
         commentsRecycler.setAdapter(commentAdapter);
         String[] spinnerList={"Выберите Сотрудника","asdasd","asdasd"};
         spinner=(Spinner) view.findViewById(R.id.employeeChangeSpinner);
-        ArrayAdapter<String> spinnerAdapter=new ArrayAdapter<String>(getActivity(),R.layout.simple_spinner_item,spinnerList);
+
+        ArrayAdapter<String> spinnerAdapter=new ArrayAdapter<String>(getActivity(),R.layout.simple_spinner_item,spinnerList){
+            public View getView(int position, View convertView,ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setTypeface(((MainActivity) getContext()).getTypeFace("demibold"));
+
+                return v;
+        }
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+
+                View v = super.getView(position,convertView,parent);
+            ((TextView) v).setTypeface(((MainActivity) getContext()).getTypeFace("demibold"));
+
+            return v;
+
+            }
+        };
         FrameLayout spinnerFrame=(FrameLayout) view.findViewById(R.id.spinnerFrameImage);
         spinnerFrame.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +112,40 @@ public class PassportObjectInfoListOPUFragment extends Fragment {
         spinner.setAdapter(spinnerAdapter);
         return view;
     }
+    private void setTypeFace(Context context){
+        mainObjectTitle.setTypeface(((MainActivity) context).getTypeFace("it"));
+        nameTextView.setTypeface(((MainActivity) context).getTypeFace("bold"));
+        positionTextView.setTypeface(((MainActivity) context).getTypeFace("light"));
+        attendanceTextView.setTypeface(((MainActivity) context).getTypeFace("regular"));
+        jalobaTextView.setTypeface(((MainActivity) context).getTypeFace("regular"));
+        employeeChangeTextView.setTypeface(((MainActivity) context).getTypeFace("regular"));
+        dateTextView.setTypeface(((MainActivity) context).getTypeFace("demibold"));
+        PercentageTextView.setTypeface(((MainActivity) context).getTypeFace("demibold"));
+        allCommentTextView.setTypeface(((MainActivity) context).getTypeFace("demibold"));
+        newCommentTextView.setTypeface(((MainActivity) context).getTypeFace("demibold"));
+        emplChangeButton.setTypeface(((MainActivity) context).getTypeFace("demibold"));
+        emplDropTextView.setTypeface(((MainActivity) context).getTypeFace("demibold"));
+    }
+    private void createViews(View view){
+        employeeChangeTextView=(TextView) view.findViewById(R.id.employeeChangeTextView);
+        allCommentTextView=(TextView) view.findViewById(R.id.allCommentsTextView);
+        newCommentTextView=(TextView) view.findViewById(R.id.newCommentTextView);
+        commentsRecycler=(RecyclerView) view.findViewById(R.id.commentsRecyclerView);
+        newComments=(LinearLayout) view.findViewById(R.id.newCommentLinearLayout);
+        newCommentFrame=(FrameLayout) view.findViewById(R.id.newCommentFrameLayout);
+        allComments=(LinearLayout) view.findViewById(R.id.allCommentsLinearLayout);
+        allCommentFrame=(FrameLayout) view.findViewById(R.id.allCommentsFrameLayout);
+        mainObjectTitle=(TextView) view.findViewById(R.id.mainObjectTitle);
+        nameTextView=(TextView) view.findViewById(R.id.nameTextView);
+        positionTextView=(TextView) view.findViewById(R.id.positionTextView);
+        attendanceTextView=(TextView) view.findViewById(R.id.attendaceTextView);
+        dateTextView=(TextView) view.findViewById(R.id.dateTextView);
+        PercentageTextView=(TextView) view.findViewById(R.id.PercentageTextView);
+        jalobaTextView=(TextView) view.findViewById(R.id.jalobaTextView);
+        emplChangeButton=(TextView) view.findViewById(R.id.employeeChangeButton);
+        emplDropTextView=(TextView) view.findViewById(R.id.employeeDropTextView);
+    }
+
     public void setComment(boolean all){
         clearComments();
         if(all){

@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_grey"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ObjectFragments.AttendanceMainFragment"
-    android:orientation="vertical">
+    tools:context=".ObjectFragments.AttendanceMainFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="50sp"
@@ -53,46 +57,609 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
-    <android.support.constraint.ConstraintLayout
+
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="60sp"
-        android:background="@color/white">
-        <ImageView
-            android:id="@+id/ImageLeftView"
-            android:layout_width="35sp"
-            android:layout_height="35sp"
-            android:padding="9sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@drawable/green_circle"
-            android:src="@drawable/ic_arrowwhiteleft"
-            android:layout_marginLeft="10sp"
-            android:layout_marginStart="10sp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            android:text="Смена 1"
-            app:layout_constraintStart_toEndOf="@+id/ImageLeftView"
-            app:layout_constraintEnd_toStartOf="@+id/ImageRightView"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
-        <ImageView
-            android:id="@+id/ImageRightView"
-            android:layout_width="35sp"
-            android:layout_height="35sp"
-            android:padding="9sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:background="@drawable/green_circle"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginEnd="10sp"
-            android:layout_marginRight="10sp"
-            android:src="@drawable/ic_arrowwhiteright"
-            />
-    </android.support.constraint.ConstraintLayout>
-</LinearLayout>
+            android:orientation="vertical">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="60sp"
+                android:background="@color/white">
+
+                <ImageView
+                    android:id="@+id/ImageLeftView"
+                    android:layout_width="35sp"
+                    android:layout_height="35sp"
+                    android:layout_marginLeft="10sp"
+                    android:layout_marginStart="10sp"
+                    android:background="@drawable/green_circle"
+                    android:padding="9sp"
+                    android:src="@drawable/ic_arrowwhiteleft"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Смена 1"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/ImageRightView"
+                    app:layout_constraintStart_toEndOf="@+id/ImageLeftView"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ImageRightView"
+                    android:layout_width="35sp"
+                    android:layout_height="35sp"
+                    android:layout_marginEnd="10sp"
+                    android:layout_marginRight="10sp"
+                    android:background="@drawable/green_circle"
+                    android:padding="9sp"
+                    android:src="@drawable/ic_arrowwhiteright"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingTop="10dp">
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/dateLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="@color/white"
+                    android:paddingEnd="20dp"
+                    android:paddingStart="20dp">
+
+                    <ImageView
+                        android:padding="5dp"
+                        android:id="@+id/dateArrowImageView"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_arrowdown_green"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.shawnlin.numberpicker.NumberPicker
+                        android:id="@+id/datePicker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/dateArrowImageView"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:np_dividerColor="@android:color/transparent"
+                        app:np_selectedTextColor="@color/black"
+                        app:np_selectedTextSize="21sp"
+                        app:np_textColor="@color/greyy"
+                        app:np_textSize="17sp"></com.shawnlin.numberpicker.NumberPicker>
+
+                    <TextView
+                        android:id="@+id/monthTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
+                        android:text="Январь"
+                        android:textColor="@color/black"
+                        android:textSize="19sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/dateArrowImageView"
+                        app:layout_constraintTop_toTopOf="parent"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/yearTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="30dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="30dp"
+                        android:layout_marginStart="15dp"
+                        android:text="2019"
+                        android:textColor="@color/black"
+                        android:textSize="19sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.shawnlin.numberpicker.NumberPicker
+                        android:id="@+id/yearPicker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/yearArrowImageView"
+                        app:np_dividerColor="@android:color/transparent"
+                        app:np_selectedTextColor="@color/black"
+                        app:np_selectedTextSize="21sp"
+                        app:np_textColor="@color/greyy"
+                        app:np_textSize="17sp"></com.shawnlin.numberpicker.NumberPicker>
+
+                    <ImageView
+                        android:id="@+id/yearArrowImageView"
+                        android:padding="5dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="90dp"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/ic_arrowdown_green"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </android.support.constraint.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2">
+
+                        <ProgressBar
+                            android:id="@+id/ProgressBar"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="15sp"
+                            android:layout_gravity="center"
+                            android:paddingBottom="5sp"
+                            android:paddingTop="5sp"
+
+                            android:progress="60"
+                            android:progressDrawable="@drawable/horizontal_progress_percentage"
+                            android:secondaryProgress="100" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="8">
+
+                        <TextView
+                            android:id="@+id/PercentageTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="55%"
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
+                    </FrameLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:paddingTop="10dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Отделение:"
+                                android:textColor="@color/darkgrey"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginStart="20dp"
+                                android:text="ОПУ"
+                                android:textColor="@color/black"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="График работы:"
+                                android:textColor="@color/darkgrey"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginStart="20dp"
+                                android:text="2/2"
+                                android:textColor="@color/black"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Всего сотрудников:"
+                                android:textColor="@color/darkgrey"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginStart="20dp"
+                                android:text="56"
+                                android:textColor="@color/black"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Всего рабочих дней:"
+                                android:textColor="@color/darkgrey"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginStart="20dp"
+                                android:text="30"
+                                android:textColor="@color/black"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Пропусков:"
+                                android:textColor="@color/darkgrey"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginStart="20dp"
+                                android:text="43"
+                                android:textColor="@color/black"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Посещений:"
+                                android:textColor="@color/darkgrey"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginStart="20dp"
+                                android:text="222"
+                                android:textColor="@color/black"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="11dp"
+                            android:layout_height="11dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/inprocess_green_circle" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginStart="10dp"
+                            android:text="Присутствовал"
+                            android:textColor="@color/black"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="11dp"
+                            android:layout_height="11dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/related_darkgreen_circle" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginStart="10dp"
+                            android:text="Отсутствовал"
+                            android:textColor="@color/black"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="11dp"
+                            android:layout_height="11dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/inwait_yellow_circle" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginStart="10dp"
+                            android:text="Отсутствие по болезни"
+                            android:textColor="@color/black"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:paddingEnd="20dp"
+                    android:paddingStart="20dp">
+
+
+                    <LinearLayout
+                        android:layout_weight="6"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center">
+                        <ImageView
+                            android:id="@+id/leftCalArrow"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/green_circle"
+                            android:src="@drawable/ic_arrowwhiteleft"
+                            android:padding="7dp"
+                            android:layout_gravity="center"
+                            />
+                        <ImageView
+                            android:id="@+id/rightCalArrow"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/green_circle"
+                            android:src="@drawable/ic_arrowwhiteright"
+                            android:padding="7dp"
+                            android:layout_gravity="center"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/f1CalTextView"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="1"
+                                android:textColor="@color/black"
+                                android:textSize="13sp" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/f2CalTextView"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="2"
+                                android:textColor="@color/black"
+                                android:textSize="13sp" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/f3CalTextView"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="3"
+                                android:textColor="@color/black"
+                                android:textSize="13sp" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <FrameLayout
+                                android:id="@+id/todayFrame"
+                                android:layout_width="30dp"
+                                android:layout_height="25dp"
+                                android:layout_gravity="center_horizontal|bottom"
+                                android:visibility="gone"
+                                android:background="@color/lightGreen" />
+
+                            <TextView
+                                android:id="@+id/f4CalTextView"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+
+                                android:gravity="center"
+                                android:text="4"
+                                android:textColor="@color/white"
+                                android:textSize="13sp" />
+
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/f5CalTextView"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="5"
+                                android:textColor="@color/black"
+                                android:textSize="13sp" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                        </FrameLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/mainRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"></android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/chooseLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/icgGreenTra">
+        <com.studio.dynamica.icgroup.ExtraFragments.AttendanceChooseView
+            android:id="@+id/attendanceChooseView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </FrameLayout>
+</FrameLayout>

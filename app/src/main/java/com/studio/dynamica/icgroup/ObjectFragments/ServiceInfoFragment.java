@@ -2,19 +2,47 @@ package com.studio.dynamica.icgroup.ObjectFragments;
 
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.TextView;
 
+import com.studio.dynamica.icgroup.Activities.MainActivity;
+import com.studio.dynamica.icgroup.Adapters.AcceptAdapter;
+import com.studio.dynamica.icgroup.Adapters.MessageAdapter;
+import com.studio.dynamica.icgroup.Forms.AcceptForm;
+import com.studio.dynamica.icgroup.Forms.MessageForm;
 import com.studio.dynamica.icgroup.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ServiceInfoFragment extends Fragment {
 
-
+    TextView mainObjectTitle, orderNumTextView, orderNumIdTextView, dayLeftLabelTextView, dayLeftTextView, priorityLabelTextView, priorityTextView, dateLabelTextView, dateTextView,
+            stopDateLabelTextView, stopDateTextView, statusLabelTextView, statusTextView, objectNameLabelTextView, objectNameTextView, serviceTypeLabelTextView, serviceTypeTextView,placeLabelTextView, placeTextView, employeeLabelTextView, employeeNameTextView, employeePositionTextView, autorLabelTextView, autorNameTextView,
+            autorPositionTextView, serviceInfoLabelTextView, serviceInfoTextView,messagesLabelTextView,mediaLabelTextView,acceptLabelTextView,serviceStatusTextView,
+            positionLabelTextView,nameTextView,positionTextView,commentsLabelTextView,positionLabelTextView1,nameTextView1, positionTextView1, notAcceptedButton,acceptedButton,needMarkPlease,mediaFileOpenTextView, commentMediaTextView, SAMessagesLabelTextView, serviceAcceptedLabelTextView
+            ,timeLeftTextView,failedTextView, failedExtraTextView, serviceStatusesdateTextView;
+    ImageView serviceStatusImageView, userPhotoImageView1, clockImageView;
+    RadioButton acceptedRadio;
+    boolean accepted=false;
+    RecyclerView messagesRecyclerView, acceptRecyclerView,commentsRecyclerView;
+    LinearLayout wholeLayout,serviceStatusesLayout, extraLayout, failedLayout, serviceAcceptedLayout,commentsLinearLayout,lastCommentLayout,serviceStatusMediaFileLayout;
+    ConstraintLayout serviceStatusLayout,serviceStatusUserInfoLayout;
+    ProgressBar progressBar;
     public ServiceInfoFragment() {
         // Required empty public constructor
     }
@@ -24,7 +52,252 @@ public class ServiceInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_service_info, container, false);
+        View view=inflater.inflate(R.layout.fragment_service_info, container, false);
+        createViews(view);
+        setFonttypes();
+        setAdapters();
+       // setFailed();
+        setFailedTime();
+      //  setFailedRetake();
+        autorClosed();
+        //inProcess();
+        serviceFinished();
+        itFinished();
+
+        String stat=getArguments().getString("status","");
+        Log.d("status",stat);
+        switch (stat){
+            case "accepted":
+                setAccepted();
+                break;
+            case "failed":
+                setFailedS();
+                break;
+            case "relate":
+                setReLated();
+                break;
+            case "process":
+                setInProcess();
+                break;
+            case "inwait":
+                setInWait();
+                break;
+            case "close":
+                setClosed();
+                break;
+        }
+        return view;
+    }
+    private void setFonttypes(){
+        mainObjectTitle.setTypeface(((MainActivity)getActivity()).getTypeFace("it"));
+
+        setType("demibold",orderNumIdTextView,dayLeftTextView,priorityTextView,dateTextView,stopDateTextView, statusTextView,objectNameTextView, serviceTypeTextView, placeTextView, employeeNameTextView, autorNameTextView, serviceInfoTextView,mediaLabelTextView,acceptLabelTextView,serviceStatusTextView,nameTextView,positionTextView,commentsLabelTextView, positionTextView1, nameTextView1, notAcceptedButton,commentMediaTextView, SAMessagesLabelTextView, serviceAcceptedLabelTextView,acceptedRadio,timeLeftTextView, failedTextView);
+        setType("light", statusLabelTextView,orderNumTextView,dayLeftLabelTextView, priorityLabelTextView, dateLabelTextView, stopDateLabelTextView, objectNameLabelTextView, serviceTypeLabelTextView , placeLabelTextView, employeeLabelTextView, autorLabelTextView, serviceInfoLabelTextView, employeePositionTextView, autorPositionTextView, messagesLabelTextView,positionLabelTextView,positionLabelTextView1,acceptedButton,needMarkPlease, mediaFileOpenTextView, failedExtraTextView);
+        //setType("regular");
+    }
+    private void setType(String type, TextView... a){
+            for(int i=0;i<a.length;i++){
+                a[i].setTypeface(((MainActivity)getActivity()).getTypeFace(type));
+            }
+
+    }
+    private void setAdapters(){
+        ((MainActivity) getActivity()).setRecyclerViewOrientation(messagesRecyclerView, LinearLayoutManager.VERTICAL);
+        ((MainActivity) getActivity()).setRecyclerViewOrientation(acceptRecyclerView, LinearLayoutManager.HORIZONTAL);
+        ((MainActivity) getActivity()).setRecyclerViewOrientation(commentsRecyclerView, LinearLayoutManager.VERTICAL);
+
+        MessageForm messageForm=new MessageForm(getActivity().getResources().getString(R.string.bigtext));
+        MessageAdapter messageAdapter=new MessageAdapter(messageForm);
+        messagesRecyclerView.setAdapter(messageAdapter);
+
+        List<AcceptForm> acceptForms=new ArrayList<>();
+        acceptForms.add(new AcceptForm("Темирлан Алмасов","Отдел производства","ОПУ","Подтвердил",true));
+        acceptForms.add(new AcceptForm("Темирлан Алмасов","Отдел производства","ОПУ","Подтвердил",true));
+        acceptForms.add(new AcceptForm("Темирлан Алмасов","Отдел производства","ОПУ","Отказал",false));
+        AcceptAdapter acceptAdapter=new AcceptAdapter(acceptForms);
+        acceptRecyclerView.setAdapter(acceptAdapter);
+
+        MessageForm messageForm1=new MessageForm(getActivity().getResources().getString(R.string.bigtext));
+        MessageAdapter messageAdapter1=new MessageAdapter(messageForm1);
+        commentsRecyclerView.setAdapter(messageAdapter1);
+    }
+    private void setFailed(){
+        setWhite(orderNumTextView,orderNumIdTextView, dayLeftLabelTextView, dayLeftTextView, priorityTextView, priorityLabelTextView, dateTextView,dateLabelTextView,stopDateTextView,stopDateLabelTextView,statusLabelTextView,statusTextView);
+        wholeLayout.setBackgroundResource(R.drawable.failed_green_page);
+        statusTextView.setBackgroundResource(R.drawable.failed_verydarkgreen);
+    }
+    private void setWhite(TextView... textView){
+        for(int i=0;i<textView.length;i++)
+        textView[i].setTextColor(getActivity().getResources().getColor(R.color.white));
+    }
+    private void createViews(View view){
+        mainObjectTitle=(TextView) view.findViewById(R.id.mainObjectTitle);
+        orderNumTextView=(TextView) view.findViewById(R.id.orderNumTextView);
+        orderNumIdTextView=(TextView) view.findViewById(R.id.orderNumIdTextView);
+        dayLeftLabelTextView=(TextView) view.findViewById(R.id.dayLeftLabelTextView);
+        dayLeftTextView=(TextView) view.findViewById(R.id.dayLeftTextView);
+        priorityTextView=(TextView) view.findViewById(R.id.priorityTextView);
+        priorityLabelTextView=(TextView) view.findViewById(R.id.priorityLabelTextView);
+        dateTextView=(TextView) view.findViewById(R.id.dateTextView);
+        dateLabelTextView=(TextView) view.findViewById(R.id.dateLabelTextView);
+        stopDateTextView=(TextView) view.findViewById(R.id.stopDateTextView);
+        stopDateLabelTextView=(TextView) view.findViewById(R.id.stopDateLabelTextView);
+        statusLabelTextView=(TextView) view.findViewById(R.id.statusLabelTextView);
+        statusTextView=(TextView) view.findViewById(R.id.statusTextView);
+        objectNameTextView=(TextView) view.findViewById(R.id.objectNameTextView);
+        objectNameLabelTextView=(TextView) view.findViewById(R.id.objectNameLabelTextView);
+        serviceTypeTextView=(TextView) view.findViewById(R.id.serviceTypeTextView);
+        serviceTypeLabelTextView=(TextView) view.findViewById(R.id.serviceTypeLabelTextView);
+        placeTextView=(TextView) view.findViewById(R.id.placeTextView);
+        placeLabelTextView=(TextView) view.findViewById(R.id.placeLabelTextView);
+        employeeNameTextView=(TextView) view.findViewById(R.id.employeeNameTextView);
+        employeeLabelTextView=(TextView) view.findViewById(R.id.employeeLabelTextView);
+        employeePositionTextView=(TextView) view.findViewById(R.id.employeePositionTextView);
+        autorNameTextView=(TextView) view.findViewById(R.id.autorNameTextView);
+       autorLabelTextView=(TextView) view.findViewById(R.id.autorLabelTextView);
+        autorPositionTextView=(TextView) view.findViewById(R.id.autorPositionTextView);
+        serviceInfoTextView=(TextView) view.findViewById(R.id.serviceInfoTextView);
+        serviceInfoLabelTextView=(TextView) view.findViewById(R.id.serviceInfoLabelTextView);
+        messagesLabelTextView=(TextView) view.findViewById(R.id.messagesLabelTextView);
+        mediaLabelTextView=(TextView) view.findViewById(R.id.mediaLabelTextView);
+        acceptLabelTextView=(TextView) view.findViewById(R.id.acceptLabelTextView);
+        serviceStatusTextView=(TextView) view.findViewById(R.id.serviceStatusTextView);
+        positionLabelTextView=(TextView) view.findViewById(R.id.positionLabelTextView);
+        nameTextView=(TextView) view.findViewById(R.id.nameTextView);
+        positionTextView=(TextView) view.findViewById(R.id.positionTextView);
+        commentsLabelTextView=(TextView) view.findViewById(R.id.commentsLabelTextView);
+        positionTextView1=(TextView) view.findViewById(R.id.positionTextView1);
+        positionLabelTextView1=(TextView) view.findViewById(R.id.positionLabelTextView1);
+        nameTextView1=(TextView) view.findViewById(R.id.nameTextView1);
+        acceptedButton=(TextView) view.findViewById(R.id.acceptedButton);
+        notAcceptedButton=(TextView) view.findViewById(R.id.notAcceptedButton);
+        needMarkPlease=(TextView) view.findViewById(R.id.needMarkPlease);
+        mediaFileOpenTextView=(TextView) view.findViewById(R.id.mediaFileOpenTextView);
+        commentMediaTextView=(TextView) view.findViewById(R.id.commentMediaTextView);
+        SAMessagesLabelTextView=(TextView) view.findViewById(R.id.SAMessagesLabelTextView);
+        serviceAcceptedLabelTextView=(TextView) view.findViewById(R.id.serviceAcceptedLabelTextView);
+        timeLeftTextView=(TextView) view.findViewById(R.id.timeLeftTextView);
+        failedTextView=(TextView) view.findViewById(R.id.failedTextView);
+        failedExtraTextView=(TextView) view.findViewById(R.id.failedExtraTextView);
+        serviceStatusesdateTextView=(TextView) view.findViewById(R.id.serviceStatusesdateTextView);
+
+        messagesRecyclerView=(RecyclerView) view.findViewById(R.id.messagesRecyclerView);
+        acceptRecyclerView=(RecyclerView) view.findViewById(R.id.acceptRecycler);
+        commentsRecyclerView=(RecyclerView) view.findViewById(R.id.commentsRecyclerView);
+
+        wholeLayout=(LinearLayout) view.findViewById(R.id.wholeLayout);
+        serviceStatusesLayout=(LinearLayout) view.findViewById(R.id.serviceStatusesLayout);
+        commentsLinearLayout=(LinearLayout) view.findViewById(R.id.commentsLinearLayout);
+        extraLayout=(LinearLayout) view.findViewById(R.id.extraLayout);
+        failedLayout=(LinearLayout) view.findViewById(R.id.failedLayout);
+        serviceAcceptedLayout=(LinearLayout) view.findViewById(R.id.serviceAcceptedLayout);
+        lastCommentLayout=(LinearLayout) view.findViewById(R.id.lastCommentLayout);
+        serviceStatusMediaFileLayout=(LinearLayout) view.findViewById(R.id.serviceStatusMediaFileLayout);
+
+        acceptedRadio=(RadioButton) view.findViewById(R.id.acceptedRadio);
+        progressBar=(ProgressBar) view.findViewById(R.id.ProgressBar);
+
+        clockImageView=(ImageView) view.findViewById(R.id.clockImageView);
+        serviceStatusImageView=(ImageView) view.findViewById(R.id.serviceStatusImageView);
+        serviceStatusUserInfoLayout=(ConstraintLayout) view.findViewById(R.id.serviceStatusUserInfoLayout);
+    }
+    private void setFailedTime(){
+        extraLayout.setVisibility(View.VISIBLE);
+        failedLayout.setVisibility(View.VISIBLE);
+    }
+    private void setFailedRetake(){
+        extraLayout.setVisibility(View.VISIBLE);
+        failedLayout.setVisibility(View.VISIBLE);
+        clockImageView.setVisibility(View.GONE);
+        timeLeftTextView.setText("Запрос на повторное возобновление задач");
+    }
+    private void autorClosed(){
+        serviceStatusesLayout.setVisibility(View.VISIBLE);
+        commentsLinearLayout.setVisibility(View.VISIBLE);
+    }
+    private void inProcess(){
+        serviceStatusesLayout.setVisibility(View.VISIBLE);
+        commentsLinearLayout.setVisibility(View.VISIBLE);
+        serviceStatusUserInfoLayout.setVisibility(View.VISIBLE);
+        serviceStatusMediaFileLayout.setVisibility(View.VISIBLE);
+        serviceStatusImageView.setImageResource(R.drawable.ic_books);
+        serviceStatusTextView.setText("В процессе");
+    }
+    private void itFinished(){
+        serviceStatusesdateTextView.setVisibility(View.VISIBLE);
+        serviceStatusesLayout.setVisibility(View.VISIBLE);
+        commentsLinearLayout.setVisibility(View.VISIBLE);
+        serviceStatusUserInfoLayout.setVisibility(View.VISIBLE);
+        serviceStatusMediaFileLayout.setVisibility(View.VISIBLE);
+        serviceStatusImageView.setImageResource(R.drawable.ic_solvves);
+        serviceStatusTextView.setText("Задача выполнена");
+    }
+    private void serviceFinished(){
+        acceptedRadio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkedCheck();
+            }
+        });
+        serviceAcceptedLayout.setVisibility(View.VISIBLE);
+    }
+    private void checkedCheck(){
+        acceptedRadio.setChecked(!accepted);
+        accepted=!accepted;
+        if(accepted){
+            acceptedRadio.setTextColor(getActivity().getResources().getColor(R.color.black));
+        }
+        else{
+            acceptedRadio.setTextColor(getActivity().getResources().getColor(R.color.darkgrey));
+        }
     }
 
+
+    public void setInProcess(){
+        statusTextView.setBackgroundResource((R.drawable.inprocess_green_page));
+        statusTextView.setText("В процессе");
+    }
+    public void setReLated(){
+        statusTextView.setBackgroundResource((R.drawable.related_darkgreen_page));
+        progressBar.setProgressDrawable(getActivity().getResources().getDrawable(R.drawable.wronged_progress_row));
+        statusTextView.setText("На просрочке");
+    }
+    public void setFailedS(){
+        setAllColor(getActivity().getResources().getColor(R.color.white));
+        wholeLayout.setBackgroundResource((R.drawable.failed_green_page));
+        statusTextView.setBackgroundResource((R.drawable.failed_verydarkgreen));
+        progressBar.setProgressDrawable(getActivity().getResources().getDrawable(R.drawable.failedprogress_perc));
+        progressBar.setProgress(100);
+        statusTextView.setText("Провалено");
+    }
+    public void setInWait(){
+        statusTextView.setBackgroundResource((R.drawable.inwait_yellowpage));
+        progressBar.setProgress(100);
+        statusTextView.setText("Ожидает подтверждения");
+    }
+    public void setAccepted(){
+        progressBar.setProgress(0);
+        statusTextView.setBackgroundResource((R.drawable.greyrow_page));
+        statusTextView.setText("Выполнено");
+    }
+    public void setClosed(){
+        statusTextView.setBackgroundResource(R.drawable.closed_page);
+        statusTextView.setText("Закрыта");
+        progressBar.setProgress(0);
+    }
+    private void setAllColor(int color){
+        orderNumTextView.setTextColor(color);
+        orderNumIdTextView.setTextColor(color);
+        serviceTypeLabelTextView.setTextColor(color);
+        serviceTypeTextView.setTextColor(color);
+        dayLeftLabelTextView.setTextColor(color);
+        dayLeftTextView.setTextColor(color);
+        priorityLabelTextView.setTextColor(color);
+        priorityTextView.setTextColor(color);
+        dateLabelTextView.setTextColor(color);
+        dateTextView.setTextColor(color);
+        stopDateLabelTextView.setTextColor(color);
+        stopDateTextView.setTextColor(color);
+        statusLabelTextView.setTextColor(color);
+    }
 }

@@ -20,9 +20,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="5sp"
-                android:background="@drawable/grey_corners_page"
+                android:background="@drawable/grey_corners_line"
                 android:orientation="horizontal"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 >
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
@@ -35,7 +35,7 @@
                         android:layout_marginLeft="10sp"
                         android:layout_width="match_parent"
                         android:layout_height="30sp"
-                        android:textSize="10sp"
+                        android:textSize="11sp"
                         android:textColor="@color/greyy"
                         android:text="Тип задачи"
                         android:id="@+id/serviceTypeLabelTextView"
@@ -46,12 +46,13 @@
                         android:id="@+id/serviceTypeTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingEnd="5sp"
+                        android:paddingRight="5sp"
                         android:text="TextView"
-                        android:textSize="10sp"
+                        android:textSize="11sp"
                         android:gravity="start"
-                        android:layout_marginLeft="10sp"
-                        android:layout_marginStart="10sp"
-                        android:layout_marginRight="5sp"
+                        android:layout_marginLeft="5sp"
+                        android:layout_marginStart="5sp"
                         android:textColor="@color/black"
                         app:layout_constraintTop_toBottomOf="@+id/serviceTypeLabelTextView"
                         app:layout_constraintStart_toStartOf="parent"/>
@@ -66,9 +67,9 @@
                         android:layout_marginLeft="10sp"
                         android:layout_width="match_parent"
                         android:layout_height="30sp"
-                        android:textSize="10sp"
+                        android:textSize="11sp"
                         android:textColor="@color/greyy"
-                        android:text="Тип задачи"
+                        android:text="Ответственный"
                         android:id="@+id/employeeLabelTextView"
                         app:layout_constraintTop_toTopOf="parent"
                         />
@@ -78,10 +79,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="TextView"
-                        android:textSize="10sp"
+                        android:textSize="11sp"
                         android:gravity="start"
-                        android:layout_marginLeft="10sp"
-                        android:layout_marginStart="10sp"
+                        android:layout_marginLeft="5sp"
+                        android:layout_marginStart="5sp"
                         android:layout_marginRight="5sp"
                         android:layout_marginEnd="5sp"
                         android:textColor="@color/black"
@@ -91,19 +92,19 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/employeePositionTextView"
                         app:layout_constraintTop_toBottomOf="@+id/employeeTextView"
-                        android:layout_marginLeft="10sp"
-                        android:layout_marginStart="10sp"
+                        android:layout_marginLeft="5sp"
+                        android:layout_marginStart="5sp"
                         android:layout_marginRight="5sp"
                         android:layout_marginEnd="5sp"
                         android:textColor="@color/black"
-                        android:textSize="10sp"
+                        android:textSize="11sp"
                         />
                 </android.support.constraint.ConstraintLayout>
             </LinearLayout>
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:padding="5sp"
             >
 
@@ -112,6 +113,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Статус"
+                android:textSize="13sp"
                 android:textColor="@color/darkgrey"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -127,62 +129,66 @@
             <TextView
                 android:id="@+id/statusTextView"
                 android:layout_width="match_parent"
-                android:layout_height="50sp"
+                android:layout_height="45sp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="10dp"
                 android:text="Выполнено"
                 android:gravity="center"
                 android:background="@drawable/greyrow_page"
                 android:textColor="@color/white"
-                android:textSize="10sp"
+                android:textSize="13sp"
                 />
         </android.support.constraint.ConstraintLayout>
     </LinearLayout>
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_marginStart="10sp"
         android:layout_marginEnd="10sp"
         android:layout_width="match_parent"
         android:layout_height="20sp"
         android:orientation="horizontal">
             <TextView
+                app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="5sp"
                 android:layout_marginLeft="5sp"
                 android:id="@+id/dayLeftLabelTextView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:textSize="10sp"
+                android:textSize="11sp"
                 android:textColor="@color/greyy"
                 android:text="до окончания периода исполнения"
                 />
         <LinearLayout
-            android:layout_width="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="2"
             android:orientation="horizontal"
             >
             <TextView
                 android:id="@+id/priorityLabelTextView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="10sp"
+                android:layout_gravity="center"
+                android:textSize="11sp"
                 android:textColor="@color/greyy"
                 android:text="Приоритет"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
                 />
             <TextView
+
                 android:id="@+id/priorityTextView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="10sp"
+                android:layout_gravity="center"
+                android:textSize="11sp"
                 android:textColor="@color/greyy"
                 android:text="Обычный"
                 />
         </LinearLayout>
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
     <LinearLayout
         android:id="@+id/mainObjectRowLinearLayout"
         android:layout_marginTop="5sp"
@@ -200,7 +206,7 @@
             android:layout_weight="2"
             android:textColor="@color/greyy"
             android:text="Осталось дней: 4/6"
-            android:textSize="10sp"
+            android:textSize="11sp"
             android:gravity="start|center_vertical"
             />
         <LinearLayout

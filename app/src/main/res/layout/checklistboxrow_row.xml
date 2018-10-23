@@ -7,21 +7,32 @@
     android:background="@drawable/grey_line"
     android:padding="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+        <Spinner
+            android:id="@+id/rateSpinner"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:spinnerMode="dropdown"
+            >
+
+        </Spinner>
         <TextView
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:id="@+id/rateTextView"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:background="@drawable/green_circle_line"
             android:gravity="center"
-            android:textSize="32sp"
             android:textColor="@color/black"
+            android:textSize="32sp"
             android:text="5"
-
-            android:id="@+id/rateTextView"
             />
-
         <TextView
             android:id="@+id/nameTextView"
             android:layout_width="wrap_content"
@@ -40,6 +51,7 @@
             android:layout_height="wrap_content"
             android:maxWidth="250dp"
             android:textColor="@color/black"
+            android:id="@+id/infoTextView"
             android:textSize="11sp"
             android:text="Нет мусора, нет пыли, нет поверхностных пятен"
             app:layout_constraintStart_toStartOf="@+id/nameTextView"

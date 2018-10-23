@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class CommentsMainFragment extends Fragment {
     RecyclerView recyclerView;
-    TextView notAnswered, ArchiveTextView;
+    TextView notAnswered, ArchiveTextView, mainObjectTitle;
     List<JalobaForm> firstForm, secondForm, jalobaForms;
     JalobaAdapter adapter;
     public CommentsMainFragment() {
@@ -38,15 +38,17 @@ public class CommentsMainFragment extends Fragment {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_comments_main, container, false);
         createViews(view);
+        setFonttype();
         ((MainActivity)getActivity()).setRecyclerViewOrientation(recyclerView, LinearLayoutManager.VERTICAL);
 
 
 
         jalobaForms=new ArrayList<>();
 
-        jalobaForms.add(new JalobaForm("02.08.2018","Представитель клиента","Темирлан","Ген. директор",getActivity().getResources().getString(R.string.bigtext)));jalobaForms.add(new JalobaForm("","","","",""));jalobaForms.add(new JalobaForm("","","","",""));jalobaForms.add(new JalobaForm("","","","",""));
+        jalobaForms.add(new JalobaForm("02.08.2018","Представитель клиента","Темирлан","Ген. директор",getActivity().getResources().getString(R.string.bigtext)));jalobaForms.add(new JalobaForm("02.08.2018","Представитель клиента","Темирлан","Ген. директор",getActivity().getResources().getString(R.string.bigtext)));
         secondForm.addAll(jalobaForms);
-        adapter=new JalobaAdapter(jalobaForms);
+        firstForm.addAll(jalobaForms);
+        adapter=new JalobaAdapter(jalobaForms, false);
         recyclerView.setAdapter(adapter);
 
         setListeners();
@@ -57,8 +59,19 @@ public class CommentsMainFragment extends Fragment {
         recyclerView=(RecyclerView) view.findViewById(R.id.commentsRecyclerView);
         notAnswered=(TextView) view.findViewById(R.id.notAnsweredTextView);
         ArchiveTextView=(TextView) view.findViewById(R.id.ArchiveTextView);
+        mainObjectTitle=(TextView) view.findViewById(R.id.mainObjectTitle);
         firstForm=new ArrayList<>();
         secondForm=new ArrayList<>();
+    }
+    private void setFonttype(){
+        setTypeFace("it",mainObjectTitle);
+        setTypeFace("demibold",notAnswered,ArchiveTextView);
+        setTypeFace("light");
+    }
+    private void setTypeFace(String s, TextView... textViews){
+        for(int i=0;i<textViews.length;i++){
+            textViews[i].setTypeface((((MainActivity)getActivity()).getTypeFace(s)));
+        }
     }
     private void setListeners(){
         notAnswered.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +79,7 @@ public class CommentsMainFragment extends Fragment {
             public void onClick(View view) {
                 jalobaForms.clear();
                 jalobaForms.addAll(firstForm);
+                adapter.setAnswer(true);
                 setChose(0);
             }
         });
@@ -74,6 +88,7 @@ public class CommentsMainFragment extends Fragment {
             public void onClick(View view) {
                 jalobaForms.clear();
                 jalobaForms.addAll(secondForm);
+                adapter.setAnswer(false);
                 setChose(1);
             }
         });

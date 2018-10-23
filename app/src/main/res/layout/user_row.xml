@@ -78,6 +78,7 @@
             />
     </LinearLayout>
     <TextView
+        android:visibility="gone"
         android:id="@+id/dateTextView"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
@@ -90,16 +91,15 @@
         android:layout_marginEnd="10sp"
         android:layout_marginRight="10sp"
         />
+
     <ImageView
         android:id="@+id/commentRowImage"
         android:layout_width="30sp"
         android:layout_height="30sp"
-        android:padding="7sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/infoLayout"
+        android:padding="5sp"
+        android:src="@drawable/ic_arrowrightgreen"
         app:layout_constraintBottom_toBottomOf="@+id/infoLayout"
-        android:src="@drawable/ic_arrowright"
-        android:background="@drawable/green_circle"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/infoLayout" />
 </android.support.constraint.ConstraintLayout>
 </LinearLayout>

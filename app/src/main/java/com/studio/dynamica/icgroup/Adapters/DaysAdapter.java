@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.R;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class DaysAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         public myHolder(View view){
             super(view);
             textView=(TextView) view.findViewById(R.id.dayText);
+            textView.setTypeface(((MainActivity)view.getContext()).getTypeFace("light"));
         }
     }
     int n;
@@ -29,6 +31,11 @@ public class DaysAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         this.n=n;
         clicked=0;
     }
+
+    public int getClicked() {
+        return clicked;
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -42,7 +49,7 @@ public class DaysAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 myHolder holder=(myHolder)holder1;
                 holder.textView.setText((position+1)+"");
                 if(position==clicked){
-                    Log.d("DaysAdapter",position+" "+clicked);
+                  //  Log.d("DaysAdapter",position+" "+clicked);
                     setGreen(holder.textView);
                 }
                 else{
@@ -63,8 +70,8 @@ public class DaysAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public int getItemCount() {
         return n;
     }
-    public void setGreen(TextView t){
-        t.setBackground(context.getResources().getDrawable(R.drawable.green_circle));
+    private void setGreen(TextView t){
+        t.setBackgroundResource((R.drawable.green_circle));
         t.setTextColor(context.getResources().getColor(R.color.white));
     }
     public void setWhite(TextView t){
