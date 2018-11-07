@@ -21,6 +21,7 @@
     <color name="relateDarkGreen">#0a4225</color>
     <color name="inwaitYellow">#ffb602</color>
     <color name="inprocessGreen">#6cb829</color>
+    <color name="blue">#27d0d8</color>
 
     <color name="failedProgressStart">#ff3315</color>
     <color name="failedProgressStop">#ff8702</color>

@@ -68,6 +68,7 @@ public class CheckListBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder1, int position) {
         myHolder holder=(myHolder) holder1;
         ((MainActivity) context).setRecyclerViewOrientation(holder.checkListBoxRowsRecyclerView, LinearLayout.VERTICAL);
+        holder.infoTextView.setText(list.get(position).getName());
         CheckListBoxRowAdapter rowAdapter=new CheckListBoxRowAdapter(list.get(position).getList(), text);
         holder.checkListBoxRowsRecyclerView.setAdapter(rowAdapter);
         if(list.get(position).isAccept()){

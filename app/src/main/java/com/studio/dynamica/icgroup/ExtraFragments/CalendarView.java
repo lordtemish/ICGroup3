@@ -36,14 +36,24 @@ public class CalendarView extends FrameLayout{
     ImageView monthImageView;
     TextView monthTextView;
     ConstraintLayout monthLayout;
-
+    int i0=0,i1=0;
     NumberPicker monthPicker, yearPicker;
     boolean dateChange=false;
 
     int[][] choseindexes={{0,0},{0,0}};
     int click=0, clickx=0, clicky=0, xmax=0, ymax=0;
-    Calendar cal;
+    Calendar cal, cal2;
 
+    public int getClick() {
+        return click;
+    }
+
+    public Calendar getChose(){
+        if(click==2){
+            return days.get(choseindexes[1][0]).get(choseindexes[1][1]);
+        }
+        return null;
+    }
     public CalendarView(Context context, AttributeSet attrs, int defstyle){
         super(context,attrs,defstyle);
         initView();
@@ -162,6 +172,7 @@ public class CalendarView extends FrameLayout{
         Calendar cal=Calendar.getInstance();
         cal.setTime(new Date());
         this.cal=new GregorianCalendar(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),1);
+        cal2=Calendar.getInstance();cal2.setTime(new Date());
         setMonth(this.cal.get(Calendar.MONTH));
     }
     public void setMonth(int m){
@@ -232,6 +243,9 @@ public class CalendarView extends FrameLayout{
         }
         click++;
         click=click%3;
+        if(click==0){
+            clicked(i0,i1);
+        }
     }
     public void clearAllDays(){
         click=0;
@@ -272,6 +286,9 @@ public class CalendarView extends FrameLayout{
     public void setDay(){
         int max=cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         int weekday=(cal.get(Calendar.DAY_OF_WEEK)+5)%7;
+        if(cal.get(Calendar.MONTH)!=cal2.get(Calendar.MONTH)){
+            i1=0;i0=0;
+        }
         for(int i=0;i<6;i++){
             xmax=i;
             if(i==5){
@@ -290,7 +307,11 @@ public class CalendarView extends FrameLayout{
 
                 ymax=j;
                 int day=cal.get(Calendar.DAY_OF_MONTH);
-                days.get(i).set(j,cal);
+                if(cal.get(Calendar.DAY_OF_YEAR)==cal2.get(Calendar.DAY_OF_YEAR) && cal.get(Calendar.MONTH)==cal2.get(Calendar.MONTH)){
+                    click=0;
+                    i0=i;i1=j;
+                }
+                days.get(i).get(j).setTime(cal.getTime());
                 ConstraintLayout l=calendarLayouts.get(i).get(j);
                 TextView t=calendarTexts.get(i).get(j);
                 t.setText(day+"");
@@ -309,6 +330,7 @@ public class CalendarView extends FrameLayout{
             weekday=0;
         }
         cal.set(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),1);
+        clicked(i0,i1);
     }
     public void setSimple(int x1, int y1, int x2, int y2){
         int x=x1;

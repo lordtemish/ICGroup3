@@ -58,6 +58,9 @@ public class AttendanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 else if(itemForm.isIll()){
                     s="ill";
                 }
+                else if(itemForm.isReplace()){
+                    s="repl";
+                }
 
                 setStatus(textViews.get(i),s);
             }
@@ -69,20 +72,36 @@ public class AttendanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
                 }
             }
+            else{
+                frameLayouts.get(3).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+            }
         }
         private void setStatus(TextView view,String status){
             switch (status){
                 case "+":
                     view.setBackgroundResource(R.drawable.inprocess_green_circle);
+                    view.setText("+");
                     break;
                 case "-":
                     view.setBackgroundResource(R.drawable.related_darkgreen_circle);
+                    view.setText("-");
                     break;
                 case "ill":
                     view.setBackgroundResource(R.drawable.inwait_yellow_circle);
+                    view.setText("-");
+                    break;
+                case "repl":
+                    view.setBackgroundResource(R.drawable.replace_circle);
+                    view.setText("-");
                     break;
                     default:
                         view.setBackgroundResource(R.drawable.green_circle_line);
+                        view.setText("");
 
             }
         }

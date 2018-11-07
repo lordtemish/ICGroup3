@@ -14,7 +14,7 @@ public class EquipmentForm {
         this.num=num;
         remontForms=new ArrayList<>();orderForms=new ArrayList<>();
     }
-    public EquipmentForm(String name , String id, int num, List<RemontForms> remontForms, List<OrderForm> orderForms){
+        public EquipmentForm(String name , String id, int num, List<RemontForms> remontForms, List<OrderForm> orderForms){
         this.name=name;
         this.id=id;
         this.num=num;

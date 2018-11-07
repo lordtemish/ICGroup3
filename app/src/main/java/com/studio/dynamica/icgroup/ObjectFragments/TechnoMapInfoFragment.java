@@ -6,14 +6,22 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.error.AuthFailureError;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.JsonObjectRequest;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Adapters.MessageAdapter;
 import com.studio.dynamica.icgroup.Adapters.RateStarsAdapter;
@@ -22,8 +30,13 @@ import com.studio.dynamica.icgroup.Forms.MessageForm;
 import com.studio.dynamica.icgroup.Forms.WashForm;
 import com.studio.dynamica.icgroup.R;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,10 +44,16 @@ import java.util.List;
 public class TechnoMapInfoFragment extends Fragment {
     RecyclerView technicView,washView, statusComment, commentsRecycler, rateRecyclerView, rateLateRecyclerView;
     TextView mainObjectTitle, period, service, category, status, timeInside, placeInside, categoryInside, statusInside, methodLabel, method, periodInside, worksLabel, worksInfo,
-            technicLabel, washLabel, statusLate, statusExtraInfo, employeeLabel, employeeName, employeePosition, commentsLabel,extraText, commentButtonTextView, statusButtonFailTextView, statusButtonCloseTextView;
+            technicLabel, washLabel, statusLate, statusExtraInfo, employeeLabel, employeeName, employeePosition, commentsLabel,extraText, commentButtonTextView, statusButtonFailTextView, statusButtonCloseTextView
+            ;
     LinearLayout statusButtonsLayout,commentLayout, wholeLayout;
     RadioButton goodJobRadio,answerRadioButton0, answerRadioButton1, answerRadioButton2;
     RadioGroup answerRadioGroup;
+    FrameLayout progressLayout;
+    String id;
+    int stat;
+    List<WashForm> washForms;
+    WashAdapter washAdapter;
     public TechnoMapInfoFragment() {
 
     }
@@ -43,18 +62,15 @@ public class TechnoMapInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        id=getArguments().getString("id");
         View view=inflater.inflate(R.layout.fragment_techno_map_info, container, false);
         createViews(view);
         setFonttype();
 
-        List<WashForm> washForms=new ArrayList<>();
-        washForms.add(new WashForm("","",6));
-        washForms.add(new WashForm("","",6));
-        washForms.add(new WashForm("","",6));
+        washForms=new ArrayList<>();
         washForms.add(new WashForm("","",6));
 
-        WashAdapter washAdapter=new WashAdapter(washForms);
+       washAdapter=new WashAdapter(washForms);
         RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
         technicView.setLayoutManager(layoutManager);
         technicView.setItemAnimator(new DefaultItemAnimator());
@@ -64,7 +80,7 @@ public class TechnoMapInfoFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager1=new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
         washView.setLayoutManager(layoutManager1);
         washView.setItemAnimator(new DefaultItemAnimator());
-        washView.setAdapter(washAdapter);
+
 
         List<MessageForm> forms=new ArrayList<>();
         List<MessageForm> forms1=new ArrayList<>();
@@ -88,9 +104,146 @@ public class TechnoMapInfoFragment extends Fragment {
         rateRecyclerView.setAdapter(new RateStarsAdapter(true));
         rateLateRecyclerView.setAdapter(new RateStarsAdapter(4));
 
-        int stat=getArguments().getInt("status",0);
+        stat=getArguments().getInt("status",0);
         setStatus(stat);
+        getRequest();
         return view;
+    }
+    private void getRequest(){
+        String url=((MainActivity)getActivity()).MAIN_URL;
+        if(stat==3){
+            progressLayout.setVisibility(View.VISIBLE);
+//            ((MainActivity)getActivity()).onBackPressed();
+            url+="plans/"+id;
+            JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    progressLayout.setVisibility(View.GONE);
+                    setPlan(response);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    progressLayout.setVisibility(View.GONE);
+                }
+            }){  @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
+                return headers;
+            }};
+            ((MainActivity)getActivity()).requestQueue.add(jsonObjectRequest);
+        }
+        else{
+            progressLayout.setVisibility(View.VISIBLE);
+            url+="results/"+id;
+            JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    progressLayout.setVisibility(View.GONE);
+                    setInfo(response);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    progressLayout.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
+                }
+            }){  @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
+                return headers;
+            }};
+            ((MainActivity)getActivity()).requestQueue.add(jsonObjectRequest);
+        }
+    }
+    private void setInfo(JSONObject object){
+        try {
+            washForms.clear();
+            JSONObject plan = object.getJSONObject("plan");
+            JSONObject sector=plan.getJSONObject("sector");
+            JSONObject category = plan.getJSONObject("category");
+            JSONObject method=plan.getJSONObject("method");
+            int duration=plan.getInt("duration");
+            String description=plan.getString("description");
+
+            String[] begin=plan.getString("begin").split(":"), end=plan.getString("end").split(":");
+            String time=begin[0]+":"+begin[1]+"-"+end[0]+":"+end[1];
+            timeInside.setText(time);
+            placeInside.setText(sector.getString("name"));
+            this.method.setText(method.getString("name"));
+            periodInside.setText(duration+" мин");
+            worksInfo.setText(description);
+
+            JSONArray inventories=plan.getJSONArray("inventories");
+            Log.d("inves",inventories.length()+"");
+            if(inventories.length()==0){
+                technicLabel.setVisibility(View.GONE);
+                technicView.setVisibility(View.GONE);
+            }
+            for(int i=0;i<inventories.length();i++){
+                JSONObject obj=inventories.getJSONObject(i);
+                JSONObject invent=obj.getJSONObject("inventory");
+                String name=invent.getString("name"), unit=invent.getString("unit"),company=invent.getString("company"), vendor=invent.getString("vendor_code");
+                int qua=invent.getInt("total_quantity"), quantity=obj.getInt("quantity");
+                washForms.add(new WashForm(company+" "+name+" "+qua+" "+unit,"IC"+vendor,quantity));
+            }
+            washAdapter.notifyDataSetChanged();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    private void setPlan(JSONObject object){
+        try {
+            washForms.clear();
+            JSONObject plan = object;
+            JSONObject sector=null;
+            JSONObject method=null;
+            String sec= "", meth="";
+
+            if(!plan.isNull("sector")){
+                sector=plan.getJSONObject("sector");
+                sec=sector.getString("name");
+            }
+            if(!plan.isNull("method")){
+                method=plan.getJSONObject("method");
+                meth=method.getString("name");
+            }
+            int duration=plan.getInt("duration");
+            String description=plan.getString("description");
+
+            String[] begin=plan.getString("begin").split(":"), end=plan.getString("end").split(":");
+            String time=begin[0]+":"+begin[1]+"-"+end[0]+":"+end[1];
+            timeInside.setText(time);
+            placeInside.setText(sec);
+            this.method.setText(meth);
+            periodInside.setText(duration+" мин");
+            worksInfo.setText(description);
+
+            JSONArray inventories=plan.getJSONArray("inventories");
+            Log.d("inves",inventories.length()+"");
+            if(inventories.length()==0){
+                technicLabel.setVisibility(View.GONE);
+                technicView.setVisibility(View.GONE);
+            }
+            for(int i=0;i<inventories.length();i++){
+                JSONObject obj=inventories.getJSONObject(i);
+                JSONObject invent=obj.getJSONObject("inventory");
+                JSONObject company=invent.getJSONObject("company");
+                String name=invent.getString("name"), unit=invent.getString("unit"),companyName=company.getString("name"), vendor=invent.getString("vendor_code");
+                int qua=invent.getInt("quantity"), quantity=obj.getInt("quantity");
+                washForms.add(new WashForm(companyName+" "+name+" "+qua+" "+unit,"IC"+vendor,quantity));
+            }
+            washAdapter.notifyDataSetChanged();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
     private void setFonttype(){
         setTypeFace("demibold", timeInside, categoryInside, placeInside, statusInside, method, worksLabel, statusExtraInfo, statusLate, employeeName, employeePosition,goodJobRadio,answerRadioButton0,answerRadioButton1,answerRadioButton2);
@@ -104,13 +257,13 @@ public class TechnoMapInfoFragment extends Fragment {
         }
     }
     private void createViews(View view){
+        progressLayout=(FrameLayout) view.findViewById(R.id.progressLayout);
         technicView=(RecyclerView) view.findViewById(R.id.technicRecyclerView);
         washView=(RecyclerView) view.findViewById(R.id.washRecyclerView);
         statusComment=(RecyclerView) view.findViewById(R.id.statusCommentsRecyclerView);
         commentsRecycler=(RecyclerView) view.findViewById(R.id.commentsRecyclerView);
         rateRecyclerView=(RecyclerView) view.findViewById(R.id.rateRecyclerView);
         rateLateRecyclerView=(RecyclerView) view.findViewById(R.id.rateLateRecyclerView);
-
         mainObjectTitle=(TextView) view.findViewById(R.id.mainObjectTitle);
         period=(TextView) view.findViewById(R.id.period);
         category=(TextView) view.findViewById(R.id.category);
@@ -171,19 +324,26 @@ public class TechnoMapInfoFragment extends Fragment {
         statusInside.setBackgroundResource(R.drawable.inprocess_green_page);
         statusInside.setText("Актуально");
     }
+    public void setRelate(){
+        statusInside.setBackgroundResource(R.drawable.related_darkgreen_page);
+        statusInside.setText("На просрочке");
+    }
     private void setStatus(int a){
         switch (a){
             case 0:
-                setFinished();
+                setFailed();
                 break;
             case 1:
-                setFailed();
+                setFinished();
                 break;
             case 2:
                 setinProcess();
                 break;
             case 3:
                 setActual();
+                break;
+            case 4:
+                setRelate();
                 break;
         }
     }

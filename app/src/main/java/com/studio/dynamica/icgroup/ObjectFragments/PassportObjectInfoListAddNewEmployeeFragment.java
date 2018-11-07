@@ -21,9 +21,10 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
+
+import com.android.volley.error.AuthFailureError;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.JsonObjectRequest;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.R;
 
@@ -96,6 +97,7 @@ public class PassportObjectInfoListAddNewEmployeeFragment extends Fragment {
         Toast.makeText(getActivity(),"Сотрудник добавлен",Toast.LENGTH_LONG).show();
         //SystemClock.sleep(5000);
         clickListener.onClick(getView());
+        Log.d("created","somesome "+ov.toString());
         ((MainActivity)getActivity()).onBackPressed();
     }
     private void postRequest(String url){
@@ -104,8 +106,10 @@ public class PassportObjectInfoListAddNewEmployeeFragment extends Fragment {
             JSONObject params = new JSONObject();
             frontLayout.setVisibility(View.VISIBLE);
             try {
-                params.put("fullname", nametext.getText() + "");
-                params.put("phone", "" + nametext1.getText());
+                JSONObject user=new JSONObject();
+                user.put("fullname", nametext.getText() + "");
+                user.put("phone", "" + nametext1.getText());
+                params.put("user",user);
                 params.put("shift", "" + radioCheck());
                 params.put("point", "" + point);
                 params.put("is_trainee", "" + is_trainee);
@@ -124,7 +128,16 @@ public class PassportObjectInfoListAddNewEmployeeFragment extends Fragment {
 
                 }
             }
-            );
+            ){
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    headers.put("Accept", "application/json");
+                    headers.put("Content-Type", "application/json; charset=utf-8");
+                    headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
+                    return headers;
+                }
+            };
             ((MainActivity) getActivity()).requestQueue.add(postRequest);
         }
         else {

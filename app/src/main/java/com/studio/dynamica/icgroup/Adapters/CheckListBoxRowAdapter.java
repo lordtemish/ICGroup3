@@ -37,14 +37,7 @@ public class CheckListBoxRowAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             rateTextView=(TextView) view.findViewById(R.id.rateTextView);
             nameTextView=(TextView) view.findViewById(R.id.nameTextView);
             infoTextView=(TextView) view.findViewById(R.id.infoTextView);
-            if(text){
-                spinner.setVisibility(View.GONE);
-                rateTextView.setVisibility(View.VISIBLE);
-            }
-            else {
-                spinnerSet();
-                rateTextView.setVisibility(View.GONE);
-            }
+
             setFonttype();
         }
         private void setFonttype(){
@@ -57,9 +50,30 @@ public class CheckListBoxRowAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 textViews[i].setTypeface((((MainActivity)context).getTypeFace(s)));
             }
         }
-        private void setInfo(CheckListBoxRowForm form){
+        private void setInfo(final CheckListBoxRowForm form){
+            Log.d("textBool",text+"");
+            nameTextView.setText(form.getName());
+            infoTextView.setText(form.getInfo());
             if(text){
                 rateTextView.setText(form.getRate()+"");
+                spinner.setVisibility(View.GONE);
+                rateTextView.setVisibility(View.VISIBLE);
+            }
+            else {
+                spinnerSet();
+                spinner.setVisibility(View.VISIBLE);
+                rateTextView.setVisibility(View.GONE);
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        list.get(list.indexOf(form)).setRate(i+1);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
             }
         }
         private void spinnerSet(){
@@ -83,6 +97,7 @@ public class CheckListBoxRowAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
             };
             spinner.setAdapter(spinnerAdapter);
+
         }
     }
     public CheckListBoxRowAdapter(List<CheckListBoxRowForm> forms){
@@ -109,7 +124,6 @@ public class CheckListBoxRowAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 list.get(position).setRate(i+1);
-                Log.d("Spinner",list.get(position).getRate()+"");
             }
 
             @Override

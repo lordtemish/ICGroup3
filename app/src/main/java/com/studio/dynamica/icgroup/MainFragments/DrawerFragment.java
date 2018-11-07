@@ -50,10 +50,10 @@ public class DrawerFragment extends Fragment {
         rowFormPTNS=new ArrayList<>();
         formPTNS=new ArrayList<>();
         clientRowFormPTNS=new ArrayList<>();
-        clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_box_c,R.drawable.ic_box_c,"Объекты",-1));
-        clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_solvves_c,R.drawable.ic_solvves_c,"Задачи",-1));
-        clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_bell_c,R.drawable.ic_bell_c,"Уведомления",22));
-        clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_settings_c,R.drawable.ic_settings_c,"Настройки",-1));
+        clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_box,R.drawable.ic_box_u,"Объекты",-1));
+        clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_solvves,R.drawable.ic_solvves_u,"Задачи",-1));
+        clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_bell,R.drawable.ic_bell_u,"Уведомления",22));
+        clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_settings,R.drawable.ic_settings_u,"Настройки",-1));
         rowFormPTNS.add(new RowFormPTN(R.drawable.ic_box,R.drawable.ic_box_u,"Объекты",34));
         rowFormPTNS.add(new RowFormPTN(R.drawable.ic_solvves,R.drawable.ic_solvves_u,"Задачи",47));
         rowFormPTNS.add(new RowFormPTN(R.drawable.ic_people,R.drawable.ic_people_u,"Сотрудники",-1));
@@ -70,12 +70,15 @@ public class DrawerFragment extends Fragment {
          formPTNS.clear();
         if(a){
             formPTNS.addAll(clientRowFormPTNS);
-            wholeLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.icgGreen));
+            wholeLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
         }
         else{
             formPTNS.addAll(rowFormPTNS);
             wholeLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
         }
+        drawerAdapter.notifyDataSetChanged();
+     }
+     public  void dataChanged(){
         drawerAdapter.notifyDataSetChanged();
      }
 }

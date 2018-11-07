@@ -66,6 +66,7 @@
                     <TextView
                         android:id="@+id/senderInfoTextView"
                         android:layout_width="wrap_content"
+                        android:maxWidth="140dp"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
                         android:textSize="11sp"

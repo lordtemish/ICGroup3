@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ObjectFragments.AddNewSvodkaFragment"
-    android:orientation="vertical"
     android:background="@color/light_grey"
     >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="50sp"
@@ -75,6 +78,7 @@
             android:paddingBottom="20dp"
             >
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -222,7 +226,7 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -303,6 +307,7 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginTop="30dp"
                     android:background="@drawable/green_circle"
+                    android:id="@+id/addNewLayout"
                     android:padding="10dp"
                     >
                     <TextView
@@ -334,4 +339,18 @@
         </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
-</LinearLayout>
+    </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="onClick"
+        android:visibility="gone"
+        android:background="@color/icgGreenTra"
+        android:id="@+id/progressLayout">
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                />
+    </FrameLayout>
+</FrameLayout>

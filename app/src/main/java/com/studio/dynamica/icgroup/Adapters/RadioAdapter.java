@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 
+import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Forms.RadioForm;
 import com.studio.dynamica.icgroup.R;
 
@@ -19,6 +20,7 @@ public class RadioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         private myHolder(View view){
             super(view);
             radioButton=(RadioButton) view.findViewById(R.id.radioButton);
+            ((MainActivity)context).setType("demibold",radioButton);
         }
 
         private void setInfo(RadioForm form){
@@ -34,7 +36,7 @@ public class RadioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context context=parent.getContext();
+        context=parent.getContext();
         View view= LayoutInflater.from(context).inflate(R.layout.radio_row,parent,false);
         return new myHolder(view);
     }

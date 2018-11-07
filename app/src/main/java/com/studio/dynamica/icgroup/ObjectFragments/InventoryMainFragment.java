@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,6 +20,8 @@ import com.studio.dynamica.icgroup.Adapters.AddOrderAdapter;
 import com.studio.dynamica.icgroup.Adapters.EquipmentAdapter;
 import com.studio.dynamica.icgroup.Adapters.EquipmentReqAdapter;
 import com.studio.dynamica.icgroup.Adapters.InventorizationAdapter;
+import com.studio.dynamica.icgroup.Adapters.InventoryListAdapter;
+import com.studio.dynamica.icgroup.Adapters.InventoryTopAdapter;
 import com.studio.dynamica.icgroup.Adapters.MaterialAdapter;
 import com.studio.dynamica.icgroup.Forms.AddOrderForm;
 import com.studio.dynamica.icgroup.Forms.EquipmentForm;
@@ -29,30 +32,33 @@ import com.studio.dynamica.icgroup.Forms.RemontForms;
 import com.studio.dynamica.icgroup.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class InventoryMainFragment extends Fragment {
-    ImageView leftImageView, rightImageView, plusImageView;
-    TextView pageTextView, archiveOrderTextView, newOrderTextView;
+    ImageView leftImageView, rightImageView, plusImageView, dateArrowImageView;
+    TextView pageTextView, archiveOrderTextView, newOrderTextView,dateTextView;
     LinearLayout textsLayout;
-    ConstraintLayout progressLayout, dateLayout;
+    RecyclerView topRecycler;
+    ConstraintLayout progressLayout, dateLayout,pointLayout;
     RecyclerView inventoryRecycler, equipmentReq;
-    String[] a={"Оборудование","Инвентаризация","Заявки на пополнение"}, months = {"Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"};
+    String[] a={"Инвентарь","Инвентаризация","Заявки на пополнение"}, months = {"Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"};
 
     int page=0;
-
-    EquipmentAdapter equipmentAdapter;
-    MaterialAdapter materialAdapter;
+    Calendar cal;
+    /*EquipmentAdapter equipmentAdapter;
+    MaterialAdapter materialAdapter;*/
     InventorizationAdapter inventorizationAdapter;
     List<InventorizationForm> inventorizationForms;
     AddOrderAdapter addOrderAdapter;
     List<AddOrderForm> addOrderForms, newOrderForms, archOrderForms;
-    EquipmentReqAdapter reqAdapter;
+    InventoryListAdapter listAdapter;
     List<String> reqList;
-
+    InventoryTopAdapter topAdapter;
     NumberPicker datePicker, yearPicker;
     public InventoryMainFragment() {
         // Required empty public constructor
@@ -64,13 +70,31 @@ public class InventoryMainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_inventory_main, container, false);
+        cal=Calendar.getInstance();
+        cal.setTime(new Date());
         createViews(view);
         createAdapters();
 
         ((MainActivity) getActivity()).setRecyclerViewOrientation(inventoryRecycler, LinearLayoutManager.VERTICAL);
-        inventoryRecycler.setAdapter(equipmentAdapter);
+        ((MainActivity) getActivity()).setRecyclerViewOrientation(topRecycler, LinearLayoutManager.HORIZONTAL);
+        List<View.OnClickListener> listeners=new ArrayList<>();
+        for(int i=0;i<3;i++){
+            final int k=i;
+            listeners.add(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    page=k;
+                    checkPage();
+                }
+            });
+        }
+        topAdapter=new InventoryTopAdapter(listeners);
+        topRecycler.setAdapter(topAdapter);
+
+
+        //inventoryRecycler.setAdapter(equipmentAdapter);
         ((MainActivity)getActivity()).setRecyclerViewOrientation(equipmentReq,LinearLayout.HORIZONTAL);
-        equipmentReq.setAdapter(reqAdapter);
+        //equipmentReq.setAdapter(listAdapter);
         pickerSettings();
         createListeners();
 
@@ -87,17 +111,30 @@ public class InventoryMainFragment extends Fragment {
             }
         });
         checkPage();
+
+        dateArrowImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onArrow();
+            }
+        });
+        dateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onArrow();
+            }
+        });
         return view;
     }
     private void pickerSettings(){
         datePicker.setMinValue(1);
         datePicker.setMaxValue(months.length);
         datePicker.setDisplayedValues(months);
-        datePicker.setValue(8);
+        datePicker.setValue(10);
 
-        yearPicker.setMinValue(2016);
-        yearPicker.setMaxValue(2019);
-        yearPicker.setValue(2018);
+        yearPicker.setMinValue(cal.get(Calendar.YEAR)-1);
+        yearPicker.setMaxValue(cal.get(Calendar.YEAR)+2);
+        yearPicker.setValue(cal.get(Calendar.YEAR));
     }
     private void createViews(View view){
         leftImageView=(ImageView) view.findViewById(R.id.ImageLeftView);
@@ -106,19 +143,23 @@ public class InventoryMainFragment extends Fragment {
         textsLayout=(LinearLayout) view.findViewById(R.id.textsLayout);
         progressLayout=(ConstraintLayout) view.findViewById(R.id.progressLayout);
         inventoryRecycler=(RecyclerView) view.findViewById(R.id.inventoryRecycler);
+        topRecycler=(RecyclerView) view.findViewById(R.id.topRecycler);
         equipmentReq=(RecyclerView) view.findViewById(R.id.equipmentRec);
         datePicker=(NumberPicker) view.findViewById(R.id.datePicker);
         yearPicker=(NumberPicker) view.findViewById(R.id.yearPicker);
         dateLayout=(ConstraintLayout) view.findViewById(R.id.dateLayout);
+        pointLayout=(ConstraintLayout) view.findViewById(R.id.pointLayout);
         archiveOrderTextView=(TextView) view.findViewById(R.id.archiveOrderTextView);
         newOrderTextView=(TextView) view.findViewById(R.id.newOrderTextView);
+        dateTextView=(TextView) view.findViewById(R.id.dateTextView);
 
         plusImageView=(ImageView) view.findViewById(R.id.plusImageView);
+        dateArrowImageView=(ImageView) view.findViewById(R.id.dateArrowImageView);
 
     }
 
     private void createAdapters(){
-        List<EquipmentForm> equipmentForms=new ArrayList<>();
+        /*List<EquipmentForm> equipmentForms=new ArrayList<>();
         List<OrderForm> orderForms=new ArrayList<>();
         orderForms.add(new OrderForm("","","","","",1,4));orderForms.add(new OrderForm("","","","","",1,4));orderForms.add(new OrderForm("","","","","",1,4));
         List<RemontForms> remontForms=new ArrayList<>();
@@ -130,7 +171,7 @@ public class InventoryMainFragment extends Fragment {
         List<MaterialForm> materialForms=new ArrayList<>();
         materialForms.add(new MaterialForm("","",2,5));materialForms.add(new MaterialForm("","",2,5, orderForms));materialForms.add(new MaterialForm("","",2,5, orderForms));
 
-        materialAdapter=new MaterialAdapter(materialForms);
+        materialAdapter=new MaterialAdapter(materialForms);*/
 
         List<InventorizationForm> inventorizationForms=new ArrayList<>();
         inventorizationForms.add(new InventorizationForm("","","",80));inventorizationForms.add(new InventorizationForm("","","",80));inventorizationForms.add(new InventorizationForm("","","",80));
@@ -153,15 +194,16 @@ public class InventoryMainFragment extends Fragment {
         reqList.add("УМС");
         reqList.add("Сезонный инвентарь");
         reqList.add("Спец. одежда");
-        reqAdapter=new EquipmentReqAdapter(reqList);
+        listAdapter=new InventoryListAdapter(reqList);
+      /*  reqAdapter=new EquipmentReqAdapter(reqList);
         reqAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setEquip(reqAdapter.getClicked());
             }
-        });
+        });*/
     }
-    private void setEquip(int a){
+   /* private void setEquip(int a){
         switch (a){
             case 0:
                 inventoryRecycler.setAdapter(equipmentAdapter);
@@ -171,7 +213,14 @@ public class InventoryMainFragment extends Fragment {
                 break;
                 default:
         }
+    }*/
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        checkPage();
     }
+
     private void createListeners(){
         newOrderTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,10 +260,8 @@ public class InventoryMainFragment extends Fragment {
         switch (page){
             case 0:
                 setProgressLayout();
-                equipmentReq.setVisibility(View.VISIBLE);
-                inventoryRecycler.setAdapter(equipmentAdapter);
+                inventoryRecycler.setAdapter(listAdapter);
                 break;
-
             case 1:
                 setProgressLayout(true);
                 inventoryRecycler.setAdapter(inventorizationAdapter);
@@ -224,21 +271,26 @@ public class InventoryMainFragment extends Fragment {
                 inventoryRecycler.setAdapter(addOrderAdapter);
                 break;
         }
+        topAdapter.setPage(page);
+        topAdapter.notifyDataSetChanged();
     }
     private void setProgressLayout(){
-        progressLayout.setVisibility(View.VISIBLE);
+        progressLayout.setVisibility(View.GONE);
         textsLayout.setVisibility(View.GONE);
         dateLayout.setVisibility(View.GONE);
+        pointLayout.setVisibility(View.GONE);
     }
     private void setProgressLayout(boolean a){
         progressLayout.setVisibility(View.VISIBLE);
         textsLayout.setVisibility(View.GONE);
         dateLayout.setVisibility(View.VISIBLE);
+        pointLayout.setVisibility(View.VISIBLE);
     }
     private void setTextsLayout(){
         progressLayout.setVisibility(View.GONE);
         textsLayout.setVisibility(View.VISIBLE);
         dateLayout.setVisibility(View.GONE);
+        pointLayout.setVisibility(View.GONE);
     }
 
     private void invOrdersChange(boolean New){
@@ -256,5 +308,23 @@ public class InventoryMainFragment extends Fragment {
             archiveOrderTextView.setTextColor(getActivity().getResources().getColor(R.color.black));
             newOrderTextView.setTextColor(getActivity().getResources().getColor(R.color.darkgrey));
         }
+    }
+    private void onArrow(){
+        if(dateTextView.getVisibility()==View.VISIBLE){
+            dateArrowImageView.setImageResource(R.drawable.ic_arrowup_green);
+            dateTextView.setVisibility(View.GONE);
+            yearPicker.setVisibility(View.VISIBLE);
+            datePicker.setVisibility(View.VISIBLE);
+        }
+        else{
+            dateArrowImageView.setImageResource(R.drawable.ic_arrowdown_green);
+            dateTextView.setVisibility(View.VISIBLE);
+            yearPicker.setVisibility(View.GONE);
+            datePicker.setVisibility(View.GONE);
+            setDate();
+        }
+    }
+    private void setDate(){
+        dateTextView.setText(months[datePicker.getValue()-1]+" "+yearPicker.getValue());
     }
 }

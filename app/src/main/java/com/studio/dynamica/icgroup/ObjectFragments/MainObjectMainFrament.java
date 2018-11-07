@@ -1,6 +1,7 @@
 package com.studio.dynamica.icgroup.ObjectFragments;
 
 
+
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -18,12 +19,13 @@ import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.error.AuthFailureError;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.JsonObjectRequest;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Adapters.ButtonAdapter;
 import com.studio.dynamica.icgroup.Adapters.MainFramentProgressRecycleAdapter;
@@ -41,7 +43,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,9 +66,9 @@ public class MainObjectMainFrament extends Fragment {
     MainFramentProgressRecycleAdapter progressRecycleAdapter;
     List<PhonesRowForm> phonesRowFormList;
     PhonesAdapter adapter;
-    String id;
+    String id, city;
     boolean client;
-    int rate=3;
+    int rate=3, location=0, shift_count=0;
     public MainObjectMainFrament() {
         // Required empty public constructor
     }
@@ -119,11 +123,17 @@ public class MainObjectMainFrament extends Fragment {
             fragment.setArguments(bundle);
             ((MainActivity)getActivity()).setFragment(R.id.content_frame,fragment);
         }};
-        View.OnClickListener serviceListener=new View.OnClickListener() {@Override public void onClick(View v) { ((MainActivity)getActivity()).setFragment(R.id.content_frame,new ServiceObjectMainFragment()); }};
-        View.OnClickListener TechnoMapListener=new View.OnClickListener() {@Override public void onClick(View v) { ((MainActivity)getActivity()).setFragment(R.id.content_frame,new TechnoMapFragment()); }};
-        View.OnClickListener ClientControlListener=new View.OnClickListener() {@Override public void onClick(View v) { ((MainActivity)getActivity()).setFragment(R.id.content_frame,new ClientControlObjectMainFragment()); }};
-        View.OnClickListener AttendanceListener=new View.OnClickListener() {@Override public void onClick(View v) { ((MainActivity)getActivity()).setFragment(R.id.content_frame,new AttendanceMainFragment()); }};
-        View.OnClickListener CommentsListener=new View.OnClickListener() {@Override public void onClick(View v) { ((MainActivity)getActivity()).setFragment(R.id.content_frame,new CommentsMainFragment()); }};
+        View.OnClickListener serviceListener=new View.OnClickListener() {@Override public void onClick(View v) { ((MainActivity)getActivity()).setFragment(R.id.content_frame,getFragmentWithId(new ServiceObjectMainFragment())); }};
+        View.OnClickListener TechnoMapListener=new View.OnClickListener() {@Override public void onClick(View v) { ((MainActivity)getActivity()).setFragment(R.id.content_frame,getFragmentWithId(new TechnoMapFragment())); }};
+        View.OnClickListener ClientControlListener=new View.OnClickListener() {@Override public void onClick(View v) { ((MainActivity)getActivity()).setFragment(R.id.content_frame,getFragmentWithId(new ClientControlObjectMainFragment())); }};
+        View.OnClickListener AttendanceListener=new View.OnClickListener() {@Override public void onClick(View v) { ((MainActivity)getActivity()).setFragment(R.id.content_frame,getFragmentWithId(new AttendanceMainFragment())); }};
+        View.OnClickListener CommentsListener=new View.OnClickListener() {@Override public void onClick(View v) {
+            Fragment fragment=new CommentsMainFragment();
+            Bundle bundle=new Bundle();
+            bundle.putString("type","point");
+            bundle.putString("id",id);
+            fragment.setArguments(bundle);
+            ((MainActivity)getActivity()).setFragment(R.id.content_frame,fragment); }};
         View.OnClickListener listener=new View.OnClickListener() {@Override public void onClick(View v) { ((MainActivity)getActivity()).setFragment(R.id.content_frame,new InventoryMainFragment()); }};
         listeners.add(listenerPassport);
         listeners.add(serviceListener);
@@ -156,29 +166,38 @@ public class MainObjectMainFrament extends Fragment {
         getRequest("points/"+id);
         return view;
     }
+    private Fragment getFragmentWithId(Fragment fragment){
+        Bundle bundle=new Bundle();
+        bundle.putString("id",id);
+        bundle.putInt("location",location);
+        bundle.putString("city",city);
+        bundle.putInt("shift_count",shift_count);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
     private void setInfo(JSONObject object){
-            progressBar.setVisibility(View.GONE);
+
             try {
-                setRate(object.getInt("result_rate"));
                 double mark1=object.getDouble("score_rate")*5;
                 int mark=(int)Math.round(mark1);
                 setRate(mark);
                 int empl=object.getInt("workers_count");
                 int comms=object.getInt("complaints_count");
                 int categories=object.getInt("tasks_count");
+                shift_count=object.getInt("shifts_count");
                 employees.setText(empl+"");
                 coms.setText(comms+"");
                 category.setText(categories+"");
 
-                int usp=object.getInt("performance_rate");
-                int pos=object.getInt("attendance_rate");
-                int kac=object.getInt("quality_rate");
-                int inv=object.getInt("inventory_rate");
+                double usp=object.getDouble("performance_rate");
+                double pos=object.getDouble("attendance_rate");
+                double kac=object.getDouble("quality_rate");
+                double inv=object.getDouble("inventory_rate");
                 if(client){
-                    setProgresses(usp);
+                    setProgresses(doubletoInt(usp));
                 }
                 else
-                setProgresses(usp, pos, kac, inv);
+                setProgresses(doubletoInt(usp), doubletoInt(pos), doubletoInt(kac), doubletoInt(inv));
 
                 List<PhonesRowForm> rowForms=new ArrayList<>();
                 JSONObject contactor=getJsObject(object,"contactor");
@@ -199,6 +218,10 @@ public class MainObjectMainFrament extends Fragment {
                 e.printStackTrace();
             }
     }
+    private int doubletoInt(Double d){
+        long a=Math.round(d*100);
+        return Integer.parseInt(a+"");
+    }
     private JSONObject getJsObject(JSONObject object,String s){
         try{
             return object.getJSONObject(s);
@@ -213,14 +236,23 @@ public class MainObjectMainFrament extends Fragment {
         JsonObjectRequest objectRequest=new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                        setInfo(response);
+                progressBar.setVisibility(View.GONE);setInfo(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getActivity(),
+                        "Проблемы соеденения", Toast.LENGTH_SHORT).show();
             }
-        });
+        }){  @Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            HashMap<String, String> headers = new HashMap<String, String>();
+            headers.put("Accept", "application/json");
+            headers.put("Content-Type", "application/json; charset=utf-8");
+            headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
+            return headers;
+        }};
         (((MainActivity)getActivity()).requestQueue).add(objectRequest);
     }
 
@@ -238,6 +270,8 @@ public class MainObjectMainFrament extends Fragment {
         progressBar=(ConstraintLayout) view.findViewById(R.id.progressLayout);
 
         id=getArguments().getString("id");
+        location=getArguments().getInt("location");
+        city=getArguments().getString("city");
     }
 
     private void setRowPhones(List<PhonesRowForm> rowForms){

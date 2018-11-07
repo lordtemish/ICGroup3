@@ -1,6 +1,7 @@
 package com.studio.dynamica.icgroup.Forms;
 
 public class OlkForm  {
+    String id;
     private String date;
     private String name;
     private String position;
@@ -10,6 +11,14 @@ public class OlkForm  {
         name=n;
         position=p;
         mark=m;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getDate() {

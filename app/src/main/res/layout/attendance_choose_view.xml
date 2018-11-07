@@ -41,7 +41,6 @@
             </android.support.constraint.ConstraintLayout>
             <LinearLayout
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_width="match_parent"
@@ -117,7 +116,7 @@
                         android:layout_marginLeft="10dp"
                         android:textColor="@color/black"
                         android:textSize="15sp"
-                        android:text="Присутствовал"
+                        android:text="Отсутствовал"
                         android:id="@+id/minusText"
                         />
                     <RadioButton
@@ -137,7 +136,7 @@
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/illLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="50dp"
                     android:layout_marginBottom="20dp">
                     <TextView
                         android:id="@+id/illTextView"
@@ -160,7 +159,7 @@
                         android:layout_marginLeft="10dp"
                         android:textColor="@color/black"
                         android:textSize="15sp"
-                        android:text="Присутствовал"
+                        android:text="Отсутсвовал по болезни"
                         android:id="@+id/illText"
                         />
                     <RadioButton
@@ -177,6 +176,98 @@
 
                         />
                 </android.support.constraint.ConstraintLayout>
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/replLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="20dp">
+                    <TextView
+                        android:id="@+id/replTextView"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:background="@drawable/replace_circle"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/replTextView"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:text="Замена"
+                        android:id="@+id/replText"
+                        />
+                    <RadioButton
+                        android:id="@+id/replRadio"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:button="@drawable/radiobutton1"
+                        android:checked="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+
+                        />
+                </android.support.constraint.ConstraintLayout>
+                <LinearLayout
+                    android:layout_marginTop="20sp"
+                    android:id="@+id/spinnerLinear2"
+                    android:layout_width="match_parent"
+                    android:layout_height="30sp"
+                    android:background="@drawable/spinner_back"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:spinnerMode="dropdown" />
+
+                    <FrameLayout
+                        android:id="@+id/spinnerFrame"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="7">
+
+                        <ImageView
+                            android:layout_width="20sp"
+                            android:layout_height="20sp"
+                            android:layout_gravity="center"
+
+                            android:src="@drawable/ic_arrowdown_green" />
+                    </FrameLayout>
+
+                </LinearLayout>
             </LinearLayout>
+            <FrameLayout
+                android:layout_margin="10dp"
+                android:id="@+id/saveLayout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/greenbutton_rec">
+                <TextView
+                    android:id="@+id/saveTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="25sp"
+                    android:text="СОХРАНИТЬ"
+                    android:layout_gravity="center"
+                    />
+            </FrameLayout>
         </LinearLayout>
 </FrameLayout>

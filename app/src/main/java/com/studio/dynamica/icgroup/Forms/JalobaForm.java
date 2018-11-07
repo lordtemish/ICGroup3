@@ -1,11 +1,21 @@
 package com.studio.dynamica.icgroup.Forms;
 
 public class JalobaForm {
+    String id;
    private String date;
    private String clients;
    private String name;
    private String position;
    private String text;
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
     public JalobaForm(){}
     public JalobaForm(String date, String clients, String name, String position, String text){
         this.date=date;

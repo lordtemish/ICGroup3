@@ -56,12 +56,13 @@
         </android.support.constraint.ConstraintLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50sp"
-            android:orientation="horizontal"
-            android:background="@color/white">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:id="@+id/cityLayout">
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="50dp"
                 android:id="@+id/mainObjectRegionLayout"
                 android:layout_weight="1">
                 <FrameLayout
@@ -74,6 +75,7 @@
                     android:layout_marginLeft="10sp"
                     >
                     <ImageView
+                        android:id="@+id/arrowCity"
                         android:layout_width="15sp"
                         android:layout_height="20sp"
                         android:layout_gravity="center"
@@ -94,48 +96,31 @@
                     android:textSize="17sp"
                     />
             </android.support.constraint.ConstraintLayout>
-            <android.support.constraint.ConstraintLayout
+            <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/mainObjectTypeLayout"
-                android:layout_weight="1">
-                <FrameLayout
-                    android:id="@+id/typeObjectArrowFrame"
-                    android:layout_width="30sp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10sp"
-                    android:layout_marginLeft="10sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-
-                    >
-                    <ImageView
-                        android:layout_width="15sp"
-                        android:layout_height="20sp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_arrowdown_green"
-                        />
-                </FrameLayout>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    app:layout_constraintStart_toEndOf="@+id/typeObjectArrowFrame"
-                    app:layout_constraintLeft_toRightOf="@+id/typeObjectArrowFrame"
-                    android:text="Тип объекта"
-                    android:gravity="center"
-                    android:id="@+id/mainObjectTypeTextView"
-                    android:layout_marginStart="5sp"
-                    android:layout_marginLeft="5sp"
-                    android:textColor="@color/black"
-                    android:textSize="17sp"
-                    />
-
-            </android.support.constraint.ConstraintLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="20dp"
+                android:id="@+id/cityRecycler"></android.support.v7.widget.RecyclerView>
         </LinearLayout>
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"><LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <android.support.v7.widget.RecyclerView
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tasktypeRecycler"
+            ></android.support.v7.widget.RecyclerView>
+
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -143,7 +128,6 @@
                 >
                 <ProgressBar
                     android:id="@+id/progressBar"
-
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
@@ -155,10 +139,7 @@
 
                 </android.support.v7.widget.RecyclerView>
             </FrameLayout>
-        </android.support.v4.widget.SwipeRefreshLayout>
+
+        </LinearLayout></android.support.v4.widget.NestedScrollView>  </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
-    <com.studio.dynamica.icgroup.ExtraFragments.MainObjectSetInfoFragment
-        android:id="@+id/setInfoFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.studio.dynamica.icgroup.ExtraFragments.MainObjectSetInfoFragment>
 </FrameLayout>

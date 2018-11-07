@@ -7,6 +7,25 @@ public class MainObjectRowForm {
     int people;
     int falses;
     int categories;
+    int location;
+    String city;
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setLocation(int location) {
+        this.location = location;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public int getLocation() {
+        return location;
+    }
+
     public MainObjectRowForm(){
 
     }

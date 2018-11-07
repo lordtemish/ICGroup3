@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:id="@+id/wholeLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="70dp"
+    android:layout_height="300dp">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="280dp">
+            <FrameLayout
+                android:id="@+id/backLayout"
+                android:layout_width="60dp"
+                android:layout_height="280dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:background="@drawable/greencircle_gdate"
+                >
+
+            </FrameLayout>
+            <FrameLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_gravity="top">
+                        <FrameLayout
+                            android:id="@+id/highLayout"
+                            android:layout_width="10dp"
+                            android:layout_height="200dp"
+                            android:layout_gravity="bottom|center_horizontal"
+                            android:background="@drawable/lighgreenbutton_rec"
+                            ></FrameLayout>
+                <FrameLayout
+                    android:id="@+id/mediumLayout"
+                    android:layout_width="10dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:background="@drawable/darkygreenbutton_rec"
+                    ></FrameLayout>
+                <FrameLayout
+                    android:visibility="gone"
+                    android:id="@+id/lowLayout"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:background="@drawable/greenbutton_rec"
+                    ></FrameLayout>
+            </FrameLayout>
+            <TextView
+                android:id="@+id/dayTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:text="@string/sreda"
+                android:layout_gravity="bottom|center_horizontal"
+                android:textColor="@color/black"
+                android:textSize="11sp"
+                />
+        </FrameLayout>
+</FrameLayout>

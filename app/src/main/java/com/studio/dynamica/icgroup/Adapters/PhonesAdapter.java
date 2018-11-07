@@ -69,7 +69,7 @@ public class PhonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ((MainActivity)view.getContext()).callPhone("+"+form.getPhone());
+                        ((MainActivity)view.getContext()).callPhone(form.getPhone());
                     }
                 });}
             }

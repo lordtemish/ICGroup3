@@ -4,7 +4,7 @@ public class WashForm {
     String name;
     String id;
     int n;
-    public WashForm(String name, String id , int number){
+    public  WashForm(String name, String id , int number){
         this.name=name;
         this.id=id;
         this.n=number;

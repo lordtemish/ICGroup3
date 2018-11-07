@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AVRForm {
+    String id="";
         String date, radio, workerName, workerPosition;
         int mark;
         List<MessageWorkForm> messageWorkForms;
@@ -17,6 +18,14 @@ public class AVRForm {
             messageWorkForms=new ArrayList<>();
             acceptForms=new ArrayList<>();
         }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
 
     public void setAcceptForms(List<AcceptForm> acceptForms) {
         this.acceptForms = acceptForms;

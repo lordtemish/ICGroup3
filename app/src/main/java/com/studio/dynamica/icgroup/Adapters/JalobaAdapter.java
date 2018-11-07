@@ -29,17 +29,7 @@ public class JalobaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             super(view);
 
             answerLayout=(ConstraintLayout) view.findViewById(R.id.answerLayout);
-            answerLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Bundle bundle=new Bundle();
-                    bundle.putBoolean("answerable",true);
-                    JalobaInfoFragment infoFragment=new JalobaInfoFragment();
-                    infoFragment.setArguments(bundle);
-                    ((MainActivity) context).setFragment(R.id.content_frame,infoFragment);
 
-                }
-            });
             jalobaInfoLayout=(LinearLayout) view.findViewById(R.id.jalobaInfoLayout);
             senderTextView=(TextView) view.findViewById(R.id.senderTextView);senderInfoTextView=(TextView) view.findViewById(R.id.senderInfoTextView);
             nameTextView=(TextView) view.findViewById(R.id.nameTextView);positionTextView=(TextView) view.findViewById(R.id.positionTextView);
@@ -51,12 +41,23 @@ public class JalobaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             setFonttype();
         }
 
-        private void setInfo(JalobaForm f){
+        private void setInfo(final JalobaForm f){
             positionTextView.setText(f.getPosition());
             nameTextView.setText(f.getName());
             textTextView.setText(f.getText());
             senderInfoTextView.setText(f.getClients());
             dateTextView.setText(f.getDate());
+            answerLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bundle bundle=new Bundle();
+                    bundle.putBoolean("answerable",true);
+                    bundle.putString("id",f.getId());
+                    JalobaInfoFragment infoFragment=new JalobaInfoFragment();
+                    infoFragment.setArguments(bundle);
+                    ((MainActivity) context).setFragment(R.id.content_frame,infoFragment);
+                }
+            });
             if(!answer){
                 answerLayout.setVisibility(View.GONE);
             }
@@ -86,13 +87,14 @@ public class JalobaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder1, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder1, final int position) {
         myHolder holder=(myHolder) holder1;
         holder.setInfo(list.get(position));
         holder.jalobaInfoLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Bundle bundle=new Bundle();
+                bundle.putString("id",list.get(position).getId());
                 bundle.putBoolean("answerable",false);
                 JalobaInfoFragment infoFragment=new JalobaInfoFragment();
                 infoFragment.setArguments(bundle);

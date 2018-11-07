@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="370sp"
+    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/light_grey"
+
+    android:layout_marginBottom="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 <LinearLayout
     android:id="@+id/mainObjectRowLinearLayout"
@@ -50,38 +51,52 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/progressLayout"
         android:layout_width="match_parent"
-        android:layout_height="200sp">
-        <ProgressBar
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/darkgrey"
+            android:textSize="13sp"
+            android:text="Успеваемость:"
+            android:id="@+id/resulLabel"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="10dp"
+            />
+        <ProgressBar
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="@+id/resulLabel"
+            app:layout_constraintTop_toBottomOf="@+id/resulLabel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             app:layout_constraintLeft_toLeftOf="parent"
             android:indeterminate="false"
-            android:layout_width="400sp"
-            android:layout_height="200sp"
+            android:layout_width="match_parent"
+            android:layout_marginEnd="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_height="15dp"
             android:id="@+id/mainOjectPercentProgress"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:progress="72"
-            android:progressDrawable="@drawable/progress_percentage"
+            android:progress="60"
+
+            android:progressDrawable="@drawable/horizontal_progress_percentage"
             android:secondaryProgress="100"
+            style="?android:attr/progressBarStyleHorizontal"
             />
         <TextView
             android:id="@+id/mainObjectRowPercentageTextView"
-            android:layout_width="80sp"
-            android:layout_height="80sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/mainOjectPercentProgress"
+            app:layout_constraintBottom_toBottomOf="@+id/mainOjectPercentProgress"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
             android:text="69%"
             android:textColor="@color/black"
             android:gravity="center"
-            android:textSize="32sp"
+            android:textSize="15sp"
             />
     </android.support.constraint.ConstraintLayout>
     <LinearLayout
@@ -90,7 +105,7 @@
         android:layout_marginRight="10sp"
         android:layout_marginStart="10sp"
         android:layout_marginLeft="10sp"
-        android:layout_marginBottom="10sp"
+        android:layout_marginBottom="20sp"
         android:layout_height="90sp"
         android:orientation="horizontal">
         <LinearLayout

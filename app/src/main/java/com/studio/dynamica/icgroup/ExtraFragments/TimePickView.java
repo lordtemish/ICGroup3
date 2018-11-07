@@ -10,10 +10,14 @@ import android.widget.TextView;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.R;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class TimePickView extends FrameLayout {
     TextView timeTextView,  makeTextView;
     ImageView plusImageView, minusImageView;
     public int time=0;
+    Calendar calendar;
     public TimePickView(Context context, AttributeSet attrs, int defstyle){
         super(context,attrs,defstyle);
         initView();
@@ -64,11 +68,17 @@ public class TimePickView extends FrameLayout {
             ti+=time;
         timeTextView.setText(ti+":00");
     }
+    public Calendar getChose(){
+        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.HOUR_OF_DAY,time);
+        return calendar;
+    }
     private void setFonttypes(){
         makeTextView.setTypeface(((MainActivity)getContext()).getTypeFace("demibold"));
         timeTextView.setTypeface(((MainActivity)getContext()).getTypeFace("demibold"));
     }
     private void createViews(View view) {
+        calendar=Calendar.getInstance();calendar.setTime(new Date());
         timeTextView=(TextView) view.findViewById(R.id.timeTextView);
         makeTextView=(TextView) view.findViewById(R.id.makeTextView);
         plusImageView=(ImageView) view.findViewById(R.id.plusImageView);

@@ -1,9 +1,27 @@
 package com.studio.dynamica.icgroup.Forms;
 
+import android.view.View;
+
 public class ChooseAcceptForm {
     boolean chose;
     String place, name, position;
     boolean client;
+    View.OnClickListener listener;
+    boolean listen=false;
+
+    public void setListener(View.OnClickListener listener) {
+        this.listener = listener;
+        listen=true;
+    }
+
+    public boolean isListen() {
+        return listen;
+    }
+
+    public View.OnClickListener getListener() {
+        return listener;
+    }
+
     public ChooseAcceptForm(String place, String name, String position){
         this.place=place;
         this.name=name;
@@ -18,6 +36,7 @@ public class ChooseAcceptForm {
         chose=false;
         client=c;
     }
+
     public void setClient(boolean client) {
         this.client = client;
     }

@@ -13,13 +13,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
+
+import com.android.volley.error.AuthFailureError;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.JsonArrayRequest;
+import com.android.volley.request.JsonObjectRequest;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Adapters.PhonesAdapter;
 import com.studio.dynamica.icgroup.Adapters.ProgressPhonesAdapter;
@@ -35,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,7 +62,8 @@ public class PassportObjectInfoListFragment extends Fragment {
     TextView title;
     Boolean is_trainee=false;
     String id;
-
+    LinearLayout emplLa;
+    ImageView arrowTop;
     PassportObjectInfoListAddNewEmployeeFragment employeeFragment;
     public PassportObjectInfoListFragment() {
         // Required empty public constructor
@@ -69,6 +76,9 @@ public class PassportObjectInfoListFragment extends Fragment {
         // Inflate the layout for this fragment
         id=getArguments().getString("id","0");
        view=inflater.inflate(R.layout.fragment_passport_object_info_list, container, false);
+
+       emplLa=(LinearLayout)view.findViewById(R.id.emplLa);
+        arrowTop=(ImageView)view.findViewById(R.id.arrowTop);
        title=(TextView) view.findViewById(R.id.title);
        title.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/AvenirNextLTPro-Bold.ttf"));
        smenaSTextView=new ArrayList<>();
@@ -134,7 +144,25 @@ public class PassportObjectInfoListFragment extends Fragment {
             }
         };
         employeeFragment.click(requestListener);
+
+        showEmpls();
+        arrowTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showEmpls();
+            }
+        });
         return view;
+    }
+    private void showEmpls(){
+        if(emplLa.getVisibility()==View.VISIBLE){
+            emplLa.setVisibility(View.GONE);
+            arrowTop.setImageResource(R.drawable.ic_arrowdown);
+        }
+        else{
+            emplLa.setVisibility(View.VISIBLE);
+            arrowTop.setImageResource(R.drawable.ic_arrowup);
+        }
     }
     private void setAddNewEmployee(){
         Bundle bundle=new Bundle();
@@ -214,7 +242,14 @@ public class PassportObjectInfoListFragment extends Fragment {
                 public void onErrorResponse(VolleyError error) {
 
                 }
-            });
+            }){  @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
+                return headers;
+            }};
             (((MainActivity) getActivity()).requestQueue).add(objectRequest);
         }
         else if(url1.contains("workers")){
@@ -224,14 +259,22 @@ public class PassportObjectInfoListFragment extends Fragment {
                     List<List<ProgressPhoneForm>> phoneForms=new ArrayList<>();phoneForms.add(new ArrayList<ProgressPhoneForm>());phoneForms.add(new ArrayList<ProgressPhoneForm>());phoneForms.add(new ArrayList<ProgressPhoneForm>());phoneForms.add(new ArrayList<ProgressPhoneForm>());
                     for(int i=0;i<response.length();i++){
                         try {
-                            JSONObject object = response.getJSONObject(i);
-                            int shift=object.getInt("shift");
 
+                            JSONObject object = response.getJSONObject(i);
+                            if(object.isNull("user")) continue;
+                            int shift=object.getInt("shift");
+                            JSONObject user=object.getJSONObject("user");
+                            Log.d("FUCKINGTROUBLE",""+user.get("fullname"));
+                            String id=object.getString("id");
                             if(object.getBoolean("is_trainee")) {
-                                phoneForms.get(3).add(new ProgressPhoneForm(new PhonesRowForm(true, object.get("fullname") + "", "Стажёр", object.getString("phone") + ""), Integer.parseInt(""+Math.round(object.getDouble("attendance_rate")*100))));
+                                ProgressPhoneForm progressPhoneForm=new ProgressPhoneForm(new PhonesRowForm(true, user.get("fullname") + "", "Стажёр", user.getString("phone") + ""), Integer.parseInt(""+Math.round(object.getDouble("attendance_rate")*100)));
+                                progressPhoneForm.setId(id);
+                                phoneForms.get(3).add(progressPhoneForm);
                                 }
                                 else {
-                                phoneForms.get(shift - 1).add(new ProgressPhoneForm(new PhonesRowForm(true, object.get("fullname") + "", "ОПУ", object.getString("phone") + ""), Integer.parseInt(""+Math.round(object.getDouble("attendance_rate")*100))));
+                                ProgressPhoneForm progressPhoneForm=new ProgressPhoneForm(new PhonesRowForm(true, user.get("fullname") + "", "ОПУ", user.getString("phone") + ""), Integer.parseInt(""+Math.round(object.getDouble("attendance_rate")*100)));
+                                progressPhoneForm.setId(id);
+                                phoneForms.get(shift - 1).add(progressPhoneForm);
                             }
 
                         }
@@ -239,14 +282,23 @@ public class PassportObjectInfoListFragment extends Fragment {
                             e.printStackTrace();
                         }
                     }
+
                     updateSmena(phoneForms);
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-
+                    Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
+                progressLayout.setVisibility(View.GONE);
                 }
-            });
+            }){  @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
+                return headers;
+            }};
             (((MainActivity)getActivity()).requestQueue).add(arrayRequest);
         }
     }
@@ -255,11 +307,10 @@ public class PassportObjectInfoListFragment extends Fragment {
         try {
             String name = object.getString("name");
             String c_at=object.getString("created_at");
-            String f_at=object.getString("finished_at");
+
             Date cr_at=null, fi_at=null;
             try{
                 cr_at=((MainActivity) getActivity()).inputFormat.parse(c_at);
-                fi_at=((MainActivity) getActivity()).inputFormat.parse(f_at);
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -279,20 +330,51 @@ public class PassportObjectInfoListFragment extends Fragment {
                 mapText.get("infoListRegion").setText(location.getString("name"));
                 mapText.get("infoListObjectAddress").setText(address);
                 mapText.get("infoListWorkStart").setText(((MainActivity)getActivity()).getDateText(cr_at));
-                mapText.get("infoListWorkStop").setText(((MainActivity)getActivity()).getDateText(fi_at));
+                String ff="";
+                if(!object.isNull("finished_at"));
+                {
+                    String f_at = object.getString("finished_at");
+                    if(!f_at.equals("null"))
+                    ff = ((MainActivity) getActivity()).getdate(f_at);
+                }
+                if(ff.length()>6)
+                mapText.get("infoListWorkStop").setText(ff.substring(0,ff.length()-6));
+
                 mapText.get("infoListObjectArea").setText(area);
                 try {
+                    phonesRowFormList.clear();
                     List<PhonesRowForm> phonesRowForms=new ArrayList<>();
-                    mapText.get("infoListHead").setText(producer.getString("fullname"));
-                    phonesRowForms.add(new PhonesRowForm(true,producer.getString("fullname"),"Начальник производства",producer.getString("phone")));
-                    mapText.get("infoListAdvisor").setText(curator.getString("fullname"));
-                    phonesRowForms.add(new PhonesRowForm(true,curator.getString("fullname"),"Куратор",curator.getString("phone")));
-                    mapText.get("infoListAdministrator").setText(administrator.getString("fullname"));
-                    phonesRowForms.add(new PhonesRowForm(true,administrator.getString("fullname"),"Администратор",administrator.getString("phone")));
+                    if(producer!=null) {
+                        mapText.get("infoListHead").setText(producer.getString("fullname"));
+                        phonesRowForms.add(new PhonesRowForm(true, producer.getString("fullname"), "Начальник производства", producer.getString("phone")));
+                    }
+                    else{
+                        mapText.get("infoListHead").setText("");
+                    }
+                    if(curator!=null) {
+                        mapText.get("infoListAdvisor").setText(curator.getString("fullname"));
+                        phonesRowForms.add(new PhonesRowForm(true, curator.getString("fullname"), "Куратор", curator.getString("phone")));
+                    }
+                    else{
+                        mapText.get("infoListAdvisor").setText("");
+                    }
+                    if(administrator!=null) {
+                        mapText.get("infoListAdministrator").setText(administrator.getString("fullname"));
+                        phonesRowForms.add(new PhonesRowForm(true, administrator.getString("fullname"), "Администратор", administrator.getString("phone")));
+                    }
+                    else{
+                        mapText.get("infoListAdministrator").setText("");
+                    }
+                    if(client!=null)
                     mapText.get("infoListClient").setText(client.getString("name"));
+                    else{
+                        mapText.get("infoListClient").setText("");
+                    }
+                    if(contactor!=null)
                     mapText.get("infoListClientPre").setText(contactor.getString("fullname"));
-
+                    else mapText.get("infoListClientPre").setText("");
                     setPhonesAdapter(phonesRowForms);
+                    adapter.notifyDataSetChanged();
                 }
                 catch (NullPointerException e){e.printStackTrace();
                 }
@@ -325,6 +407,7 @@ public class PassportObjectInfoListFragment extends Fragment {
             return object.getJSONObject(s);
         }
         catch (JSONException e){
+            e.printStackTrace();
             return null;
         }
     }

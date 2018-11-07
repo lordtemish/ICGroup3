@@ -2,10 +2,12 @@ package com.studio.dynamica.icgroup.Adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -29,6 +31,7 @@ public class ProgressPhonesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         TextView PercentageTextView;
         LinearLayout wholeLayout;
         TextView nameChangeText;
+        ImageView circlePhoneImageView;
         TextView PositionText;
         TextView changeText;
         LinearLayout linearLayout;
@@ -37,6 +40,7 @@ public class ProgressPhonesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             wholeLayout=(LinearLayout) view.findViewById(R.id.wholeLayout);
             linearLayout=(LinearLayout) view.findViewById(R.id.extraLayout);
             nameTextView=(TextView) view.findViewById(R.id.nameTextView);
+            circlePhoneImageView=(ImageView) view.findViewById(R.id.circlePhoneImageView);
             nameTextView.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/AvenirNextLTPro-Bold.ttf"));
             positionTextView=(TextView) view.findViewById(R.id.positionTextView);
             positionTextView.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/AvenirNextLTPro-Regular.ttf"));
@@ -51,6 +55,14 @@ public class ProgressPhonesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             changeText.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/AvenirNextLTPro-Bold.ttf"));
 
         }
+        private void setPhoneListener(final String s){
+            circlePhoneImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((MainActivity)view.getContext()).callPhone(s);
+                }
+            });
+        }
     }
     public ProgressPhonesAdapter(List<ProgressPhoneForm> forms,Context context){
         this.context=context;
@@ -64,7 +76,7 @@ public class ProgressPhonesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder1, int position){
         myHolder holder=(myHolder) holder1;
-        ProgressPhoneForm form=list.get(position);
+        final ProgressPhoneForm form=list.get(position);
         holder.nameTextView.setText(form.getForm().getName());
         holder.positionTextView.setText(form.getForm().getPosition());
         holder.progressBar.setProgress(form.getProgress());
@@ -73,9 +85,16 @@ public class ProgressPhonesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         holder.wholeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle bundle=new Bundle();
+                bundle.putString("id",form.getId());
+                bundle.putString("name",form.getForm().getName());
+                bundle.putString("phone",form.getForm().getPhone());
+                fragment.setArguments(bundle);
                 ((MainActivity) context).setFragment(R.id.content_frame,fragment);
             }
         });
+        holder.setPhoneListener(form.getForm().getPhone());
+
 
         if(list.get(position).isChange()){
                 holder.linearLayout.setVisibility(View.VISIBLE);

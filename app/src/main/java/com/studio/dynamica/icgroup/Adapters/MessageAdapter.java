@@ -62,10 +62,19 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         list=new ArrayList<>();
         list.add(form);
     }
+
+    public void setList(List<MessageForm> list) {
+        this.list = list;
+    }
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holderq, int position) {
         myHolder holder=(myHolder) holderq;
         holder.setInfo(list.get(position));
+    }
+
+    public List<MessageForm> getList() {
+        return list;
     }
 
     @NonNull

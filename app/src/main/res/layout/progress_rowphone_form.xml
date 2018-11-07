@@ -42,14 +42,14 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content" android:layout_weight="1"
                                         android:text="Иванов Иванов Иванович"
-                                        android:textSize="14sp"
+                                        android:textSize="13sp"
                                         android:textColor="@color/black"/>
                                 <TextView
                                     android:id="@+id/positionTextView"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content" android:layout_weight="1"
                                     android:textColor="@color/black"
-                                    android:textSize="14sp"
+                                    android:textSize="13sp"
                                     android:text="ОПУ"/>
                             </LinearLayout>
                             <ImageView
@@ -99,7 +99,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:text="55%"
                         />
                 </FrameLayout>

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Forms.ChooseAcceptForm;
 import com.studio.dynamica.icgroup.R;
 
@@ -29,6 +30,9 @@ public class ChooseAcceptServiceAdapter extends RecyclerView.Adapter<RecyclerVie
             nameTextView.add((TextView) view.findViewById(R.id.firstNameTextView));nameTextView.add((TextView) view.findViewById(R.id.secondNameTextView));
             placeTextView.add((TextView) view.findViewById(R.id.firstPlaceTextView));placeTextView.add((TextView) view.findViewById(R.id.secondPlaceTextView));
             positionTextView.add((TextView) view.findViewById(R.id.firstPositionTextView));positionTextView.add((TextView) view.findViewById(R.id.secondPositionTextView));
+
+            ((MainActivity)context).setType("demibold",placeTextView.get(0),nameTextView.get(0),placeTextView.get(1),nameTextView.get(1));
+            ((MainActivity)context).setType("light",positionTextView.get(0),positionTextView.get(1));
         }
         private void setInfo(ChooseAcceptForm form, int num){
             nameTextView.get(num).setText(form.getName());
@@ -42,6 +46,9 @@ public class ChooseAcceptServiceAdapter extends RecyclerView.Adapter<RecyclerVie
             if(form.isClient()){
                 wholeLayouts.get(num).setBackgroundResource(R.drawable.grey_corners_line);
             }
+            else{
+                wholeLayouts.get(num).setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
+            }
         }
         private void setSecondDelete(){
             wholeLayouts.get(1).setVisibility(View.INVISIBLE);
@@ -51,6 +58,9 @@ public class ChooseAcceptServiceAdapter extends RecyclerView.Adapter<RecyclerVie
 
                 }
             });
+        }
+        private void setSecondSHow(){
+            wholeLayouts.get(1).setVisibility(View.VISIBLE);
         }
     }
     List<ChooseAcceptForm> list;
@@ -76,13 +86,18 @@ public class ChooseAcceptServiceAdapter extends RecyclerView.Adapter<RecyclerVie
                 holder.setSecondDelete();
                 break;
             }
+            else{
+                holder.setSecondSHow();
+            }
             holder.setInfo(list.get(j),i);
             holder.wholeLayouts.get(i).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     list.get(j).setChose(!list.get(j).isChose());
-                    //notifyItemChanged(position);
                     notifyDataSetChanged();
+                    if(list.get(j).isListen()){
+                        list.get(j).getListener().onClick(view);
+                    }
                 }
             });
 

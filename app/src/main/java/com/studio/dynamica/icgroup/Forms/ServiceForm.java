@@ -3,11 +3,21 @@ package com.studio.dynamica.icgroup.Forms;
 public class ServiceForm {
     String serviceType;
     String empl;
+    String id;
     String position;
     String status;
     String priority;
     int day1;
     int day2;
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
     public ServiceForm(){}
     public ServiceForm(String s, String e,String position, String status, String p, int d1, int d2){
         serviceType=s;

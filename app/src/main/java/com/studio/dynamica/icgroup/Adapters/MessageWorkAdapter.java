@@ -20,7 +20,7 @@ import java.util.List;
 public class MessageWorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private class myHolder extends RecyclerView.ViewHolder{
         TextView nameTextView, markTextView, textTextView;
-        LinearLayout extraLayout;
+        LinearLayout extraLayout, wholeLayout;
         ImageView messageImageView;
         private myHolder(View view){
             super(view);
@@ -29,6 +29,7 @@ public class MessageWorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             markTextView=(TextView) view.findViewById(R.id.markTextView);
             messageImageView=(ImageView) view.findViewById(R.id.messageImageView);
             extraLayout=(LinearLayout) view.findViewById(R.id.extraLayout);
+            wholeLayout=(LinearLayout) view.findViewById(R.id.wholeLayout);
             setFonttypes();
         }
         private void setFonttypes(){
@@ -43,14 +44,24 @@ public class MessageWorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         private void setInfo(MessageWorkForm form){
             nameTextView.setText(form.getName());
             int a=View.INVISIBLE;
-            if(form.isMessage())
-                 a=View.VISIBLE;
-            messageImageView.setVisibility(a);
+
             markTextView.setText(form.getNum()+"");
             if(form.getInfo().length()>0){
                 textTextView.setText(form.getInfo());
-                extraLayout.setVisibility(View.VISIBLE);
+                a=View.VISIBLE;
+                wholeLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(extraLayout.getVisibility()==View.VISIBLE){
+                            extraLayout.setVisibility(View.GONE);
+                        }
+                        else{
+                            extraLayout.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
             }
+            messageImageView.setVisibility(a);
         }
     }
     Context context;

@@ -10,35 +10,41 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         >
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="100sp"
+            android:layout_height="170sp"
+            android:padding="20dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:id="@+id/linearNames">
+            android:id="@+id/linearNames"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/greenImageDrawer"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            >
             <TextView
                 android:id="@+id/drawerNameText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:maxLines="2"
-                android:layout_weight="1"
-                android:gravity="center|bottom"
-                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:textSize="17sp"
                 android:textColor="@color/black"
                 android:text="@string/nameExample"
                 />
             <TextView
+                android:layout_marginTop="10dp"
                 android:id="@+id/drawerPositionText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:textSize="12sp"
-                android:gravity="center_horizontal"
+                android:gravity="center_vertical"
                 android:text="@string/positionExample"
                 />
         </LinearLayout>
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="100sp">
+
             <ImageView
                 android:id="@+id/greenImageDrawer"
                 android:layout_width="100sp"
@@ -49,56 +55,64 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:background="@drawable/circle_image"
                 android:src="@drawable/grey_circle"
                 >
             </ImageView>
-            <ImageView
-                android:id="@+id/settings"
-                android:layout_width="35sp"
-                android:layout_height="35sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/greenImageDrawer"
-                app:layout_constraintEnd_toStartOf="@+id/greenImageDrawer"
-                android:src="@drawable/ic_settings"
-                />
+
+        </android.support.constraint.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp">
             <LinearLayout
-                android:id="@+id/notificationLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/greenImageDrawer"
-                app:layout_constraintStart_toEndOf="@+id/greenImageDrawer"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                >
+                android:layout_gravity="center_vertical">
                 <ImageView
-                    android:layout_width="33sp"
-                    android:layout_height="37sp"
-                    android:src="@drawable/ic_bell"
-                    android:layout_gravity="center"
+                    android:id="@+id/settings"
+                    android:layout_width="35sp"
+                    android:layout_height="35sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/greenImageDrawer"
+                    app:layout_constraintEnd_toStartOf="@+id/greenImageDrawer"
+                    android:src="@drawable/ic_settings"
                     />
-                <TextView
-                    android:id="@+id/notificationNum"
-                    android:layout_marginLeft="10sp"
-                    android:layout_marginStart="10sp"
-                    android:layout_width="20sp"
-                    android:layout_height="20sp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/green_circle"
-                    android:textSize="12sp"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:text="34"/>
 
+                <LinearLayout
+                    android:id="@+id/notificationLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginLeft="30dp"
+                    >
+                    <ImageView
+                        android:layout_width="33sp"
+                        android:layout_height="37sp"
+                        android:src="@drawable/ic_bell"
+                        android:layout_gravity="center"
+                        />
+                    <TextView
+                        android:id="@+id/notificationNum"
+                        android:layout_marginLeft="10sp"
+                        android:layout_marginStart="10sp"
+                        android:layout_width="20sp"
+                        android:layout_height="20sp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/green_circle"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="34"/>
+
+                </LinearLayout>
             </LinearLayout>
-
-        </android.support.constraint.ConstraintLayout>
+        </LinearLayout>
     </LinearLayout>
 </FrameLayout>

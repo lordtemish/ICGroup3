@@ -20,7 +20,6 @@
             android:layout_height="wrap_content"
             android:background="@drawable/white_page"
             android:orientation="vertical"
-            android:paddingBottom="20sp"
             >
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -40,17 +39,28 @@
                     android:textSize="13sp"
                     />
                     <ImageView
-                        android:layout_width="25sp"
-                        android:layout_height="25sp"
+                        android:id="@+id/arrowTop"
+                        android:layout_width="30sp"
+                        android:layout_height="30sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         android:layout_marginEnd="20sp"
                         android:layout_marginRight="20sp"
-                        android:src="@drawable/ic_arrrowdowngreen"
+                        android:padding="7dp"
+                        android:src="@drawable/ic_arrowdown"
+                        android:background="@drawable/green_circle"
                         />
             </android.support.constraint.ConstraintLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible"
+                android:id="@+id/emplLa"
+                android:layout_marginBottom="20dp"
+                >
             <LinearLayout
                 android:paddingTop="10sp"
                 android:paddingBottom="10sp"
@@ -77,7 +87,7 @@
                         android:textColor="@color/darkgrey"
                         android:text="Наименование объекта"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         />
                     <TextView
                         android:id="@+id/infoListRegionTextView"
@@ -93,7 +103,7 @@
                         android:textColor="@color/darkgrey"
                         android:text="Регион"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         />
                     <TextView
                         android:id="@+id/infoListObjectAddressTextView"
@@ -108,7 +118,7 @@
                         android:textColor="@color/darkgrey"
                         android:text="Адрес объекта"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         />
                 </LinearLayout>
                 <LinearLayout
@@ -125,7 +135,7 @@
                         android:textColor="@color/black"
                         android:text="Адрес объекта"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         />
                     <TextView
                         android:id="@+id/infoListRegion"
@@ -135,7 +145,7 @@
                         android:textColor="@color/black"
                         android:text="Адрес объекта"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
 
                         />
                     <TextView
@@ -147,7 +157,7 @@
                         android:textColor="@color/black"
                         android:text="Адрес объекта"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         />
                 </LinearLayout>
             </LinearLayout>
@@ -177,7 +187,7 @@
                     android:textColor="@color/darkgrey"
                     android:text="Начало работы"
                     android:layout_weight="1"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
                     />
                 <TextView
                     android:id="@+id/infoListWorkStopTextView"
@@ -193,7 +203,7 @@
                     android:textColor="@color/darkgrey"
                     android:text="Конец работы"
                     android:layout_weight="1"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
                     />
                 <TextView
                     android:id="@+id/infoListObjectAreaTextView"
@@ -208,7 +218,7 @@
                     android:textColor="@color/darkgrey"
                     android:text="Площадь объекта"
                     android:layout_weight="1"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
                     />
                 </LinearLayout>
                 <LinearLayout
@@ -225,7 +235,7 @@
                     android:textColor="@color/black"
                     android:text="Адрес объекта"
                     android:layout_weight="1"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
                     />
                 <TextView
                     android:id="@+id/infoListWorkStop"
@@ -235,7 +245,7 @@
                     android:textColor="@color/black"
                     android:text="Адрес объекта"
                     android:layout_weight="1"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
 
                     />
                 <TextView
@@ -247,7 +257,7 @@
                     android:textColor="@color/black"
                     android:text="Адрес объекта"
                     android:layout_weight="1"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
                     />
                 </LinearLayout>
             </LinearLayout>
@@ -277,7 +287,7 @@
                         android:textColor="@color/darkgrey"
                         android:text="Начальник производства"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         />
                     <TextView
                         android:id="@+id/infoListAdvisorTextView"
@@ -293,7 +303,7 @@
                         android:textColor="@color/darkgrey"
                         android:text="Куратор"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         />
                     <TextView
                         android:id="@+id/infoListAdministratorTextView"
@@ -308,7 +318,7 @@
                         android:textColor="@color/darkgrey"
                         android:text="Администратор"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         />
                 </LinearLayout>
                 <LinearLayout
@@ -325,7 +335,7 @@
                         android:textColor="@color/black"
                         android:text="Адрес объекта"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         />
                     <TextView
                         android:id="@+id/infoListAdvisor"
@@ -335,7 +345,7 @@
                         android:textColor="@color/black"
                         android:text="Адрес объекта"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
 
                         />
                     <TextView
@@ -347,7 +357,7 @@
                         android:textColor="@color/black"
                         android:text="Адрес объекта"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         />
                 </LinearLayout>
             </LinearLayout>
@@ -377,7 +387,7 @@
                         android:textColor="@color/darkgrey"
                         android:text="Клиент"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         />
 
                     <TextView
@@ -393,7 +403,7 @@
                         android:textColor="@color/darkgrey"
                         android:text="Ответсвенное лицо"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         />
                 </LinearLayout>
                 <LinearLayout
@@ -410,7 +420,7 @@
                         android:textColor="@color/black"
                         android:text="Адрес объекта"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         />
 
                     <TextView
@@ -422,9 +432,10 @@
                         android:textColor="@color/black"
                         android:text="Адрес объекта"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         />
                 </LinearLayout>
+            </LinearLayout>
             </LinearLayout>
         </LinearLayout>
         <android.support.v7.widget.RecyclerView

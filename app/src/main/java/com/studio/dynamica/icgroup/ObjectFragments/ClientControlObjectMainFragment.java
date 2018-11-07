@@ -7,13 +7,21 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.error.AuthFailureError;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.JsonArrayRequest;
 import com.shawnlin.numberpicker.NumberPicker;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Adapters.AVRAdapter;
@@ -29,19 +37,26 @@ import com.studio.dynamica.icgroup.Forms.OlkForm;
 import com.studio.dynamica.icgroup.Forms.svodkaRateForm;
 import com.studio.dynamica.icgroup.R;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ClientControlObjectMainFragment extends Fragment {
-    int page=0;
-    List<String> pages;
+    int page=0, location=0;
+    List<String> pages, ids;
     View view;
+    FrameLayout extraLayout;
     NumberPicker numberPicker, yearPicker;
     TextView pageInfo, addNewTextView,mainObjectTitle, clientControlInfoTextView, yearTextView, monthTextView,PercentageTextView;
     LinearLayout progressLayout, createNewLayout;
@@ -52,16 +67,22 @@ public class ClientControlObjectMainFragment extends Fragment {
     String[] data = {"Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"};
     ClientControlAdapter OlkAdapter, svodkaAdapter, checkListAdapter;
     AVRAdapter avrAdapter;
-    View.OnClickListener createOlkListener, createCheckListListener, svodkaListener;
+    View.OnClickListener createOlkListener, createCheckListListener, svodkaListener, avrListener;
+    String id="", url, city;
+    List<Object> olkForms,checkListForms, svodkaRateForms;
+    List<AVRForm> avrForms;
     public ClientControlObjectMainFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        id=getArguments().getString("id");
+        city=getArguments().getString("city");
+        location=getArguments().getInt("location");
+        url=((MainActivity)getActivity()).MAIN_URL+"controls/?point="+id;
         cal=Calendar.getInstance();
         cal.setTime(new Date());
         view=inflater.inflate(R.layout.fragment_client_control_object_main, container, false);
@@ -74,35 +95,20 @@ public class ClientControlObjectMainFragment extends Fragment {
         ((MainActivity)getActivity()).setRecyclerViewOrientation(rateRecyclerView,LinearLayoutManager.HORIZONTAL);
         rateRecyclerView.setAdapter(new RateStarsAdapter(true));
 
-        List<Object> olkForms=new ArrayList<>();
-        List<Object> checkListForms=new ArrayList<>();
-        List<Object> svodkaRateForms=new ArrayList<>();
+        olkForms=new ArrayList<>();
+        checkListForms=new ArrayList<>();
+        svodkaRateForms=new ArrayList<>();
 
-        List<AVRForm> avrForms=new ArrayList<>();
+        avrForms=new ArrayList<>();
         List<MessageWorkForm> workForms=new ArrayList<>();
         List<AcceptForm> acceptForms=new ArrayList<>();
 
-        olkForms.add(new OlkForm("","","",1));
-        olkForms.add(new OlkForm("","","",1));
-        olkForms.add(new OlkForm("","","",1));
-        checkListForms.add(new CheckListForm("24 января 2018","Темирлан Алмасов",1));
-        checkListForms.add(new CheckListForm("24 января 2018","Даурен Копбай",1));
-        checkListForms.add(new CheckListForm("24 января 2018","Аян Тилигенов",1));
-        svodkaRateForms.add(new svodkaRateForm("","","",1));
-        svodkaRateForms.add(new svodkaRateForm("","","",1));
-        svodkaRateForms.add(new svodkaRateForm("","","",1));
-
-        acceptForms.add(new AcceptForm("Темирлан Алмасов","Отдел продаж","Куратор","Выполнено",true));acceptForms.add(new AcceptForm("Темирлан Алмасов","Отдел продаж","Куратор","Провалено",false));acceptForms.add(new AcceptForm("Темирлан Алмасов","Отдел продаж","Куратор","Выполнено",true));acceptForms.add(new AcceptForm("Темирлан Алмасов","Отдел продаж","Куратор","Выполнено",true));
-        workForms.add(new MessageWorkForm("Тимур Сыздыков",false,5,"Ruby’s bundler, it is similar in spirit to those tools. While pip can install Python packages, Pipenv is recommended as it’s a higher"));workForms.add(new MessageWorkForm("Тимур Сыздыков",true,5,""));workForms.add(new MessageWorkForm("Тимур Сыздыков",false,5,""));workForms.add(new MessageWorkForm("Тимур Сыздыков",false,5,""));
-        AVRForm avrForm=new AVRForm("02 Августа 2018",5,"ОПУ данного объекта","Тимур Сыздыков","куратор");avrForm.setAcceptForms(acceptForms);avrForm.setMessageWorkForms(workForms);
-        AVRForm avrForm1=new AVRForm("02 Августа 2018",5,"ОПУ данного объекта","Тимур Сыздыков","куратор");avrForm1.setAcceptForms(acceptForms);avrForm1.setMessageWorkForms(workForms);
-        AVRForm avrForm2=new AVRForm("02 Августа 2018",5,"ОПУ данного объекта","Тимур Сыздыков","куратор");avrForm2.setAcceptForms(acceptForms);avrForm2.setMessageWorkForms(workForms);
-        avrForms.add(avrForm);avrForms.add(avrForm1);avrForms.add(avrForm2);
 
         OlkAdapter=new ClientControlAdapter(olkForms, 0);
         avrAdapter=new AVRAdapter(avrForms);
         checkListAdapter=new ClientControlAdapter(checkListForms,1);
         svodkaAdapter=new ClientControlAdapter(svodkaRateForms,2);
+        svodkaAdapter.setCity(city);svodkaAdapter.setLocation(location);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -110,10 +116,15 @@ public class ClientControlObjectMainFragment extends Fragment {
 
 
         pages=new ArrayList<>();
+        ids=new ArrayList<>();
         pages.add("Опросной лист клиента");
+        ids.add("QUESTIONNAIRE");
         pages.add("Акт выполненых работ");
+        ids.add("PERFORMANCE");
         pages.add("Чек-лист проверки качества работы");
+        ids.add("CHECKLIST");
         pages.add("Сводка по результатам обзвона");
+        ids.add("RINGING");
 
         View.OnClickListener click=new View.OnClickListener() {
             @Override
@@ -197,6 +208,7 @@ public class ClientControlObjectMainFragment extends Fragment {
         rateLayout=(ConstraintLayout) view.findViewById(R.id.rateLayout);
         recyclerView=(RecyclerView) view.findViewById(R.id.CCRecyclerView);
         rateRecyclerView=(RecyclerView) view.findViewById(R.id.rateRecyclerView);
+        extraLayout=(FrameLayout) view.findViewById(R.id.extraLayout);
 
         numberPicker=(NumberPicker) view.findViewById(R.id.numberPicker);
         yearPicker=(NumberPicker) view.findViewById(R.id.yearPicker);
@@ -219,21 +231,48 @@ public class ClientControlObjectMainFragment extends Fragment {
         createOlkListener=new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)view.getContext()).setFragment(R.id.content_frame,new AddNewOlkFragment());
+                Fragment fragment=new AddNewOlkFragment();
+                Bundle bundle=new Bundle();
+                bundle.putString("id",id);
+                bundle.putString("author","11");
+                fragment.setArguments(bundle);
+                ((MainActivity)view.getContext()).setFragment(R.id.content_frame,fragment);
             }
         };
         createNewLayout.setOnClickListener(createOlkListener);
 
+
         createCheckListListener=new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity) getActivity()).setFragment(R.id.content_frame,new AddNewCheckListFragment());
+                Fragment fragment=new AddNewCheckListFragment();
+                Bundle bundle=new Bundle();
+                bundle.putString("id",id);
+                bundle.putString("author","11");
+                fragment.setArguments(bundle);
+                ((MainActivity) getActivity()).setFragment(R.id.content_frame,fragment);
             }
         };
         svodkaListener=new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity) getActivity()).setFragment(R.id.content_frame,new AddNewSvodkaFragment());
+                Fragment fragment=new AddNewSvodkaFragment();
+                Bundle bundle=new Bundle();
+                bundle.putString("id",id);
+                bundle.putString("author","11");
+                fragment.setArguments(bundle);
+                ((MainActivity) getActivity()).setFragment(R.id.content_frame,fragment);
+            }
+        };
+        avrListener=new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment=new AddNewAVRFragment();
+                Bundle bundle=new Bundle();
+                bundle.putString("id",id);
+                bundle.putString("author","11");
+                fragment.setArguments(bundle);
+                ((MainActivity)getActivity()).setFragment(R.id.content_frame,fragment);
             }
         };
     }
@@ -250,6 +289,7 @@ public class ClientControlObjectMainFragment extends Fragment {
         checkPage();
     }
     public void checkPage(){
+        extraLayout.setVisibility(View.VISIBLE);
         pageInfo.setText(pages.get(page));
         String cr="Создать ";
         String s="Чек лист";
@@ -264,7 +304,7 @@ public class ClientControlObjectMainFragment extends Fragment {
                 s="АВР";
                 setProgressLayout();
                 recyclerView.setAdapter(avrAdapter);
-                createNewLayout.setOnClickListener(null);
+                createNewLayout.setOnClickListener(avrListener);
                 break;
             case 2:
                 s="Чек лист";
@@ -279,7 +319,156 @@ public class ClientControlObjectMainFragment extends Fragment {
                 createNewLayout.setOnClickListener(svodkaListener);
                 break;
         }
+        JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, url + "&kind=" + ids.get(page), null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                setInfo(response);
+                extraLayout.setVisibility(View.GONE);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+extraLayout.setVisibility(View.GONE);
+                Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
+            }
+        }){  @Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            HashMap<String, String> headers = new HashMap<String, String>();
+            headers.put("Accept", "application/json");
+            headers.put("Content-Type", "application/json; charset=utf-8");
+            headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
+            return headers;
+        }};
+        ((MainActivity)getActivity()).requestQueue.add(jsonArrayRequest);
         addNewSetText(cr+s);
+    }
+    private String getdate(Calendar calendar){
+        return calendar.get(Calendar.DAY_OF_MONTH)+" "+data[calendar.get(Calendar.MONTH)]+" "+calendar.get(Calendar.YEAR)+"|"+calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE);
+    }
+    private String getdate(Calendar calendar, int a){
+        return calendar.get(Calendar.DAY_OF_MONTH)+" "+data[calendar.get(Calendar.MONTH)]+" "+calendar.get(Calendar.YEAR);
+    }
+
+    private void setInfo(JSONArray array){
+        try {
+             if(page==0){
+                 olkForms.clear();
+                 for(int i=0;i<array.length();i++){
+                     JSONObject object=array.getJSONObject(i);
+                     JSONObject author=object.getJSONObject("author");
+                     String created_at=object.getString("created_at");
+                     Date date=((MainActivity)getActivity()).inputFormat.parse(created_at);
+                     Calendar calendar=Calendar.getInstance();
+                     calendar.setTime(date);
+                     String dateTime=((MainActivity)getActivity()).getdate(calendar);
+                     String name=author.getString("fullname");
+                     int sum=0;
+                     JSONArray pos=object.getJSONArray("positions");
+                     for(int j=0;j<pos.length();j++){
+                         JSONObject posit=pos.getJSONObject(j);
+                         sum+=posit.getInt("rate");
+                     }
+                     String role=author.getString("role");
+                     String position=((MainActivity)getActivity()).positions.get(role);
+                     if(pos.length()>0)
+                     sum=sum/(pos.length());
+                     else{
+                         sum=0;
+                     }
+                     OlkForm olkForm=new OlkForm(dateTime,name,position,sum);
+                     olkForm.setId(object.getString("id"));
+                     olkForms.add(olkForm);
+                 }
+                 OlkAdapter.notifyDataSetChanged();
+             }
+             if(page==1){
+                avrForms.clear();
+                for(int i=0;i<array.length();i++){
+                    JSONObject object=array.getJSONObject(i);
+                    String date1=object.getString("created_at");
+                    Date date=((MainActivity)getActivity()).inputFormat.parse(date1);
+                    Calendar calendar=Calendar.getInstance();calendar.setTime(date);
+                    String thatdate=getdate(calendar,0);
+                    int sum=0;
+                    JSONArray pos=object.getJSONArray("positions");
+                    for(int j=0;j<pos.length();j++){
+                        JSONObject posit=pos.getJSONObject(j);
+                        sum+=posit.getInt("rate");
+                    }
+                    if(pos.length()>0)
+                        sum=sum/(pos.length());
+                    else{
+                        sum=0;
+                    }
+
+                    AVRForm avrForm=new AVRForm(thatdate,sum, "","","");
+                    avrForm.setId(object.getString("id"));
+                    avrForms.add(avrForm);
+                }
+                avrAdapter.notifyDataSetChanged();
+             }
+             if(page==2){
+                checkListForms.clear();
+                 for(int i=0;i<array.length();i++){
+                     JSONObject object=array.getJSONObject(i);
+                     String date1=object.getString("created_at");
+                     Date date=((MainActivity)getActivity()).inputFormat.parse(date1);
+                     Calendar calendar=Calendar.getInstance();calendar.setTime(date);
+                     String thatdate=getdate(calendar,0);
+                     int sum=0;
+                     JSONArray pos=object.getJSONArray("positions");
+                     for(int j=0;j<pos.length();j++){
+                         JSONObject posit=pos.getJSONObject(j);
+                         sum+=posit.getInt("rate");
+                     }
+                     if(pos.length()>0)
+                         sum=sum/(pos.length());
+                     else{
+                         sum=0;
+                     }
+                     JSONObject author=object.getJSONObject("author");
+                     String fullname=author.getString("fullname");
+                     String role=author.getString("role");
+                     String position=((MainActivity)getActivity()).positions.get(role);
+                     CheckListForm checkListForm=new CheckListForm(thatdate, fullname, sum);
+                     checkListForm.setId(object.getString("id"));
+                     checkListForms.add(checkListForm);
+                 }
+                checkListAdapter.notifyDataSetChanged();
+             }
+             if(page==3){
+                svodkaRateForms.clear();
+                 for(int i=0;i<array.length();i++){
+                     JSONObject object=array.getJSONObject(i);
+                     String date1=object.getString("created_at");
+                     Date date=((MainActivity)getActivity()).inputFormat.parse(date1);
+                     Calendar calendar=Calendar.getInstance();calendar.setTime(date);
+                     String thatdate=getdate(calendar,0);
+                     int sum=0;
+                     JSONArray pos=object.getJSONArray("positions");
+                     for(int j=0;j<pos.length();j++){
+                         JSONObject posit=pos.getJSONObject(j);
+                         sum+=posit.getInt("rate");
+                     }
+                     if(pos.length()>0)
+                         sum=sum/(pos.length());
+                     else{
+                         sum=0;
+                     }
+                     JSONObject author=object.getJSONObject("author");
+                     String fullname=author.getString("fullname");
+                     String role=author.getString("role");
+                     String position=((MainActivity)getActivity()).positions.get(role);
+                     svodkaRateForm svodkaForm=new svodkaRateForm(thatdate,position,fullname,sum);
+                     svodkaForm.setId(object.getString("id"));
+                     svodkaRateForms.add(svodkaForm);
+                 }
+                svodkaAdapter.notifyDataSetChanged();
+             }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
     public void addNewSetText(String s){
         addNewTextView.setText(s);
@@ -292,4 +481,5 @@ public class ClientControlObjectMainFragment extends Fragment {
         progressLayout.setVisibility(View.VISIBLE);
         rateLayout.setVisibility(View.GONE);
     }
+
 }

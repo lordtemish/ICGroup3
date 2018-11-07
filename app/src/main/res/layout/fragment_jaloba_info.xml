@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ObjectFragments.JalobaInfoFragment"
-    android:orientation="vertical"
     android:background="@color/light_grey">
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="50sp"
         android:background="@color/white">
@@ -54,7 +57,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
-    <android.support.v4.widget.NestedScrollView
+        <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
@@ -82,7 +85,6 @@
                 android:layout_marginBottom="10dp"
                 android:textColor="@color/black"
                 android:textSize="11sp"
-                android:text="@string/datestring"
                 />
             <!--<LinearLayout
                 android:layout_width="match_parent"
@@ -265,7 +267,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/darkgrey"
                     android:textSize="11sp"
-                    android:text="@string/datestringwithtime"
+
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -311,4 +313,16 @@
         </LinearLayout>
     </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
-</LinearLayout>
+    </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/progressLayout"
+        android:onClick="onClick"
+        android:visibility="gone">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+</FrameLayout>

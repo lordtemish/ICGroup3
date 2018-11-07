@@ -29,6 +29,9 @@ public class WashAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             idTextView.setTypeface(((MainActivity)v.getContext()).getTypeFace("demibold"));
             nameTextView.setTypeface(((MainActivity)v.getContext()).getTypeFace("light"));
         }
+        private void setInfo(WashForm washForm){
+            numberTextView.setText(washForm.getNumbers()+" шт");idTextView.setText(washForm.getId());nameTextView.setText(washForm.getName());
+        }
     }
     public WashAdapter(List<WashForm> forms){
         list=forms;
@@ -44,7 +47,7 @@ public class WashAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder1, int position) {
         myHolder holder=(myHolder) holder1;
-
+        holder.setInfo(list.get(position));
     }
 
     @Override

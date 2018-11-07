@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.studio.dynamica.icgroup.R;
@@ -17,11 +18,13 @@ import java.util.List;
 public class FilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private class myHolder extends RecyclerView.ViewHolder{
         ImageView imageView,delImage, video;
+        FrameLayout progressLayout;
         private myHolder(View view){
             super(view);
             imageView=(ImageView) view.findViewById(R.id.image);
             delImage=(ImageView) view.findViewById(R.id.delImage);
             video=(ImageView) view.findViewById(R.id.video);
+            progressLayout=(FrameLayout)view.findViewById(R.id.progressLayout);
         }
         private void setInfo(Bitmap b, Boolean a){
             imageView.setImageBitmap(b);

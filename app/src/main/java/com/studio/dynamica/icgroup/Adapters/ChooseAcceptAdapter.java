@@ -75,6 +75,9 @@ public class ChooseAcceptAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
         }
+        private void setSecondShow(){
+            wholeLayout.get(1).setVisibility(View.VISIBLE);
+        }
     }
     List<ChooseAcceptForm> list;
     Context context;
@@ -100,16 +103,22 @@ public class ChooseAcceptAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 Log.d("ChooseAcceptAdapter",(holder.wholeLayout.get(1).getVisibility()== View.VISIBLE )+ " p="+position+", j="+j);
                 break;
             }
+            else{
+                holder.setSecondShow();
+            }
             holder.setClickListener(i,list.get(j).isChose());
             holder.wholeLayout.get(i).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     list.get(j).setChose(!list.get(j).isChose());
                     //notifyItemChanged(position);
+                    list.get(j).getListener().onClick(view);
                     notifyDataSetChanged();
                 }
             });
-
+            holder.nameTextView.get(i).setText(list.get(j).getName());
+            holder.placeTextView.get(i).setText(list.get(j).getPlace());
+            holder.positionTextView.get(i).setText(list.get(j).getPosition());
         }
     }
 

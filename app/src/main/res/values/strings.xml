@@ -9,6 +9,7 @@
     <string name="inputPassr">Введите пароль</string>
     <string name="forgotPassr">Забыли пароль?</string>
     <string name="loginR">Войти в систему</string>
+    <string name="sreda">22\nср</string>
 
     <string name="nameExample">Темирлан\nДаулетович</string>
     <string name="nameString">Темирлан Даулетович</string>

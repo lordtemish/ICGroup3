@@ -2,22 +2,33 @@ package com.studio.dynamica.icgroup.Activities;
 
 import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.studio.dynamica.icgroup.R;
 import com.studio.dynamica.icgroup.StartFragments.StartPage;
 import com.studio.dynamica.icgroup.StartFragments.StartTextFragment;
 
+import java.util.HashMap;
+
 public class StartActivity extends AppCompatActivity {
     Button pass,next;
-
+    ImageView secondaryImage;
+    static final int PAGE_COUNT = 4;
+    ViewPager viewPager;
+    PagerAdapter pagerAdapter;
     public void removeView(View view) {
         ViewGroup vg = (ViewGroup) (view.getParent());
         vg.removeView(view);
@@ -35,7 +46,12 @@ public class StartActivity extends AppCompatActivity {
             p(page);
         }
         void p(int a){
-            setPage(a);
+            if(a>3){
+
+            }
+            else {
+                viewPager.setCurrentItem(a);
+            }
         }
     };
     int page;
@@ -44,7 +60,7 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         page=0;
-        FrameLayout frameLayout=(FrameLayout)findViewById(R.id.startFrame);
+        secondaryImage=(ImageView) findViewById(R.id.secondaryImage);
         pass=(Button) findViewById(R.id.passStart);
         pass.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/avenir-light.ttf"));
         next=(Button) findViewById(R.id.next);
@@ -53,8 +69,47 @@ public class StartActivity extends AppCompatActivity {
 
         pass.setOnClickListener(stop);
         next.setOnClickListener(nextListener);
+
+        viewPager=(ViewPager)findViewById(R.id.viewPager);
+        pagerAdapter=new MyFragmentPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                setSec(position);
+                Log.d(""+position,"POS"+position);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
-    public void setPage(int a){
+    public void setSec(int p){
+        next.setOnClickListener(nextListener);
+        switch (p){
+            case 0:
+                secondaryImage.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                break;
+            case 1:
+                secondaryImage.setBackgroundResource    (R.drawable.copythree);
+                break;
+            case 2:
+                secondaryImage.setBackgroundResource(R.drawable.copytwo);
+                break;
+            case 3:
+                secondaryImage.setBackgroundResource(R.drawable.copyone);
+                next.setOnClickListener(stop);
+                break;
+        }
+    }
+    public Fragment setPage(int a){
         Fragment fragment;
         Bundle bundle = new Bundle();
         switch (a){
@@ -64,6 +119,7 @@ public class StartActivity extends AppCompatActivity {
             case 1:
                 fragment=(Fragment) new StartTextFragment();
                 bundle.putString("startext","Постановка\nвнеплановых\nзадач");
+
                 fragment.setArguments(bundle);
                 break;
             case 2:
@@ -80,20 +136,43 @@ public class StartActivity extends AppCompatActivity {
                 fragment=(Fragment) new StartTextFragment();
                 bundle.putString("startext","Корпоративная\nплощадка");
                 fragment.setArguments(bundle);
-                next.setOnClickListener(stop);
                 break;
                 default:
                     fragment=new Fragment();
                     StartActivity.this.finish();
 
         }
-        FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.startFrame,fragment);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.commit();
+        return fragment;
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+
+    private class MyFragmentPagerAdapter extends FragmentPagerAdapter {
+
+        public MyFragmentPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+        HashMap<Integer,Fragment> fragments=new HashMap<>();
+
+        @Override
+        public Fragment getItem(int position) {
+            Fragment testfr;
+            if(position >0) {
+                testfr = setPage(position);
+            }
+            else{
+                testfr=setPage(position);
+            }
+            return testfr;
+        }
+
+        @Override
+        public int getCount() {
+            return PAGE_COUNT;
+        }
+
     }
 }

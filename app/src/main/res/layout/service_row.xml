@@ -20,9 +20,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="5sp"
-                android:background="@drawable/grey_corners_line"
                 android:orientation="horizontal"
-                android:layout_weight="2"
+                android:layout_weight="4"
                 >
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
@@ -49,7 +48,7 @@
                         android:paddingEnd="5sp"
                         android:paddingRight="5sp"
                         android:text="TextView"
-                        android:textSize="11sp"
+                        android:textSize="9sp"
                         android:gravity="start"
                         android:layout_marginLeft="5sp"
                         android:layout_marginStart="5sp"
@@ -79,7 +78,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="TextView"
-                        android:textSize="11sp"
+                        android:textSize="9sp"
                         android:gravity="start"
                         android:layout_marginLeft="5sp"
                         android:layout_marginStart="5sp"
@@ -97,39 +96,23 @@
                         android:layout_marginRight="5sp"
                         android:layout_marginEnd="5sp"
                         android:textColor="@color/black"
-                        android:textSize="11sp"
+                        android:textSize="9sp"
                         />
                 </android.support.constraint.ConstraintLayout>
             </LinearLayout>
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="7"
             android:padding="5sp"
             >
 
-            <TextView
-                android:id="@+id/statusLabelTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Статус"
-                android:textSize="13sp"
-                android:textColor="@color/darkgrey"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                />
-            <ImageView
-                android:id="@+id/statusImageView"
-                android:layout_width="20sp"
-                android:layout_height="20sp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:src="@drawable/ic_arrowrightgreen"
-                />
+
             <TextView
                 android:id="@+id/statusTextView"
                 android:layout_width="match_parent"
-                android:layout_height="45sp"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginBottom="10dp"
                 android:text="Выполнено"

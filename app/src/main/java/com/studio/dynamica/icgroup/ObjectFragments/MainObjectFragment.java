@@ -1,6 +1,7 @@
 package com.studio.dynamica.icgroup.ObjectFragments;
 
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -13,16 +14,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.error.AuthFailureError;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.JsonArrayRequest;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
+import com.studio.dynamica.icgroup.Adapters.CityRadioAdapter;
 import com.studio.dynamica.icgroup.Adapters.MainObjectAdapter;
+import com.studio.dynamica.icgroup.Adapters.TasktypeAdapter;
 import com.studio.dynamica.icgroup.ExtraFragments.MainObjectSetInfoFragment;
 import com.studio.dynamica.icgroup.Forms.MainObjectRowForm;
 import com.studio.dynamica.icgroup.R;
@@ -35,29 +40,30 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MainObjectFragment extends Fragment {
     ProgressBar progressBar;
-    MainObjectAdapter mainObjectAdapter;
-    RecyclerView mainObjectRecycle;
+    MainObjectAdapter mainObjectAdapter;CityRadioAdapter cityRadioAdapter;
+    RecyclerView mainObjectRecycle, cityRecycler , tasktypeRecycler;
     ConstraintLayout RegionLayout;
+    ImageView arrowCity;
     TextView RegionTextView;
-    ConstraintLayout ObjectTypeLayout;
-    TextView ObjectTypeTextView;
     ArrayList<MainObjectRowForm> list;
     TextView mainObjectTitle;
     SwipeRefreshLayout refreshLayout;
-    MainObjectSetInfoFragment setInfoFragment;
     View.OnClickListener goneClick;
     HashMap<String,String> kindMap;
     HashMap<Integer,String> cities;
+    List<String> cityNames, tasktypeNames;
+    TasktypeAdapter taskTypeAdapter;
     boolean client;
     long time;
         boolean changed=false;
-    int city=-1;
+    int city=1;
     String kind="";
     public MainObjectFragment() {
         // Required empty public constructor
@@ -73,11 +79,6 @@ public class MainObjectFragment extends Fragment {
 
 
          list=new ArrayList<>();
-       /* list.add(new MainObjectRowForm("125","ТРЦ Moskva metropoliten",55,4,25,21));
-        list.add(new MainObjectRowForm("002","Mega SILKWAY",2,1,5,21));
-        list.add(new MainObjectRowForm("022","Mega SILKWAY",100,2,15,2));
-        list.add(new MainObjectRowForm("042","Mega SILKWAY",88,3,35,23));
-        list.add(new MainObjectRowForm("005","Mega SILKWAY",14,4,15,2));*/
         mainObjectAdapter=new MainObjectAdapter(list,getActivity());
         mainObjectAdapter.setClient(client);
         RecyclerView.LayoutManager mLayoutManager=new LinearLayoutManager(getActivity());
@@ -85,48 +86,51 @@ public class MainObjectFragment extends Fragment {
         mainObjectRecycle.setItemAnimator(new DefaultItemAnimator());
         mainObjectRecycle.setAdapter(mainObjectAdapter);
 
+        cityRadioAdapter=new CityRadioAdapter(cityNames);
+        cityRadioAdapter.setListeners(new ArrayList<View.OnClickListener>());
+        cityRecycler.setAdapter(cityRadioAdapter);
+        ((MainActivity)getActivity()).setRecyclerViewOrientation(cityRecycler,LinearLayoutManager.VERTICAL);
+        ((MainActivity)getActivity()).setRecyclerViewOrientation(tasktypeRecycler,LinearLayoutManager.HORIZONTAL);
+        taskTypeAdapter=new TasktypeAdapter(tasktypeNames);
+        tasktypeRecycler.setAdapter(taskTypeAdapter);
+
 
         RegionTextView.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/AvenirNextLTPro-Medium.ttf"));
 
 
-        ObjectTypeTextView.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/AvenirNextLTPro-Medium.ttf"));
-
         goneClick=new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setInfoFragment.setVisibility(View.GONE);
-                ((MainActivity)getActivity()).setPressable(true,null);
+
             }
         };
-        setInfoFragment.setWholeLayoutList(goneClick);
 
 
         RegionLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setInfoFragment.setVisibility(View.VISIBLE);
-                setCities();
-                ((MainActivity) getActivity()).setPressable(false,goneClick);
+                showCities();
             }
         });
-        ObjectTypeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setInfoFragment.setVisibility(View.VISIBLE);
-                setKinds();
-                ((MainActivity) getActivity()).setPressable(false,goneClick);
-            }
-        });
-
-        getRequest("points");
-        getRequest("locations/");
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 onSwipeRefresh();
             }
         });
+        showCities();
+        setKinds();
         return view;
+    }
+    private void showCities(){
+        if(cityRecycler.getVisibility()==View.VISIBLE){
+            cityRecycler.setVisibility(View.GONE);
+            arrowCity.setImageResource(R.drawable.ic_arrowdown_green);
+        }
+        else{
+            cityRecycler.setVisibility(View.VISIBLE);
+            arrowCity.setImageResource(R.drawable.ic_arrowup_green);
+        }
     }
     private void checkData(){
         if(new Date().getTime()-time>120000 || changed){
@@ -142,11 +146,12 @@ public class MainObjectFragment extends Fragment {
             if(city>-1){
                 l+="location="+city;
             }
-            Log.d("url",l);
-            getRequest(l);
-            if(cities.size()<1){
+            if(cityNames.size()<1){
                 getRequest("locations/");
             }
+            Log.d("url",l);
+            getRequest(l);
+
         }
         else{
             List<MainObjectRowForm> rowForms=new ArrayList<MainObjectRowForm>();
@@ -167,7 +172,7 @@ public class MainObjectFragment extends Fragment {
         this.list.add(new MainObjectRowForm("7894561651","Temirlan",80,10,9,7));
         */
         mainObjectAdapter.notifyDataSetChanged();
-        progressBar.setVisibility(View.GONE);
+
         changed=false;
     }
     public void getRequest(final String url1){
@@ -177,14 +182,21 @@ public class MainObjectFragment extends Fragment {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response){
+                        progressBar.setVisibility(View.GONE);
                         Log.d("Respone", response.length()+" \n"+response.toString());
                         if(url1.contains("points")) {
                             List<MainObjectRowForm> rowForms = new ArrayList<>();
                             for (int i = 0; i < response.length(); i++) {
                                 try {
                                     JSONObject jsonObject = response.getJSONObject(i);
-                                    rowForms.add(new MainObjectRowForm(jsonObject.getInt("id") + "", jsonObject.getString("name"), jsonObject.getInt("result_rate"), jsonObject.getInt("workers_count"), jsonObject.getInt("complaints_count"), jsonObject.getInt("tasks_count")));
+                                    long resu=Math.round(jsonObject.getDouble("result_rate")*100);
+                                    int result=Integer.parseInt(resu+"");
+                                    MainObjectRowForm form=new MainObjectRowForm(jsonObject.getInt("id") + "", jsonObject.getString("name"),result , jsonObject.getInt("workers_count"), jsonObject.getInt("complaints_count"), jsonObject.getInt("tasks_count"));
+                                    form.setLocation(jsonObject.getInt("location"));
+                                    form.setCity(cities.get(form.getLocation()));
+                                    rowForms.add(form);
                                     time=new Date().getTime();
+
                                 } catch (Exception e) {
                                     break;
                                 }
@@ -192,10 +204,11 @@ public class MainObjectFragment extends Fragment {
                             setPoints(rowForms);
                         }
                         else{
+                            cities.clear();
                             for (int i = 0; i < response.length(); i++) {
                                 try {
                                     JSONObject jsonObject = response.getJSONObject(i);
-                                    cities.clear();
+
                                     cities.put(jsonObject.getInt("id"),jsonObject.getString("name"));
                                 } catch (Exception e) {
                                     break;
@@ -208,11 +221,20 @@ public class MainObjectFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
                         Log.d("Respone", error.getMessage()+"");
                         setPoints(new ArrayList<MainObjectRowForm>());
+                        Toast.makeText(getContext(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
                     }
                 }
-        );
+        ){  @Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            HashMap<String, String> headers = new HashMap<String, String>();
+            headers.put("Accept", "application/json");
+            headers.put("Content-Type", "application/json; charset=utf-8");
+            headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
+            return headers;
+        }};
         (((MainActivity)getActivity()).requestQueue).add(getRequest);
     }
 
@@ -224,13 +246,13 @@ public class MainObjectFragment extends Fragment {
         refreshLayout=(SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         mainObjectTitle=(TextView) view.findViewById(R.id.mainObjectTitle);
         mainObjectRecycle=(RecyclerView) view.findViewById(R.id.mainObjectRecycle);
+        cityRecycler=(RecyclerView) view.findViewById(R.id.cityRecycler);
+        tasktypeRecycler=(RecyclerView) view.findViewById(R.id.tasktypeRecycler);
 
         RegionLayout=(ConstraintLayout) view.findViewById(R.id.mainObjectRegionLayout);
         RegionTextView=(TextView) view.findViewById(R.id.mainObjectRegionTextView);
+        arrowCity=(ImageView) view.findViewById(R.id.arrowCity);
 
-        ObjectTypeLayout=(ConstraintLayout) view.findViewById(R.id.mainObjectTypeLayout);
-        ObjectTypeTextView=(TextView) view.findViewById(R.id.mainObjectTypeTextView);
-        setInfoFragment=(MainObjectSetInfoFragment) view.findViewById(R.id.setInfoFragment);
 
         kindMap=new HashMap<>();
         cities=new HashMap<>();
@@ -239,20 +261,17 @@ public class MainObjectFragment extends Fragment {
         kindMap.put("SMALL_OBJECT","Малый объект");
         kindMap.put("INDUSTRIAL_BASE","Промышленная база");
 
-        setInfoFragment.setVisibility(View.GONE);
         List<String> cities=new ArrayList<>();
+        cityNames=new ArrayList<>();
+        tasktypeNames=new ArrayList<>();
         cities.add("Алматы");
         cities.add("Астана");
         cities.add("Караганды");
         cities.add("Кокшетау");
-        setInfoFragment.setList(cities);
     }
     private void setVal(String s, boolean city){
         if(city){
             RegionTextView.setText(s);
-        }
-        else{
-            ObjectTypeTextView.setText(s);
         }
     }
     private void setCities(){
@@ -268,23 +287,17 @@ public class MainObjectFragment extends Fragment {
                     city=j;
                     changed=true;
                     setVal(cities.get(j),true);
-                    ((MainActivity) getActivity()).onBackPressed();
                     onSwipeRefresh();
+
                 }
             });
         }
-        setInfoFragment.setListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                city=-1;
-                changed=true;
-                setVal("Регион",true);
-                ((MainActivity) getActivity()).onBackPressed();
-                onSwipeRefresh();
-            }
-        });
-        setInfoFragment.setList(values);
-        setInfoFragment.setLinsteners(listeners);
+        cityRadioAdapter.setListeners(listeners);
+        cityNames.clear();
+        cityNames.addAll(values);
+        setCityNames();
+        if(cityNames.size()>city)
+        setVal(cityNames.get(city-1),true);
     }
     private void setKinds(){
         final List<String> values=new ArrayList<>();
@@ -298,24 +311,25 @@ public class MainObjectFragment extends Fragment {
                 public void onClick(View view) {
                     kind=j;
                     changed=true;
-                    setVal(kindMap.get(j),false);
-                    ((MainActivity) getActivity()).onBackPressed();
                     onSwipeRefresh();
                 }
             });
         }
-        setInfoFragment.setListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                kind="";
-                changed=true;
-                setVal("Тип объекта",false);
-                ((MainActivity) getActivity()).onBackPressed();
-                onSwipeRefresh();
-            }
-        });
-        setInfoFragment.setList(values);
-        setInfoFragment.setLinsteners(listeners);
+        tasktypeNames.clear();
+        tasktypeNames.addAll(values);
+        if(tasktypeNames.size()>0){
+            kind=tasktypeNames.get(0);
+        }
+        taskTypeAdapter.setListeners(listeners);
+        taskTypeAdapter.notifyDataSetChanged();
+        onSwipeRefresh();
     }
+    private void setCityNames(){
+        cityNames.clear();
+        for(Integer i:cities.keySet()){
+            cityNames.add(cities.get(i));
+        }
 
+        cityRadioAdapter.notifyDataSetChanged();
+    }
 }

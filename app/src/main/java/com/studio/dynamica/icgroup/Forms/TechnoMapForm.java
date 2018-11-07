@@ -1,6 +1,7 @@
 package com.studio.dynamica.icgroup.Forms;
 
 public class TechnoMapForm {
+    String id;
     String time;
     String place;
     String category;
@@ -8,21 +9,28 @@ public class TechnoMapForm {
     int stat=0;
     String method;
     String period;
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
     public TechnoMapForm(){
 
     }
-    public TechnoMapForm(String t, String pl,String c, String s, String m, String pe){
+    public TechnoMapForm(String t, String pl, String s, String m, String pe){
         time=t;
         place=pl;
-        category=c;
         status=s;
         method=m;
         period=pe;
     }
-    public TechnoMapForm(String t, String pl,String c, String m, String pe, int stat){
+    public TechnoMapForm(String t, String pl, String m, String pe, int stat){
         time=t;
         place=pl;
-        category=c;
         method=m;
         period=pe;
         this.stat=stat;
@@ -39,10 +47,30 @@ public class TechnoMapForm {
             case 3:
                 status="Актуально";
                 break;
+            case 4:
+                status="На просрочке";
+                break;
         }
     }
     public void setStat(int stat) {
         this.stat = stat;
+        switch (stat){
+            case 0:
+                status="Провалено";
+                break;
+            case 1:
+                status="Выполнено";
+                break;
+            case 2:
+                status="В процессе";
+                break;
+            case 3:
+                status="Актуально";
+                break;
+            case 4:
+                status="На просрочке";
+                break;
+        }
     }
 
     public int getStat() {

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -24,14 +25,33 @@ import java.util.ArrayList;
 public class MainObjectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     ArrayList<MainObjectRowForm> list;
     Context context;
-     class FirstHolder extends RecyclerView.ViewHolder{
+    String cityid, city;
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setCityid(String cityid) {
+        this.cityid = cityid;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getCityid() {
+            return cityid;
+    }
+
+    class FirstHolder extends RecyclerView.ViewHolder{
         TextView text;
         TextView percentage;
         TextView employees;
         TextView coms;
-        TextView category;
+        TextView category, resulLabel;
         ProgressBar progressBar;
         ConstraintLayout topLayout,progressLayout;
+        LinearLayout mainObjectRowLinearLayout;
          FirstHolder(View view){
             super(view);
             text=(TextView) view.findViewById(R.id.mainObjectRowTextView);
@@ -43,10 +63,13 @@ public class MainObjectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             coms=(TextView) view.findViewById(R.id.mainObjectRowCommsTextView);
             coms.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/AvenirNextLTPro-Medium.ttf"));
             category=(TextView) view.findViewById(R.id.mainObjectRowCategoryTextView);
+             resulLabel=(TextView) view.findViewById(R.id.resulLabel);
+             ((MainActivity)context).setType("light",resulLabel);
             category.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/AvenirNextLTPro-Medium.ttf"));
             progressBar=(ProgressBar) view.findViewById(R.id.mainOjectPercentProgress);
             topLayout=(ConstraintLayout) view.findViewById(R.id.mainObjectRowTopLayout);
              progressLayout=(ConstraintLayout) view.findViewById(R.id.progressLayout);
+             mainObjectRowLinearLayout=(LinearLayout) view.findViewById(R.id.mainObjectRowLinearLayout);
         }
     }
     private class clientHolder extends RecyclerView.ViewHolder{
@@ -90,8 +113,7 @@ public class MainObjectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             holder.coms.setText(list.get(position).getFalses() + "");
             holder.category.setText(list.get(position).getCategories() + "");
             View.OnClickListener objectDrowningListener = new MainObjectRowOnClickListener(list.get(position), context);
-            holder.topLayout.setOnClickListener(objectDrowningListener);
-            holder.progressLayout.setOnClickListener(objectDrowningListener);
+            holder.mainObjectRowLinearLayout.setOnClickListener(objectDrowningListener);
         }
     }
     @Override

@@ -14,9 +14,11 @@ public class MainObjectRowOnClickListener implements View.OnClickListener{
     String id;
     String name;
     Context context;
+    MainObjectRowForm form;
     public MainObjectRowOnClickListener(MainObjectRowForm form, Context context) {
         this.id = form.getId();
         this.name=form.getName();
+        this.form=form;
         this.context=context;
     }
 
@@ -27,6 +29,8 @@ public class MainObjectRowOnClickListener implements View.OnClickListener{
         Bundle bundle=new Bundle();
         bundle.putString("id",id);
         bundle.putString("name",name);
+        bundle.putInt("location",form.getLocation());
+        bundle.putString("city",form.getCity());
         MainObjectMainFrament frament=new MainObjectMainFrament();
         frament.setArguments(bundle);
         mainActivity.setFragment(R.id.content_frame,frament);

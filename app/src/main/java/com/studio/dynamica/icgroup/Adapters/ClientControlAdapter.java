@@ -1,21 +1,34 @@
 package com.studio.dynamica.icgroup.Adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+
+import com.android.volley.error.AuthFailureError;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.JsonArrayRequest;
+import com.android.volley.request.JsonObjectRequest;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Forms.AcceptForm;
 import com.studio.dynamica.icgroup.Forms.CheckListForm;
+import com.studio.dynamica.icgroup.Forms.ChooseAcceptForm;
 import com.studio.dynamica.icgroup.Forms.CommentForm;
 import com.studio.dynamica.icgroup.Forms.MessageForm;
 import com.studio.dynamica.icgroup.Forms.OlkForm;
@@ -24,18 +37,58 @@ import com.studio.dynamica.icgroup.Forms.svodkaRateForm;
 import com.studio.dynamica.icgroup.ObjectFragments.CheckListInfoFragment;
 import com.studio.dynamica.icgroup.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    public String cityName="";
+    private int location=0;
+
+
+    public void setLocation(int location) {
+        this.location = location;
+    }
+
+    public void setCity(String city) {
+        this.cityName = city;
+    }
+
+    public int getLocation() {
+        return location;
+    }
+
+    public String getCity() {
+        return cityName;
+    }
+
     private class OlkHolder extends RecyclerView.ViewHolder{
+        int is_executive_permitted=-1,is_technical_permitted=-1,is_producer_permitted=-1,is_curator_permitted=-1,is_contactor_permitted=-1;
         ConstraintLayout markLayout;
         RecyclerView commentsRecyclerView, acceptRecycler, phonesRecyclerView;
         TextView wrapTextView, dateTextView, nameTextView, positionTextView, infoLabel, averageMarkTextView, quality, qualityMark, looking, lookingMark, inventory, inventoryMark,olkTook;
         LinearLayout extraLayout;
+        FrameLayout progressLayout;
         Context context;
+        boolean updated=false;
+        String id="", point;
+        List<MessageForm> messageForms;
+        List<PhonesRowForm> rowForms;
+        List<AcceptForm> acceptForms;
+        PhonesAdapter phonesAdapter;
+        MessageAdapter messageAdapter;
+        AcceptAdapter acceptAdapter;
+        List<String[]> strings;
+
         private OlkHolder(View v){
             super(v);
+            strings=new ArrayList<>();
+            strings.add(new String[]{});strings.add(new String[]{});strings.add(new String[]{});strings.add(new String[]{});strings.add(new String[]{});
             context=v.getContext();
             acceptRecycler=(RecyclerView) v.findViewById(R.id.acceptRecyclerView);
             phonesRecyclerView=(RecyclerView) v.findViewById(R.id.phonesRecyclerView);
@@ -54,6 +107,7 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
             averageMarkTextView=(TextView) v.findViewById(R.id.averageMarkTextView);
             olkTook=(TextView) v.findViewById(R.id.olkTook);
             markLayout=(ConstraintLayout) v.findViewById(R.id.markLayout);
+            progressLayout=(FrameLayout) v.findViewById(R.id.progressLayout);
             commentsRecyclerView=(RecyclerView) v.findViewById(R.id.commentsRecyclerView);
             wrapTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -72,25 +126,343 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
                 textViews[i].setTypeface(((MainActivity)context).getTypeFace(s));
             }
         }
-        private void setInfo(OlkForm form){
 
+        public void setMessageForms(List<MessageForm> messageForms) {
+            this.messageForms = messageForms;
+        }
+
+        public void setAcceptForms(List<AcceptForm> acceptForms) {
+            this.acceptForms = acceptForms;
+        }
+        public void addAcceptForms(AcceptForm... acceptForms){
+            for (int i=0;i<acceptForms.length;i++){
+                this.acceptForms.add(acceptForms[i]);
+            }
+        }
+
+        public void setAcceptAdapter(AcceptAdapter acceptAdapter) {
+            this.acceptAdapter = acceptAdapter;
+        }
+
+        public void setMessageAdapter(MessageAdapter messageAdapter) {
+            this.messageAdapter = messageAdapter;
+        }
+
+        public void setPhonesAdapter(PhonesAdapter phonesAdapter) {
+            this.phonesAdapter = phonesAdapter;
+        }
+
+        public AcceptAdapter getAcceptAdapter() {
+            return acceptAdapter;
+        }
+
+        public MessageAdapter getMessageAdapter() {
+            return messageAdapter;
+        }
+
+        public PhonesAdapter getPhonesAdapter() {
+            return phonesAdapter;
+        }
+
+        public void setRowForms(List<PhonesRowForm> rowForms) {
+            this.rowForms = rowForms;
+        }
+
+        private void setInfo(OlkForm form){
+            dateTextView.setText(form.getDate());
+            averageMarkTextView.setText(form.getMark()+"");
+            nameTextView.setText(form.getName());
+            positionTextView.setText(form.getPosition());
+            id=form.getId();
         }
         private void clicked(){
-            if(markLayout.getVisibility()==View.VISIBLE){
-                markLayout.setVisibility(View.GONE);
-                wrapTextView.setText("Свернуть");
-                extraLayout.setVisibility(View.VISIBLE);
+            if (updated) {
+                if (markLayout.getVisibility() == View.VISIBLE) {
+                    markLayout.setVisibility(View.GONE);
+                    wrapTextView.setText("Свернуть");
+                    extraLayout.setVisibility(View.VISIBLE);
+                } else {
+                    markLayout.setVisibility(View.VISIBLE);
+                    wrapTextView.setText("Развернуть");
+                    extraLayout.setVisibility(View.GONE);
+                }
             }
             else{
-                markLayout.setVisibility(View.VISIBLE);
-                wrapTextView.setText("Развернуть");
-                extraLayout.setVisibility(View.GONE);
+                String url=((MainActivity) context).MAIN_URL+"controls/"+id;
+                progressLayout.setVisibility(View.VISIBLE);
+                JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            updated = true;
+                            progressLayout.setVisibility(View.GONE);
+                            messageForms.clear();
+                            String message = response.getString("comment");
+                            if(message.length()>0)
+                            messageForms.add(new MessageForm(message));
+                            JSONObject poin=response.getJSONObject("point");
+                            point=poin.getString("id");
+
+                            JSONArray positions=response.getJSONArray("positions");
+                            if(positions.length()>2){
+                                JSONObject qua=positions.getJSONObject(0);
+                                quality.setText(qua.getJSONObject("position").getString("name"));
+                                qualityMark.setText(qua.getString("rate"));
+                                JSONObject loo=positions.getJSONObject(1);
+                                looking.setText(loo.getJSONObject("position").getString("name"));
+                                lookingMark.setText(loo.getString("rate"));
+                                JSONObject inv=positions.getJSONObject(2);
+                                inventory.setText(inv.getJSONObject("position").getString("name"));
+                                inventoryMark.setText(inv.getString("rate"));
+                            }
+                            else{
+                                qualityMark.setText(0+"");
+                                lookingMark.setText(0+"");
+                                inventoryMark.setText(0+"");
+                            }
+
+                            JSONObject author=response.getJSONObject("author");
+                            rowForms.clear();
+                            String role=author.getString("role");
+                            String position=((MainActivity)context).positions.get(role);
+                            rowForms.add(new PhonesRowForm(false,author.getString("fullname"),position,author.getString("phone")));
+
+                            phonesAdapter.notifyDataSetChanged();
+                            acceptAdapter.notifyDataSetChanged();
+                            messageAdapter.notifyDataSetChanged();
+
+                            if(response.isNull("is_executive_permitted")){ is_executive_permitted=-1; }
+                            else{is_executive_permitted=0;
+                            if(response.getBoolean("is_executive_permitted")){
+                                is_executive_permitted=1;
+                            }
+                                }
+                            if(response.isNull("is_technical_permitted")){ is_technical_permitted=-1; }
+                            else{is_technical_permitted=0;
+                                if(response.getBoolean("is_technical_permitted")){
+                                    is_technical_permitted=1;
+                                }
+
+                            }
+                            if(response.isNull("is_producer_permitted")){ is_producer_permitted=-1; }
+                            else{
+                                is_producer_permitted=0;
+                                if(response.getBoolean("is_producer_permitted")){
+                                    is_producer_permitted=1;
+                                }
+                            }
+                            if(response.isNull("is_curator_permitted")){ is_curator_permitted=-1; }
+                            else{
+                                is_curator_permitted=0;
+                                if(response.getBoolean("is_curator_permitted")){
+                                    is_curator_permitted=1;
+                                }
+                            }
+                            if(response.isNull("is_contactor_permitted")){ is_contactor_permitted=-1; }
+                            else{
+                                is_contactor_permitted=0;
+                                if(response.getBoolean("is_contactor_permitted")){
+                                    is_contactor_permitted=1;
+                                }
+                            }
+
+                            getAccepts();
+
+                            clicked();
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressLayout.setVisibility(View.VISIBLE);
+                        Toast.makeText(context, "Проблемы соеденения", Toast.LENGTH_SHORT).show();
+                    }
+                }){  @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    headers.put("Accept", "application/json");
+                    headers.put("Content-Type", "application/json; charset=utf-8");
+                    headers.put("Authorization", "JWT "+((MainActivity)context).token);
+                    return headers;
+                }};
+                ((MainActivity) context).requestQueue.add(jsonObjectRequest);
             }
+        }
+        private void getAccepts(){
+            String url=((MainActivity)context).MAIN_URL;
+            String execUrl=url+"employees/"+ "?user__role=ADMIN_EXECUTIVE";
+            JsonArrayRequest admin_execRequest=new JsonArrayRequest(Request.Method.GET, execUrl, null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    progressLayout.setVisibility(View.GONE);
+                    if(response.length()>0){
+                        try {
+                            setExec(response.getJSONObject(0));
+                        }
+                        catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                    }
+                    else{
+                        strings.set(0,new String[]{});
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    progressLayout.setVisibility(View.GONE);
+                    Toast.makeText(context, "Проблемы соедeнения", Toast.LENGTH_SHORT).show();
+                }
+            }){  @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Authorization", "JWT "+((MainActivity)context).token);
+                return headers;
+            }};
+            String techinUrl=url+"employees/" + "?user__role=ADMIN_TECHNICAL";
+            JsonArrayRequest admin_techRequest=new JsonArrayRequest(Request.Method.GET, techinUrl, null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    progressLayout.setVisibility(View.GONE);
+                    if(response.length()>0){
+                        try {
+                            setTech(response.getJSONObject(0));
+                        }
+                        catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                    }
+                    else{
+                        strings.set(1,new String[]{});
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    progressLayout.setVisibility(View.GONE);
+                    Toast.makeText(context, "Проблемы соедeнения", Toast.LENGTH_SHORT).show();
+                }
+            }){  @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Authorization", "JWT "+((MainActivity)context).token);
+                return headers;
+            }};
+            JsonObjectRequest admin_contRequest=new JsonObjectRequest(Request.Method.GET, url+"points/"+point, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    progressLayout.setVisibility(View.GONE);
+                    try {
+                        JSONObject contactor=response.getJSONObject("contactor");
+                        JSONObject producer=response.getJSONObject("producer");
+                        JSONObject curator=response.getJSONObject("curator");
+                        if(is_producer_permitted>-1)
+                        strings.set(2,new String[]{producer.getString("fullname"),producer.getString("role"), "-1"});
+                        if(is_curator_permitted>-1)
+                        strings.set(3,new String[]{curator.getString("fullname"),curator.getString("role"), "-1"});
+                        if(is_contactor_permitted>-1)
+                        strings.set(4,new String[]{contactor.getString("fullname"),contactor.getString("role"), "-1"});
+                        checkAccepts();
+                    }
+                    catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    progressLayout.setVisibility(View.GONE);
+                    Toast.makeText(context, "Проблемы соедeнения", Toast.LENGTH_SHORT).show();
+                }
+            }){  @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Authorization", "JWT "+((MainActivity)context).token);
+                return headers;
+            }};
+            ((MainActivity)context).requestQueue.add(admin_execRequest);
+            ((MainActivity)context).requestQueue.add(admin_techRequest);
+            ((MainActivity)context).requestQueue.add(admin_contRequest);
+        }
+        private void setExec(JSONObject re){
+            try {
+                JSONObject object=re.getJSONObject("user");
+                if(is_executive_permitted>-1)
+                strings.set(0, new String[]{object.getString("fullname"),object.getString("role"), re.getString("department")});
+                checkAccepts();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        private void setTech(JSONObject re){
+            try {
+                JSONObject object=re.getJSONObject("user");
+                if(is_technical_permitted>-1)
+                strings.set(1, new String[]{object.getString("fullname"),object.getString("role"), re.getString("department")});
+                checkAccepts();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        private void checkAccepts(){
+            acceptForms.clear();
+            acceptAdapter.notifyDataSetChanged();
+            int l=0;
+            for(String[] a:strings){
+                if(a.length==0){
+                    l++;
+                    continue;
+                }
+                Log.d("Strings"+l,a.toString());
+                String name=a[0];
+                String role=((MainActivity)context).positions.get(a[1]);
+                String dep="";
+                if(!a[2].equals("-1") && ((MainActivity)context).dpids.indexOf(a[2])!=-1) {
+                    dep= ((MainActivity) context).departments.get(((MainActivity) context).dpids.indexOf(a[2]));
+                }
+                Boolean cl=l==4;
+                String sta="Не подтвержденно";
+                Boolean stat=false;
+                switch (l){
+                    case 0:
+                        stat=is_executive_permitted==1;
+                        break;
+                    case 1:
+                        stat=is_technical_permitted==1;
+                        break;
+                    case 2:
+                        stat=is_producer_permitted==1;
+                        break;
+                    case 3:
+                        stat=is_curator_permitted==1;
+                        break;
+                    case 4:
+                        stat=is_contactor_permitted==1;
+                        break;
+
+                }
+                AcceptForm acceptForm=new AcceptForm(name, dep, role, sta,stat);
+                acceptForms.add(acceptForm);
+                l++;
+            }
+            acceptAdapter.notifyDataSetChanged();
         }
     }
     private class checkListHolder extends RecyclerView.ViewHolder{
         LinearLayout wholeLayout;
         TextView dateTextView,revisorTextView, nameTextView, rateTextView;
+        String id, rate;
         private checkListHolder(View v){
             super(v);
             wholeLayout=(LinearLayout) v.findViewById(R.id.wholeLayout);
@@ -104,6 +476,19 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
             dateTextView.setText(form.getDate());
             nameTextView.setText(form.getFIO());
             rateTextView.setText(form.getMark()+"");
+            id=form.getId();
+            rate=form.getMark()+"";
+            wholeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Fragment fragment=new CheckListInfoFragment();
+                    Bundle bundle=new Bundle();
+                    bundle.putString("id",id);
+                    bundle.putString("rate",rate);
+                    fragment.setArguments(bundle);
+                    ((MainActivity) context).setFragment(R.id.content_frame,fragment);
+                }
+            });
         }
         private void setFontType(){
             setTypeFace("demibold", dateTextView, nameTextView, rateTextView);
@@ -116,13 +501,42 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
     private class svodkaRateHolder extends RecyclerView.ViewHolder{
+        List<String[]> strings;
+        int is_executive_permitted=-1,is_technical_permitted=-1,is_producer_permitted=-1,is_curator_permitted=-1,is_contactor_permitted=-1;
         RecyclerView rateStartRecycler, commentsRecyclerView, acceptRecyclerView;
         TextView dateTextView, positionTextView, nameTextView, placeNum, placeNumLabel, cityLabel, city, address, addressLabel, clientLabel, clientName, clientPosition,tookLabel;
         ImageView arrowImage;
         LinearLayout extraLayout;
+        FrameLayout progressLayout;
+        MessageAdapter adapter;
+        AcceptAdapter acceptAdapter;
+        List<MessageForm> messageForms;
+        List<AcceptForm> acceptForms;
+        int pos=0;
+        String id="", poin="";
+        boolean updated=false;
+
+        public void setAcceptForms(List<AcceptForm> acceptForms) {
+            this.acceptForms = acceptForms;
+        }
+
+        public void setAcceptAdapter(AcceptAdapter acceptAdapter) {
+            this.acceptAdapter = acceptAdapter;
+        }
+
+        public void setMessageForms(List<MessageForm> messageForms) {
+            this.messageForms = messageForms;
+        }
+
+        public void setAdapter(MessageAdapter adapter) {
+            this.adapter = adapter;
+        }
+
         private svodkaRateHolder(View view){
             super(view);
+            strings=new ArrayList<>();strings.add(new String[]{});strings.add(new String[]{});strings.add(new String[]{});strings.add(new String[]{});strings.add(new String[]{});
             extraLayout=(LinearLayout) view.findViewById(R.id.extraLayout);
+            progressLayout=(FrameLayout) view.findViewById(R.id.progressLayout);
             arrowImage=(ImageView) view.findViewById(R.id.arrowImageView);
             rateStartRecycler=(RecyclerView) view.findViewById(R.id.starsRecyclerView);
             commentsRecyclerView=(RecyclerView) view.findViewById(R.id.commentsRecyclerView);
@@ -165,24 +579,294 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
             extraLayout.setVisibility(visibility);
         }
 
+        private void setInfo(svodkaRateForm form, int pos){
+            this.pos=pos;
+            dateTextView.setText(form.getDate());
+            nameTextView.setText(form.getName());
+            positionTextView.setText(form.getPosition());
+            id=form.getId();
+        }
         private void buttonClicked(){
-            if(extraLayout.getVisibility()==View.VISIBLE){
-                setArrowResource(R.drawable.ic_arrowdown);
-                setVisibility(View.GONE);
+            if(updated) {
+                if (extraLayout.getVisibility() == View.VISIBLE) {
+                    setArrowResource(R.drawable.ic_arrowdown);
+                    setVisibility(View.GONE);
+                } else {
+                    setArrowResource(R.drawable.ic_arrowup);
+                    setVisibility(View.VISIBLE);
+                }
             }
-            else {
-                setArrowResource(R.drawable.ic_arrowup);
-                setVisibility(View.VISIBLE);
+            else{
+                progressLayout.setVisibility(View.VISIBLE);
+                String url=((MainActivity)context).MAIN_URL+"controls/"+id;
+                JsonObjectRequest objectRequest=new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        progressLayout.setVisibility(View.GONE);
+                        try {
+                            updated=true;
+                            JSONObject point = response.getJSONObject("point");
+                            poin=point.getString("id");
+                            JSONObject contactor = point.getJSONObject("contactor");
+                            String address1=point.getString("address");
+                            String CName=contactor.getString("fullname");
+                            String CRole=contactor.getString("role");
+                            String position=((MainActivity) context).positions.get(CRole);
+
+                            String comment=response.getString("comment");
+
+                            messageForms.clear();
+                            if(comment.length()>0){
+                                messageForms.add(new MessageForm(comment));
+                            }
+                            adapter.notifyDataSetChanged();
+                            city.setText(cityName);
+                            address.setText(address1);
+                            clientName.setText(CName);
+                            clientPosition.setText(position);
+
+
+                            if(response.isNull("is_executive_permitted")){ is_executive_permitted=-1; }
+                            else{is_executive_permitted=0;
+                                if(response.getBoolean("is_executive_permitted")){
+                                    is_executive_permitted=1;
+                                }
+                            }
+                            if(response.isNull("is_technical_permitted")){ is_technical_permitted=-1; }
+                            else{is_technical_permitted=0;
+                                if(response.getBoolean("is_technical_permitted")){
+                                    is_technical_permitted=1;
+                                }
+
+                            }
+                            if(response.isNull("is_producer_permitted")){ is_producer_permitted=-1; }
+                            else{
+                                is_producer_permitted=0;
+                                if(response.getBoolean("is_producer_permitted")){
+                                    is_producer_permitted=1;
+                                }
+                            }
+                            if(response.isNull("is_curator_permitted")){ is_curator_permitted=-1; }
+                            else{
+                                is_curator_permitted=0;
+                                if(response.getBoolean("is_curator_permitted")){
+                                    is_curator_permitted=1;
+                                }
+                            }
+                            if(response.isNull("is_contactor_permitted")){ is_contactor_permitted=-1; }
+                            else{
+                                is_contactor_permitted=0;
+                                if(response.getBoolean("is_contactor_permitted")){
+                                    is_contactor_permitted=1;
+                                }
+                            }
+
+                            getAccepts();
+                            buttonClicked();
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressLayout.setVisibility(View.GONE);
+                        Toast.makeText(context, "Проблемы соеденения", Toast.LENGTH_SHORT).show();
+                    }
+                }){  @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    headers.put("Accept", "application/json");
+                    headers.put("Content-Type", "application/json; charset=utf-8");
+                    headers.put("Authorization", "JWT "+((MainActivity)context).token);
+                    return headers;
+                }};
+                ((MainActivity)context).requestQueue.add(objectRequest);
             }
+        }
+
+        private void getAccepts(){
+            String url=((MainActivity)context).MAIN_URL;
+            String execUrl=url+"employees/"+ "?user__role=ADMIN_EXECUTIVE";
+            JsonArrayRequest admin_execRequest=new JsonArrayRequest(Request.Method.GET, execUrl, null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    progressLayout.setVisibility(View.GONE);
+                    if(response.length()>0){
+                        try {
+                            setExec(response.getJSONObject(0));
+                        }
+                        catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                    }
+                    else{
+                        strings.set(0,new String[]{});
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    progressLayout.setVisibility(View.GONE);
+                    Toast.makeText(context, "Проблемы соедeнения", Toast.LENGTH_SHORT).show();
+                }
+            }){  @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Authorization", "JWT "+((MainActivity)context).token);
+                return headers;
+            }};
+            String techinUrl=url+"employees/" + "?user__role=ADMIN_TECHNICAL";
+            JsonArrayRequest admin_techRequest=new JsonArrayRequest(Request.Method.GET, techinUrl, null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    progressLayout.setVisibility(View.GONE);
+                    if(response.length()>0){
+                        try {
+                            setTech(response.getJSONObject(0));
+                        }
+                        catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                    }
+                    else{
+                        strings.set(1,new String[]{});
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    progressLayout.setVisibility(View.GONE);
+                    Toast.makeText(context, "Проблемы соедeнения", Toast.LENGTH_SHORT).show();
+                }
+            }){  @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Authorization", "JWT "+((MainActivity)context).token);
+                return headers;
+            }};
+            JsonObjectRequest admin_contRequest=new JsonObjectRequest(Request.Method.GET, url+"points/"+poin, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    progressLayout.setVisibility(View.GONE);
+                    try {
+                        JSONObject contactor=response.getJSONObject("contactor");
+                        JSONObject producer=response.getJSONObject("producer");
+                        JSONObject curator=response.getJSONObject("curator");
+                        if(is_producer_permitted>-1)
+                            strings.set(2,new String[]{producer.getString("fullname"),producer.getString("role"), "-1"});
+                        if(is_curator_permitted>-1)
+                            strings.set(3,new String[]{curator.getString("fullname"),curator.getString("role"), "-1"});
+                        if(is_contactor_permitted>-1)
+                            strings.set(4,new String[]{contactor.getString("fullname"),contactor.getString("role"), "-1"});
+                        checkAccepts();
+                    }
+                    catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    progressLayout.setVisibility(View.GONE);
+                    Toast.makeText(context, "Проблемы соедeнения", Toast.LENGTH_SHORT).show();
+                }
+            }){  @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Authorization", "JWT "+((MainActivity)context).token);
+                return headers;
+            }};
+            ((MainActivity)context).requestQueue.add(admin_execRequest);
+            ((MainActivity)context).requestQueue.add(admin_techRequest);
+            ((MainActivity)context).requestQueue.add(admin_contRequest);
+        }
+        private void setExec(JSONObject re){
+            try {
+                JSONObject object=re.getJSONObject("user");
+                if(is_executive_permitted>-1)
+                    strings.set(0, new String[]{object.getString("fullname"),object.getString("role"), re.getString("department")});
+                checkAccepts();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        private void setTech(JSONObject re){
+            try {
+                JSONObject object=re.getJSONObject("user");
+                if(is_technical_permitted>-1)
+                    strings.set(1, new String[]{object.getString("fullname"),object.getString("role"), re.getString("department")});
+                checkAccepts();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        private void checkAccepts(){
+            acceptForms.clear();
+            acceptAdapter.notifyDataSetChanged();
+            int l=0;
+            for(String[] a:strings){
+                if(a.length==0){
+                    l++;
+                    continue;
+                }
+                Log.d("Strings"+l,a.toString());
+                String name=a[0];
+                String role=((MainActivity)context).positions.get(a[1]);
+                String dep="";
+                if(!a[2].equals("-1") && ((MainActivity)context).dpids.indexOf(a[2])!=-1) {
+                    dep= ((MainActivity) context).departments.get(((MainActivity) context).dpids.indexOf(a[2]));
+                }
+                Boolean cl=l==4;
+                String sta="Не подтвержденно";
+                Boolean stat=false;
+                switch (l){
+                    case 0:
+                        stat=is_executive_permitted==1;
+                        break;
+                    case 1:
+                        stat=is_technical_permitted==1;
+                        break;
+                    case 2:
+                        stat=is_producer_permitted==1;
+                        break;
+                    case 3:
+                        stat=is_curator_permitted==1;
+                        break;
+                    case 4:
+                        stat=is_contactor_permitted==1;
+                        break;
+
+                }
+                AcceptForm acceptForm=new AcceptForm(name, dep, role, sta,stat);
+                acceptForms.add(acceptForm);
+                l++;
+            }
+            acceptAdapter.notifyDataSetChanged();
         }
     }
     Context context;
     private int page;
     List<Object> list;
+    String id;
     public ClientControlAdapter(List<Object> list, int page){
         this.list=list;
         this.page=page;
     }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -224,7 +908,7 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                 List<MessageForm> messageForm=new ArrayList<>();messageForm.add(new MessageForm(context.getResources().getString(R.string.bigtext)));
                 List<PhonesRowForm> rowForms=new ArrayList<>();rowForms.add(new PhonesRowForm(false,"Темирлан Алмасов","ОПУ","87017000154"));
-                List<AcceptForm> acceptForms=new ArrayList<>();acceptForms.add(new AcceptForm("Темирлан Алмасов","Отдел продаж","ОПУ","Выполнил",true));acceptForms.add(new AcceptForm("Темирлан Алмасов","Отдел продаж","ОПУ","Выполнил",true));acceptForms.add(new AcceptForm("Темирлан Алмасов","Отдел продаж","ОПУ","Выполнил",true));
+                List<AcceptForm> acceptForms=new ArrayList<>();
 
                 PhonesAdapter adapter01=new PhonesAdapter(rowForms, context);
                 phonesRecycle.setLayoutManager(manager01);
@@ -240,23 +924,20 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
                 commentsRecycle.setLayoutManager(manager0);
                 commentsRecycle.setItemAnimator(new DefaultItemAnimator());
                 commentsRecycle.setAdapter(adapter0);
-
+                holder.setMessageAdapter(adapter0);holder.setMessageForms(messageForm);
+                holder.setRowForms(rowForms);holder.setPhonesAdapter(adapter01);
+                holder.setAcceptAdapter(acceptAdapter);holder.setAcceptForms(acceptForms);
                 break;
             case 1:
                 checkListHolder holder1=(checkListHolder) holder3;
                 CheckListForm form=(CheckListForm) list.get(position);
                 holder1.setInfo(form);
-                holder1.wholeLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        ((MainActivity) context).setFragment(R.id.content_frame,new CheckListInfoFragment());
-                    }
-                });
                 break;
             case 2:
                 svodkaRateForm form2=(svodkaRateForm) list.get(position);
 
                 svodkaRateHolder holder2=(svodkaRateHolder) holder3;
+                holder2.setInfo(form2,position);
                 RecyclerView recyclerView=holder2.rateStartRecycler;
                 RecyclerView commentsRecycler=holder2.commentsRecyclerView;
                 RecyclerView accceptReycler0=holder2.acceptRecyclerView;
@@ -277,6 +958,10 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
                 ((MainActivity) context).setRecyclerViewOrientation(accceptReycler0,LinearLayoutManager.HORIZONTAL);
                 accceptReycler0.setAdapter(acceptAdapter0);
 
+                holder2.setMessageForms(messageForms);
+                holder2.setAdapter(adapter1);
+                holder2.setAcceptAdapter(acceptAdapter0);
+                holder2.setAcceptForms(acceptForms0);
 
                 break;
         }
