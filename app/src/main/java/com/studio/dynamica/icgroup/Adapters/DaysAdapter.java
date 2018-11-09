@@ -36,6 +36,10 @@ public class DaysAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         return clicked;
     }
 
+    public void setClicked(int clicked) {
+        this.clicked = clicked;
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

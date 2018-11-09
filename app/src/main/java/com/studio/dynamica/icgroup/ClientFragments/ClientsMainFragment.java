@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import com.android.volley.error.AuthFailureError;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.JsonArrayRequest;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
+import com.studio.dynamica.icgroup.Adapters.CityRadioAdapter;
 import com.studio.dynamica.icgroup.Adapters.ClientsMainAdapter;
 import com.studio.dynamica.icgroup.ExtraFragments.MainObjectSetInfoFragment;
 import com.studio.dynamica.icgroup.Forms.ClientsMainForm;
@@ -40,12 +42,15 @@ import java.util.Map;
  * A simple {@link Fragment} subclass.
  */
 public class ClientsMainFragment extends Fragment {
-        MainObjectSetInfoFragment setInfoFragment;
-        RecyclerView recyclerView;
+
+        RecyclerView recyclerView, cityRecycler;
         ProgressBar progressBar;
         SwipeRefreshLayout swipeRefreshLayout;
         ConstraintLayout mainObjectRegionLayout;
         TextView mainObjectRegionTextView;
+        CityRadioAdapter cityRadioAdapter;
+        List<String> cityNames;
+        ImageView arrowCity;
     int city=-1;    HashMap<Integer,String> cities;
     boolean changed=false;
     List<ClientsMainForm> list;
@@ -62,9 +67,9 @@ public class ClientsMainFragment extends Fragment {
         View view=inflater.inflate(R.layout.fragment_clients_main, container, false);
         createViews(view);
         List<ClientsPointForm> pointForms=new ArrayList<>();
-        pointForms.add(new ClientsPointForm("1","MEGA 1","Темирлан Даулетович"));
-        pointForms.add(new ClientsPointForm("1","MEGA 2","Надира Даулеткызы"));
-        pointForms.add(new ClientsPointForm("1","MEGA 3","Динара Руслановна"));
+        pointForms.add(new ClientsPointForm("1","MEGA 1",3));
+        pointForms.add(new ClientsPointForm("1","MEGA 2",4));
+        pointForms.add(new ClientsPointForm("1","MEGA 3",5));
         ClientsMainForm form=new ClientsMainForm("1","ТОО Байлар","Байбек Мухамедиев",3);
         form.setPointForms(pointForms);
         ClientsMainForm form1=new ClientsMainForm("1","ТОО Байлар","Байбек Мухамедиев",3);
@@ -81,32 +86,42 @@ public class ClientsMainFragment extends Fragment {
             }
         });
         ((MainActivity)getActivity()).setRecyclerViewOrientation(recyclerView, LinearLayoutManager.VERTICAL);
+        ((MainActivity)getActivity()).setRecyclerViewOrientation(cityRecycler, LinearLayoutManager.VERTICAL);
+
+        cityRadioAdapter=new CityRadioAdapter(cityNames);
+        cityRecycler.setAdapter(cityRadioAdapter);
         getLocations();
         mainObjectRegionLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setInfoFragment.setVisibility(View.VISIBLE);
+             showCityRec();
             }
         });
-        setInfoFragment.setWholeLayoutList(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setInfoFragment.setVisibility(View.GONE);
-            }
-        });
-        setInfoFragment.setVisibility(View.GONE);
+
         return view;
     }
-
+    private void showCityRec(){
+        if(cityRecycler.getVisibility()==View.VISIBLE){
+            cityRecycler.setVisibility(View.GONE);
+            arrowCity.setImageResource(R.drawable.ic_arrowdown_green);
+        }
+        else{
+            cityRecycler.setVisibility(View.VISIBLE);
+            arrowCity.setImageResource(R.drawable.ic_arrowup_green);
+        }
+    }
     private void createViews(View view){
-        setInfoFragment=(MainObjectSetInfoFragment)view.findViewById(R.id.setInfoFragment);
+
         recyclerView=(RecyclerView) view.findViewById(R.id.recyclerView);
+        cityRecycler=(RecyclerView) view.findViewById(R.id.cityRecycler);
         progressBar=(ProgressBar)view.findViewById(R.id.progressBar);
         swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipeRefreshLayout);
         mainObjectRegionLayout=(ConstraintLayout)view.findViewById(R.id.mainObjectRegionLayout);
         mainObjectRegionTextView=(TextView)view.findViewById(R.id.mainObjectRegionTextView);
+        arrowCity=(ImageView)view.findViewById(R.id.arrowCity);
 
         cities=new HashMap<>();
+        cityNames=new ArrayList<>();
         list=new ArrayList<>();
     }
     private void getLocations(){
@@ -158,22 +173,15 @@ public class ClientsMainFragment extends Fragment {
                     changed=true;
                     mainObjectRegionTextView.setText(cities.get(j));
                     onSwipeRefresh();
-                    setInfoFragment.setVisibility(View.GONE);
                 }
             });
         }
-        setInfoFragment.setListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                city=-1;
-                changed=true;
-                mainObjectRegionTextView.setText("Регион");
-                onSwipeRefresh();
-                setInfoFragment.setVisibility(View.GONE);
-            }
-        });
-        setInfoFragment.setList(values);
-        setInfoFragment.setLinsteners(listeners);
+       cityNames.clear();
+        cityNames.addAll(values);
+        cityRadioAdapter.setListeners(listeners);
+        cityRadioAdapter.notifyDataSetChanged();
+        if(values.size()>0)
+        mainObjectRegionTextView.setText(values.get(0));
     }
     private void onSwipeRefresh(){
         swipeRefreshLayout.setRefreshing(false);

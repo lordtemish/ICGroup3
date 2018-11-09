@@ -24,13 +24,16 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.error.AuthFailureError;
 import com.android.volley.error.VolleyError;
+import com.android.volley.request.JsonArrayRequest;
 import com.android.volley.request.JsonObjectRequest;
 import com.android.volley.request.StringRequest;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Adapters.CommentAdapter;
 import com.studio.dynamica.icgroup.Forms.CommentForm;
+import com.studio.dynamica.icgroup.Forms.JalobaForm;
 import com.studio.dynamica.icgroup.R;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -46,6 +49,7 @@ import java.util.Map;
 public class PassportObjectInfoListOPUFragment extends Fragment {
     RecyclerView commentsRecycler;
     Spinner spinner;
+    boolean all=false;
     List<CommentForm> commentForms, newCommentsList, allCommentsList;
     CommentAdapter commentAdapter;
     LinearLayout newComments,allComments;
@@ -183,16 +187,22 @@ String id, name, phone;
 
     public void setComment(boolean all){
         clearComments();
+        this.all=all;
         if(all){
             allCommentTextView.setTextColor(getActivity().getResources().getColor(R.color.black));
             allCommentFrame.setVisibility(View.VISIBLE);
             ChangeComments(allCommentsList);
+            commentForms.clear();
+            commentForms.addAll(allCommentsList);
         }
         else{
             newCommentTextView.setTextColor(getActivity().getResources().getColor(R.color.black));
             newCommentFrame.setVisibility(View.VISIBLE);
             ChangeComments(newCommentsList);
+            commentForms.clear();
+            commentForms.addAll(allCommentsList);
         }
+        commentAdapter.notifyDataSetChanged();
 
     }
     public void clearComments(){
@@ -248,6 +258,7 @@ String id, name, phone;
             dateString+=((MainActivity)getActivity()).data[calendar.get(Calendar.MONTH)]+" "+calendar.get(Calendar.YEAR);
             Log.d(dateString,dateString);
             dateTextView.setText(dateString);
+            getReq();
         }
         catch (Exception e){
             e.printStackTrace();
@@ -280,4 +291,65 @@ String id, name, phone;
         }};
         ((MainActivity)getActivity()).requestQueue.add(ob);
     }
+    private void getReq(){
+        progressLayout.setVisibility(View.VISIBLE);
+        String type="defendant";
+        String url=((MainActivity)getActivity()).MAIN_URL+"complaints/?"+type+"="+id;
+        JsonArrayRequest objectRequest=new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                progressLayout.setVisibility(View.GONE);
+                setInfo1(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressLayout.setVisibility(View.GONE);
+                Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Authorization", "JWT " + ((MainActivity) getActivity()).token);
+                return headers;
+            }
+        };
+        ((MainActivity)getActivity()).requestQueue.add(objectRequest);
+    }
+
+    private void setInfo1(JSONArray array){
+        try{
+            newCommentsList.clear();
+            allCommentsList.clear();
+            for(int i=0;i<array.length();i++){
+                JSONObject object=array.getJSONObject(i);
+                JSONObject author=object.getJSONObject("author");
+                JSONObject defendant=object.getJSONObject("defendant");
+                String content=object.getString("content");
+                String id=object.getString("id");
+                String authorrole=((MainActivity)getActivity()).positions.get(author.getString("role"));
+                String name=author.getString("fullname"),role=((MainActivity)getActivity()).positions.get(defendant.getString("role"));
+                String created_at=object.getString("created_at");
+                String created=((MainActivity)getActivity()).getdate(created_at);
+                created=created.substring(0,created.length()-6);
+                boolean arch=!object.isNull("reply_comment");
+                CommentForm jalobaForm=new CommentForm(name,created);
+                jalobaForm.setId(id);
+                if(arch){
+                    allCommentsList.add(jalobaForm);
+                }
+                else{
+                    newCommentsList.add(jalobaForm);
+                }
+            }
+            setComment(all);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 }

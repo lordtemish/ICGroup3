@@ -30,6 +30,12 @@ public class RadioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
     List<RadioForm> list;
     Context context;
+    boolean checkable=false;
+
+    public void setCheckable(boolean checkable) {
+        this.checkable = checkable;
+    }
+
     public RadioAdapter(List<RadioForm> forms){
         this.list=forms;
     }
@@ -42,9 +48,18 @@ public class RadioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder1, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder1, final int position) {
         myHolder holder=(myHolder) holder1;
         holder.setInfo(list.get(position));
+        if(checkable) {
+            holder.radioButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    list.get(position).setStatus(!list.get(position).isStatus());
+                    notifyDataSetChanged();
+                }
+            });
+        }
     }
 
     @Override

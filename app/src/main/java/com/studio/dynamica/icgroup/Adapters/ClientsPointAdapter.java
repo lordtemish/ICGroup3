@@ -3,6 +3,7 @@ package com.studio.dynamica.icgroup.Adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Forms.ClientsPointForm;
 import com.studio.dynamica.icgroup.R;
 
@@ -17,19 +19,26 @@ import java.util.List;
 
 public class ClientsPointAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private class myHolder extends RecyclerView.ViewHolder{
-        TextView nameTextView,name;
+        TextView nameTextView;
         ImageView avatar;
         ConstraintLayout wholeLayout;
+        RecyclerView recyclerView;
+        RateStarsAdapter adapter;
         private myHolder(View view){
             super(view);
-            name=(TextView)view.findViewById(R.id.name);
             nameTextView=(TextView)view.findViewById(R.id.nameTextView);
             avatar=(ImageView)view.findViewById(R.id.avatar);
             wholeLayout=(ConstraintLayout)view.findViewById(R.id.wholeLayout);
+            recyclerView=(RecyclerView)view.findViewById(R.id.recyclerView);
+            ((MainActivity)context).setRecyclerViewOrientation(recyclerView,LinearLayoutManager.VERTICAL);
+            adapter=new RateStarsAdapter(1);recyclerView.setAdapter(adapter);
+
+            ((MainActivity)context).setType("demibold",nameTextView);
         }
         private void setInfo(ClientsPointForm form){
-            name.setText(form.getFullname());
             nameTextView.setText(form.getName());
+            adapter.setRate(form.getRate());
+            adapter.notifyDataSetChanged();
         }
     }
     Context context;

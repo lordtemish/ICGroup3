@@ -46,6 +46,7 @@ public class EquipmentMainFragment extends Fragment {
         remontForms.add(new RemontForms("Ремонт",5));
         forms.add(new EquipmentForm("name","someid",4, remontForms,orderForms));forms.add(new EquipmentForm("name","someid",4,new ArrayList<RemontForms>(),orderForms));forms.add(new EquipmentForm("name","someid",4, remontForms, orderForms));forms.add(new EquipmentForm("name","someid",4));
          adapter=new EquipmentAdapter(forms);
+         recyclerView.setAdapter(adapter);
         return view;
     }
     private void createViews(View view){

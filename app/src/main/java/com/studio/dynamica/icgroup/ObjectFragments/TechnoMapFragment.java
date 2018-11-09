@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import com.android.volley.request.JsonArrayRequest;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Adapters.DaysAdapter;
 import com.studio.dynamica.icgroup.Adapters.TechnoMapAdapter;
+import com.studio.dynamica.icgroup.ExtraFragments.DateChooseView;
 import com.studio.dynamica.icgroup.Forms.TechnoMapForm;
 import com.studio.dynamica.icgroup.R;
 
@@ -46,8 +48,9 @@ public class TechnoMapFragment extends Fragment {
     TextView pageInfo, mainObjectTitle,extraText, period, service, category, status;
     RecyclerView  techoMapRec;
     FrameLayout extraLayout;
+    DateChooseView dateChooseView;
     int page;
-    String id="";
+    String id="", date="";
     List<TechnoMapForm> forms;
     TechnoMapAdapter adapter1;
     public TechnoMapFragment() {
@@ -171,34 +174,40 @@ public class TechnoMapFragment extends Fragment {
                 e.printStackTrace();
             }
             adapter1.notifyDataSetChanged();
-
-            String url = ((MainActivity) getActivity()).MAIN_URL + "results/?plan__group__point=" + ids.get(page);
-            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                @Override
-                public void onResponse(JSONArray response) {
-                    setResults(response);
-                    extraLayout.setVisibility(View.GONE);
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    extraLayout.setVisibility(View.GONE);
-                    Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
-                }
-            }) {  @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Accept", "application/json");
-                headers.put("Content-Type", "application/json; charset=utf-8");
-                headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
-                return headers;
-            }
-            };
-            ((MainActivity) getActivity()).requestQueue.add(jsonArrayRequest);
+            resultRequest();
         }
         catch (Exception e){
             e.printStackTrace();
         }
+    }
+    private void resultRequest(){
+        String url = ((MainActivity) getActivity()).MAIN_URL + "results/?plan__group__point=" + ids.get(page);
+        if(date.length()>0){
+            url+="&date="+date;
+        }
+        Log.d("resultsURL",url);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                setResults(response);
+                extraLayout.setVisibility(View.GONE);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                extraLayout.setVisibility(View.GONE);
+                Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
+            }
+        }) {  @Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            HashMap<String, String> headers = new HashMap<String, String>();
+            headers.put("Accept", "application/json");
+            headers.put("Content-Type", "application/json; charset=utf-8");
+            headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
+            return headers;
+        }
+        };
+        ((MainActivity) getActivity()).requestQueue.add(jsonArrayRequest);
     }
     private void setResults(JSONArray array){
         try{
@@ -256,7 +265,20 @@ public class TechnoMapFragment extends Fragment {
         mainObjectTitle=(TextView) view.findViewById(R.id.mainObjectTitle);
         techoMapRec=(RecyclerView) view.findViewById(R.id.technoMapRecyclerView);
         extraLayout=(FrameLayout) view.findViewById(R.id.extraLayout);
+        dateChooseView=(DateChooseView) view.findViewById(R.id.dateChooseView);
+        dateChooseView.setListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                date = dateChooseView.dateDivided();
+                resultRequest();
+            }
+        });
     }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     private void setFonttype(){
         setTypeFace("demibold", pageInfo);
         setTypeFace("light", extraText, period, status, category, service);

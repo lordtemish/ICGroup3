@@ -60,7 +60,9 @@
 
     <com.studio.dynamica.icgroup.ExtraFragments.DateChooseView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.studio.dynamica.icgroup.ExtraFragments.DateChooseView>
+        android:layout_height="wrap_content"
+        android:id="@+id/dateChooseView"
+        ></com.studio.dynamica.icgroup.ExtraFragments.DateChooseView>
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

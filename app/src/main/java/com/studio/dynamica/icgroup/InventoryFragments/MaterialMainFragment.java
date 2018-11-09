@@ -41,6 +41,7 @@ public class MaterialMainFragment extends Fragment {
         orderForms.add(new OrderForm("","","","","",1,4));orderForms.add(new OrderForm("","","","","",1,4));orderForms.add(new OrderForm("","","","","",1,4));
         forms.add(new MaterialForm("","",2,5));forms.add(new MaterialForm("","",2,5, orderForms));forms.add(new MaterialForm("","",2,5, orderForms));
          adapter=new MaterialAdapter(forms);
+         recyclerView.setAdapter(adapter);
         return view;
     }
     private void createViews(View view){

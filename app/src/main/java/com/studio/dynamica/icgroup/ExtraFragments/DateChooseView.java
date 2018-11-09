@@ -33,9 +33,10 @@ public class DateChooseView extends FrameLayout{
     TextView dateTextView;
     RecyclerView dayReycler;
     ImageView fullDateImage;
+    OnClickListener listener=null;
     int days;
     String[] data = {"Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"};
-    Calendar cal;
+    Calendar cal, cal2;
     public DateChooseView(Context context, AttributeSet attrs, int defstyle){
         super(context,attrs,defstyle);
         initView();
@@ -52,7 +53,9 @@ public class DateChooseView extends FrameLayout{
         View view = inflate(getContext(), R.layout.datechoose_view, null);
 
         cal=Calendar.getInstance();
+        cal2=Calendar.getInstance();
         cal.setTime(new Date());
+        cal2.setTime(new Date());
 
         addView(view);
         createViews(view);
@@ -90,6 +93,7 @@ public class DateChooseView extends FrameLayout{
         dayReycler.setAdapter(adapters.get(31));
 
         checkDate();
+        setTodayDate();
     }
 
     private void createViews(View view){
@@ -142,6 +146,9 @@ public class DateChooseView extends FrameLayout{
             dateTextView.setVisibility(VISIBLE);
             yearPicker.setVisibility(GONE);
             dateTextView.setText(getDate());
+            if(listener!=null){
+                listener.onClick(getRootView());
+            }
         }
         else {
             dateInfoLayout.setVisibility(View.VISIBLE);
@@ -150,14 +157,38 @@ public class DateChooseView extends FrameLayout{
             yearPicker.setVisibility(VISIBLE);
         }
     }
+    private void setTodayDate(){
+        int day=cal2.get(Calendar.DAY_OF_MONTH);
+        adapters.get(days).setClicked(day-1);
+        dateTextView.setText(getDate());
+    }
     private String getDate(){
         return (adapters.get(days).getClicked()+1)+" "+data[numberPicker.getValue()-1]+" "+yearPicker.getValue();
     }
+    public String dateDivided(){
+        String day=(adapters.get(days).getClicked()+1)+"";
+        String month=numberPicker.getValue()+"";
+        String year=yearPicker.getValue()+"";
+        if(month.length()==1){
+            month="0"+month;
+        }
+        if(day.length()==1){
+            day="0"+day;
+        }
+        return year+"-"+month+"-"+day;
+    }
     private void checkDate(){
-        cal.set(year,numberPicker.getValue()-1,1);
+        if(numberPicker.getValue()-1==cal2.get(Calendar.MONTH) && yearPicker.getValue()==cal2.get(Calendar.YEAR))
+            cal.setTime(cal2.getTime());
+        else
+            cal.set(year,numberPicker.getValue()-1,1);
         days=cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         dayReycler.setAdapter(adapters.get(days));
         Log.d("checkDate()",year+" "+(numberPicker.getValue()-1)+" "+days);
         dateTextView.setText(getDate());
+    }
+
+    public void setListener(OnClickListener listener) {
+        this.listener = listener;
     }
 }

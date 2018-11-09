@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ClientFragments.ClientsMainFragment">
+    tools:context=".ClientFragments.ClientsMainFragment"
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -77,6 +78,7 @@
                         android:layout_width="15sp"
                         android:layout_height="20sp"
                         android:layout_gravity="center"
+                        android:id="@+id/arrowCity"
                         android:src="@drawable/ic_arrowdown_green"
                         />
                 </FrameLayout>
@@ -94,8 +96,19 @@
                     android:textSize="17sp"
                     />
             </android.support.constraint.ConstraintLayout>
-         
+
         </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:id="@+id/cityRecycler"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="20dp">
+
+        </android.support.v7.widget.RecyclerView>
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
@@ -121,8 +134,5 @@
             </FrameLayout>
         </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
-    <com.studio.dynamica.icgroup.ExtraFragments.MainObjectSetInfoFragment
-        android:id="@+id/setInfoFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.studio.dynamica.icgroup.ExtraFragments.MainObjectSetInfoFragment>
+
 </FrameLayout>

@@ -19,8 +19,9 @@ import java.util.List;
 public class ClientsMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private class myHolder extends RecyclerView.ViewHolder{
         TextView title,role,nameTextView, objectsLabel;
-        ImageView settings,avatar;
+        ImageView settings,avatar, arrowDown;
         RecyclerView rateRecyclerView, recyclerView;
+        boolean open=false;
         private myHolder(View view){
             super(view);
             nameTextView=(TextView)view.findViewById(R.id.nameTextView);
@@ -28,13 +29,32 @@ public class ClientsMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             role=(TextView)view.findViewById(R.id.role);
             objectsLabel=(TextView)view.findViewById(R.id.objectsLabel);
             settings=(ImageView) view.findViewById(R.id.settings);
+            arrowDown=(ImageView) view.findViewById(R.id.arrowDown);
             avatar=(ImageView) view.findViewById(R.id.avatar);
             recyclerView=(RecyclerView) view.findViewById(R.id.recyclerView);
             rateRecyclerView=(RecyclerView) view.findViewById(R.id.rateRecyclerView);
             ((MainActivity)context).setRecyclerViewOrientation(recyclerView, LinearLayoutManager.VERTICAL);
             ((MainActivity)context).setRecyclerViewOrientation(rateRecyclerView, LinearLayoutManager.VERTICAL);
-            ((MainActivity)context).setType("demibold", title,nameTextView);
-            ((MainActivity)context).setType("light", role, objectsLabel);
+            ((MainActivity)context).setType("demibold", title,nameTextView, objectsLabel);
+            ((MainActivity)context).setType("light", role);
+            arrowDown.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    open=!open;
+                    checkOpen();
+                }
+            });
+            recyclerView.setVisibility(View.GONE);
+        }
+        private void checkOpen(){
+            if(open){
+                recyclerView.setVisibility(View.VISIBLE);
+                arrowDown.setImageResource(R.drawable.ic_arrowdown);
+            }
+            else{
+                recyclerView.setVisibility(View.GONE);
+                arrowDown.setImageResource(R.drawable.ic_arrowup);
+            }
         }
         private void setInfo(ClientsMainForm form){
                 title.setText(form.getName());

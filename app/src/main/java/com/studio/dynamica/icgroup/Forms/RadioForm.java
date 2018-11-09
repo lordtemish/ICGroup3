@@ -7,6 +7,10 @@ public class RadioForm {
         status=s;text=n;
     }
 
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
     public String getText() {
         return text;
     }

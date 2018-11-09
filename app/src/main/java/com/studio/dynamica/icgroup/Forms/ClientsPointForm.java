@@ -4,9 +4,16 @@ public class ClientsPointForm {
     String id;
     String name;
     String avatar;
-    String fullname;
-    public ClientsPointForm(String i, String n, String f){
-        id=i;name=n;fullname=f;
+    int rate=0;
+
+    public ClientsPointForm(String i, String n, int rate) {
+        id = i;
+        name = n;
+        this.rate=rate;
+    }
+
+    public int getRate() {
+        return rate;
     }
 
     public void setAvatar(String avatar) {
@@ -25,7 +32,4 @@ public class ClientsPointForm {
         return avatar;
     }
 
-    public String getFullname() {
-            return fullname;
-    }
 }
