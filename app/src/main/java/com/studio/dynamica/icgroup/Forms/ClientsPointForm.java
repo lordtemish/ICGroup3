@@ -5,6 +5,15 @@ public class ClientsPointForm {
     String name;
     String avatar;
     int rate=0;
+    PointInfoHolder infoHolder;
+
+    public void setInfoHolder(PointInfoHolder infoHolder) {
+        this.infoHolder = infoHolder;
+    }
+
+    public PointInfoHolder getInfoHolder() {
+        return infoHolder;
+    }
 
     public ClientsPointForm(String i, String n, int rate) {
         id = i;

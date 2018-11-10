@@ -1,6 +1,7 @@
 package com.studio.dynamica.icgroup.Forms;
 
 public class OrderForm {
+    String id;
     String date;
     String number;
     String place;
@@ -31,6 +32,13 @@ public class OrderForm {
 
     public int getNum2() {
         return num2;
+    }
+    public double getD1() {
+        return Double.parseDouble(num1+"");
+    }
+
+    public double getD2() {
+        return Double.parseDouble(num2+"");
     }
 
     public String getNumber() {

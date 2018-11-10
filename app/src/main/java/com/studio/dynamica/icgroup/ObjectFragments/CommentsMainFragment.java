@@ -40,9 +40,9 @@ public class CommentsMainFragment extends Fragment {
     TextView notAnswered, ArchiveTextView, mainObjectTitle;
     List<JalobaForm> firstForm, secondForm, jalobaForms;
     JalobaAdapter adapter;
-    FrameLayout progressLayout;
+    FrameLayout progressLayout, addNewLayout;
     String type="", id;
-    int chose=0;
+    int chose=0, location=0;
     public CommentsMainFragment() {
         // Required empty public constructor
     }
@@ -54,6 +54,7 @@ public class CommentsMainFragment extends Fragment {
         // Inflate the layout for this fragment
         type=getArguments().getString("type");
         id=getArguments().getString("id");
+        location=getArguments().getInt("location");
         View view=inflater.inflate(R.layout.fragment_comments_main, container, false);
         createViews(view);
         setFonttype();
@@ -80,8 +81,25 @@ public class CommentsMainFragment extends Fragment {
         ArchiveTextView=(TextView) view.findViewById(R.id.ArchiveTextView);
         mainObjectTitle=(TextView) view.findViewById(R.id.mainObjectTitle);
         progressLayout=(FrameLayout) view.findViewById(R.id.progressLayout);
+        addNewLayout=(FrameLayout) view.findViewById(R.id.addNewLayout);
         firstForm=new ArrayList<>();
         secondForm=new ArrayList<>();
+        if (!type.equals("point")){
+            addNewLayout.setVisibility(View.GONE);
+        }
+        else{
+            addNewLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Fragment fragment=new AddNewJalobaFragment();
+                    Bundle bundle=new Bundle();
+                    bundle.putString("id",id);
+                    bundle.putInt("location",location);
+                    fragment.setArguments(bundle);
+                    ((MainActivity)getActivity()).setFragment(R.id.content_frame,fragment);
+                }
+            });
+        }
     }
     private void setFonttype(){
         setTypeFace("it",mainObjectTitle);

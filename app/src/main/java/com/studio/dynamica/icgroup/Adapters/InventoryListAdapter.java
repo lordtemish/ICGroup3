@@ -32,9 +32,15 @@ public class InventoryListAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
     List<String> list;
     Context context;
+    String id="";
     public InventoryListAdapter(List<String> strings){
         list=strings;
     }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -54,7 +60,7 @@ public class InventoryListAdapter extends RecyclerView.Adapter<RecyclerView.View
                     public void onClick(View view) {
                         Fragment fragment=new EquipmentMainFragment();
                         Bundle bundle=new Bundle();
-
+                        bundle.putString("id",id);
                         fragment.setArguments(bundle);
                         ((MainActivity)context).setFragment(R.id.content_frame, fragment);
                     }
@@ -66,7 +72,7 @@ public class InventoryListAdapter extends RecyclerView.Adapter<RecyclerView.View
                     public void onClick(View view) {
                         Fragment fragment=new MaterialMainFragment();
                         Bundle bundle=new Bundle();
-
+                        bundle.putString("id",id);
                         fragment.setArguments(bundle);
                         ((MainActivity)context).setFragment(R.id.content_frame, fragment);
                     }

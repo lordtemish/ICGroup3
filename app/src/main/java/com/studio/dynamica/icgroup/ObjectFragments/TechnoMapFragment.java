@@ -190,6 +190,7 @@ public class TechnoMapFragment extends Fragment {
             @Override
             public void onResponse(JSONArray response) {
                 setResults(response);
+                Log.d("resulLength",response.length()+"");
                 extraLayout.setVisibility(View.GONE);
             }
         }, new Response.ErrorListener() {

@@ -192,13 +192,13 @@ public class MainObjectFragment extends Fragment {
                                     long resu=Math.round(jsonObject.getDouble("result_rate")*100);
                                     int result=Integer.parseInt(resu+"");
                                     MainObjectRowForm form=new MainObjectRowForm(jsonObject.getInt("id") + "", jsonObject.getString("name"),result , jsonObject.getInt("workers_count"), jsonObject.getInt("complaints_count"), jsonObject.getInt("tasks_count"));
-                                    form.setLocation(jsonObject.getInt("location"));
+                                    form.setLocation(jsonObject.getJSONObject("location").getInt("id"));
                                     form.setCity(cities.get(form.getLocation()));
                                     rowForms.add(form);
                                     time=new Date().getTime();
 
                                 } catch (Exception e) {
-                                    break;
+                                    e.printStackTrace();
                                 }
                             }
                             setPoints(rowForms);

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -27,6 +28,7 @@ import com.studio.dynamica.icgroup.ExtraFragments.MainObjectSetInfoFragment;
 import com.studio.dynamica.icgroup.Forms.ClientsMainForm;
 import com.studio.dynamica.icgroup.Forms.ClientsPointForm;
 import com.studio.dynamica.icgroup.Forms.MainObjectRowForm;
+import com.studio.dynamica.icgroup.Forms.PointInfoHolder;
 import com.studio.dynamica.icgroup.R;
 
 import org.json.JSONArray;
@@ -51,7 +53,7 @@ public class ClientsMainFragment extends Fragment {
         CityRadioAdapter cityRadioAdapter;
         List<String> cityNames;
         ImageView arrowCity;
-    int city=-1;    HashMap<Integer,String> cities;
+    int city=1;    HashMap<Integer,String> cities;
     boolean changed=false;
     List<ClientsMainForm> list;
     ClientsMainAdapter adapter;
@@ -66,16 +68,6 @@ public class ClientsMainFragment extends Fragment {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_clients_main, container, false);
         createViews(view);
-        List<ClientsPointForm> pointForms=new ArrayList<>();
-        pointForms.add(new ClientsPointForm("1","MEGA 1",3));
-        pointForms.add(new ClientsPointForm("1","MEGA 2",4));
-        pointForms.add(new ClientsPointForm("1","MEGA 3",5));
-        ClientsMainForm form=new ClientsMainForm("1","ТОО Байлар","Байбек Мухамедиев",3);
-        form.setPointForms(pointForms);
-        ClientsMainForm form1=new ClientsMainForm("1","ТОО Байлар","Байбек Мухамедиев",3);
-        form1.setPointForms(pointForms);
-        list.add(form);
-        list.add(form1);
         adapter=new ClientsMainAdapter(list);
         recyclerView.setAdapter(adapter);
 
@@ -182,32 +174,82 @@ public class ClientsMainFragment extends Fragment {
         cityRadioAdapter.notifyDataSetChanged();
         if(values.size()>0)
         mainObjectRegionTextView.setText(values.get(0));
+
+        getClients();
     }
     private void onSwipeRefresh(){
         swipeRefreshLayout.setRefreshing(false);
-
+        getClients();
     }
-    /*private void checkData(){
-        if(new Date().getTime()-time>120000 || changed){
+    private void getClients(){
+        progressBar.setVisibility(View.VISIBLE);
+            String url=((MainActivity)getActivity()).MAIN_URL+"clients/?location="+city;
+            JsonArrayRequest arrayRequest=new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    progressBar.setVisibility(View.GONE);
+                    setClients(response);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(), "Проблемы соедения", Toast.LENGTH_SHORT).show();
+                }
+            }){@Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
+                return headers;
+            }};
+        ((MainActivity)getActivity()).requestQueue.add(arrayRequest);
+    }
+    private void setClients(JSONArray array){
+        try{
             list.clear();
+            for(int i=0;i<array.length();i++){
+                JSONObject object=array.getJSONObject(i);
+                JSONObject contactor=object.getJSONObject("contactor");
+                JSONArray points=object.getJSONArray("points");
+                List<ClientsPointForm> clientsPointForms=new ArrayList<>();
+                for(int j=0;j<points.length();j++){
+                    JSONObject point=points.getJSONObject(j);
+                    double result_rate=point.getDouble("score_rate");
+                    String name=point.getString("name"), id=point.getString("id");
+                    int rate=Integer.parseInt(Math.round(result_rate*5)+"");
+                    ClientsPointForm form=new ClientsPointForm(id,name, rate);
+                    PointInfoHolder infoHolder=new PointInfoHolder();
+                    infoHolder.setId(id);
+                    infoHolder.setLocation(point.getInt("location"));
+                    infoHolder.setName(name);
+                    infoHolder.setCity("");
+                    form.setInfoHolder(infoHolder);
+                    clientsPointForms.add(form);
+                }
+                String id=object.getString("id");
+                String name=object.getString("name");
+                String kind=object.getString("kind");
+                String poName=((MainActivity)getActivity()).clientKinds.get(kind)+" "+name;
+                double result_rate=object.getDouble("score_rate");
+                int rate=Integer.parseInt(Math.round(result_rate*5)+"");
+                String fullName=contactor.getString("fullname");
+                String avatar="";
+                if(!contactor.isNull("avatar")){
+                    avatar=contactor.getString("avatar");
+                }
+                ClientsMainForm mainForm=new ClientsMainForm(id, poName,fullName,rate);
+                if(avatar.length()>0){
+                    mainForm.setAvatar(avatar);
+                }
+                mainForm.setPointForms(clientsPointForms);
+                list.add(mainForm);
+            }
             adapter.notifyDataSetChanged();
-            String l="points/?";
-            if(city>-1){
-                l+="location="+city;
-            }
-            Log.d("url",l);
-            //getRequest(l);
-            if(cities.size()<1){
-                getLocations();
-            }
         }
-        else{
-            List<MainObjectRowForm> rowForms=new ArrayList<MainObjectRowForm>();
-            rowForms.addAll(list);
-            setClients(rowForms);
+        catch (Exception e){
+            e.printStackTrace();
         }
-    }*/
-    private void setClients(){
-
     }
 }

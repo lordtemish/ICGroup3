@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
     Calendar cal;
 
     FileCompressor fileCompressor;
-    public HashMap<String,String> positions;
+    public HashMap<String,String> positions, inventoryUnits, replKinds, clientKinds;
     public List<String> departments, dpids, roles, rlids;
     public String[] months={"Января","Февраля","Марта","Апреля","Мая","Июня","Июля","Августа","Сентября","Октября","Ноября","Декабря"},data={"Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"},weeks={"Пн","Вт","Ср","Чт","Пт","Сб","Вс"};
 
@@ -168,6 +168,14 @@ public class MainActivity extends AppCompatActivity {
         inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         visitFormat=new SimpleDateFormat("yyyy-MM-dd");
 
+        clientKinds=new HashMap<>();
+        clientKinds.put("LLP","ТОО");
+        clientKinds.put("IE","ИП");
+        replKinds=new HashMap<>();
+        replKinds.put("ADDITION", "Пополнение"); replKinds.put("MOVEMENT", "Перемещение");replKinds.put("REPAIR", "На ремонт");replKinds.put("REPLACE", "На замену");
+        inventoryUnits=new HashMap<>();
+        inventoryUnits.put("PIECE","шт.");
+        inventoryUnits.put("LITRE","л.");
         positions=new HashMap<>();
         positions.put("SUPERADMIN","Суперадмин");
         positions.put("CLIENT","Представитель Клиента");
@@ -362,7 +370,11 @@ public class MainActivity extends AppCompatActivity {
                     setFragment(R.id.content_frame,new ClientsMainFragment());
                     break;
                 case 4:
-                    setFragment(R.id.content_frame,new InventoryMainFragment());
+                    Fragment fragmen=new InventoryMainFragment();
+                    Bundle undle=new Bundle();
+                    undle.putString("id","");
+                    fragmen.setArguments(undle);
+                    setFragment(R.id.content_frame,fragmen);
                     break;
             }
         }

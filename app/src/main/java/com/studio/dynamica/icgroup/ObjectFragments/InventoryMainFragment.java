@@ -49,6 +49,7 @@ public class InventoryMainFragment extends Fragment {
     String[] a={"Инвентарь","Инвентаризация","Заявки на пополнение"}, months = {"Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"};
 
     int page=0;
+    String id="";
     Calendar cal;
     /*EquipmentAdapter equipmentAdapter;
     MaterialAdapter materialAdapter;*/
@@ -69,6 +70,7 @@ public class InventoryMainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        id=getArguments().getString("id");
         View view=inflater.inflate(R.layout.fragment_inventory_main, container, false);
         cal=Calendar.getInstance();
         cal.setTime(new Date());
@@ -195,6 +197,7 @@ public class InventoryMainFragment extends Fragment {
         reqList.add("Сезонный инвентарь");
         reqList.add("Спец. одежда");
         listAdapter=new InventoryListAdapter(reqList);
+        listAdapter.setId(id);
       /*  reqAdapter=new EquipmentReqAdapter(reqList);
         reqAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -245,13 +248,6 @@ public class InventoryMainFragment extends Fragment {
         page+=a;
         checkPage();
     }
-    /*
-
-               case 1:
-                setProgressLayout();
-                inventoryRecycler.setAdapter(materialAdapter);
-                break;
-     */
     private void checkPage(){
         if(page<0) page=a.length-1;
         if(page==a.length) page=0;

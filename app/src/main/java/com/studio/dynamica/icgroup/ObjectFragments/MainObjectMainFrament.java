@@ -132,9 +132,10 @@ public class MainObjectMainFrament extends Fragment {
             Bundle bundle=new Bundle();
             bundle.putString("type","point");
             bundle.putString("id",id);
+            bundle.putInt("location",location);
             fragment.setArguments(bundle);
             ((MainActivity)getActivity()).setFragment(R.id.content_frame,fragment); }};
-        View.OnClickListener listener=new View.OnClickListener() {@Override public void onClick(View v) { ((MainActivity)getActivity()).setFragment(R.id.content_frame,new InventoryMainFragment()); }};
+        View.OnClickListener listener=new View.OnClickListener() {@Override public void onClick(View v) { ((MainActivity)getActivity()).setFragment(R.id.content_frame,getFragmentWithId(new InventoryMainFragment())); }};
         listeners.add(listenerPassport);
         listeners.add(serviceListener);
         listeners.add(TechnoMapListener);

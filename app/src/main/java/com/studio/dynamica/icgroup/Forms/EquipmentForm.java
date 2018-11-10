@@ -5,16 +5,26 @@ import java.util.List;
 
 public class EquipmentForm {
     String name, id;
-    int num;
+    String vendor_code="";
+    String num;
     List<RemontForms> remontForms;
     List<OrderForm> orderForms;
-    public EquipmentForm(String name, String id, int num){
+
+    public void setVendor_code(String vendor_code) {
+        this.vendor_code = vendor_code;
+    }
+
+    public String getVendor_code() {
+        return vendor_code;
+    }
+
+    public EquipmentForm(String name, String id, String num){
         this.name=name;
         this.id=id;
         this.num=num;
         remontForms=new ArrayList<>();orderForms=new ArrayList<>();
     }
-        public EquipmentForm(String name , String id, int num, List<RemontForms> remontForms, List<OrderForm> orderForms){
+        public EquipmentForm(String name , String id, String num, List<RemontForms> remontForms, List<OrderForm> orderForms){
         this.name=name;
         this.id=id;
         this.num=num;
@@ -30,7 +40,7 @@ public class EquipmentForm {
         return remontForms;
     }
 
-    public int getNum() {
+    public String getNum() {
         return num;
     }
 

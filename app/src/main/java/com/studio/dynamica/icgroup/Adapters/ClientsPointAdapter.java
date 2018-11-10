@@ -1,8 +1,10 @@
 package com.studio.dynamica.icgroup.Adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +15,8 @@ import android.widget.TextView;
 
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Forms.ClientsPointForm;
+import com.studio.dynamica.icgroup.Forms.PointInfoHolder;
+import com.studio.dynamica.icgroup.ObjectFragments.MainObjectMainFrament;
 import com.studio.dynamica.icgroup.R;
 
 import java.util.List;
@@ -39,6 +43,20 @@ public class ClientsPointAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             nameTextView.setText(form.getName());
             adapter.setRate(form.getRate());
             adapter.notifyDataSetChanged();
+            final PointInfoHolder holder=form.getInfoHolder();
+            wholeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Fragment fragment=new MainObjectMainFrament();
+                    Bundle bundle=new Bundle();
+                    bundle.putString("id",holder.getId());
+                    bundle.putString("name",holder.getName());
+                    bundle.putInt("location",holder.getLocation());
+                    bundle.putString("city",holder.getCity());
+                    fragment.setArguments(bundle);
+                    ((MainActivity)context).setFragment(R.id.content_frame,fragment);
+                }
+            });
         }
     }
     Context context;

@@ -56,7 +56,7 @@ public class RadioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 @Override
                 public void onClick(View view) {
                     list.get(position).setStatus(!list.get(position).isStatus());
-                    notifyDataSetChanged();
+                    notifyItemChanged(position);
                 }
             });
         }
