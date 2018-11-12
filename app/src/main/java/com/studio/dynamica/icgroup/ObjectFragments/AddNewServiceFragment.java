@@ -232,8 +232,10 @@ public class AddNewServiceFragment extends Fragment {
         spinnerButtonFrames=new ArrayList<>();
         spinnerLists=new ArrayList<>();for(int i=0;i<3;i++){
             spinnerLists.add(new ArrayList<String>());
-            spinnerLists.get(i).add("Выберите объект");
         }
+        spinnerLists.get(1).add("Выберите тип задачи");
+        spinnerLists.get(0).add("Выберите отдел");
+        spinnerLists.get(2).add("Выберите сотрудника");
         spinners.add((Spinner) view.findViewById(R.id.employeeChangeSpinner1));spinners.add((Spinner) view.findViewById(R.id.employeeChangeSpinner2));spinners.add((Spinner) view.findViewById(R.id.employeeChangeSpinner3));
         spinnerButtonFrames.add((FrameLayout) view.findViewById(R.id.spinnerFrameImage1));spinnerButtonFrames.add((FrameLayout) view.findViewById(R.id.spinnerFrameImage2));spinnerButtonFrames.add((FrameLayout) view.findViewById(R.id.spinnerFrameImage3));
         filesRecyclerView=(RecyclerView) view.findViewById(R.id.filesRecyclerView);
@@ -377,7 +379,7 @@ public class AddNewServiceFragment extends Fragment {
     private void setEmployees(JSONArray array){
         try {
             spinnerLists.get(2).clear();
-            spinnerLists.get(2).add("Выберите объект");
+            spinnerLists.get(2).add("Выберите сотрудника");
             spinners.get(2).setSelection(0);
             for(int i=0;i<array.length();i++){
                 JSONObject object=array.getJSONObject(i);
@@ -403,6 +405,7 @@ public class AddNewServiceFragment extends Fragment {
                     }
                 });
             }
+            adapters.get(2).notifyDataSetChanged();
         }
         catch (Exception e){
             e.printStackTrace();

@@ -138,7 +138,8 @@ FrameLayout progressLayout;
                 String ava=((MainActivity)getActivity()).SERVER_URL+avatar.getString("file");
                 ((MainActivity)getActivity()).setPhoto(ava,this.greenImageDrawer);
             }
-            String pos=user.getString("role");
+            String pos=user.getString("role"), depN=department.getString("name");
+            positionUpTextView.setText(depN);
             positionTextView.setText(((MainActivity)getActivity()).positions.get(pos));
             emailTextView.setText(user.getString("email"));
             phoneTextView.setText(user.getString("phone"));

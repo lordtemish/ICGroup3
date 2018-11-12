@@ -113,7 +113,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:background="@drawable/green_circle"
                     android:padding="7dp"
-                    android:src="@drawable/ic_arrowup"
+                    android:src="@drawable/ic_arrowdown"
                     />
             </android.support.constraint.ConstraintLayout>
             <android.support.v7.widget.RecyclerView

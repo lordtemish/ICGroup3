@@ -50,6 +50,7 @@ public class EmployeeAdapter extends RecyclerView.Adapter {
                     Bundle bundle=new Bundle();
                     bundle.putString("id",form.getId());
                     bundle.putString("name",form.getName());
+                    bundle.putBoolean("adm", form.isAdm());
                     fragment.setArguments(bundle);
                     ((MainActivity)context).setFragment(R.id.content_frame,fragment);
                 }

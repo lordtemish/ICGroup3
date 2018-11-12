@@ -360,15 +360,22 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
                 public void onResponse(JSONObject response) {
                     progressLayout.setVisibility(View.GONE);
                     try {
-                        JSONObject contactor=response.getJSONObject("contactor");
-                        JSONObject producer=response.getJSONObject("producer");
-                        JSONObject curator=response.getJSONObject("curator");
-                        if(is_producer_permitted>-1)
-                        strings.set(2,new String[]{producer.getString("fullname"),producer.getString("role"), "-1"});
-                        if(is_curator_permitted>-1)
-                        strings.set(3,new String[]{curator.getString("fullname"),curator.getString("role"), "-1"});
-                        if(is_contactor_permitted>-1)
-                        strings.set(4,new String[]{contactor.getString("fullname"),contactor.getString("role"), "-1"});
+                        if(!response.isNull("contactor")) {
+                            JSONObject contactor = response.getJSONObject("contactor");
+                            if (is_contactor_permitted > -1)
+                                strings.set(4, new String[]{contactor.getString("fullname"), contactor.getString("role"), "-1"});
+                        }
+                        if(!response.isNull("producer")) {
+                            JSONObject producer = response.getJSONObject("producer");
+                            if(is_producer_permitted>-1)
+                                strings.set(2,new String[]{producer.getString("fullname"),producer.getString("role"), "-1"});
+                        }
+                        if(!response.isNull("curator")) {
+                            JSONObject curator = response.getJSONObject("curator");
+
+                            if (is_curator_permitted > -1)
+                                strings.set(3, new String[]{curator.getString("fullname"), curator.getString("role"), "-1"});
+                        }
                         checkAccepts();
                     }
                     catch (JSONException e){

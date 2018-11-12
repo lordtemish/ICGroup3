@@ -465,14 +465,13 @@ public class ServiceInfoFragment extends Fragment {
             } else {
                 nowdays = 0;
             }
-            if(as.length!=2){
-                dayLeftTextView.setText("Осталось дней: "+nowdays+"/"+days);
-                if (days > 0) {
+           /*     dayLeftTextView.setText("Осталось дней: "+nowdays+"/"+days);
+                if (days > 0 && days>nowdays) {
                     progressBar.setProgress((nowdays) / days * 100);
                 } else {
                     progressBar.setProgress(100);
-                }
-            }checkAccepts();
+                }*/
+            checkAccepts();
             getData();
             getChief();
         }

@@ -44,6 +44,9 @@ public class UserRowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             if(!form.isFull()){
                 wholeLayout.setVisibility(View.GONE);
             }
+            else {
+                wholeLayout.setVisibility(View.VISIBLE);
+            }
         }
 
         private void setFonttype(){

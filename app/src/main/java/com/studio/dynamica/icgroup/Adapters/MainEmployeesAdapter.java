@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.EmployeesFragment.EmployeeProfileFragment;
+import com.studio.dynamica.icgroup.EmployeesFragment.MiniProfileFragment;
 import com.studio.dynamica.icgroup.Forms.MainEmployeeForm;
 import com.studio.dynamica.icgroup.R;
 
@@ -39,8 +40,8 @@ public class MainEmployeesAdapter  extends RecyclerView.Adapter<RecyclerView.Vie
             avatar=(ImageView) view.findViewById(R.id.avatar);
             wholeLayout=(LinearLayout) view.findViewById(R.id.wholeLayout);
 
-            ((MainActivity)context).setType("demibold", PercentageTextView, nameTextView, rateTextView, positionTextView);
-            ((MainActivity)context).setType("light", resultRL, rateLabelTextView);
+            ((MainActivity)context).setType("demibold", PercentageTextView, nameTextView, rateTextView);
+            ((MainActivity)context).setType("light", resultRL, rateLabelTextView, positionTextView);
         }
         private void setInfo(final MainEmployeeForm form){
             PercentageTextView.setText(form.getResult_rate()+"");
@@ -57,7 +58,13 @@ public class MainEmployeesAdapter  extends RecyclerView.Adapter<RecyclerView.Vie
             wholeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Fragment fragment=new EmployeeProfileFragment();
+                    Fragment fragment;
+                    if(adm){
+                        fragment=new MiniProfileFragment();
+                    }
+                    else{
+                        fragment=new EmployeeProfileFragment();
+                    }
                     Bundle bundle=new Bundle();
                     bundle.putString("id",form.getId());
                     fragment.setArguments(bundle);
@@ -66,8 +73,14 @@ public class MainEmployeesAdapter  extends RecyclerView.Adapter<RecyclerView.Vie
             });
         }
     }
+    boolean adm=false;
     Context context;
     List<MainEmployeeForm> list;
+
+    public void setAdm(boolean adm) {
+        this.adm = adm;
+    }
+
     public  MainEmployeesAdapter(List<MainEmployeeForm> forms){
         list=forms;
     }

@@ -109,13 +109,15 @@ public class LoginFragment extends Fragment {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
                     progressLayout.setVisibility(View.GONE);
-                    Toast.makeText(getActivity(), "Такой пользователь не найден или у вас проблемы соеденения"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Такой пользователь не найден или у вас проблемы соеденения", Toast.LENGTH_SHORT).show();
                 }
             }){};
             ((LoginActivity)getActivity()).requestQueue.add(objectRequest);
         }
         catch (Exception e){
+            progressLayout.setVisibility(View.GONE);
             e.printStackTrace();
         }
     }

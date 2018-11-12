@@ -13,7 +13,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.error.AuthFailureError;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.JsonArrayRequest;
 import com.shawnlin.numberpicker.NumberPicker;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Adapters.AddOrderAdapter;
@@ -31,10 +37,15 @@ import com.studio.dynamica.icgroup.Forms.OrderForm;
 import com.studio.dynamica.icgroup.Forms.RemontForms;
 import com.studio.dynamica.icgroup.R;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -176,7 +187,6 @@ public class InventoryMainFragment extends Fragment {
         materialAdapter=new MaterialAdapter(materialForms);*/
 
         List<InventorizationForm> inventorizationForms=new ArrayList<>();
-        inventorizationForms.add(new InventorizationForm("","","",80));inventorizationForms.add(new InventorizationForm("","","",80));inventorizationForms.add(new InventorizationForm("","","",80));
         this.inventorizationForms=new ArrayList<>();
         this.inventorizationForms.addAll(inventorizationForms);
         inventorizationAdapter=new InventorizationAdapter(this.inventorizationForms);
@@ -261,6 +271,7 @@ public class InventoryMainFragment extends Fragment {
             case 1:
                 setProgressLayout(true);
                 inventoryRecycler.setAdapter(inventorizationAdapter);
+                getCheckGroups();
                 break;
             default:
                 setTextsLayout();
@@ -280,7 +291,7 @@ public class InventoryMainFragment extends Fragment {
         progressLayout.setVisibility(View.VISIBLE);
         textsLayout.setVisibility(View.GONE);
         dateLayout.setVisibility(View.VISIBLE);
-        pointLayout.setVisibility(View.VISIBLE);
+        pointLayout.setVisibility(View.GONE);
     }
     private void setTextsLayout(){
         progressLayout.setVisibility(View.GONE);
@@ -322,5 +333,54 @@ public class InventoryMainFragment extends Fragment {
     }
     private void setDate(){
         dateTextView.setText(months[datePicker.getValue()-1]+" "+yearPicker.getValue());
+    }
+
+
+    private void getCheckGroups(){
+        progressLayout.setVisibility(View.VISIBLE);
+        String url=((MainActivity)getActivity()).MAIN_URL+"checkgroups/?point="+id;
+        JsonArrayRequest arrayRequest=new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                progressLayout.setVisibility(View.GONE);
+                setCGroups(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressLayout.setVisibility(View.GONE);
+                Toast.makeText(getActivity(), "Проблемы соеднения", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
+                return headers;
+            }};
+        ((MainActivity)getActivity()).requestQueue.add(arrayRequest);
+    }
+    private void setCGroups(JSONArray array){
+        try{
+            inventorizationForms.clear();
+            for(int i=0;i<array.length();i++){
+                JSONObject object=array.getJSONObject(i);
+                JSONObject receiving=object.getJSONObject("receiving");
+                String created_at=object.getString("created_at");
+                String created=((MainActivity)getActivity()).getdate(created_at);
+                created=created.substring(0,created.length()-6);
+                String name=receiving.getString("fullname"), role=receiving.getString("role");
+                double match_rate=object.getDouble("match_rate");String position=((MainActivity)getActivity()).positions.get(role);
+                int rate=Integer.parseInt(""+Math.round(match_rate*100));
+                InventorizationForm form=new InventorizationForm(created,name, position, rate );
+                inventorizationForms.add(form);
+            }
+            inventorizationAdapter.notifyDataSetChanged();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

@@ -46,6 +46,7 @@ public class FactoryDepFragment extends Fragment {
     FrameLayout progressLayout;
     MainObjectSetInfoFragment setInfoFragment;
     String id, name, rlid="";
+    boolean adm=false;
     public FactoryDepFragment() {
         // Required empty public constructor
     }
@@ -57,11 +58,13 @@ public class FactoryDepFragment extends Fragment {
         // Inflate the layout for this fragment
         id=getArguments().getString("id");
         name=getArguments().getString("name");
+        adm=getArguments().getBoolean("adm");
         View view=inflater.inflate(R.layout.fragment_factory_dep, container, false);
         createViews(view);
         ((MainActivity)getActivity()).setRecyclerViewOrientation(recyclerView, LinearLayoutManager.VERTICAL);
         forms=new ArrayList<>();
         adapter=new MainEmployeesAdapter(forms);
+        adapter.setAdm(adm);
         recyclerView.setAdapter(adapter);
         mainObjectTitle.setText(name);
         ((MainActivity)getActivity()).setType("demibold", cityTextLayout);

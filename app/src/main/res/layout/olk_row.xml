@@ -64,6 +64,7 @@
                 />
     </LinearLayout>
     <android.support.constraint.ConstraintLayout
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
@@ -136,7 +137,7 @@
                     android:id="@+id/quality"
                     android:maxWidth="100dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:gravity="center"
                     android:textColor="@color/darkgrey"
                     android:textSize="13sp"
@@ -166,7 +167,7 @@
                     android:id="@+id/looking"
                     android:maxWidth="100dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:gravity="center"
                     android:textColor="@color/darkgrey"
                     android:textSize="13sp"
@@ -196,7 +197,7 @@
                     android:id="@+id/inventory"
                     android:maxWidth="100dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:gravity="center"
                     android:textColor="@color/darkgrey"
                     android:textSize="13sp"

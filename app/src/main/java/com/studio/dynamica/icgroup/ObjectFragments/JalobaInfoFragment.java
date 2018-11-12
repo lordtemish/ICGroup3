@@ -80,7 +80,6 @@ public class JalobaInfoFragment extends Fragment {
 
          rowForms=new ArrayList<>();
         UserRowForm form=new UserRowForm("Temirlan","начальник отдела",getActivity().getResources().getString(R.string.datestring), "Отправитель","Представитель клиента");
-        form.setUrl("https://image.freepik.com/free-photo/bokeh-light-of-gold-glitters_1220-1862.jpg");
         rowForms.add(new UserRowForm( "Жалоба","Качество услуг"));
         rowForms.add(form);
         radioForms=new ArrayList<>();
@@ -178,7 +177,17 @@ public class JalobaInfoFragment extends Fragment {
             is_executive_seen=object.getBoolean("is_executive_seen");
             is_producer_seen=object.getBoolean("is_producer_seen");
             JSONArray array=object.getJSONArray("reasons");
-            JSONObject defendant=object.getJSONObject("defendant"), user=object.getJSONObject("author"), point=object.getJSONObject("point");
+            JSONObject defendant=null, user=object.getJSONObject("author"), point=object.getJSONObject("point");
+            if(!object.isNull("defendant")){
+                defendant=object.getJSONObject("defendant");
+                String name=defendant.getString("fullname"), role=defendant.getString("role");
+                String pos=((MainActivity)getActivity()).positions.get(role);
+                UserRowForm form=new UserRowForm(name, pos, "","Жалоба","На сотрудника");
+                if(!defendant.isNull("avatar")){
+                    // need change
+                }
+                rowForms.set(0,form);
+            }
             String usName=user.getString("fullname"), usRole=user.getString("role"), role=((MainActivity)getActivity()).positions.get(usRole);
             String created_at=object.getString("created_at");
             String created=((MainActivity)getActivity()).getdate(created_at);
@@ -243,20 +252,27 @@ public class JalobaInfoFragment extends Fragment {
     }
     private void setPoints(JSONObject object){
         try {
-            JSONObject contactor=object.getJSONObject("curator"),producer=object.getJSONObject("producer");
-            String cName=contactor.getString("fullname"), cRole=contactor.getString("role"), pName=producer.getString("fullname"), pRole=producer.getString("role");
-            String cPos=((MainActivity)getActivity()).positions.get(cRole),pPos=((MainActivity)getActivity()).positions.get(pRole);
             String cStatus="Не просмотренно", pStatus="Не просмотренно";
-            if(is_producer_seen){
-                pStatus="Просмотренно";
+            if(!object.isNull("curator")){
+                JSONObject contactor=object.getJSONObject("curator");
+                String cName=contactor.getString("fullname"), cRole=contactor.getString("role");
+                String cPos=((MainActivity)getActivity()).positions.get(cRole);
+                if(is_curator_seen){
+                    cStatus="Просмотренно";
+                }
+                AcceptForm cForm=new AcceptForm(cName,"", cPos,cStatus,is_curator_seen);
+                acceptForms.add(cForm);
             }
-            if(is_curator_seen){
-                cStatus="Просмотренно";
+            if(!object.isNull("producer")) {
+                JSONObject producer = object.getJSONObject("producer");
+                String pName = producer.getString("fullname"), pRole = producer.getString("role");
+                String pPos = ((MainActivity) getActivity()).positions.get(pRole);
+                if (is_producer_seen) {
+                    pStatus = "Просмотренно";
+                }
+                AcceptForm pForm = new AcceptForm(pName, "", pPos, pStatus, is_producer_seen);
+                acceptForms.add(pForm);
             }
-            AcceptForm cForm=new AcceptForm(cName,"", cPos,cStatus,is_curator_seen);
-            AcceptForm pForm=new AcceptForm(pName,"", pPos,pStatus,is_producer_seen);
-            acceptForms.add(cForm);
-            acceptForms.add(pForm);
             acceptAdapter.notifyDataSetChanged();
         }
         catch (Exception e){

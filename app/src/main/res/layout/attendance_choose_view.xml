@@ -7,17 +7,20 @@
             android:onClick="onClick"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
+            android:paddingTop="10dp"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/whiterow_page"
             android:orientation="vertical">
             <android.support.constraint.ConstraintLayout
+                android:visibility="gone"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="50dp">
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
@@ -29,6 +32,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     />
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/nothing"
                     android:layout_width="15dp"
                     android:layout_height="15dp"

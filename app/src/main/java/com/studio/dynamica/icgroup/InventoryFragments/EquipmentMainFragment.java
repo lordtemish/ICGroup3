@@ -102,7 +102,7 @@ public class EquipmentMainFragment extends Fragment {
                 JSONObject object=array.getJSONObject(i);
                 JSONObject inventory=object.getJSONObject("inventory");
                 JSONObject company=inventory.getJSONObject("company");
-                String name=company.getString("name"), id=object.getString("id"), unit=inventory.getString("unit"), vendor_code=inventory.getString("vendor_code");
+                String name=inventory.getString("name"), id=object.getString("id"), unit=inventory.getString("unit"), vendor_code=inventory.getString("vendor_code");
                 String num=object.getString("quantity")+" "+ ((MainActivity)getActivity()).inventoryUnits.get(unit);
                 int repair=object.getInt("repair"), replace=object.getInt("replace");
                 List<RemontForms> remontForms=new ArrayList<>();

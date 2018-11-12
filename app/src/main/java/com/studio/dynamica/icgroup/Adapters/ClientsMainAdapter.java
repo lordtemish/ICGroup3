@@ -49,11 +49,11 @@ public class ClientsMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         private void checkOpen(){
             if(open){
                 recyclerView.setVisibility(View.VISIBLE);
-                arrowDown.setImageResource(R.drawable.ic_arrowdown);
+                arrowDown.setImageResource(R.drawable.ic_arrowup);
             }
             else{
                 recyclerView.setVisibility(View.GONE);
-                arrowDown.setImageResource(R.drawable.ic_arrowup);
+                arrowDown.setImageResource(R.drawable.ic_arrowdown);
             }
         }
         private void setInfo(ClientsMainForm form){

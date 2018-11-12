@@ -58,11 +58,10 @@
 
         </android.support.constraint.ConstraintLayout>
         <android.support.constraint.ConstraintLayout
-
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:paddingStart="70dp"
-            android:paddingEnd="70dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:background="@color/white">
             <LinearLayout
                 android:id="@+id/cityLayout"
@@ -105,20 +104,22 @@
             android:layout_height="wrap_content"
             android:id="@+id/recyclerView"/>
     </LinearLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <FrameLayout
+            android:id="@+id/progressLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/icgGreenTra"
             android:onClick="onClick"
-            android:id="@+id/progressLayout"
-            android:visibility="gone"
-            android:background="@color/icgGreenTra">
+            android:visibility="gone">
             <ProgressBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center" />
         </FrameLayout>
     </FrameLayout>
 </FrameLayout>

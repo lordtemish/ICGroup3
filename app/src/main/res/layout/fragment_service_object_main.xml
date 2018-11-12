@@ -322,29 +322,45 @@
                     </android.support.constraint.ConstraintLayout>
                 </LinearLayout>
                 <android.support.constraint.ConstraintLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:paddingStart="0dp"
-                    android:paddingEnd="0dp">
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp">
                     <ImageView
                         android:id="@+id/leftImageTop"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:padding="7dp"
+                        android:padding="9dp"
                         app:layout_constraintTop_toTopOf="parent"
+                        android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:src="@drawable/ic_congreen_left"
+                        android:background="@drawable/green_circle"
+                        android:src="@drawable/ic_arrowwhiteleft"
                         />
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/pagesRecyclerUp"
+                        android:layout_width="wrap_content"
+                        android:maxWidth="200dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toEndOf="@+id/leftImageTop"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        ></android.support.v7.widget.RecyclerView>
                     <ImageView
                         android:id="@+id/rightImageTop"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:padding="7dp"
+                        android:padding="9dp"
+                        android:background="@drawable/green_circle"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:src="@drawable/ic_congreen_right"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        app:layout_constraintStart_toEndOf="@+id/pagesRecyclerUp"
+                        android:src="@drawable/ic_arrowwhiteright"
                         />
                 </android.support.constraint.ConstraintLayout>
                 <android.support.v7.widget.RecyclerView
@@ -357,30 +373,45 @@
 
                 </android.support.v7.widget.RecyclerView>
                 <android.support.constraint.ConstraintLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginBottom="10dp"
-                    android:paddingStart="0dp"
-                    android:paddingEnd="0dp">
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp">
                     <ImageView
                         android:id="@+id/leftImageBot"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:padding="7dp"
+                        android:padding="9dp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:src="@drawable/ic_congreen_left"
+                        android:background="@drawable/green_circle"
+
+                        android:src="@drawable/ic_arrowwhiteleft"
                         />
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/pagesRecyclerBot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toEndOf="@+id/leftImageBot"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        ></android.support.v7.widget.RecyclerView>
                     <ImageView
                         android:id="@+id/rightImageBot"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:padding="7dp"
+                        android:padding="9dp"
+                        android:background="@drawable/green_circle"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:src="@drawable/ic_congreen_right"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        app:layout_constraintStart_toEndOf="@+id/pagesRecyclerBot"
+                        android:src="@drawable/ic_arrowwhiteright"
                         />
                 </android.support.constraint.ConstraintLayout>
             </LinearLayout>

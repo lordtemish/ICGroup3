@@ -5,9 +5,18 @@ import java.util.List;
 
 public class MaterialForm {
     String name;
-    String id;
+    String id, vendor_code="";
     int num1, num2;
     List<OrderForm> orderForms;
+
+    public void setVendor_code(String vendor_code) {
+        this.vendor_code = vendor_code;
+    }
+
+    public String getVendor_code() {
+        return vendor_code;
+    }
+
     public MaterialForm(String n, String i, int n1, int n2){
         name=n;id=i;num1=n1;num2=n2;
         orderForms=new ArrayList<>();

@@ -186,6 +186,9 @@ public class EmployeesMainFragment extends Fragment {
                 for(int i=0;i<array.length();i++){
                     JSONObject object=array.getJSONObject(i);
                     EmployeeForm form=new EmployeeForm(object.getString("id"),object.getString("name"),object.getInt("employees_count"),Integer.parseInt(""+Math.round(object.getDouble("performance_rate")*100)));
+                    if(i==0){
+                        form.setAdm(true);
+                    }
                     forms.add(form);
                 }
                 adapter.notifyDataSetChanged();

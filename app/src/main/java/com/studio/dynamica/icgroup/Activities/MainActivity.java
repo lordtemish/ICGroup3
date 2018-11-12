@@ -188,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
         positions.put("PRODUCTION_CURATOR","Куратор отдела производства");
         positions.put("PRODUCTION_ADMIN","Администратор отдела производства");
         positions.put("PRODUCTION_NPO","НПО");
+        positions.put("WORKER","НПО работник");
         positions.put("QC_CHIEF","Начальник отдела контроля качества");
         positions.put("QC_TECHNIC","Технолог отдела контроля качества");
         positions.put("QC_REVISOR","Ревизор отдела контроля качества");

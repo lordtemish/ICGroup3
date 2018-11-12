@@ -58,7 +58,7 @@ public class MainObjectFragment extends Fragment {
     View.OnClickListener goneClick;
     HashMap<String,String> kindMap;
     HashMap<Integer,String> cities;
-    List<String> cityNames, tasktypeNames;
+    List<String> cityNames, tasktypeNames, kindList;
     TasktypeAdapter taskTypeAdapter;
     boolean client;
     long time;
@@ -255,11 +255,12 @@ public class MainObjectFragment extends Fragment {
 
 
         kindMap=new HashMap<>();
+        kindList=new ArrayList<>();
         cities=new HashMap<>();
-        kindMap.put("SHOPPING_CENTER","Торговый центр");
-        kindMap.put("BUSINESS_CENTER","Бизнес центр");
-        kindMap.put("SMALL_OBJECT","Малый объект");
-        kindMap.put("INDUSTRIAL_BASE","Промышленная база");
+        kindMap.put("SHOPPING_CENTER","Торговый центр");kindList.add("SHOPPING_CENTER");
+        kindMap.put("BUSINESS_CENTER","Бизнес центр");kindList.add("BUSINESS_CENTER");
+        kindMap.put("SMALL_OBJECT","Малый объект");kindList.add("SMALL_OBJECT");
+        kindMap.put("INDUSTRIAL_BASE","Промышленная база");kindList.add("INDUSTRIAL_BASE");
 
         List<String> cities=new ArrayList<>();
         cityNames=new ArrayList<>();
@@ -296,6 +297,9 @@ public class MainObjectFragment extends Fragment {
         cityNames.clear();
         cityNames.addAll(values);
         setCityNames();
+        if(keys.size()>0){
+            city=keys.get(0);
+        }
         if(cityNames.size()>city)
         setVal(cityNames.get(city-1),true);
     }
@@ -303,7 +307,7 @@ public class MainObjectFragment extends Fragment {
         final List<String> values=new ArrayList<>();
         List<String> keys=new ArrayList<>();
         List<View.OnClickListener> listeners=new ArrayList<>();
-        for(final String j:kindMap.keySet()){
+        for(final String j:kindList){
             keys.add(j);
             values.add(kindMap.get(j));
             listeners.add(new View.OnClickListener() {
@@ -315,11 +319,11 @@ public class MainObjectFragment extends Fragment {
                 }
             });
         }
+        if(keys.size()>0){
+            kind=keys.get(0);
+        }
         tasktypeNames.clear();
         tasktypeNames.addAll(values);
-        if(tasktypeNames.size()>0){
-            kind=tasktypeNames.get(0);
-        }
         taskTypeAdapter.setListeners(listeners);
         taskTypeAdapter.notifyDataSetChanged();
         onSwipeRefresh();

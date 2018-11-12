@@ -34,6 +34,7 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.shawnlin.numberpicker.NumberPicker;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
+import com.studio.dynamica.icgroup.Adapters.PagesAdapter;
 import com.studio.dynamica.icgroup.Adapters.ServicesAdapter;
 import com.studio.dynamica.icgroup.ExtraFragments.GraphicDateFrame;
 import com.studio.dynamica.icgroup.ExtraFragments.MainObjectSetInfoFragment;
@@ -62,8 +63,8 @@ public class ServiceObjectMainFragment extends Fragment {
     LinearLayout graphLinear;
     ConstraintLayout allServicesLayout;
     List<ServiceForm> forms;
-    ServicesAdapter adapter;
-    RecyclerView allServicesRecycler;
+    ServicesAdapter adapter;PagesAdapter pagesAdapter;
+    RecyclerView allServicesRecycler, pagesRecyclerBot, pagesRecyclerUp;
     ImageView allServicesImage, arrowCalendarImageView, leftImageBot, leftImageTop, rightImageBot, rightImageTop;
     FrameLayout addNewServiceFrame, progressLayout;
     ConstraintLayout allOtdelsLayout, allEmployeesLayout;
@@ -72,8 +73,8 @@ public class ServiceObjectMainFragment extends Fragment {
     String[] months={"Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"};
     Calendar cal, cal2;
     String id="", dpid="", emid="", previous="",next="";
-    int location,page=1;
-    List<String> departments, dpids, employees, emids;
+    int location,page=1, page_count=0;
+    List<String> departments, dpids, employees, emids, pages;
     MainObjectSetInfoFragment setFragment;
     boolean timeChange=false;
     LinearLayoutManager layoutManager;
@@ -125,6 +126,13 @@ public class ServiceObjectMainFragment extends Fragment {
         allServicesRecycler.setLayoutManager(layoutManager);
         allServicesRecycler.setItemAnimator(new DefaultItemAnimator());
         setServicesAdapter();
+
+        pages=new ArrayList<String>();
+        ((MainActivity)getActivity()).setRecyclerViewOrientation(pagesRecyclerBot,LinearLayoutManager.HORIZONTAL);
+        ((MainActivity)getActivity()).setRecyclerViewOrientation(pagesRecyclerUp,LinearLayoutManager.HORIZONTAL);
+        pagesAdapter=new PagesAdapter(pages);
+        pagesRecyclerUp.setAdapter(pagesAdapter);
+        pagesRecyclerBot.setAdapter(pagesAdapter);
 
 
         setDate();
@@ -304,14 +312,18 @@ public class ServiceObjectMainFragment extends Fragment {
         }
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
+        page=1;
         getRequest();
     }
-
     private void getRequest(){
         String url="tasks/?point="+id;
+        if(page>1){
+            url+="&page="+page;
+        }
         progressLayout.setVisibility(View.VISIBLE);
         url=((MainActivity)getActivity()).MAIN_URL+url;
         if(dpid.length()>0){
@@ -323,16 +335,25 @@ public class ServiceObjectMainFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-
+                    if(!response.isNull("count") && page<=1) {
+                        int cc = response.getInt("count");
+                        page_count=cc/10;
+                        if(cc%10>0){
+                            page_count++;
+                        }
+                        if(page_count>0)
+                            checkPage();
+                    }
                     setInfo(response);
                 }
                 catch (Exception e){
-
+                    e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
                 Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
                 progressLayout.setVisibility(View.GONE);
             }
@@ -346,6 +367,48 @@ public class ServiceObjectMainFragment extends Fragment {
         }};
         ((MainActivity) getActivity()).requestQueue.add(arrayRequest);
     }
+    private void checkPage(){
+        pages.clear();
+        List<View.OnClickListener> listeners=new ArrayList<>();
+        for(int i=1;i<=page_count;i++){
+            pages.add(i+"");
+            final int j=i;
+            listeners.add(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    page=j;
+                    getRequest();
+                }
+            });
+        }
+        if(page_count>1){
+            pagesRecyclerBot.setVisibility(View.VISIBLE);
+            pagesRecyclerUp.setVisibility(View.VISIBLE);
+        }
+        else{
+            pagesRecyclerBot.setVisibility(View.GONE);
+            pagesRecyclerUp.setVisibility(View.GONE);
+        }
+        pagesAdapter.setPage(page);
+        pagesAdapter.setListeners(listeners);
+        if(page==page_count){
+            rightImageTop.setVisibility(View.GONE);
+            rightImageBot.setVisibility(View.GONE);
+        }
+        else{
+            rightImageTop.setVisibility(View.VISIBLE);
+            rightImageBot.setVisibility(View.VISIBLE);
+        }
+        if(page==1){
+            leftImageTop.setVisibility(View.GONE);
+            leftImageBot.setVisibility(View.GONE);
+        }
+        else{
+            leftImageTop.setVisibility(View.VISIBLE);
+            leftImageBot.setVisibility(View.VISIBLE);
+        }
+        pagesAdapter.notifyDataSetChanged();
+    }
     private void getNext(){
         String url=next;
         progressLayout.setVisibility(View.VISIBLE);
@@ -358,7 +421,18 @@ public class ServiceObjectMainFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-
+                    if(!response.isNull("count") && page<=1) {
+                        int cc = response.getInt("count");
+                        page_count=cc/10;
+                        if(cc%10>0){
+                            page_count++;
+                        }
+                        if(page>0)
+                            checkPage();
+                    }
+                    page++;
+                    pagesAdapter.setPage(page);
+                    pagesAdapter.notifyDataSetChanged();
                     setInfo(response);
                 }
                 catch (Exception e){
@@ -368,6 +442,7 @@ public class ServiceObjectMainFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
                 Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
                 progressLayout.setVisibility(View.GONE);
             }
@@ -393,7 +468,18 @@ public class ServiceObjectMainFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-
+                    if(!response.isNull("count") && page<=1) {
+                        int cc = response.getInt("count");
+                        page_count=cc/10;
+                        if(cc%10>0){
+                            page_count++;
+                        }
+                        if(page>0)
+                            checkPage();
+                    }
+                    page--;
+                    pagesAdapter.setPage(page);
+                    pagesAdapter.notifyDataSetChanged();
                     setInfo(response);
                 }
                 catch (Exception e){
@@ -645,6 +731,10 @@ public class ServiceObjectMainFragment extends Fragment {
 
         allOtdelsLayout=(ConstraintLayout) view.findViewById(R.id.allOtdelsLayout);
         allEmployeesLayout=(ConstraintLayout) view.findViewById(R.id.allEmployeesLayout);
+
+
+        pagesRecyclerBot=(RecyclerView) view.findViewById(R.id.pagesRecyclerBot);
+        pagesRecyclerUp=(RecyclerView) view.findViewById(R.id.pagesRecyclerUp);
     }
     public void openServices(){
         if(graphLinear.getVisibility()==View.GONE) {
