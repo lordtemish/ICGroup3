@@ -3,10 +3,86 @@ package com.studio.dynamica.icgroup.Forms;
 import java.util.List;
 
 public class InventorizationPassingSetForm {
-    private String name, id;
-    private int number;
-    private boolean status=true;
+    private String name, id, vendor, check="", consumption, comment="";
+    private int number, repl=0, repa=0, miss=0, rema=0;
+    private boolean status=true, created=false;
     private ExtraInfo info;
+
+    public int getRema() {
+        return rema;
+    }
+
+    public void setRema(int rema) {
+        this.rema = rema;
+    }
+
+    public void setCreated(boolean created) {
+        this.created = created;
+    }
+
+    public boolean isCreated() {
+        return created;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+
+
+    public void setMiss(int miss) {
+        this.miss = miss;
+    }
+
+    public void setRepa(int repa) {
+        this.repa = repa;
+    }
+
+    public void setRepl(int repl) {
+        this.repl = repl;
+    }
+
+    public int getMiss() {
+        return miss;
+    }
+
+    public int getRepa() {
+        return repa;
+    }
+
+    public int getRepl() {
+        return repl;
+    }
+
+    public void setConsumption(String consumption) {
+        this.consumption = consumption;
+    }
+
+    public void setCheck(String check) {
+        this.check = check;
+    }
+
+    public String getCheck() {
+        return check;
+    }
+
+    public String getConsumption() {
+        return consumption;
+    }
+
+    public void setVendor(String vendor) {
+        this.vendor = vendor;
+    }
+
+
+    public String getVendor() {
+        return vendor;
+    }
+
     public InventorizationPassingSetForm(String n, String i, int num){
             number=num;name=n;
             id=i;

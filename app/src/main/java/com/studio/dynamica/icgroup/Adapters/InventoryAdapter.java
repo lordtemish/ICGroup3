@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Forms.InventoryStatusForm;
@@ -21,6 +22,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         RecyclerView commentaryRecyclerView, remontRecyclerView;
         Context context;
         LinearLayout extraLayout;
+        TextView nameTextView, idTextView, numberTextView;
         private myHolder(View view){
             super(view);
             context=view.getContext();
@@ -28,8 +30,17 @@ public class InventoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             statusImageView=(ImageView) view.findViewById(R.id.statusImageView);
             commentaryRecyclerView=(RecyclerView) view.findViewById(R.id.commentaryRecyclerView);
             remontRecyclerView=(RecyclerView) view.findViewById(R.id.remontRecycler);
+            nameTextView=(TextView) view.findViewById(R.id.nameTextView);
+            idTextView=(TextView) view.findViewById(R.id.idTextView);
+            numberTextView=(TextView) view.findViewById(R.id.numberTextView);
+            ((MainActivity)context).setType("demibold",nameTextView);
+            ((MainActivity)context).setType("light",numberTextView);
+            ((MainActivity)context).setType("medium",idTextView);
         }
         private void setInfo(InventoryStatusForm form){
+            idTextView.setText(form.getVendor());
+            nameTextView.setText(form.getName());
+            numberTextView.setText(form.getNumber()+" "+form.getUnit());
             if(!form.isStatus()){
                 statusImageView.setBackgroundResource(R.drawable.yellow_circle);
 

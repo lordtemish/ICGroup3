@@ -196,7 +196,7 @@
                 android:paddingEnd="20sp"
                 android:paddingRight="20sp"
                 android:layout_marginBottom="20sp"
-                android:nestedScrollingEnabled="true"
+                android:nestedScrollingEnabled="false"
 
                 >
 
@@ -211,7 +211,7 @@
             android:id="@+id/mainObjectMainFramentButtonsRecycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="true"
+            android:nestedScrollingEnabled="false"
             >
 
         </android.support.v7.widget.RecyclerView>
@@ -224,8 +224,7 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/phonesRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="true"
+                    android:nestedScrollingEnabled="false"         android:layout_height="wrap_content"
                     >
 
                 </android.support.v7.widget.RecyclerView>
@@ -233,7 +232,6 @@
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
-        >
         <android.support.constraint.ConstraintLayout
             android:id="@+id/progressLayout"
             android:layout_width="match_parent"

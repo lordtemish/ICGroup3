@@ -21,6 +21,9 @@ public class UserRowForm {
             type=t;
             full=false;
         }
+        public UserRowForm(String na, String po, String da){
+            name=na;position=po;date=da;
+        }
 
     public boolean isFull() {
         return full;

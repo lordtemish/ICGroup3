@@ -6,14 +6,23 @@ import java.util.List;
 public class InventoryStatusForm {
     List<CommentaryForm> commentaryForms;
     List<RemontForms> remontForms;
-    String name, id;
+    String name, id, unit, vendor;
     int number;
     boolean status;
-    public InventoryStatusForm(String name ,String id, int number){
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public InventoryStatusForm(String name , String id, int number){
         this.name=name;this.id=id;this.number=number;
         commentaryForms=new ArrayList<>();
         remontForms=new ArrayList<>();
         status=true;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public void setCommentaryForms(List<CommentaryForm> commentaryForms) {
@@ -42,6 +51,18 @@ public class InventoryStatusForm {
 
     public List<RemontForms> getRemontForms() {
         return remontForms;
+    }
+
+    public String getVendor() {
+        return vendor;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setVendor(String vendor) {
+        this.vendor = vendor;
     }
 
     public int getNumber() {

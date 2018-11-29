@@ -1,8 +1,10 @@
 package com.studio.dynamica.icgroup.Adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -76,17 +78,11 @@ public class EquipmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     setOpen(!open);
                 }
             });
-            plusImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((MainActivity) context).setFragment(R.id.content_frame,new InventoryEquipmentAddFragment());
-                }
-            });
             ((MainActivity)context).setType("demibold",nameTextView, numberTextView);
             ((MainActivity)context).setType("light",idTextView);
         }
 
-        public void setInfo(EquipmentForm form){
+        public void setInfo(final EquipmentForm form){
             List<RemontForms> remontForms=form.getRemontForms();
 
             nameTextView.setText(form.getName());
@@ -103,10 +99,23 @@ public class EquipmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 RemontAdapter remontAdapter=new RemontAdapter(new ArrayList<RemontForms>());
                 remontRecycler.setAdapter(remontAdapter);
             }
+            plusImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Fragment fragment=new InventoryEquipmentAddFragment();
+                    Bundle bundle=new Bundle();
+                    bundle.putString("id",id);
+                    bundle.putString("num",form.getNum());
+                    bundle.putString("vendor",form.getVendor_code());
+                    bundle.putString("name",form.getName()  );
+                    fragment.setArguments(bundle);
+                    ((MainActivity) context).setFragment(R.id.content_frame,fragment);
+                }
+            });
         }
         private void getReq(){
             progressLayout.setVisibility(View.VISIBLE);
-            String url=((MainActivity)context).MAIN_URL+"replenishments/?consumption="+id;
+            String url=((MainActivity)context).MAIN_URL+"consumptions/"+id+"/actual_replenishments/";
             Log.d("eqAdapterURL", url);
             JsonArrayRequest arrayRequest=new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                 @Override
@@ -172,6 +181,7 @@ public class EquipmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         switch (priority){ case 2: pri="Средний"; break;case 3: pri="Высокий";
                         break;}
                         OrderForm form=new OrderForm(date, "IC"+id, "Снабжения",pri, status, nowdays, days);
+                        form.setId(id);
                         orderForms.add(form);
                     }
                     orderAdapter.notifyDataSetChanged();

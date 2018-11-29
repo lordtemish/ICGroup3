@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Adapters.DrawerAdapter;
 import com.studio.dynamica.icgroup.Forms.RowFormPTN;
 import com.studio.dynamica.icgroup.R;
@@ -33,6 +35,7 @@ public class DrawerFragment extends Fragment {
     ArrayList<RowFormPTN> clientRowFormPTNS;
     DrawerAdapter  drawerAdapter;
     FrameLayout wholeLayout;
+    String role="SUPERADMIN";
     public DrawerFragment() {
         // Required empty public constructor
     }
@@ -41,6 +44,7 @@ public class DrawerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        role=((MainActivity)getActivity()).role;
         View view=inflater.inflate(R.layout.fragment_drawer, container, false);;
         drawerRV=(RecyclerView) view.findViewById(R.id.drawerRecycle);
         wholeLayout=(FrameLayout) view.findViewById(R.id.wholeLayout);
@@ -50,22 +54,40 @@ public class DrawerFragment extends Fragment {
         rowFormPTNS=new ArrayList<>();
         formPTNS=new ArrayList<>();
         clientRowFormPTNS=new ArrayList<>();
-        clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_box,R.drawable.ic_box_u,"Объекты",-1));
-        clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_solvves,R.drawable.ic_solvves_u,"Задачи",-1));
-        clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_bell,R.drawable.ic_bell_u,"Уведомления",22));
-        clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_settings,R.drawable.ic_settings_u,"Настройки",-1));
-        rowFormPTNS.add(new RowFormPTN(R.drawable.ic_box,R.drawable.ic_box_u,"Объекты",34));
-        rowFormPTNS.add(new RowFormPTN(R.drawable.ic_solvves,R.drawable.ic_solvves_u,"Задачи",47));
-        rowFormPTNS.add(new RowFormPTN(R.drawable.ic_people,R.drawable.ic_people_u,"Сотрудники",-1));
-        rowFormPTNS.add(new RowFormPTN(R.drawable.ic_clients,R.drawable.ic_clients_u,"Клиенты",-1));
-        rowFormPTNS.add(new RowFormPTN(R.drawable.ic_inventory,R.drawable.ic_inventory_u,"Инвентарь",47));
+        setData();
         formPTNS.addAll(rowFormPTNS);
         drawerAdapter=new DrawerAdapter(formPTNS,getActivity());
         drawerRV.setAdapter(drawerAdapter);
 
         return view;
     }
-     public void setClient(boolean a){
+
+    public void setRole(String role) {
+        this.role = role;
+        drawerAdapter.setRole(role);
+        setData();
+        drawerAdapter.notifyDataSetChanged();
+    }
+    private void setData(){
+        Log.d("THISROLE",role);
+        clientRowFormPTNS.clear();
+        rowFormPTNS.clear();
+        clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_box,R.drawable.ic_box_u,"Объекты",-1));
+        clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_solvves,R.drawable.ic_solvves_u,"Задачи",-1));
+        clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_bell,R.drawable.ic_bell_u,"Уведомления",22));
+        clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_settings,R.drawable.ic_settings_u,"Настройки",-1));
+        if (true )
+            rowFormPTNS.add(new RowFormPTN(R.drawable.ic_box, R.drawable.ic_box_u, "Объекты", 34));
+        if(true)
+            rowFormPTNS.add(new RowFormPTN(R.drawable.ic_solvves, R.drawable.ic_solvves_u, "Задачи", 47));
+        if(role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("CHIEF"))
+            rowFormPTNS.add(new RowFormPTN(R.drawable.ic_people, R.drawable.ic_people_u, "Сотрудники", -1));
+        if(role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.equals("PRODUCTION_CHIEF"))
+            rowFormPTNS.add(new RowFormPTN(R.drawable.ic_clients, R.drawable.ic_clients_u, "Клиенты", -1));
+        if(role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("SUPPLY"))
+            rowFormPTNS.add(new RowFormPTN(R.drawable.ic_inventory, R.drawable.ic_inventory_u, "Инвентарь", 47));
+    }
+    public void setClient(boolean a){
         drawerAdapter.setClient(a);
          formPTNS.clear();
         if(a){

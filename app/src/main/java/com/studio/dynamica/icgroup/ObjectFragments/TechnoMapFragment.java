@@ -35,6 +35,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +53,9 @@ public class TechnoMapFragment extends Fragment {
     DateChooseView dateChooseView;
     int page;
     String id="", date="";
+    boolean today=true, soon=false;
     List<TechnoMapForm> forms;
+    Calendar cal;
     TechnoMapAdapter adapter1;
     public TechnoMapFragment() {
         // Required empty public constructor
@@ -62,6 +66,7 @@ public class TechnoMapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        cal=Calendar.getInstance();cal.setTime(new Date());
         id=getArguments().getString("id");
         page=0;
         pages=new ArrayList<>();
@@ -93,11 +98,12 @@ public class TechnoMapFragment extends Fragment {
 
         RecyclerView.LayoutManager layoutManager1=new LinearLayoutManager(getActivity());
         forms=new ArrayList<>();
-        forms.add(new TechnoMapForm("13:00-16:00","Подоконник", "Полы мытб","50 мин",0));
         adapter1=new TechnoMapAdapter(forms);
         techoMapRec.setLayoutManager(layoutManager1);
         techoMapRec.setItemAnimator(new DefaultItemAnimator());
         techoMapRec.setAdapter(adapter1);
+        today=dateChooseView.today();
+        date=dateChooseView.dateDivided();
         getRequest();
         return view;
     }
@@ -156,7 +162,7 @@ public class TechnoMapFragment extends Fragment {
                     JSONObject sec = null, meth = null;
                     String sector = "",
                             method = "";
-                    if(!plan.isNull("plan")){
+                    if(!plan.isNull("sector")){
                         sec=plan.getJSONObject("sector");
                         sector=sec.getString("name");
                     }
@@ -165,15 +171,40 @@ public class TechnoMapFragment extends Fragment {
                                 method=meth.getString("name");
                     }
                     int duration = plan.getInt("duration");
+
                     int stat1 = 3;
+                    if(!today){
+                        if(soon){
+                            stat1=5;
+                        }
+                        else
+                        stat1=1;
+                    }
+                    else{
+                        int h1=Integer.parseInt(beg[0]),h2=Integer.parseInt(en[0]),m1=Integer.parseInt(beg[1]),m2=Integer.parseInt(en[1]);
+                        int nowH=cal.get(Calendar.HOUR_OF_DAY), nowM=cal.get(Calendar.MINUTE);
+                        boolean before=(nowH<h1 || (nowH==h1 && nowM<m1)), between=(((nowH>h1 ||(nowH==h1 && nowM>m1)))&& (nowH<h2 || (nowH==h2 && nowM<m2)));
+                        Log.d("check_when_it_was "+h1+":"+m1+"   "+h2+":"+m2, before+" "+between);
+                        if(before){
+                            stat1=5;
+                        }
+                        else if(between){
+                            stat1=3;
+                        }
+                        else{
+                            stat1=1;
+                        }
+                    }
                     TechnoMapForm form = new TechnoMapForm(beg[0] + ":" + beg[1] + "-" + en[0] + ":" + en[1], sector,  method, duration + " мин", stat1);
                     form.setId(plan.getString("id"));
+                    form.setResult(false);
                     forms.add(form);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
             adapter1.notifyDataSetChanged();
+            if(!((MainActivity)getActivity()).client)
             resultRequest();
         }
         catch (Exception e){
@@ -181,7 +212,7 @@ public class TechnoMapFragment extends Fragment {
         }
     }
     private void resultRequest(){
-        String url = ((MainActivity) getActivity()).MAIN_URL + "results/?plan__group__point=" + ids.get(page);
+        String url = ((MainActivity) getActivity()).MAIN_URL + "results/?plan__group__point=" + id;
         if(date.length()>0){
             url+="&date="+date;
         }
@@ -225,17 +256,14 @@ public class TechnoMapFragment extends Fragment {
                 String status = object.getString("status");
                 int stat1 = 0;
                 switch (status) {
-                    case "FINISHED":
+                    case "PRAISED":
                         stat1 = 1;
                         break;
                     case "FAILED":
                         stat1 = 0;
                         break;
-                    case "PROCESSING":
-                        stat1 = 2;
-                        break;
-                    case "UNFINISHED":
-                        stat1 = 4;
+                    case "WARNED":
+                        stat1 = 1;
                         break;
                     default:
                         stat1 = 3;
@@ -244,6 +272,7 @@ public class TechnoMapFragment extends Fragment {
                     if(f.getId().equals(plan+"")){
                         f.setId(object.getString("id"));
                         f.setStat(stat1);
+                        f.setResult(true);
                         break;
                     }
                 }
@@ -271,7 +300,10 @@ public class TechnoMapFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 date = dateChooseView.dateDivided();
-                resultRequest();
+                today=dateChooseView.today();
+                soon=dateChooseView.soon();
+                Log.d("todayCHeckTechno",today+" "+date+" "+soon);
+                checkPage();
             }
         });
     }

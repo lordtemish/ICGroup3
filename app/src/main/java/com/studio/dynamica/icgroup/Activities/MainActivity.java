@@ -1,6 +1,8 @@
 package com.studio.dynamica.icgroup.Activities;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,6 +15,7 @@ import android.graphics.Matrix;
 import android.graphics.Typeface;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -87,13 +90,18 @@ public class MainActivity extends AppCompatActivity {
     boolean pressable=true;
     int page=-1;
     public RequestQueue requestQueue;
+    public String location= "1";
     public String token="", name="", role="", avatar="", userid="", epmloyeeid="";
     Intent startIntent;
     DrawerFragment drawerF;
     Calendar cal;
 
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     FileCompressor fileCompressor;
-    public HashMap<String,String> positions, inventoryUnits, replKinds, clientKinds;
+    public HashMap<String,String> positions, inventoryUnits, replKinds, clientKinds, dpKinds;
     public List<String> departments, dpids, roles, rlids;
     public String[] months={"Января","Февраля","Марта","Апреля","Мая","Июня","Июля","Августа","Сентября","Октября","Ноября","Декабря"},data={"Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"},weeks={"Пн","Вт","Ср","Чт","Пт","Сб","Вс"};
 
@@ -168,6 +176,12 @@ public class MainActivity extends AppCompatActivity {
         inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         visitFormat=new SimpleDateFormat("yyyy-MM-dd");
 
+        dpKinds=new HashMap<>();
+        dpKinds.put("ADMIN","Администрация");
+        dpKinds.put("PRODUCTION","Отдел производства");
+        dpKinds.put("QC","Отдел контроля качества");
+        dpKinds.put("SUPPLY","Отдел снабжения");
+        dpKinds.put("MOBILE","Мобильная группа");
         clientKinds=new HashMap<>();
         clientKinds.put("LLP","ТОО");
         clientKinds.put("IE","ИП");
@@ -186,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
         positions.put("ADMIN_DEPUTY","Помощник CEO");
         positions.put("PRODUCTION_CHIEF","Начальник отдела производства");
         positions.put("PRODUCTION_CURATOR","Куратор отдела производства");
-        positions.put("PRODUCTION_ADMIN","Администратор отдела производства");
+        positions.put("PRODUCTION_ADMIN","Администратор");
         positions.put("PRODUCTION_NPO","НПО");
         positions.put("WORKER","НПО работник");
         positions.put("QC_CHIEF","Начальник отдела контроля качества");
@@ -235,8 +249,7 @@ public class MainActivity extends AppCompatActivity {
                     addServAdapter.addStatus(true);
                     addServAdapter.notifyDataSetChanged();
                 }
-                Log.d("pathVars",path+"");
-                String cPath=new File(new URI(path)).getPath();
+                String cPath=getRealPathFrom(this,selectedMediaUri );
                 Log.d("pathDars",cPath+"");
                 sendFile(cPath);
             }
@@ -247,6 +260,30 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+    @SuppressLint("NewApi")
+    public static String getRealPathFrom(Context context, Uri uri){
+        String filePath = "";
+        String wholeID = DocumentsContract.getDocumentId(uri);
+
+        // Split at colon, use second item in the array
+        String id = wholeID.split(":")[1];
+
+        String[] column = { MediaStore.Images.Media.DATA };
+
+        // where id is equal to
+        String sel = MediaStore.Images.Media._ID + "=?";
+
+        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                column, sel, new String[]{ id }, null);
+
+        int columnIndex = cursor.getColumnIndex(column[0]);
+
+        if (cursor.moveToFirst()) {
+            filePath = cursor.getString(columnIndex);
+        }
+        cursor.close();
+        return filePath;
     }
     public String getRealPathFromURI (Uri contentUri) {
     return "";
@@ -374,6 +411,7 @@ public class MainActivity extends AppCompatActivity {
                     Fragment fragmen=new InventoryMainFragment();
                     Bundle undle=new Bundle();
                     undle.putString("id","");
+                    undle.putBoolean("object",false);
                     fragmen.setArguments(undle);
                     setFragment(R.id.content_frame,fragmen);
                     break;
@@ -502,6 +540,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void logOut(){
         token="";
+        userid="";
+        role="";
         saveToken();
         Intent intent=new Intent(MainActivity.this,LoginActivity.class);
         startActivityForResult(intent,3);
@@ -583,8 +623,15 @@ public class MainActivity extends AppCompatActivity {
             }
             this.name=name;
             this.role=role;
+            if(role.equals("POINT") || role.equals("CLIENT")){
+                client=true;
+            }
+            else{
+                client=false;
+            }
             userid=id;
-            drawerF.dataChanged();
+            drawerF.setClient(client);
+            drawerF.setRole(role);
             if(page==-1)
             setFragment(R.id.content_frame,new MainProfileFragment());
         }
@@ -592,4 +639,5 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
 }

@@ -16,8 +16,8 @@
 
             <ImageView
                 android:id="@+id/monthImageView"
-                android:layout_width="15sp"
-                android:layout_height="15sp"
+                android:layout_width="11sp"
+                android:layout_height="11sp"
                 android:src="@drawable/ic_arrowdown_green"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -51,7 +51,7 @@
                 app:np_textColor="@color/greyy"
                 app:np_textSize="11sp"
                 app:np_selectedTextColor="@color/black"
-                app:np_selectedTextSize="15sp"
+                app:np_selectedTextSize="13sp"
                 >
             </com.shawnlin.numberpicker.NumberPicker>
             <com.shawnlin.numberpicker.NumberPicker
@@ -65,7 +65,7 @@
                 app:np_textColor="@color/greyy"
                 app:np_textSize="11sp"
                 app:np_selectedTextColor="@color/black"
-                app:np_selectedTextSize="15sp"
+                app:np_selectedTextSize="13sp"
                 >
             </com.shawnlin.numberpicker.NumberPicker>
         </android.support.constraint.ConstraintLayout>
@@ -93,7 +93,7 @@
                         android:id="@+id/weekDay1TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
+                        android:textSize="10sp"
                         android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -112,7 +112,7 @@
                         android:id="@+id/weekDay2TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
+                        android:textSize="10sp"
                         android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -131,7 +131,7 @@
                         android:id="@+id/weekDay3TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
+                        android:textSize="10sp"
                         android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -150,7 +150,7 @@
                         android:id="@+id/weekDay4TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
+                        android:textSize="10sp"
                         android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -169,7 +169,7 @@
                         android:id="@+id/weekDay5TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
+                        android:textSize="10sp"
                         android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -188,7 +188,7 @@
                         android:id="@+id/weekDay6TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
+                        android:textSize="10sp"
                         android:textColor="@color/darkgrey"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -207,7 +207,7 @@
                         android:id="@+id/weekDay7TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
+                        android:textSize="10sp"
                         android:textColor="@color/darkgrey"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -244,14 +244,14 @@
                             android:layout_height="wrap_content"
                             android:text="31"
                             android:textColor="@color/greyy"
-                            android:textSize="15sp" />
+                            android:textSize="11sp" />
                     </android.support.constraint.ConstraintLayout>
 
                     <ImageView
                         android:id="@+id/m00ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -276,7 +276,7 @@
                             android:id="@+id/m01TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -284,8 +284,8 @@
                     <ImageView
                         android:id="@+id/m01ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -310,7 +310,7 @@
                             android:id="@+id/m02TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/white"
                             android:text="31"
                             />
@@ -318,8 +318,8 @@
                     <ImageView
                         android:id="@+id/m02ImageView"
                         android:visibility="visible"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -344,7 +344,7 @@
                             android:id="@+id/m03TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/white"
                             android:text="31"
                             />
@@ -352,8 +352,8 @@
                     <ImageView
                         android:id="@+id/m03ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -378,7 +378,7 @@
                             android:id="@+id/m04TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/white"
                             android:text="31"
                             />
@@ -386,8 +386,8 @@
                     <ImageView
                         android:id="@+id/m04ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -413,7 +413,7 @@
                             android:id="@+id/m05TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -421,8 +421,8 @@
                     <ImageView
                         android:id="@+id/m05ImageView"
                         android:visibility="visible"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -448,7 +448,7 @@
                             android:id="@+id/m06TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -456,8 +456,8 @@
                     <ImageView
                         android:id="@+id/m06ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -493,14 +493,14 @@
                             android:layout_height="wrap_content"
                             android:text="31"
                             android:textColor="@color/black"
-                            android:textSize="15sp" />
+                            android:textSize="11sp" />
                     </android.support.constraint.ConstraintLayout>
 
                     <ImageView
                         android:id="@+id/m10ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -525,7 +525,7 @@
                             android:id="@+id/m11TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -533,8 +533,8 @@
                     <ImageView
                         android:id="@+id/m11ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -559,7 +559,7 @@
                             android:id="@+id/m12TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -567,8 +567,8 @@
                     <ImageView
                         android:id="@+id/m12ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -593,7 +593,7 @@
                             android:id="@+id/m13TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -601,8 +601,8 @@
                     <ImageView
                         android:id="@+id/m13ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -627,7 +627,7 @@
                             android:id="@+id/m14TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -635,8 +635,8 @@
                     <ImageView
                         android:id="@+id/m14ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -662,7 +662,7 @@
                             android:id="@+id/m15TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -670,8 +670,8 @@
                     <ImageView
                         android:id="@+id/m15ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -697,7 +697,7 @@
                             android:id="@+id/m16TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -705,8 +705,8 @@
                     <ImageView
                         android:id="@+id/m16ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -741,14 +741,14 @@
                             android:layout_height="wrap_content"
                             android:text="31"
                             android:textColor="@color/black"
-                            android:textSize="15sp" />
+                            android:textSize="11sp" />
                     </android.support.constraint.ConstraintLayout>
 
                     <ImageView
                         android:id="@+id/m20ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -773,7 +773,7 @@
                             android:id="@+id/m21TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -781,8 +781,8 @@
                     <ImageView
                         android:id="@+id/m21ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -807,7 +807,7 @@
                             android:id="@+id/m22TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -815,8 +815,8 @@
                     <ImageView
                         android:id="@+id/m22ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -841,7 +841,7 @@
                             android:id="@+id/m23TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -849,8 +849,8 @@
                     <ImageView
                         android:id="@+id/m23ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -875,7 +875,7 @@
                             android:id="@+id/m24TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -883,8 +883,8 @@
                     <ImageView
                         android:id="@+id/m24ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -910,7 +910,7 @@
                             android:id="@+id/m25TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -918,8 +918,8 @@
                     <ImageView
                         android:id="@+id/m25ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -945,7 +945,7 @@
                             android:id="@+id/m26TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -953,8 +953,8 @@
                     <ImageView
                         android:id="@+id/m26ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -989,14 +989,14 @@
                             android:layout_height="wrap_content"
                             android:text="31"
                             android:textColor="@color/black"
-                            android:textSize="15sp" />
+                            android:textSize="11sp" />
                     </android.support.constraint.ConstraintLayout>
 
                     <ImageView
                         android:id="@+id/m30ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -1021,7 +1021,7 @@
                             android:id="@+id/m31TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -1029,8 +1029,8 @@
                     <ImageView
                         android:id="@+id/m31ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -1055,7 +1055,7 @@
                             android:id="@+id/m32TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -1063,8 +1063,8 @@
                     <ImageView
                         android:id="@+id/m32ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -1089,7 +1089,7 @@
                             android:id="@+id/m33TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -1097,8 +1097,8 @@
                     <ImageView
                         android:id="@+id/m33ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -1123,7 +1123,7 @@
                             android:id="@+id/m34TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -1131,8 +1131,8 @@
                     <ImageView
                         android:id="@+id/m34ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -1158,7 +1158,7 @@
                             android:id="@+id/m35TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -1166,8 +1166,8 @@
                     <ImageView
                         android:id="@+id/m35ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -1193,7 +1193,7 @@
                             android:id="@+id/m36TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -1201,8 +1201,8 @@
                     <ImageView
                         android:id="@+id/m36ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -1237,14 +1237,14 @@
                             android:layout_height="wrap_content"
                             android:text="31"
                             android:textColor="@color/black"
-                            android:textSize="15sp" />
+                            android:textSize="11sp" />
                     </android.support.constraint.ConstraintLayout>
 
                     <ImageView
                         android:id="@+id/m40ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -1269,7 +1269,7 @@
                             android:id="@+id/m41TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -1277,8 +1277,8 @@
                     <ImageView
                         android:id="@+id/m41ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -1303,7 +1303,7 @@
                             android:id="@+id/m42TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -1311,8 +1311,8 @@
                     <ImageView
                         android:id="@+id/m42ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -1337,7 +1337,7 @@
                             android:id="@+id/m43TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -1345,8 +1345,8 @@
                     <ImageView
                         android:id="@+id/m43ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -1371,7 +1371,7 @@
                             android:id="@+id/m44TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -1379,8 +1379,8 @@
                     <ImageView
                         android:id="@+id/m44ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -1406,7 +1406,7 @@
                             android:id="@+id/m45TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -1414,8 +1414,8 @@
                     <ImageView
                         android:id="@+id/m45ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -1441,7 +1441,7 @@
                             android:id="@+id/m46TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -1449,8 +1449,8 @@
                     <ImageView
                         android:id="@+id/m46ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -1486,14 +1486,14 @@
                             android:layout_height="wrap_content"
                             android:text="31"
                             android:textColor="@color/black"
-                            android:textSize="15sp" />
+                            android:textSize="11sp" />
                     </android.support.constraint.ConstraintLayout>
 
                     <ImageView
                         android:id="@+id/m50ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -1518,7 +1518,7 @@
                             android:id="@+id/m51TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -1526,8 +1526,8 @@
                     <ImageView
                         android:id="@+id/m51ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -1552,7 +1552,7 @@
                             android:id="@+id/m52TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -1560,8 +1560,8 @@
                     <ImageView
                         android:id="@+id/m52ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -1586,7 +1586,7 @@
                             android:id="@+id/m53TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -1594,8 +1594,8 @@
                     <ImageView
                         android:id="@+id/m53ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -1620,7 +1620,7 @@
                             android:id="@+id/m54TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -1628,8 +1628,8 @@
                     <ImageView
                         android:id="@+id/m54ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -1655,7 +1655,7 @@
                             android:id="@+id/m55TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -1663,8 +1663,8 @@
                     <ImageView
                         android:id="@+id/m55ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"
@@ -1690,7 +1690,7 @@
                             android:id="@+id/m56TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text="31"
                             />
@@ -1698,8 +1698,8 @@
                     <ImageView
                         android:id="@+id/m56ImageView"
                         android:visibility="gone"
-                        android:layout_width="15sp"
-                        android:layout_height="15sp"
+                        android:layout_width="11sp"
+                        android:layout_height="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:background="@drawable/darkgreen_circle"

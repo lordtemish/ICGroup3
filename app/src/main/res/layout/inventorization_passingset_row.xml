@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+
     >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
+        android:minHeight="100dp"
         android:id="@+id/headerLayout">
         <TextView
             android:id="@+id/nameTextView"
@@ -80,14 +85,7 @@
             android:layout_marginEnd="20dp">
 
         </com.studio.dynamica.icgroup.ExtraFragments.RadioButtonView>
-        <com.studio.dynamica.icgroup.ExtraFragments.CounterView
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:id="@+id/counterView"
-       />
+
         <LinearLayout
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
@@ -125,9 +123,41 @@
                     />
             </FrameLayout>
         </LinearLayout>
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:layout_marginTop="10dp">
+            <TextView
+                android:id="@+id/saveTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/greenbutton_rec"
+                android:gravity="center"
+                android:text="Сохранить"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                />
+        </android.support.constraint.ConstraintLayout>
     </LinearLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/light_grey"/>
-</LinearLayout>
+    </LinearLayout>
+    <FrameLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="onClick"
+        android:background="@color/icgGreenTra"
+        android:id="@+id/progressFrame"
+        >
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
+    </FrameLayout>
+</FrameLayout>

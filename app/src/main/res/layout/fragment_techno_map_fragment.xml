@@ -195,6 +195,7 @@
             android:id="@+id/technoMapRecyclerView"
             android:paddingBottom="20sp"
             android:paddingStart="10sp"
+            android:nestedScrollingEnabled="false"
             android:paddingEnd="10sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

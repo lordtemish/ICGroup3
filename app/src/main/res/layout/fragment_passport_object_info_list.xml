@@ -262,10 +262,8 @@
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
-                android:paddingTop="10sp"
-                android:paddingBottom="10sp"
                 android:layout_width="match_parent"
-                android:layout_height="80sp"
+                android:layout_height="30sp"
                 android:orientation="horizontal">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -289,37 +287,7 @@
                         android:layout_weight="1"
                         android:gravity="center_vertical"
                         />
-                    <TextView
-                        android:id="@+id/infoListAdvisorTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/infoListWorkStartTextView"
-                        app:layout_constraintBottom_toTopOf="@+id/infoListObjectAreaTextView"
-                        android:layout_marginStart="20sp"
-                        android:layout_marginLeft="20sp"
-                        android:textSize="11sp"
-                        android:textColor="@color/darkgrey"
-                        android:text="Куратор"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        />
-                    <TextView
-                        android:id="@+id/infoListAdministratorTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginStart="20sp"
-                        android:layout_marginLeft="20sp"
-                        android:textSize="11sp"
-                        android:textColor="@color/darkgrey"
-                        android:text="Администратор"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        />
+
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -333,34 +301,82 @@
                         android:layout_height="wrap_content"
                         android:textSize="11sp"
                         android:textColor="@color/black"
-                        android:text="Адрес объекта"
+                        android:text=""
                         android:layout_weight="1"
                         android:gravity="center_vertical"
                         />
-                    <TextView
-                        android:id="@+id/infoListAdvisor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="11sp"
-                        android:textColor="@color/black"
-                        android:text="Адрес объекта"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
 
-                        />
-                    <TextView
-                        android:id="@+id/infoListAdministrator"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:textSize="11sp"
-                        android:textColor="@color/black"
-                        android:text="Адрес объекта"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        />
                 </LinearLayout>
             </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/infoListAdvisorTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="20dp"
+                            android:paddingStart="20dp"
+                            android:textSize="11sp"
+                            android:textColor="@color/darkgrey"
+                            android:text="Кураторы"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:layout_gravity="center"
+                            />
+
+                        <TextView
+
+                            android:id="@+id/infoListAdvisor"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="11sp"
+                            android:textColor="@color/black"
+                            android:text=""
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:layout_gravity="center"
+
+                            />
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/infoListAdministratorTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20sp"
+                            android:layout_marginLeft="20sp"
+                            android:textSize="11sp"
+                            android:textColor="@color/darkgrey"
+                            android:text="Администратор"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            />
+                        <TextView
+                            android:id="@+id/infoListAdministrator"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:textSize="11sp"
+                            android:textColor="@color/black"
+                            android:text=""
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            />
+
+
+                    </LinearLayout>
+                </LinearLayout>
             <LinearLayout
                 android:paddingTop="10sp"
                 android:paddingBottom="10sp"
@@ -442,6 +458,7 @@
             android:layout_marginTop="20sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
             android:id="@+id/phonesRecyclerView"
             >
         </android.support.v7.widget.RecyclerView>
@@ -501,6 +518,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/progressPhoneRecycle"
             android:layout_width="match_parent"
+            android:nestedScrollingEnabled="false"
             android:layout_height="wrap_content">
 
         </android.support.v7.widget.RecyclerView>

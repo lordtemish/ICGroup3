@@ -60,6 +60,9 @@ public RateStarsAdapter(boolean to){
 
     public void setRate(int rate) {
         this.rate = rate;
+        if(rate<1 || rate>5){
+            this.rate=0;
+        }
     }
 
     @NonNull

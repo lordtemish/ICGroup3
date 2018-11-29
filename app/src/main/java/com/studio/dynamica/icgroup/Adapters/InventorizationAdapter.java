@@ -1,8 +1,10 @@
 package com.studio.dynamica.icgroup.Adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,7 @@ public class InventorizationAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         ConstraintLayout infoLayout;
         Context context;
         ProgressBar ProgressBar;
+        String id="";
         TextView dateTextView, PercentageTextView,nameTextView,  positionTextView;
         private myHolder(View view){
             super(view);
@@ -44,9 +47,14 @@ public class InventorizationAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((MainActivity)context).setType("light", dateTextView, positionTextView);
         }
         private void onClicked(){
-            ((MainActivity)context).setFragment(R.id.content_frame,new InventoryInventorizationInfoFragment());
+            Fragment fragment=new InventoryInventorizationInfoFragment();
+            Bundle bundle=new Bundle();
+            bundle.putString("id",id);
+            fragment.setArguments(bundle);
+            ((MainActivity)context).setFragment(R.id.content_frame,fragment);
         }
         private void  setInfo(InventorizationForm form){
+            id=form.getId();
             PercentageTextView.setText(form.getPercentage()+"%");
             ProgressBar.setProgress(form.getPercentage());
             nameTextView.setText(form.getName());

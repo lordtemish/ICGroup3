@@ -177,6 +177,20 @@ public class DateChooseView extends FrameLayout{
         }
         return year+"-"+month+"-"+day;
     }
+    public boolean today(){
+        Calendar cal=Calendar.getInstance();
+        cal.setTime(new Date());
+        if(cal.get(Calendar.DAY_OF_MONTH)==adapters.get(days).getClicked()+1 && cal.get(Calendar.MONTH)==numberPicker.getValue()-1 && cal.get(Calendar.YEAR)==yearPicker.getValue())
+            return true;
+        return false;
+    }
+    public boolean soon(){
+        Calendar cal=Calendar.getInstance();
+        cal.setTime(new Date());
+        if((cal.get(Calendar.DAY_OF_MONTH)<adapters.get(days).getClicked()+1 && cal.get(Calendar.MONTH)==numberPicker.getValue()-1 && cal.get(Calendar.YEAR)==yearPicker.getValue()) || (cal.get(Calendar.MONTH)<numberPicker.getValue()-1 && cal.get(Calendar.YEAR)==yearPicker.getValue()) || cal.get(Calendar.YEAR)<yearPicker.getValue())
+            return true;
+        return false;
+    }
     private void checkDate(){
         if(numberPicker.getValue()-1==cal2.get(Calendar.MONTH) && yearPicker.getValue()==cal2.get(Calendar.YEAR))
             cal.setTime(cal2.getTime());

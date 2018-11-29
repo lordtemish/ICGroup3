@@ -27,6 +27,7 @@
             >
             <TextView
                 android:id="@+id/drawerNameText"
+                android:maxWidth="140dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -36,6 +37,7 @@
                 />
             <TextView
                 android:layout_marginTop="10dp"
+                android:maxWidth="140dp"
                 android:id="@+id/drawerPositionText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

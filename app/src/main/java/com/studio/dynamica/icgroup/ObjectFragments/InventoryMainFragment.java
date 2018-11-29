@@ -6,6 +6,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.error.AuthFailureError;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.JsonArrayRequest;
+import com.android.volley.request.JsonObjectRequest;
 import com.shawnlin.numberpicker.NumberPicker;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Adapters.AddOrderAdapter;
@@ -46,6 +48,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,9 +61,9 @@ public class InventoryMainFragment extends Fragment {
     ConstraintLayout progressLayout, dateLayout,pointLayout;
     RecyclerView inventoryRecycler, equipmentReq;
     String[] a={"Инвентарь","Инвентаризация","Заявки на пополнение"}, months = {"Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"};
-
+    FrameLayout progressFrame;
     int page=0;
-    String id="";
+    String id="", prodid="";
     Calendar cal;
     /*EquipmentAdapter equipmentAdapter;
     MaterialAdapter materialAdapter;*/
@@ -72,6 +75,7 @@ public class InventoryMainFragment extends Fragment {
     List<String> reqList;
     InventoryTopAdapter topAdapter;
     NumberPicker datePicker, yearPicker;
+    boolean object=false, arch=false, plused=false;
     public InventoryMainFragment() {
         // Required empty public constructor
     }
@@ -82,6 +86,8 @@ public class InventoryMainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         id=getArguments().getString("id");
+        prodid=getArguments().getString("producer");
+        object=getArguments().getBoolean("object",false);
         View view=inflater.inflate(R.layout.fragment_inventory_main, container, false);
         cal=Calendar.getInstance();
         cal.setTime(new Date());
@@ -137,6 +143,10 @@ public class InventoryMainFragment extends Fragment {
                 onArrow();
             }
         });
+
+        if(!object){
+            plusImageView.setVisibility(View.GONE);
+        }
         return view;
     }
     private void pickerSettings(){
@@ -154,6 +164,7 @@ public class InventoryMainFragment extends Fragment {
         rightImageView=(ImageView) view.findViewById(R.id.ImageRightView);
         pageTextView=(TextView) view.findViewById(R.id.pageTextView);
         textsLayout=(LinearLayout) view.findViewById(R.id.textsLayout);
+        progressFrame=(FrameLayout) view.findViewById(R.id.progressFrame);
         progressLayout=(ConstraintLayout) view.findViewById(R.id.progressLayout);
         inventoryRecycler=(RecyclerView) view.findViewById(R.id.inventoryRecycler);
         topRecycler=(RecyclerView) view.findViewById(R.id.topRecycler);
@@ -192,8 +203,6 @@ public class InventoryMainFragment extends Fragment {
         inventorizationAdapter=new InventorizationAdapter(this.inventorizationForms);
 
         List<AddOrderForm> addOrderForms=new ArrayList<>();
-        addOrderForms.add(new AddOrderForm("","","","","actual","",2,5));addOrderForms.add(new AddOrderForm("","","","","finished","",2,5));addOrderForms.add(new AddOrderForm("","","","","accepted","",4,4));
-        addOrderForms.add(new AddOrderForm("","","","","cancel","",4,4));addOrderForms.add(new AddOrderForm("","","","","waiting","",4,4));addOrderForms.add(new AddOrderForm("","","","","timeout","",4,4));
         this.addOrderForms=new ArrayList<>();this.addOrderForms.addAll(addOrderForms);
         newOrderForms=addOrderForms;archOrderForms=new ArrayList<>();
 
@@ -208,6 +217,7 @@ public class InventoryMainFragment extends Fragment {
         reqList.add("Спец. одежда");
         listAdapter=new InventoryListAdapter(reqList);
         listAdapter.setId(id);
+        listAdapter.setObject(object);
       /*  reqAdapter=new EquipmentReqAdapter(reqList);
         reqAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -231,6 +241,7 @@ public class InventoryMainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        plused=false;
         checkPage();
     }
 
@@ -250,7 +261,7 @@ public class InventoryMainFragment extends Fragment {
         plusImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity) getActivity()).setFragment(R.id.content_frame,new InventoryPassInventorizationFragment());
+             createCheckGroup();
             }
         });
     }
@@ -276,6 +287,7 @@ public class InventoryMainFragment extends Fragment {
             default:
                 setTextsLayout();
                 inventoryRecycler.setAdapter(addOrderAdapter);
+                getReplenishments();
                 break;
         }
         topAdapter.setPage(page);
@@ -301,6 +313,7 @@ public class InventoryMainFragment extends Fragment {
     }
 
     private void invOrdersChange(boolean New){
+        arch=!New;
         if(New){
             addOrderForms.clear();
             addOrderForms.addAll(newOrderForms);
@@ -337,18 +350,18 @@ public class InventoryMainFragment extends Fragment {
 
 
     private void getCheckGroups(){
-        progressLayout.setVisibility(View.VISIBLE);
+        progressFrame.setVisibility(View.VISIBLE);
         String url=((MainActivity)getActivity()).MAIN_URL+"checkgroups/?point="+id;
         JsonArrayRequest arrayRequest=new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                progressLayout.setVisibility(View.GONE);
+                progressFrame.setVisibility(View.GONE);
                 setCGroups(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressLayout.setVisibility(View.GONE);
+                progressFrame.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), "Проблемы соеднения", Toast.LENGTH_SHORT).show();
             }
         }){
@@ -375,12 +388,158 @@ public class InventoryMainFragment extends Fragment {
                 double match_rate=object.getDouble("match_rate");String position=((MainActivity)getActivity()).positions.get(role);
                 int rate=Integer.parseInt(""+Math.round(match_rate*100));
                 InventorizationForm form=new InventorizationForm(created,name, position, rate );
+                form.setId(object.getString("id"));
                 inventorizationForms.add(form);
             }
             inventorizationAdapter.notifyDataSetChanged();
         }
         catch (Exception e){
             e.printStackTrace();
+        }
+    }
+
+
+    private void getReplenishments(){
+        progressFrame.setVisibility(View.VISIBLE);
+        String url=((MainActivity)getActivity()).MAIN_URL+"replenishments";
+        if(object)
+            url+="/?consumption__point="+id;
+        JsonArrayRequest arrayRequest=new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                setRepls(response);
+                progressFrame.setVisibility(View.GONE);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressFrame.setVisibility(View.GONE);
+                Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
+                return headers;
+            }
+        };
+        ((MainActivity)getActivity()).requestQueue.add(arrayRequest);
+    }
+    private void setRepls(JSONArray array){
+        try {
+            archOrderForms.clear();newOrderForms.clear();
+            addOrderForms.clear();
+            for(int i=0;i<array.length();i++){
+                JSONObject object=array.getJSONObject(i);
+                String
+                        created_at=object.getString("created_at"),
+                        deadline=object.getString("deadline"),
+                        description=object.getString("description"),
+                        id=object.getString("id"),
+                kind=object.getString("kind"), status=object.getString("status");
+                int pri=object.getInt("priority");
+                String rKind=((MainActivity)getActivity()).replKinds.get(kind);
+                String date=((MainActivity)getActivity()).getdate(created_at);
+                date=date.substring(0,date.length()-6);
+                String priority="Низкий";
+                switch (pri){
+                    case 3:
+                        priority="Высокий";
+                        break;
+                    case 2:
+                        priority="Средний";
+                        break;
+                }
+                if(deadline.length()==20 && deadline.length()>1){
+                    deadline=deadline.substring(0,deadline.length()-1)+".0Z";
+                }
+                if(created_at.length()==20){
+                    created_at=created_at.substring(0,created_at.length()-1)+".0Z";
+                }
+                Date created = ((MainActivity) getActivity()).inputFormat.parse(created_at), dead = ((MainActivity) getActivity()).inputFormat.parse(deadline);
+                Date now = new Date();
+                long wDays = dead.getTime() - created.getTime(), nDays = now.getTime() - created.getTime();
+                int days = Integer.parseInt(TimeUnit.DAYS.convert(wDays, TimeUnit.MILLISECONDS) + "");
+                int nowdays = Integer.parseInt(TimeUnit.DAYS.convert(nDays, TimeUnit.MILLISECONDS) + "");
+                if(wDays<nDays){
+                    days=0;
+                    nowdays=0;
+                }
+                if (days - nowdays > 0) {
+                    Log.d("nowdays", days + " " + nowdays);
+                    nowdays = days - nowdays;
+                    Log.d("nowdays", (days - nowdays > 0) + "");
+                } else {
+                    nowdays = 0;
+                }
+                AddOrderForm orderForm=new AddOrderForm(date,id,"", priority, status, rKind, nowdays, days);
+                if(status.equals("FINISHED")){
+                    archOrderForms.add(orderForm);
+                }
+                else{
+                    newOrderForms.add(orderForm);
+                }
+            }
+            invOrdersChange(true);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void createCheckGroup() {
+        if (!plused) {
+            plused=true;
+            progressFrame.setVisibility(View.VISIBLE);
+            String url = ((MainActivity) getActivity()).MAIN_URL + "checkgroups/";
+            JSONObject object = new JSONObject();
+            try {
+                object.put("point", id);
+                int idd=10;
+                if(prodid.length()>0){
+                    idd=Integer.parseInt(prodid);
+                }
+                object.put("receiving", idd);
+                JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, object, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        progressFrame.setVisibility(View.GONE);
+                        Log.d("respa", response.toString());
+                        Fragment fragment = new InventoryPassInventorizationFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("point", id);
+                        bundle.putString("producer", prodid);
+                        String CG="";
+                        try{CG=response.getString("id");}catch (Exception e){e.printStackTrace();}
+                        bundle.putString("id", CG);
+                        fragment.setArguments(bundle);
+                        ((MainActivity) getActivity()).setFragment(R.id.content_frame, fragment);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressFrame.setVisibility(View.GONE);
+                        Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
+                        plused=false;
+                    }
+                }) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap<String, String> headers = new HashMap<String, String>();
+                        headers.put("Accept", "application/json");
+                        headers.put("Content-Type", "application/json; charset=utf-8");
+                        headers.put("Authorization", "JWT " + ((MainActivity) getActivity()).token);
+                        return headers;
+                    }
+                };
+                ((MainActivity) getActivity()).requestQueue.add(objectRequest);
+            } catch (Exception e) {
+                e.printStackTrace();
+                progressFrame.setVisibility(View.GONE);
+            }
         }
     }
 }

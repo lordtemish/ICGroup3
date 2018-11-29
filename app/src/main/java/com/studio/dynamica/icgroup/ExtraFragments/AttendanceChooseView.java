@@ -25,11 +25,11 @@ public class AttendanceChooseView extends FrameLayout{
     List<TextView> textViews,texts;
     List<ConstraintLayout> layouts;
     Context context;
-    Spinner spinner;
+    Spinner spinner, spinner3;
     List<RadioButton> buttons;
-    FrameLayout saveLayout,spinnerFrame;
+    FrameLayout saveLayout,spinnerFrame, spinnerFrame3;
     List<String> zamena, zids;
-    LinearLayout spinnerLinear2;
+    LinearLayout spinnerLinear2, spinnerLinear3;
     int chose=0;
     String id;
 
@@ -85,17 +85,20 @@ public class AttendanceChooseView extends FrameLayout{
     private void createViews(View view){
         name=(TextView) view.findViewById(R.id.name);
         spinner=(Spinner) view.findViewById(R.id.spinner);
+        spinner3=(Spinner) view.findViewById(R.id.spinner3);
         nothing=(TextView)view.findViewById(R.id.nothing);
 
         texts=new ArrayList<>();textViews=new ArrayList<>();layouts=new ArrayList<>();buttons=new ArrayList<>();
-        texts.add((TextView) view.findViewById(R.id.plusText));texts.add((TextView) view.findViewById(R.id.minusText));texts.add((TextView) view.findViewById(R.id.illText));texts.add((TextView) view.findViewById(R.id.replText));
-        textViews.add((TextView) view.findViewById(R.id.plusTextView));textViews.add((TextView) view.findViewById(R.id.minusTextView));textViews.add((TextView) view.findViewById(R.id.illTextView));textViews.add((TextView) view.findViewById(R.id.replTextView));
-        layouts.add((ConstraintLayout) view.findViewById(R.id.plusLayout));layouts.add((ConstraintLayout) view.findViewById(R.id.minusLayout));layouts.add((ConstraintLayout) view.findViewById(R.id.illLayout));layouts.add((ConstraintLayout) view.findViewById(R.id.replLayout));
-        buttons.add((RadioButton) view.findViewById(R.id.plusRadio));buttons.add((RadioButton) view.findViewById(R.id.minusRadio));buttons.add((RadioButton) view.findViewById(R.id.illRadio));buttons.add((RadioButton) view.findViewById(R.id.replRadio));
+        texts.add((TextView) view.findViewById(R.id.plusText));texts.add((TextView) view.findViewById(R.id.minusText));texts.add((TextView) view.findViewById(R.id.illText));texts.add((TextView) view.findViewById(R.id.replText));texts.add((TextView) view.findViewById(R.id.halfText));texts.add((TextView) view.findViewById(R.id.thirdText));
+        textViews.add((TextView) view.findViewById(R.id.plusTextView));textViews.add((TextView) view.findViewById(R.id.minusTextView));textViews.add((TextView) view.findViewById(R.id.illTextView));textViews.add((TextView) view.findViewById(R.id.replTextView));textViews.add((TextView) view.findViewById(R.id.halfTextView));textViews.add((TextView) view.findViewById(R.id.thirdTextView));
+        layouts.add((ConstraintLayout) view.findViewById(R.id.plusLayout));layouts.add((ConstraintLayout) view.findViewById(R.id.minusLayout));layouts.add((ConstraintLayout) view.findViewById(R.id.illLayout));layouts.add((ConstraintLayout) view.findViewById(R.id.replLayout));layouts.add((ConstraintLayout) view.findViewById(R.id.halfLayout));layouts.add((ConstraintLayout) view.findViewById(R.id.thirdLayout));
+        buttons.add((RadioButton) view.findViewById(R.id.plusRadio));buttons.add((RadioButton) view.findViewById(R.id.minusRadio));buttons.add((RadioButton) view.findViewById(R.id.illRadio));buttons.add((RadioButton) view.findViewById(R.id.replRadio));buttons.add((RadioButton) view.findViewById(R.id.halfRadio));buttons.add((RadioButton) view.findViewById(R.id.thirdRadio));
         saveLayout=(FrameLayout) view.findViewById(R.id.saveLayout);
         spinnerFrame=(FrameLayout) view.findViewById(R.id.spinnerFrame);
+        spinnerFrame3=(FrameLayout) view.findViewById(R.id.spinnerFrame3);
         spinnerLinear2=(LinearLayout) view.findViewById(R.id.spinnerLinear2);
-        for(int i=0;i<4;i++){
+        spinnerLinear3=(LinearLayout) view.findViewById(R.id.spinnerLinear3);
+        for(int i=0;i<6;i++){
             layouts.get(i).setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -108,7 +111,7 @@ public class AttendanceChooseView extends FrameLayout{
     }
 
     private void clearAll(){
-        for(int i=0;i<4;i++){
+        for(int i=0;i<6;i++){
             texts.get(i).setTextColor(getContext().getResources().getColor(R.color.darkgrey));
             layouts.get(i).setBackgroundColor(getContext().getResources().getColor(android.R.color.transparent));
             buttons.get(i).setChecked(false);

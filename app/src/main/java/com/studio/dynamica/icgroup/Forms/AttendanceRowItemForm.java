@@ -1,13 +1,30 @@
 package com.studio.dynamica.icgroup.Forms;
 
 public class AttendanceRowItemForm {
-    private boolean nothing=false, plus=false, absent=false,ill=false,replace=false;
+    private boolean nothing=false, plus=false, absent=false,ill=false,replace=false, half=false, third=false;
     String day;
     public AttendanceRowItemForm(String day){
         this.day=day;
         nothing=true;
     }
-    public AttendanceRowItemForm(String day,boolean plus, boolean absent, boolean ill){
+
+    public void setHalf(boolean half) {
+        this.half = half;
+    }
+
+    public void setThird(boolean third) {
+        this.third = third;
+    }
+
+    public boolean isHalf() {
+        return half;
+    }
+
+    public boolean isThird() {
+        return third;
+    }
+
+    public AttendanceRowItemForm(String day, boolean plus, boolean absent, boolean ill){
         this.day=day;
         nothing=false;
         this.plus=plus;

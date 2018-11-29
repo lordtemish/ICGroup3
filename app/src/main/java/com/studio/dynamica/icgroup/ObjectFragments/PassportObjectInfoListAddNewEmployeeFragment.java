@@ -35,7 +35,7 @@ import java.util.Map;
 
 
 public class PassportObjectInfoListAddNewEmployeeFragment extends Fragment {
-    EditText nametext, nametext1;
+    EditText nametext, nametext1,salaryEditText;
     FrameLayout frontLayout;
     TextView addTextView;
     ConstraintLayout addLayout;
@@ -43,7 +43,8 @@ public class PassportObjectInfoListAddNewEmployeeFragment extends Fragment {
     RadioGroup radioGroup;
     int shifts;
     String point;
-    boolean is_trainee;
+    boolean is_trainee, check=false;
+    RadioButton contractRadio;
     View.OnClickListener clickListener;
     public PassportObjectInfoListAddNewEmployeeFragment() {
         // Required empty public constructor
@@ -68,17 +69,29 @@ public class PassportObjectInfoListAddNewEmployeeFragment extends Fragment {
                 postRequest("workers/");
             }
         });
-
+        contractRadio.setChecked(check);
+        contractRadio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                check=!check;
+                setContract();
+            }
+        });
         return view;
+    }
+    private void setContract(){
+        contractRadio.setChecked(check);
     }
     private void createViews(View view){
         frontLayout=(FrameLayout) view.findViewById(R.id.frontLayout);
         nametext=(EditText) view.findViewById(R.id.nameEditText);
         nametext1=(EditText) view.findViewById(R.id.nameEditText1);
+        salaryEditText=(EditText) view.findViewById(R.id.salaryEditText);
         radioGroup=(RadioGroup)view.findViewById(R.id.radioGroup);
         firstB=(RadioButton) view.findViewById(R.id.firstB);
         secondB=(RadioButton) view.findViewById(R.id.secondB);
         thirdB=(RadioButton) view.findViewById(R.id.thirdB);
+        contractRadio=(RadioButton) view.findViewById(R.id.contractRadio);
         addLayout=(ConstraintLayout) view.findViewById(R.id.addLayout);
         addTextView=(TextView) view.findViewById(R.id.addTextView);
 
@@ -110,22 +123,26 @@ public class PassportObjectInfoListAddNewEmployeeFragment extends Fragment {
                 user.put("fullname", nametext.getText() + "");
                 user.put("phone", "" + nametext1.getText());
                 params.put("user",user);
-                params.put("shift", "" + radioCheck());
-                params.put("point", "" + point);
-                params.put("is_trainee", "" + is_trainee);
+                params.put("shift",  radioCheck());
+                params.put("point",  point);
+                params.put("is_trainee",  is_trainee);
+                params.put("is_contract",  check);
+                params.put("salary", Integer.parseInt(salaryEditText.getText()+""));
             } catch (Exception e) {
 
             }
             JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
+                    frontLayout.setVisibility(View.GONE);
                     setInfo(response);
                 }
             }
                     , new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-
+                    frontLayout.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
                 }
             }
             ){

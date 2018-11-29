@@ -28,7 +28,7 @@
                     />
         <android.support.v7.widget.RecyclerView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"       android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/starsRecyclerView"
@@ -104,7 +104,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:id="@+id/commentsRecyclerView"
-            android:layout_width="match_parent"
+            android:nestedScrollingEnabled="false"          android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
         </android.support.v7.widget.RecyclerView>
@@ -263,7 +263,7 @@
             <android.support.v7.widget.RecyclerView
                 android:layout_marginBottom="20dp"
                 android:id="@+id/acceptRecyclerView"
-                android:layout_width="match_parent"
+                android:nestedScrollingEnabled="false"   android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
             </android.support.v7.widget.RecyclerView>

@@ -22,7 +22,7 @@
                                 android:layout_width="43sp"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/ic_circlephoneicon"
-                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
 
@@ -33,7 +33,7 @@
                                 android:layout_marginLeft="10sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:layout_constraintStart_toEndOf="@+id/circlePhoneImageView"
+                                app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
 
                                 android:orientation="vertical">
@@ -52,8 +52,33 @@
                                     android:textSize="13sp"
                                     android:text="ОПУ"/>
                             </LinearLayout>
+
+                <RadioButton
+                    android:layout_marginTop="3dp"
+                    android:id="@+id/chechRadio"
+
+                    android:layout_width="21dp"
+                    android:layout_height="22dp"
+                    android:button="@drawable/radiobutton4"
+                    android:checked="true"
+                    app:layout_constraintStart_toStartOf="@+id/linearNames"
+                    app:layout_constraintTop_toBottomOf="@+id/linearNames" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="11sp"
+                    android:text=""
+                    app:layout_constraintStart_toEndOf="@+id/chechRadio"
+                    app:layout_constraintTop_toTopOf="@+id/chechRadio"
+                    app:layout_constraintBottom_toBottomOf="@+id/chechRadio"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/salaryTextView"
+                    />
                             <ImageView
                                 android:id="@+id/arrowImageView"
+                                android:visibility="gone"
                                 android:layout_width="25sp"
                                 android:layout_height="25sp"
                                 android:padding="7sp"

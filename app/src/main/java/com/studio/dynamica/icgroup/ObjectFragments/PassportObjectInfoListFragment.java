@@ -101,8 +101,7 @@ public class PassportObjectInfoListFragment extends Fragment {
         phonesRecycler=(RecyclerView) view.findViewById(R.id.phonesRecyclerView);
         RecyclerView.LayoutManager mLayoutManager=new LinearLayoutManager(getActivity());
          phonesRowFormList=new ArrayList<>();
-        phonesRowFormList.add(new PhonesRowForm(true,"Рыскулова Динара","Администратор","+77477477447"));
-        phonesRowFormList.add(new PhonesRowForm(true,"Рыскулова Динара","Администратор"));
+
         adapter=new PhonesAdapter(phonesRowFormList,getActivity());
         phonesRecycler.setLayoutManager(mLayoutManager);
         phonesRecycler.setItemAnimator(new DefaultItemAnimator());
@@ -114,12 +113,6 @@ public class PassportObjectInfoListFragment extends Fragment {
         allForms.add(new ArrayList<ProgressPhoneForm>());
         allForms.add(new ArrayList<ProgressPhoneForm>());
         forms=new ArrayList<>();
-        allForms.get(0).add(new ProgressPhoneForm(new PhonesRowForm(false,"Temirlan Almassov","OPU"), 55));
-        allForms.get(0).add(new ProgressPhoneForm(new PhonesRowForm(false,"Temirlan Almassov","OPU"), 55,"Замена",new PhonesRowForm(false,"Темирлан   Алмасов","ОПУ")));
-        allForms.get(1).add(new ProgressPhoneForm(new PhonesRowForm(false,"Temirlan Almassov","OPU"), 55));
-        allForms.get(1).add(new ProgressPhoneForm(new PhonesRowForm(false,"Temirlan Almassov","OPU"), 55));
-        allForms.get(2).add(new ProgressPhoneForm(new PhonesRowForm(false,"Temirlan Almassov","OPU"), 55,"Замена",new PhonesRowForm(false,"Темирлан   Алмасов","ОПУ")));
-        allForms.get(3).add(new ProgressPhoneForm(new PhonesRowForm(false,"",""),55));
         forms.addAll(allForms.get(0));
         adapter1=new ProgressPhonesAdapter(forms,getActivity());
         smenaSAdapter.add(adapter1);
@@ -185,16 +178,20 @@ public class PassportObjectInfoListFragment extends Fragment {
         setSmena(0);
     }
     public void setSmena(int a){
-        clearSmena();
-        if(a==3){
-            is_trainee=true;
-            }
-            else
-                is_trainee=false;
-        smenaSTextView.get(a).setTextColor(getActivity().getResources().getColor(R.color.black));
-        forms.clear();
-        forms.addAll(allForms.get(a));
-       adapter1.notifyDataSetChanged();
+        try {
+            clearSmena();
+            if (a == 3) {
+                is_trainee = true;
+            } else
+                is_trainee = false;
+            smenaSTextView.get(a).setTextColor(getActivity().getResources().getColor(R.color.black));
+            forms.clear();
+            forms.addAll(allForms.get(a));
+            adapter1.notifyDataSetChanged();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
     public void setSmena(View view){
         String tag=view.getTag().toString();
@@ -228,78 +225,101 @@ public class PassportObjectInfoListFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
     private void getRequest(final String url1){
-        progressLayout.setVisibility(View.VISIBLE);
-        final String url=((MainActivity)getActivity()).MAIN_URL+url1;
-        if(url1.contains("points")) {
-            JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    setInfo(response);
+        try {
+            progressLayout.setVisibility(View.VISIBLE);
+            final String url = ((MainActivity) getActivity()).MAIN_URL + url1;
+            if (url1.contains("points")) {
+                JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        setInfo(response);
 
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-                }
-            }){  @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Accept", "application/json");
-                headers.put("Content-Type", "application/json; charset=utf-8");
-                headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
-                return headers;
-            }};
-            (((MainActivity) getActivity()).requestQueue).add(objectRequest);
-        }
-        else if(url1.contains("workers")){
-            JsonArrayRequest arrayRequest=new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                @Override
-                public void onResponse(JSONArray response) {
-                    List<List<ProgressPhoneForm>> phoneForms=new ArrayList<>();phoneForms.add(new ArrayList<ProgressPhoneForm>());phoneForms.add(new ArrayList<ProgressPhoneForm>());phoneForms.add(new ArrayList<ProgressPhoneForm>());phoneForms.add(new ArrayList<ProgressPhoneForm>());
-                    for(int i=0;i<response.length();i++){
-                        try {
-
-                            JSONObject object = response.getJSONObject(i);
-                            if(object.isNull("user")) continue;
-                            int shift=object.getInt("shift");
-                            JSONObject user=object.getJSONObject("user");
-                            Log.d("FUCKINGTROUBLE",""+user.get("fullname"));
-                            String id=object.getString("id");
-                            if(object.getBoolean("is_trainee")) {
-                                ProgressPhoneForm progressPhoneForm=new ProgressPhoneForm(new PhonesRowForm(true, user.get("fullname") + "", "Стажёр", user.getString("phone") + ""), Integer.parseInt(""+Math.round(object.getDouble("attendance_rate")*100)));
-                                progressPhoneForm.setId(id);
-                                phoneForms.get(3).add(progressPhoneForm);
-                                }
-                                else {
-                                ProgressPhoneForm progressPhoneForm=new ProgressPhoneForm(new PhonesRowForm(true, user.get("fullname") + "", "ОПУ", user.getString("phone") + ""), Integer.parseInt(""+Math.round(object.getDouble("attendance_rate")*100)));
-                                progressPhoneForm.setId(id);
-                                phoneForms.get(shift - 1).add(progressPhoneForm);
-                            }
-
-                        }
-                        catch (JSONException e){
-                            e.printStackTrace();
-                        }
                     }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
 
-                    updateSmena(phoneForms);
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
-                progressLayout.setVisibility(View.GONE);
-                }
-            }){  @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Accept", "application/json");
-                headers.put("Content-Type", "application/json; charset=utf-8");
-                headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
-                return headers;
-            }};
-            (((MainActivity)getActivity()).requestQueue).add(arrayRequest);
+                    }
+                }) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap<String, String> headers = new HashMap<String, String>();
+                        headers.put("Accept", "application/json");
+                        headers.put("Content-Type", "application/json; charset=utf-8");
+                        headers.put("Authorization", "JWT " + ((MainActivity) getActivity()).token);
+                        return headers;
+                    }
+                };
+                (((MainActivity) getActivity()).requestQueue).add(objectRequest);
+            } else if (url1.contains("workers")) {
+                JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        List<List<ProgressPhoneForm>> phoneForms = new ArrayList<>();
+                        phoneForms.add(new ArrayList<ProgressPhoneForm>());
+                        phoneForms.add(new ArrayList<ProgressPhoneForm>());
+                        phoneForms.add(new ArrayList<ProgressPhoneForm>());
+                        phoneForms.add(new ArrayList<ProgressPhoneForm>());
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+
+                                JSONObject object = response.getJSONObject(i);
+                                if (object.isNull("user")) continue;
+                                int shift = object.getInt("shift");
+                                JSONObject user = object.getJSONObject("user");
+                                Log.d("FUCKINGTROUBLE", "" + user.get("fullname"));
+                                String id = object.getString("id"), userid=user.getString("id");
+                                String status=object.getString("status");
+                                boolean is_contract=object.getBoolean("is_contract");
+                                if(!status.equals("REMOVE")) {
+                                    if (object.getBoolean("is_trainee")) {
+                                        ProgressPhoneForm progressPhoneForm = new ProgressPhoneForm(new PhonesRowForm(true, user.get("fullname") + "", "Стажёр", user.getString("phone") + ""), Integer.parseInt("" + Math.round(object.getDouble("attendance_rate") * 100)));
+                                        progressPhoneForm.setStatus(status);
+                                        progressPhoneForm.setSalary(object.getInt("salary"));
+                                        progressPhoneForm.setContract(is_contract);
+                                        progressPhoneForm.setId(id);
+                                        progressPhoneForm.setUserid(userid);
+
+                                        phoneForms.get(3).add(progressPhoneForm);
+                                    } else {
+                                        ProgressPhoneForm progressPhoneForm = new ProgressPhoneForm(new PhonesRowForm(true, user.get("fullname") + "", "ОПУ", user.getString("phone") + ""), Integer.parseInt("" + Math.round(object.getDouble("attendance_rate") * 100)));
+                                        progressPhoneForm.setStatus(status);
+                                        progressPhoneForm.setSalary(object.getInt("salary"));
+                                        progressPhoneForm.setContract(is_contract);
+                                        progressPhoneForm.setId(id);
+                                        progressPhoneForm.setUserid(userid);
+                                        phoneForms.get(shift - 1).add(progressPhoneForm);
+                                    }
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        updateSmena(phoneForms);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
+                        progressLayout.setVisibility(View.GONE);
+                    }
+                }) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap<String, String> headers = new HashMap<String, String>();
+                        headers.put("Accept", "application/json");
+                        headers.put("Content-Type", "application/json; charset=utf-8");
+                        headers.put("Authorization", "JWT " + ((MainActivity) getActivity()).token);
+                        return headers;
+                    }
+                };
+                (((MainActivity) getActivity()).requestQueue).add(arrayRequest);
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();progressLayout.setVisibility(View.GONE);
         }
     }
     private void setInfo(JSONObject object){
@@ -322,8 +342,8 @@ public class PassportObjectInfoListFragment extends Fragment {
             JSONObject contactor=getJsObject(object,"contactor");
             JSONObject client=getJsObject(object,"client");
             JSONObject producer=getJsObject(object,"producer");
-            JSONObject curator=getJsObject(object,"curator");
-            JSONObject administrator=getJsObject(object,"administrator");
+            JSONArray curators=object.getJSONArray("curators");
+            JSONArray administrators=object.getJSONArray("admins");
             try {
                 shifts=object.getInt("shifts_count");
                 mapText.get("infoListObjectName").setText(name);
@@ -351,16 +371,28 @@ public class PassportObjectInfoListFragment extends Fragment {
                     else{
                         mapText.get("infoListHead").setText("");
                     }
-                    if(curator!=null) {
-                        mapText.get("infoListAdvisor").setText(curator.getString("fullname"));
-                        phonesRowForms.add(new PhonesRowForm(true, curator.getString("fullname"), "Куратор", curator.getString("phone")));
+                    if(curators.length()>0) {
+                        String s="";
+                        for(int i=0;i<curators.length();i++){
+                            JSONObject curator=curators.getJSONObject(i);
+                            phonesRowForms.add(new PhonesRowForm(true, curator.getString("fullname"), "Куратор", curator.getString("phone")));
+                            s=s+curator.getString("fullname")+"\n";
+                        }
+
+                        mapText.get("infoListAdvisor").setText(s);
                     }
                     else{
                         mapText.get("infoListAdvisor").setText("");
                     }
-                    if(administrator!=null) {
-                        mapText.get("infoListAdministrator").setText(administrator.getString("fullname"));
-                        phonesRowForms.add(new PhonesRowForm(true, administrator.getString("fullname"), "Администратор", administrator.getString("phone")));
+                    if(administrators.length()>0) {
+                        String s="";
+                        for(int i=0;i<administrators.length();i++){
+                            JSONObject curator=administrators.getJSONObject(i);
+                            phonesRowForms.add(new PhonesRowForm(true, curator.getString("fullname"), "Куратор", curator.getString("phone")));
+                            s+=""+curator.getString("fullname")+"\n";
+                        }
+
+                        mapText.get("infoListAdvisor").setText(s);
                     }
                     else{
                         mapText.get("infoListAdministrator").setText("");

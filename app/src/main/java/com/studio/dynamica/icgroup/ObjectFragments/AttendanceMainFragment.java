@@ -50,7 +50,7 @@ public class AttendanceMainFragment extends Fragment {
     FrameLayout chooseLayout;
     View.OnClickListener emptyL, postL;
     NumberPicker datePicker, yearPicker;
-    TextView mainObjectTitle, yearTextView, monthTextView, smenasTextView;
+    TextView mainObjectTitle, yearTextView, monthTextView, smenasTextView, smenaCountTextView;
     ImageView dateArrowImageView, yearArrowImageView, leftCalArrow, rightCalArrow, ImageRightView, ImageLeftView;
     Calendar cal, cal2;
     List<String> strings;
@@ -178,8 +178,14 @@ public class AttendanceMainFragment extends Fragment {
                     if(!st.equals("-1"))
                     params.put("replacer", st);
                     break;
+                case 4:
+                    s="HALF";
+                    break;
+                case 5:
+                    s="THIRD";
+                    break;
                     default:
-                        s="PRESENT";
+                        s="FULL";
             }
             params.put("worker", choseworker);
             params.put("kind", s);
@@ -353,6 +359,12 @@ public class AttendanceMainFragment extends Fragment {
                                     case "ILL":
                                         itemForm.setIll(true);
                                         break;
+                                    case "HALF":
+                                        itemForm.setHalf(true);
+                                        break;
+                                    case "THIRD":
+                                        itemForm.setThird(true);
+                                        break;
                                         default:
                                             itemForm.setPlus(true);
                                             break;
@@ -513,6 +525,7 @@ public class AttendanceMainFragment extends Fragment {
         monthTextView=(TextView) view.findViewById(R.id.monthTextView);
         yearTextView=(TextView) view.findViewById(R.id.yearTextView);
         smenasTextView=(TextView) view.findViewById(R.id.smenasTextView);
+        smenaCountTextView=(TextView) view.findViewById(R.id.smenaCountTextView);
         attendanceChooseView=(AttendanceChooseView) view.findViewById(R.id.attendanceChooseView);
 
         calTextViews=new ArrayList<>();

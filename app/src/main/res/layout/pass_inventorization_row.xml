@@ -6,7 +6,7 @@
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp"
     android:layout_marginTop="20dp"
-    android:background="@drawable/grey_corners_line"
+    android:background="@drawable/whiterow_page"
     android:id="@+id/wholeLayout"
     android:padding="10dp">
         <android.support.constraint.ConstraintLayout

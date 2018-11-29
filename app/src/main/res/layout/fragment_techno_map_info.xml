@@ -162,7 +162,7 @@
                             android:gravity="center"
                             android:text="13:00-16:00"
                             android:textColor="@color/darkgrey"
-                            android:textSize="13sp"
+                            android:textSize="11sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -171,14 +171,15 @@
 
                         <TextView
                             android:id="@+id/place"
-                            android:layout_width="wrap_content"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
+                            android:maxWidth="100dp"
                             android:layout_marginLeft="20sp"
                             android:layout_marginStart="20sp"
-                            android:gravity="center"
+                            android:gravity="start"
                             android:text="Коридор"
                             android:textColor="@color/black"
-                            android:textSize="13sp"
+                            android:textSize="11sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/time"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -192,7 +193,7 @@
                             android:gravity="center"
                             android:text="1"
                             android:textColor="@color/black"
-                            android:textSize="13sp"
+                            android:textSize="11sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/statusInside"
                             app:layout_constraintStart_toEndOf="@+id/place"
@@ -208,7 +209,7 @@
                             android:text="Выполнено"
                             android:textColor="@color/white"
 
-                            android:textSize="13sp"
+                            android:textSize="11sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -228,7 +229,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:textColor="@color/black"
-                            android:textSize="13sp"
+                            android:textSize="11sp"
                             android:text="Категория: "
                             />
                         <TextView
@@ -238,6 +239,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
+                            android:textSize="11sp"
                             android:textColor="@color/black"
                             android:text=""
                             />
@@ -279,7 +281,7 @@
                             android:layout_height="20sp"
                             android:text="50 мин"
                             android:textColor="@color/darkgrey"
-                            android:textSize="13sp"
+                            android:textSize="11sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/method" />
                     </android.support.constraint.ConstraintLayout>
@@ -302,7 +304,7 @@
                         android:layout_height="wrap_content"
                         android:text="Описание работ"
                         android:textColor="@color/black"
-                        android:textSize="13sp" />
+                        android:textSize="11sp" />
 
                     <TextView
                         android:id="@+id/worksInfo"
@@ -311,7 +313,7 @@
                         android:layout_marginTop="15sp"
                         android:text="Поддерживающая уборка\nУдаление пыли с полов\nВлажная уборка\nУдаление пятен и жвачек"
                         android:textColor="@color/black"
-                        android:textSize="13sp" />
+                        android:textSize="11sp" />
 
                     <TextView
                         android:id="@+id/technicLabel"
@@ -321,7 +323,13 @@
                         android:text="Оборудование"
                         android:textColor="@color/darkgrey"
                         android:textSize="11sp" />
-
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/equipmentText"
+                            android:textColor="@color/black"
+                            android:textSize="11sp"
+                            />
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/technicRecyclerView"
                         android:layout_width="match_parent"
@@ -339,11 +347,17 @@
                         android:visibility="gone"
                         android:textColor="@color/darkgrey"
                         android:textSize="11sp" />
-
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/facilitiesText"
+                        android:textColor="@color/black"
+                        android:textSize="11sp"
+                        />
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/washRecyclerView"
                         android:layout_width="match_parent"
-                        android:visibility="gone"
+                        android:nestedScrollingEnabled="false"             android:visibility="gone"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10sp"></android.support.v7.widget.RecyclerView>
 
@@ -356,17 +370,18 @@
                     android:orientation="vertical"
                     android:visibility="visible">
 
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:layout_marginTop="10sp"
-                        android:background="@color/light_grey" />
 
                     <LinearLayout
                         android:id="@+id/statusLayout"
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginTop="10sp"
+                            android:background="@color/light_grey" />
 
                         <android.support.constraint.ConstraintLayout
                             android:layout_width="match_parent"
@@ -386,11 +401,11 @@
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
-                                android:id="@+id/statusExtraInfo"
+                                    android:id="@+id/statusExtraInfo"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5sp"
-                                android:text="Задачи выполнена"
+                                android:text="Задача выполнена"
                                 android:textColor="@color/black"
                                 android:textSize="15sp"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -399,7 +414,7 @@
                         </android.support.constraint.ConstraintLayout>
 
                         <android.support.v7.widget.RecyclerView
-                            android:id="@+id/rateLateRecyclerView"
+                                android:id="@+id/rateLateRecyclerView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="15dp"
@@ -423,7 +438,7 @@
                                 android:gravity="center"
                                 android:text="Выполнено"
                                 android:textColor="@color/white"
-                                android:textSize="13sp" />
+                                android:textSize="11sp" />
 
                             <ImageView
                                 android:id="@+id/imageLate"
@@ -473,7 +488,7 @@
 
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/statusCommentsRecyclerView"
-                            android:layout_width="match_parent"
+                            android:nestedScrollingEnabled="false"                 android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                         </android.support.v7.widget.RecyclerView>
@@ -486,7 +501,7 @@
                         android:background="@color/light_grey" />
 
                     <LinearLayout
-
+                        android:visibility="gone"
                         android:id="@+id/commentsLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -494,14 +509,15 @@
 
                         <android.support.constraint.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="40sp"
+                            android:layout_height="wrap_content"
                             android:layout_marginEnd="20sp"
                             android:layout_marginStart="20sp"
 
 
-                            android:layout_marginTop="20sp">
+                            >
 
                             <RadioButton
+                                android:layout_marginTop="20sp"
                                 android:id="@+id/goodJobRadio"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -510,7 +526,7 @@
                                 android:gravity="center_vertical"
                                 android:text="  Похвалить за отличную работу"
                                 android:textColor="@color/black"
-                                android:textSize="13sp"
+                                android:textSize="11sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -529,7 +545,7 @@
 
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/commentsRecyclerView"
-                            android:layout_width="match_parent"
+                            android:nestedScrollingEnabled="false"                android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                         </android.support.v7.widget.RecyclerView>
@@ -541,7 +557,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:id="@+id/addNewCommentLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
                     <FrameLayout
                         android:id="@+id/commentEditTextLayout"
                         android:layout_width="match_parent"
@@ -559,7 +580,7 @@
                             android:hint="Вводить сюда"
                             android:inputType="text"
                             android:textColorHint="@color/black"
-                            android:textSize="13sp" />
+                            android:textSize="11sp" />
                     </FrameLayout>
 
                     <RadioGroup
@@ -579,7 +600,7 @@
                             android:gravity="center_vertical"
                             android:text="  Похвалить за отличную работу"
                             android:textColor="@color/black"
-                            android:textSize="13sp" />
+                            android:textSize="11sp" />
 
                         <RadioButton
                             android:id="@+id/answerRadioButton1"
@@ -591,9 +612,10 @@
                             android:gravity="center_vertical"
                             android:text="  Предупредить за несоответствие"
                             android:textColor="@color/black"
-                            android:textSize="13sp" />
+                            android:textSize="11sp" />
 
-                        <RadioButton
+                   <!--     <RadioButton
+
                             android:id="@+id/answerRadioButton2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -603,7 +625,8 @@
                             android:gravity="center_vertical"
                             android:text="  Жалоба"
                             android:textColor="@color/black"
-                            android:textSize="13sp" />
+                            android:textSize="11sp" />
+                            -->
                     </RadioGroup>
 
                     <android.support.v7.widget.RecyclerView
@@ -611,7 +634,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
-                        android:layout_marginStart="15dp"
+                        android:nestedScrollingEnabled="false"            android:layout_marginStart="15dp"
                         android:layout_marginTop="20dp"></android.support.v7.widget.RecyclerView>
 
                     <TextView
@@ -626,6 +649,7 @@
                         android:textSize="11sp" />
 
                     <LinearLayout
+                        android:visibility="gone"
                         android:id="@+id/commentLayout"
                         android:layout_width="match_parent"
                         android:layout_height="70sp"
@@ -641,15 +665,16 @@
                             android:gravity="center"
                             android:text="Написать комментарий"
                             android:textColor="@color/white"
-                            android:textSize="13sp" />
+                            android:textSize="11sp" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1" />
                     </LinearLayout>
-
+                    </LinearLayout>
                     <LinearLayout
+                        android:visibility="gone"
                         android:id="@+id/statusButtonsLayout"
                         android:layout_width="match_parent"
                         android:layout_height="70sp"
@@ -665,7 +690,7 @@
                             android:gravity="center"
                             android:text="Задача провалена"
                             android:textColor="@color/darkgrey"
-                            android:textSize="13sp" />
+                            android:textSize="11sp" />
 
                         <TextView
                             android:id="@+id/statusButtonCloseTextView"
@@ -676,7 +701,7 @@
                             android:gravity="center"
                             android:text="Закрыть задачу"
                             android:textColor="@color/white"
-                            android:textSize="13sp" />
+                            android:textSize="11sp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

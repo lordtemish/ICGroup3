@@ -63,8 +63,6 @@ public class CommentsMainFragment extends Fragment {
 
 
         jalobaForms=new ArrayList<>();
-
-        jalobaForms.add(new JalobaForm("02.08.2018","Представитель клиента","Темирлан","Ген. директор",getActivity().getResources().getString(R.string.bigtext)));jalobaForms.add(new JalobaForm("02.08.2018","Представитель клиента","Темирлан","Ген. директор",getActivity().getResources().getString(R.string.bigtext)));
         secondForm.addAll(jalobaForms);
         firstForm.addAll(jalobaForms);
         adapter=new JalobaAdapter(jalobaForms, false);
@@ -192,11 +190,13 @@ public class CommentsMainFragment extends Fragment {
             for(int i=0;i<array.length();i++){
                 JSONObject object=array.getJSONObject(i);
                 JSONObject author=object.getJSONObject("author");
-                JSONObject defendant=object.getJSONObject("defendant");
+                if(!object.isNull("defendant")) {
+                    JSONObject defendant = object.getJSONObject("defendant");
+                }
                 String content=object.getString("content");
                 String id=object.getString("id");
                 String authorrole=((MainActivity)getActivity()).positions.get(author.getString("role"));
-                String name=author.getString("fullname"),role=((MainActivity)getActivity()).positions.get(defendant.getString("role"));
+                String name=author.getString("fullname");
                 String created_at=object.getString("created_at");
                 String created=((MainActivity)getActivity()).getdate(created_at);
                 created=created.substring(0,created.length()-6);

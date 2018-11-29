@@ -18,12 +18,14 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.error.AuthFailureError;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.JsonArrayRequest;
 import com.android.volley.request.JsonObjectRequest;
+import com.android.volley.request.StringRequest;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Adapters.AcceptAdapter;
 import com.studio.dynamica.icgroup.Adapters.MessageAdapter;
@@ -47,7 +49,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ServiceInfoFragment extends Fragment {
     String[] as;
-    TextView mainObjectTitle, orderNumTextView, orderNumIdTextView, dayLeftLabelTextView, dayLeftTextView, priorityLabelTextView, priorityTextView, dateLabelTextView, dateTextView,
+    TextView cancelButText,acceptButText,mainObjectTitle, orderNumTextView, orderNumIdTextView, dayLeftLabelTextView, dayLeftTextView, priorityLabelTextView, priorityTextView, dateLabelTextView, dateTextView,
             stopDateLabelTextView, stopDateTextView, statusLabelTextView, statusTextView, objectNameLabelTextView, objectNameTextView, serviceTypeLabelTextView, serviceTypeTextView,placeLabelTextView, placeTextView, employeeLabelTextView, employeeNameTextView, employeePositionTextView, autorLabelTextView, autorNameTextView,
             autorPositionTextView, serviceInfoLabelTextView, serviceInfoTextView,messagesLabelTextView,mediaLabelTextView,acceptLabelTextView,serviceStatusTextView,
             positionLabelTextView,nameTextView,positionTextView,commentsLabelTextView,positionLabelTextView1,nameTextView1, positionTextView1, notAcceptedButton,acceptedButton,needMarkPlease,mediaFileOpenTextView, commentMediaTextView, SAMessagesLabelTextView, serviceAcceptedLabelTextView
@@ -57,16 +59,18 @@ public class ServiceInfoFragment extends Fragment {
     FrameLayout progressLayout,ffff;
     boolean accepted=false;
     RecyclerView messagesRecyclerView, acceptRecyclerView,commentsRecyclerView;
-    LinearLayout messagesLinearLayout,wholeLayout,serviceStatusesLayout, extraLayout, failedLayout, serviceAcceptedLayout,commentsLinearLayout,lastCommentLayout,serviceStatusMediaFileLayout;
+    LinearLayout butLayout,messagesLinearLayout,wholeLayout,serviceStatusesLayout, extraLayout, failedLayout, serviceAcceptedLayout,commentsLinearLayout,lastCommentLayout,serviceStatusMediaFileLayout;
     ConstraintLayout serviceStatusLayout,serviceStatusUserInfoLayout;
     ProgressBar progressBar;
     LinearLayout acceptLayout;
-    String id="", dpid="", next="", point="";
+    String id="", dpid="", next="", point="", usrid="", stat="", meType="";
     List<AcceptForm> acceptForms;
     AcceptAdapter acceptAdapter;
     MessageAdapter messageAdapter, messageAdapter1;
     List<String[]> strings;
-    int is_executive_permitted=-1, is_technical_permitted=-1, is_chief_permitted=-1, is_contactor_permitted=-1, is_respondent_permitted=0;
+    int superadmin=-1,is_executive_permitted=-1, is_technical_permitted=-1, is_chief_permitted=-1, is_contactor_permitted=-1, is_respondent_permitted=0;
+    boolean me=false;
+
     public ServiceInfoFragment() {
         // Required empty public constructor
     }
@@ -76,8 +80,10 @@ public class ServiceInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        usrid=((MainActivity)getActivity()).userid;
         View view=inflater.inflate(R.layout.fragment_service_info, container, false);
         createViews(view);
+        butLayout.setVisibility(View.GONE);
         setFonttypes();
         setAdapters();
        // setFailed();
@@ -87,7 +93,7 @@ public class ServiceInfoFragment extends Fragment {
       //  serviceFinished();
      //   itFinished();
 
-        String stat=getArguments().getString("status","");id=getArguments().getString("id");
+        stat=getArguments().getString("status","");id=getArguments().getString("id");
         as = getArguments().getString("startend", " ").split(" ");
         if(as.length==2) {
             int d1=Integer.parseInt(as[0]), d2=Integer.parseInt(as[1]);
@@ -133,7 +139,7 @@ public class ServiceInfoFragment extends Fragment {
     private void setFonttypes(){
         mainObjectTitle.setTypeface(((MainActivity)getActivity()).getTypeFace("it"));
 
-        setType("demibold",orderNumIdTextView,dayLeftTextView,priorityTextView,dateTextView,stopDateTextView, statusTextView,objectNameTextView, serviceTypeTextView, placeTextView, employeeNameTextView, autorNameTextView, serviceInfoTextView,mediaLabelTextView,acceptLabelTextView,serviceStatusTextView,nameTextView,positionTextView,commentsLabelTextView, positionTextView1, nameTextView1, notAcceptedButton,commentMediaTextView, SAMessagesLabelTextView, serviceAcceptedLabelTextView,acceptedRadio,timeLeftTextView, failedTextView);
+        setType("demibold",orderNumIdTextView,dayLeftTextView,priorityTextView,dateTextView,stopDateTextView, statusTextView,objectNameTextView, serviceTypeTextView, placeTextView, employeeNameTextView, autorNameTextView, serviceInfoTextView,mediaLabelTextView,acceptLabelTextView,serviceStatusTextView,nameTextView,positionTextView,commentsLabelTextView, positionTextView1, nameTextView1, notAcceptedButton,commentMediaTextView, SAMessagesLabelTextView, serviceAcceptedLabelTextView,acceptedRadio,timeLeftTextView, failedTextView, acceptButText, cancelButText);
         setType("light", statusLabelTextView,orderNumTextView,dayLeftLabelTextView, priorityLabelTextView, dateLabelTextView, stopDateLabelTextView, objectNameLabelTextView, serviceTypeLabelTextView , placeLabelTextView, employeeLabelTextView, autorLabelTextView, serviceInfoLabelTextView, employeePositionTextView, autorPositionTextView, messagesLabelTextView,positionLabelTextView,positionLabelTextView1,acceptedButton,needMarkPlease, mediaFileOpenTextView, failedExtraTextView);
         //setType("regular");
     }
@@ -177,6 +183,8 @@ public class ServiceInfoFragment extends Fragment {
         progressLayout=(FrameLayout) view.findViewById(R.id.progressLayout);
         ffff=(FrameLayout) view.findViewById(R.id.ffff);
         acceptLayout=(LinearLayout) view.findViewById(R.id.acceptLayout);
+        acceptButText=(TextView) view.findViewById(R.id.acceptButText);
+        cancelButText=(TextView) view.findViewById(R.id.cancelButText);
         mainObjectTitle=(TextView) view.findViewById(R.id.mainObjectTitle);
         orderNumTextView=(TextView) view.findViewById(R.id.orderNumTextView);
         orderNumIdTextView=(TextView) view.findViewById(R.id.orderNumIdTextView);
@@ -231,6 +239,7 @@ public class ServiceInfoFragment extends Fragment {
         acceptRecyclerView=(RecyclerView) view.findViewById(R.id.acceptRecycler);
         commentsRecyclerView=(RecyclerView) view.findViewById(R.id.commentsRecyclerView);
 
+        butLayout=(LinearLayout) view.findViewById(R.id.butLayout);
         wholeLayout=(LinearLayout) view.findViewById(R.id.wholeLayout);
         messagesLinearLayout=(LinearLayout) view.findViewById(R.id.messagesLinearLayout);
         serviceStatusesLayout=(LinearLayout) view.findViewById(R.id.serviceStatusesLayout);
@@ -276,7 +285,7 @@ public class ServiceInfoFragment extends Fragment {
     }
     private void itFinished(){
         serviceStatusesdateTextView.setVisibility(View.VISIBLE);
-        serviceStatusesLayout.setVisibility(View.VISIBLE);
+       // serviceStatusesLayout.setVisibility(View.VISIBLE);
         serviceStatusLayout.setVisibility(View.VISIBLE);
       //  commentsLinearLayout.setVisibility(View.VISIBLE);
       //  serviceStatusUserInfoLayout.setVisibility(View.VISIBLE);
@@ -404,6 +413,10 @@ public class ServiceInfoFragment extends Fragment {
                     Boolean b=object.getBoolean("is_respondent_permitted");
                     if(b) is_respondent_permitted=1;else is_respondent_permitted=0;
                 }
+                if(((MainActivity)getActivity()).role.equals("SUPERADMIN")){
+                      superadmin=0;
+
+                }
             Log.d("responsInfo",object.toString());
             orderNumIdTextView.setText("IC"+id);
             String priority="низкий";
@@ -430,6 +443,10 @@ public class ServiceInfoFragment extends Fragment {
             JSONObject user=respondent.getJSONObject("user");
             this.point=point.getString("id");
             dpid=respondent.getJSONObject("department").getString("id");
+            if(user.getString("id").equals(usrid)){
+                me=true;
+                meType="respondent";
+            }
             strings.set(4 ,new String[]{user.getString("fullname"),user.getString("role"), dpid});
             objectNameTextView.setText(point.getString("name"));
             placeTextView.setText(respondent.getJSONObject("department").getString("name"));
@@ -546,6 +563,11 @@ public class ServiceInfoFragment extends Fragment {
                 if(response.length()>0){
                     try {
                         JSONObject contactor=response.getJSONObject("contactor");
+                        String id=contactor.getString("id");
+                        if(id.equals(usrid)){
+                            me=true;
+                            meType="contactor";
+                        }
                         strings.set(3,new String[]{contactor.getString("fullname"),contactor.getString("role"), "-1"});
                         checkAccepts();
                     }
@@ -578,6 +600,10 @@ public class ServiceInfoFragment extends Fragment {
     private void setExec(JSONObject re){
         try {
             JSONObject object=re.getJSONObject("user");
+            if(object.getString("id").equals(usrid)){
+                me=true;
+                meType="executive";
+            }
             strings.set(0, new String[]{object.getString("fullname"),object.getString("role"), re.getString("department")});
             checkAccepts();
         }
@@ -588,6 +614,11 @@ public class ServiceInfoFragment extends Fragment {
     private void setTech(JSONObject re){
         try {
             JSONObject object=re.getJSONObject("user");
+            Log.d("THISID",object.getString("id")+" "+object.getString("fullname"));
+            if(object.getString("id").equals(usrid)){
+                me=true;
+                meType="technical";
+            }
             strings.set(1, new String[]{object.getString("fullname"),object.getString("role"), re.getString("department")});
             checkAccepts();
         }
@@ -635,6 +666,10 @@ public class ServiceInfoFragment extends Fragment {
     private void setChief(JSONObject re){
         try{
             JSONObject object=re.getJSONObject("user");
+            if(object.getString("id").equals(usrid)){
+                me=true;
+                meType="chief";
+            }
             strings.set(2, new String[]{object.getString("fullname"),object.getString("role"), re.getString("department")});
             checkAccepts();
         }
@@ -643,48 +678,210 @@ public class ServiceInfoFragment extends Fragment {
         }
     }
     private void checkAccepts(){
-        acceptForms.clear();
-        for(int  j=0;j<strings.size();j++){
-            String[] i=strings.get(j);
-            Log.d("stringCheck",i.length+" "+i.toString());
-            if(i.length>1){
-
-                String status="Ожидает ответа";
-                boolean a=false;
-                switch (j){
-                    case 0:
-                        a=is_executive_permitted==1;
-                        break;
-                    case 1:
-                        a=is_technical_permitted==1;
-                        break;
-                    case 2:
-                        a=is_chief_permitted==1;
-                        break;
-                    case 3:
-                        a=is_contactor_permitted==1;
-                        break;
+        try {
+            acceptForms.clear();
+            for (int j = 0; j < strings.size(); j++) {
+                String[] i = strings.get(j);
+                Log.d("stringCheck", i.length + " " + i.toString());
+                if (i.length > 1) {
+                    String status = "Ожидает ответа";
+                    boolean a = false;
+                    switch (j) {
+                        case 0:
+                            a = is_executive_permitted == 1;
+                            break;
+                        case 1:
+                            a = is_technical_permitted == 1;
+                            break;
+                        case 2:
+                            a = is_chief_permitted == 1;
+                            break;
+                        case 3:
+                            a = is_contactor_permitted == 1;
+                            break;
                         default:
-                            a=is_respondent_permitted==1;
+                            a = is_respondent_permitted == 1;
+                    }
+                    if (a) {
+                        status = "Подтвержден";
+                    }
+                    int index = ((MainActivity) getActivity()).dpids.indexOf(i[2]);
+                    String dd = "";
+                    if (index > -1) dd = ((MainActivity) getActivity()).departments.get(index);
+                    AcceptForm acceptForm = new AcceptForm(i[0]
+                            , dd
+                            , ((MainActivity) getActivity()).positions.get(i[1])
+                            , status
+                            , a);
+                    acceptForms.add(acceptForm);
                 }
-                if(a){
-                    status="Подтвержден";
+                acceptAdapter.notifyDataSetChanged();
+                Log.d("sadadsasdasdas",superadmin + " "+acceptForms.size());
+                if (acceptForms.size() > 0) {
+                    acceptLayout.setVisibility(View.VISIBLE);
                 }
-                Log.d("is is Is",i[0]+" "+i[1]+" "+i[2]);
-                int index=((MainActivity)getActivity()).dpids.indexOf(i[2]);
-                String dd="";
-            if(index>-1) dd=((MainActivity)getActivity()).departments.get(index);
-                AcceptForm acceptForm=new AcceptForm(i[0]
-                        ,dd
-                        ,((MainActivity)getActivity()).positions.get(i[1])
-                        ,status
-                        ,a);
-                acceptForms.add(acceptForm);
+                checkForAccept();
             }
-            acceptAdapter.notifyDataSetChanged();
-            if(acceptForms.size()>0){
-                acceptLayout.setVisibility(View.VISIBLE);
+            if (me) {
+                checkForAccept();
             }
         }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    private void checkForAccept(){
+        boolean a=false;
+        switch (meType){
+            case "respondent":
+                a=is_respondent_permitted==1;
+                break;
+            case "contactor":
+                a=is_contactor_permitted==1;
+                break;
+            case "executive":
+                a=is_executive_permitted==1;
+                break;
+            case "technical":
+                a=is_technical_permitted==1;
+                break;
+            case "chief":
+                a=is_chief_permitted==1;
+                break;
+        }
+        if(superadmin==0){
+            a=false;
+        }
+        if(!a){
+            butLayout.setVisibility(View.VISIBLE);
+            switch (stat){
+                case "WAITING":
+                        cancelButText.setText("Закрыть задачу");
+                        cancelButText.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                close();
+                            }
+                        });
+                        acceptButText.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                permit();
+                            }
+                        });
+                    break;
+                case "PROCESSING":
+                    cancelButText.setText("Закрыть задачу");
+                    cancelButText.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            close();
+                        }
+                    });
+                    acceptButText.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            permit();
+                        }
+                    });
+                    break;
+                case "TIMEOVER":
+                    cancelButText.setText("Закрыть задачу");
+                    cancelButText.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            close();
+                        }
+                    });
+                    acceptButText.setVisibility(View.GONE);
+                    break;
+                case "FAILED":
+                    cancelButText.setText("Закрыть задачу");
+                    cancelButText.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            close();
+                        }
+                    });
+                    acceptButText.setText("Подвердить продление");
+                    acceptButText.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            permit();
+                        }
+                    });
+                    break;
+                case "FINISHED":
+                    butLayout.setVisibility(View.GONE);
+                    break;
+
+            }
+        }
+    }
+    private void permit(){
+        progressLayout.setVisibility(View.VISIBLE);
+        String url=((MainActivity)getActivity()).MAIN_URL+"tasks/"+id+"/permit/";
+        JsonObjectRequest request=new JsonObjectRequest(Request.Method.POST, url,null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                progressLayout.setVisibility(View.GONE);
+                Log.d("RESPpermit", response.length()+" "+response);
+                Toast.makeText(getActivity(), "Задача подтверждена", Toast.LENGTH_SHORT).show();
+                ((MainActivity)getActivity()).onBackPressed();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressLayout.setVisibility(View.GONE);
+                NetworkResponse response=error.networkResponse;
+                if(response.statusCode==400)
+                    Toast.makeText(getActivity(), "Вы не можете подтвердить задачу", Toast.LENGTH_SHORT).show();
+                else
+                Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            HashMap<String, String> headers = new HashMap<String, String>();
+            headers.put("Accept", "application/json");
+            headers.put("Content-Type", "application/json; charset=utf-8");
+            headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
+            return headers;
+        }
+        };
+        ((MainActivity)getActivity()).requestQueue.add(request);
+    }
+    private void close(){
+        progressLayout.setVisibility(View.VISIBLE);
+        String url=((MainActivity)getActivity()).MAIN_URL+"tasks/"+id+"/close/";
+        StringRequest request=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                progressLayout.setVisibility(View.GONE);
+                Log.d("RESPpermit", response.length()+" "+response);
+                Toast.makeText(getActivity(), "Задача закрыта", Toast.LENGTH_SHORT).show();
+                ((MainActivity)getActivity()).onBackPressed();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressLayout.setVisibility(View.GONE);
+                NetworkResponse response=error.networkResponse;
+                if(response.statusCode==400)
+                    Toast.makeText(getActivity(), "Вы не можете закрыть задачу", Toast.LENGTH_SHORT).show();
+                    else
+                Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
+                return headers;
+            }
+        };
+        ((MainActivity)getActivity()).requestQueue.add(request);
     }
 }

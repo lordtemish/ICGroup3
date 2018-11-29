@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.studio.dynamica.icgroup.Activities.MainActivity;
@@ -24,11 +25,11 @@ public class ProgressPhonesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     Context context;
     PassportObjectInfoListOPUFragment fragment;
     private class myHolder extends RecyclerView.ViewHolder{
-
+        RadioButton chechRadio;
         TextView nameTextView;
         TextView positionTextView;
         ProgressBar progressBar;
-        TextView PercentageTextView;
+        TextView PercentageTextView, salaryTextView;
         LinearLayout wholeLayout;
         TextView nameChangeText;
         ImageView circlePhoneImageView;
@@ -37,9 +38,11 @@ public class ProgressPhonesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         LinearLayout linearLayout;
         private myHolder(View view){
             super(view);
+            chechRadio=(RadioButton) view.findViewById(R.id.chechRadio);
             wholeLayout=(LinearLayout) view.findViewById(R.id.wholeLayout);
             linearLayout=(LinearLayout) view.findViewById(R.id.extraLayout);
             nameTextView=(TextView) view.findViewById(R.id.nameTextView);
+            salaryTextView=(TextView) view.findViewById(R.id.salaryTextView);
             circlePhoneImageView=(ImageView) view.findViewById(R.id.circlePhoneImageView);
             nameTextView.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/AvenirNextLTPro-Bold.ttf"));
             positionTextView=(TextView) view.findViewById(R.id.positionTextView);
@@ -87,6 +90,7 @@ public class ProgressPhonesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             public void onClick(View v) {
                 Bundle bundle=new Bundle();
                 bundle.putString("id",form.getId());
+                bundle.putString("userid",form.getUserid());
                 bundle.putString("name",form.getForm().getName());
                 bundle.putString("phone",form.getForm().getPhone());
                 fragment.setArguments(bundle);
@@ -94,8 +98,15 @@ public class ProgressPhonesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             }
         });
         holder.setPhoneListener(form.getForm().getPhone());
-
-
+        if(list.get(position).isContract()){
+            holder.chechRadio.setChecked(true);
+            holder.salaryTextView.setTextColor(context.getResources().getColor(R.color.black));
+        }
+        else{
+            holder.chechRadio.setChecked(false);
+            holder.salaryTextView.setTextColor(context.getResources().getColor(R.color.greyy));
+        }
+        holder.salaryTextView.setText(form.getSalary()+" тг");
         if(list.get(position).isChange()){
                 holder.linearLayout.setVisibility(View.VISIBLE);
                 holder.changeText.setText(form.getText());

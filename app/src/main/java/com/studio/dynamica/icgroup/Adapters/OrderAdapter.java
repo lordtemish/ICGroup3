@@ -2,6 +2,7 @@ package com.studio.dynamica.icgroup.Adapters;
 
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Forms.OrderForm;
+import com.studio.dynamica.icgroup.ObjectFragments.AddOrderInfoFragment;
 import com.studio.dynamica.icgroup.ObjectFragments.InventoryEquipmentInfoFragment;
 import com.studio.dynamica.icgroup.R;
 
@@ -49,15 +51,10 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             ((MainActivity)context).setType("demibold",dateTextView, numberTextView, depText, statusTextView, priorityTextView, dayLeftTextView, inprocessText);
             ((MainActivity)context).setType("light",numberLabel, depLabel, statusLabelTextView, priorityLabelTextView, dayLeftLabelTextView);
         }
-        private void setWholeLayoutListener(final Fragment fragment){
-            wholeLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((MainActivity) context).setFragment(R.id.content_frame,fragment);
-                }
-            });
+        private void setWholeLayoutListener(){
+
         }
-        private void setInfo(OrderForm form){
+        private void setInfo(final OrderForm form){
             dateTextView.setText(form.getDate());
             numberTextView.setText(form.getNumber());
             priorityTextView.setText(form.getPriority());
@@ -68,6 +65,18 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 num=Integer.parseInt(Math.round(100*(form.getD1()/form.getD2()))+"");
             }
             ProgressBar.setProgress(num);
+            wholeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Fragment fragment=new AddOrderInfoFragment();
+                    Bundle bundle=new Bundle();
+                    bundle.putString("id",form.getId());
+                    bundle.putInt("day1",form.getNum1());
+                    bundle.putInt("day2",form.getNum2());
+                    fragment.setArguments(bundle);
+                    ((MainActivity) context).setFragment(R.id.content_frame,fragment);
+                }
+            });
         }
         private void setStatus(String s){
             switch (s){
@@ -90,10 +99,10 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     galochkaImageView.setBackgroundResource(R.drawable.grey_circle);
                     break;
                 default:
-                    statusLayout.setBackgroundResource(R.drawable.closed_page);
-                    statusTextView.setText("Закрыто");
-                    inprocessText.setText("Закрыто");
-                    galochkaImageView.setBackgroundResource(R.drawable.closed_circle);
+                    statusLayout.setBackgroundResource(R.drawable.failedrow_green);
+                    statusTextView.setText("Провалено");
+                    inprocessText.setText("Провалено");
+                    galochkaImageView.setBackgroundResource(R.drawable.failedrow_circle);
             }
         }
     }
@@ -115,7 +124,6 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder1, int position) {
         myHolder holder=(myHolder) holder1;
-        holder.setWholeLayoutListener(fragment);
         holder.setInfo(list.get(position));
     }
 

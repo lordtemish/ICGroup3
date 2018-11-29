@@ -2,10 +2,43 @@ package com.studio.dynamica.icgroup.Forms;
 
 public class ProgressPhoneForm {
     PhonesRowForm form;
-    int progress;
-    boolean change;
-    String text, id;
+    int progress, salary=0;
+    boolean change, contract=false;
+    String text, id, userid="", status;
     PhonesRowForm changeForm;
+
+    public void setSalary(int salary) {
+        this.salary = salary;
+    }
+
+    public int getSalary() {
+        return salary;
+    }
+
+    public boolean isContract() {
+        return contract;
+    }
+
+    public void setContract(boolean contract) {
+        this.contract = contract;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
     public ProgressPhoneForm(PhonesRowForm form, int progress){
         this.form=form;
         this.progress=progress;

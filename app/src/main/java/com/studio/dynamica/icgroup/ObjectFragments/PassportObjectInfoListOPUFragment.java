@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,8 +30,11 @@ import com.android.volley.request.JsonObjectRequest;
 import com.android.volley.request.StringRequest;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Adapters.CommentAdapter;
+import com.studio.dynamica.icgroup.Adapters.ReplacerAdapter;
+import com.studio.dynamica.icgroup.ExtraFragments.BigCounterView;
 import com.studio.dynamica.icgroup.Forms.CommentForm;
 import com.studio.dynamica.icgroup.Forms.JalobaForm;
+import com.studio.dynamica.icgroup.Forms.UserRowForm;
 import com.studio.dynamica.icgroup.R;
 
 import org.json.JSONArray;
@@ -47,17 +51,26 @@ import java.util.Map;
  * A simple {@link Fragment} subclass.
  */
 public class PassportObjectInfoListOPUFragment extends Fragment {
-    RecyclerView commentsRecycler;
+    RecyclerView commentsRecycler, archiveCommentsRecyclerView, replacerRecyclerView;
     Spinner spinner;
+    BigCounterView counterView;
     boolean all=false;
-    List<CommentForm> commentForms, newCommentsList, allCommentsList;
-    CommentAdapter commentAdapter;
+    List<CommentForm> newCommentsList, allCommentsList;
+    List<UserRowForm> userForms;
+    CommentAdapter commentAdapter, archCommentAdapter;
+    ReplacerAdapter replacerAdapter;
     LinearLayout newComments,allComments;
-    TextView newCommentTextView,allCommentTextView, mainObjectTitle, nameTextView, positionTextView, attendanceTextView,dateTextView, PercentageTextView, jalobaTextView, employeeChangeTextView, emplChangeButton, emplDropTextView;
+    TextView newCommentTextView,planWorkTextView,allCommentTextView, mainObjectTitle, nameTextView, positionTextView, dateTextView, PercentageTextView,  employeeChangeTextView, emplChangeButton, emplDropTextView,
+            holidayTypeTop, holidayTypeTextView, holidayDate;
     FrameLayout newCommentFrame, allCommentFrame, progressLayout;
+    LinearLayout attendanceLayout, commentsLayout, holidayLayout;
     ProgressBar ProgressBar;
-    ImageView circlePhoneImageView;
-String id, name, phone;
+    ImageView circlePhoneImageView,arrowPlanImageView;
+    int shift, point;
+    RadioButton checkRadio;
+    JSONObject user;
+    boolean open=false;
+String id, name, phone, userid;
     public PassportObjectInfoListOPUFragment() {
         // Required empty public constructor
     }
@@ -68,6 +81,7 @@ String id, name, phone;
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         id=getArguments().getString("id");
+        userid=getArguments().getString("userid");
         name=getArguments().getString("name");
         phone=getArguments().getString("phone");
         View view=inflater.inflate(R.layout.fragment_passport_object_info_list_opu, container, false);
@@ -83,7 +97,11 @@ String id, name, phone;
         });
         commentsRecycler.setLayoutManager(mLayoutManager);
         commentsRecycler.setItemAnimator(new DefaultItemAnimator());
-        commentForms=new ArrayList<>();
+        ((MainActivity)getActivity()).setRecyclerViewOrientation(archiveCommentsRecyclerView,LinearLayoutManager.VERTICAL);
+        ((MainActivity)getActivity()).setRecyclerViewOrientation(replacerRecyclerView,LinearLayoutManager.VERTICAL);
+        userForms=new ArrayList<>();
+        replacerAdapter=new ReplacerAdapter(userForms);
+        replacerRecyclerView.setAdapter(replacerAdapter);
 
         newCommentsList=new ArrayList<>();
         newCommentsList.add(new CommentForm("Kopbay Dauren","02.08.2018"));
@@ -92,19 +110,17 @@ String id, name, phone;
         newComments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setComment(false);
+                setPage(true);
             }
         });
 
 
         allCommentsList=new ArrayList<>();
 
-        commentForms.addAll(newCommentsList);
-
         allComments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setComment(true);
+                setPage(false);
             }
         });
 
@@ -115,8 +131,14 @@ String id, name, phone;
             }
         });
 
-        commentAdapter=new CommentAdapter(commentForms);
+
+
+        commentAdapter=new CommentAdapter(newCommentsList);
+        commentAdapter.setIs_archive(false);
+        archCommentAdapter=new CommentAdapter(allCommentsList);
+        archCommentAdapter.setIs_archive(true);
         commentsRecycler.setAdapter(commentAdapter);
+        archiveCommentsRecyclerView.setAdapter(archCommentAdapter);
         String[] spinnerList={"Выберите Сотрудника","asdasd","asdasd"};
         spinner=(Spinner) view.findViewById(R.id.employeeChangeSpinner);
 
@@ -145,14 +167,30 @@ String id, name, phone;
         });
         spinner.setAdapter(spinnerAdapter);
         getRequest();
+
+        arrowPlanImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                arrowPlan();
+            }
+        });
         return view;
+    }
+    private void arrowPlan(){
+        if(counterView.getVisibility()==View.VISIBLE){
+            counterView.setVisibility(View.GONE);
+            arrowPlanImageView.setImageResource(R.drawable.ic_arrowdown);
+        }
+        else{
+            counterView.setVisibility(View.VISIBLE);
+            arrowPlanImageView.setImageResource(R.drawable.ic_arrowup);
+        }
     }
     private void setTypeFace(Context context){
         mainObjectTitle.setTypeface(((MainActivity) context).getTypeFace("it"));
         nameTextView.setTypeface(((MainActivity) context).getTypeFace("bold"));
         positionTextView.setTypeface(((MainActivity) context).getTypeFace("light"));
-        attendanceTextView.setTypeface(((MainActivity) context).getTypeFace("regular"));
-        jalobaTextView.setTypeface(((MainActivity) context).getTypeFace("regular"));
+
         employeeChangeTextView.setTypeface(((MainActivity) context).getTypeFace("regular"));
         dateTextView.setTypeface(((MainActivity) context).getTypeFace("demibold"));
         PercentageTextView.setTypeface(((MainActivity) context).getTypeFace("demibold"));
@@ -162,10 +200,18 @@ String id, name, phone;
         emplDropTextView.setTypeface(((MainActivity) context).getTypeFace("demibold"));
     }
     private void createViews(View view){
+        counterView=(BigCounterView)view.findViewById(R.id.counterView);
+        counterView.setMax(30);
+
         employeeChangeTextView=(TextView) view.findViewById(R.id.employeeChangeTextView);
         allCommentTextView=(TextView) view.findViewById(R.id.allCommentsTextView);
         newCommentTextView=(TextView) view.findViewById(R.id.newCommentTextView);
+        replacerRecyclerView=(RecyclerView) view.findViewById(R.id.replacerRecyclerView);
+        archiveCommentsRecyclerView=(RecyclerView) view.findViewById(R.id.archiveCommentsRecyclerView);
         commentsRecycler=(RecyclerView) view.findViewById(R.id.commentsRecyclerView);
+        holidayLayout=(LinearLayout) view.findViewById(R.id.holidayLayout);
+        attendanceLayout=(LinearLayout) view.findViewById(R.id.attendanceLayout);
+        commentsLayout=(LinearLayout) view.findViewById(R.id.commentsLayout);
         newComments=(LinearLayout) view.findViewById(R.id.newCommentLinearLayout);
         newCommentFrame=(FrameLayout) view.findViewById(R.id.newCommentFrameLayout);
         allComments=(LinearLayout) view.findViewById(R.id.allCommentsLinearLayout);
@@ -174,36 +220,39 @@ String id, name, phone;
         mainObjectTitle=(TextView) view.findViewById(R.id.mainObjectTitle);
         nameTextView=(TextView) view.findViewById(R.id.nameTextView);
         positionTextView=(TextView) view.findViewById(R.id.positionTextView);
-        attendanceTextView=(TextView) view.findViewById(R.id.attendaceTextView);
+        holidayTypeTop=(TextView) view.findViewById(R.id.holidayTypeTop);
+        holidayDate=(TextView) view.findViewById(R.id.holidayDate);
+        holidayTypeTextView=(TextView) view.findViewById(R.id.holidayTypeTextView);
+        planWorkTextView=(TextView) view.findViewById(R.id.planWorkTextView);
+
+        checkRadio=(RadioButton) view.findViewById(R.id.checkRadio);
         dateTextView=(TextView) view.findViewById(R.id.dateTextView);
         PercentageTextView=(TextView) view.findViewById(R.id.PercentageTextView);
-        jalobaTextView=(TextView) view.findViewById(R.id.jalobaTextView);
         emplChangeButton=(TextView) view.findViewById(R.id.employeeChangeButton);
         emplDropTextView=(TextView) view.findViewById(R.id.employeeDropTextView);
+        arrowPlanImageView=(ImageView) view.findViewById(R.id.arrowPlanImageView);
         circlePhoneImageView=(ImageView) view.findViewById(R.id.circlePhoneImageView);
         ProgressBar=(ProgressBar) view.findViewById(R.id.ProgressBar);
     }
 
-
-    public void setComment(boolean all){
+    private void setPage(boolean att){
         clearComments();
-        this.all=all;
-        if(all){
-            allCommentTextView.setTextColor(getActivity().getResources().getColor(R.color.black));
-            allCommentFrame.setVisibility(View.VISIBLE);
-            ChangeComments(allCommentsList);
-            commentForms.clear();
-            commentForms.addAll(allCommentsList);
-        }
-        else{
+        if(att){
             newCommentTextView.setTextColor(getActivity().getResources().getColor(R.color.black));
+            commentsLayout.setVisibility(View.GONE);
+            attendanceLayout.setVisibility(View.VISIBLE);
             newCommentFrame.setVisibility(View.VISIBLE);
-            ChangeComments(newCommentsList);
-            commentForms.clear();
-            commentForms.addAll(allCommentsList);
         }
+        else {
+            allCommentTextView.setTextColor(getActivity().getResources().getColor(R.color.black));
+            commentsLayout.setVisibility(View.VISIBLE);
+            attendanceLayout.setVisibility(View.GONE);
+            allCommentFrame.setVisibility(View.VISIBLE);
+        }
+    }
+    public void setComment(boolean all){
         commentAdapter.notifyDataSetChanged();
-
+        archCommentAdapter.notifyDataSetChanged();
     }
     public void clearComments(){
         newCommentTextView.setTextColor(getActivity().getResources().getColor(R.color.greyy));
@@ -211,11 +260,6 @@ String id, name, phone;
         newCommentFrame.setVisibility(View.GONE);
         allCommentFrame.setVisibility(View.GONE);
 
-    }
-    public void ChangeComments(List<CommentForm> list){
-            commentForms.clear();
-            commentForms.addAll(list);
-            commentAdapter.notifyDataSetChanged();
     }
     public void showSpinner(){
         spinner.performClick();
@@ -248,17 +292,50 @@ String id, name, phone;
     }
     private void setInfo(JSONObject object){
         try{
+            JSONObject point=object.getJSONObject("point");
+            this.point=point.getInt("id");
+            user=object.getJSONObject("user");
+            shift=object.getInt("shift");
+            String status=object.getString("status");
             Double dos=object.getDouble("attendance_rate");
-            int perfomance=(int)Math.round(dos*100);
+            boolean aa=object.getBoolean("is_contract");
+            int perfomance=(int)Math.round(dos*100), salary=object.getInt("salary"), plan_days=object.getInt("plan_days");
+            planWorkTextView.setText("План работ: "+plan_days+" дней");
+            checkRadio.setText("  "+salary+"тг");
             ProgressBar.setProgress(perfomance);
             PercentageTextView.setText(perfomance+"%");
             Date date=new Date();
             Calendar calendar=Calendar.getInstance();calendar.setTime(date);
             String dateString="";
+
+            if(aa){
+                checkRadio.setChecked(true);
+            }
+            else{
+                checkRadio.setChecked(false);
+            }
+
             dateString+=((MainActivity)getActivity()).data[calendar.get(Calendar.MONTH)]+" "+calendar.get(Calendar.YEAR);
             Log.d(dateString,dateString);
             dateTextView.setText(dateString);
             getReq();
+            if(status.contains("HOLIDAY")){
+                holidayLayout.setVisibility(View.VISIBLE);
+                if(status.contains("0")) {
+                    holidayTypeTextView.setText("Отпуск без содержания");
+                }
+                else{
+                    holidayTypeTextView.setText("Отпуск с содержанием");
+                }
+            }
+            else if(status.equals("REMOVE")){
+                positionTextView.setText("ОПУ - уволен");
+            }
+
+            userForms.clear();
+            userForms.add(new UserRowForm("Арсланов Надат", "ОПУ","18.11.2018"));
+            replacerAdapter.notifyDataSetChanged();
+
         }
         catch (Exception e){
             e.printStackTrace();
@@ -267,9 +344,15 @@ String id, name, phone;
     private void delete(){
         progressLayout.setVisibility(View.VISIBLE);
         String url=((MainActivity)getActivity()).MAIN_URL+"workers/"+id+"/";
-        StringRequest ob=new StringRequest(Request.Method.DELETE, url,new Response.Listener<String>() {
+        JSONObject params=new JSONObject();
+        try {
+            params.put("status","REMOVE");
+        }
+        catch (Exception e){e.printStackTrace();}
+        Log.d("PARAMSdelete",params.toString());
+        JsonObjectRequest ob=new JsonObjectRequest(Request.Method.PATCH, url,params,new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(String response) {
+            public void onResponse(JSONObject response) {
                 progressLayout.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), "ОПУ уволен", Toast.LENGTH_SHORT).show();
                 ((MainActivity)getActivity()).onBackPressed();
@@ -285,7 +368,7 @@ String id, name, phone;
         public Map<String, String> getHeaders() throws AuthFailureError {
             HashMap<String, String> headers = new HashMap<String, String>();
             headers.put("Accept", "application/json");
-            headers.put("Content-Type", "application/json; charset=utf-8");
+            headers.put("Content-Type", "application/json");
             headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
             return headers;
         }};
@@ -294,7 +377,8 @@ String id, name, phone;
     private void getReq(){
         progressLayout.setVisibility(View.VISIBLE);
         String type="defendant";
-        String url=((MainActivity)getActivity()).MAIN_URL+"complaints/?"+type+"="+id;
+        String url=((MainActivity)getActivity()).MAIN_URL+"complaints/?"+type+"="+userid;
+        Log.d("this", url);
         JsonArrayRequest objectRequest=new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -330,12 +414,14 @@ String id, name, phone;
                 JSONObject defendant=object.getJSONObject("defendant");
                 String content=object.getString("content");
                 String id=object.getString("id");
+
                 String authorrole=((MainActivity)getActivity()).positions.get(author.getString("role"));
                 String name=author.getString("fullname"),role=((MainActivity)getActivity()).positions.get(defendant.getString("role"));
                 String created_at=object.getString("created_at");
                 String created=((MainActivity)getActivity()).getdate(created_at);
                 created=created.substring(0,created.length()-6);
-                boolean arch=!object.isNull("reply_comment");
+
+                boolean arch=object.getBoolean("is_reply");
                 CommentForm jalobaForm=new CommentForm(name,created);
                 jalobaForm.setId(id);
                 if(arch){

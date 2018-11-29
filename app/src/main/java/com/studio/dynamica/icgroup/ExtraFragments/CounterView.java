@@ -9,9 +9,9 @@ import android.widget.TextView;
 import com.studio.dynamica.icgroup.R;
 
 public class CounterView extends FrameLayout {
-    private int max=5;
+    private int max=1000;
     TextView minus, plus, number;
-    int page=0;
+    int page=1;
     public CounterView(Context context, AttributeSet attrs, int defstyle){
         super(context,attrs,defstyle);
         initView();
@@ -60,11 +60,21 @@ public class CounterView extends FrameLayout {
     private void changePage(int a){
         page+=a;
         if(page>max)
-            page=0;
-        if(page<0)
+            page=1;
+        if(page<1)
             page=max;
         checkPage();
     }
+
+    public void setPage(int page) {
+        this.page = page;
+        checkPage();
+    }
+
+    public int getPage() {
+        return page;
+    }
+
     private void checkPage(){
         number.setText(page+"");
     }

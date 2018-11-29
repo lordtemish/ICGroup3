@@ -66,7 +66,7 @@ public class MainObjectMainFrament extends Fragment {
     MainFramentProgressRecycleAdapter progressRecycleAdapter;
     List<PhonesRowForm> phonesRowFormList;
     PhonesAdapter adapter;
-    String id, city;
+    String id, city, prodid, role;
     boolean client;
     int rate=3, location=0, shift_count=0;
     public MainObjectMainFrament() {
@@ -78,6 +78,7 @@ public class MainObjectMainFrament extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        role=((MainActivity)getActivity()).role;
         View view= inflater.inflate(R.layout.fragment_main_object_main_frament, container, false);
         createViews(view);
 
@@ -109,12 +110,15 @@ public class MainObjectMainFrament extends Fragment {
         List<String> buttonsList=new ArrayList<>();
         buttonsList.add("Паспорт объекта");
         buttonsList.add("Задачи");
+        if(true)
         buttonsList.add("Технологическая карта");
+        if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("QC")|| (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
         buttonsList.add("Контроль качества");
-        if(!client)
+        if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("SUPPLY") || (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
         buttonsList.add("Инвентарь");
+        if(client || role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("CHIEF")|| (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO")))
         buttonsList.add("Жалобы");
-        if(!client)
+        if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("PRODUCTION") || (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
         buttonsList.add("Посещения");
         List<View.OnClickListener> listeners=new ArrayList<>();
         View.OnClickListener listenerPassport=new View.OnClickListener() {@Override public void onClick(View v) {
@@ -138,12 +142,15 @@ public class MainObjectMainFrament extends Fragment {
         View.OnClickListener listener=new View.OnClickListener() {@Override public void onClick(View v) { ((MainActivity)getActivity()).setFragment(R.id.content_frame,getFragmentWithId(new InventoryMainFragment())); }};
         listeners.add(listenerPassport);
         listeners.add(serviceListener);
+        if(true)
         listeners.add(TechnoMapListener);
+        if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("QC")|| (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
         listeners.add(ClientControlListener);
-        if(!client)
+        if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("SUPPLY") || (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
         listeners.add(listener);
+        if(client || role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("CHIEF")|| (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO")))
         listeners.add(CommentsListener);
-        if(!client)
+        if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("PRODUCTION") || (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
         listeners.add( AttendanceListener);
         ButtonAdapter buttonAdapter=new ButtonAdapter(buttonsList,getActivity(),listeners,R.drawable.ic_arrowrightgreen);
         RecyclerView.LayoutManager mLayoutManagerq=new LinearLayoutManager(getActivity());
@@ -173,6 +180,8 @@ public class MainObjectMainFrament extends Fragment {
         bundle.putInt("location",location);
         bundle.putString("city",city);
         bundle.putInt("shift_count",shift_count);
+        bundle.putString("producer",prodid);
+        bundle.putBoolean("object",true);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -207,8 +216,10 @@ public class MainObjectMainFrament extends Fragment {
                 JSONObject administrator=getJsObject(object,"administrator");
                 if(contactor!=null && !client)
                     rowForms.add(new PhonesRowForm(false, contactor.getString("fullname"), "Представитель клиента", contactor.getString("phone")));
-                if(producer!=null)
-                rowForms.add(new PhonesRowForm(true,producer.getString("fullname"),"Начальник производства", producer.getString("phone")));
+                if(producer!=null) {
+                    prodid=producer.getString("id");
+                    rowForms.add(new PhonesRowForm(true, producer.getString("fullname"), "Начальник производства", producer.getString("phone")));
+                }
                 if(curator!=null)
                 rowForms.add(new PhonesRowForm(true,curator.getString("fullname"),"Куратор", curator.getString("phone")));
                 if(administrator!=null)
@@ -272,6 +283,7 @@ public class MainObjectMainFrament extends Fragment {
 
         id=getArguments().getString("id");
         location=getArguments().getInt("location");
+        ((MainActivity)getActivity()).setLocation(location+"");
         city=getArguments().getString("city");
     }
 

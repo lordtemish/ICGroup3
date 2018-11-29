@@ -427,12 +427,14 @@ public class ServiceObjectMainFragment extends Fragment {
                         if(cc%10>0){
                             page_count++;
                         }
-                        if(page>0)
+                        if(page_count>0)
                             checkPage();
                     }
-                    page++;
-                    pagesAdapter.setPage(page);
-                    pagesAdapter.notifyDataSetChanged();
+                        page++;
+                        pagesAdapter.setPage(page);
+                        pagesAdapter.notifyDataSetChanged();
+
+
                     setInfo(response);
                 }
                 catch (Exception e){

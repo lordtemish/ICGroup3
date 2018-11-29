@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.ObjectFragments.InventoryEquipmentAddFragment;
 import com.studio.dynamica.icgroup.R;
 
@@ -24,7 +25,8 @@ public class RadioFragment extends Fragment {
     List<LinearLayout> galLayouts;
     List<ImageView> galImageViews;
     List<TextView> galTextViews;
-    String[] tex={"Умеренно","Важно","Средне","Очень важно"};
+    String[] tex={"Низкий","Средний","Высокий","Очень важно"};
+
     int checked=0;
     public RadioFragment() {
         // Required empty public constructor
@@ -43,12 +45,13 @@ public class RadioFragment extends Fragment {
         return view;
     }
     private void createViews(View view){
-        galImageViews.add((ImageView) view.findViewById(R.id.firstGalImageView));galImageViews.add((ImageView) view.findViewById(R.id.secondGalImageView));galImageViews.add((ImageView) view.findViewById(R.id.thirdGalImageView));galImageViews.add((ImageView) view.findViewById(R.id.fourthGalImageView));
-        galTextViews.add((TextView) view.findViewById(R.id.firstGalTextView));galTextViews.add((TextView) view.findViewById(R.id.secondGalTextView));galTextViews.add((TextView) view.findViewById(R.id.thirdGalTextView));galTextViews.add((TextView) view.findViewById(R.id.fourthGalTextView));
-        galLayouts.add((LinearLayout) view.findViewById(R.id.firstGal));galLayouts.add((LinearLayout) view.findViewById(R.id.secondGal));galLayouts.add((LinearLayout) view.findViewById(R.id.thirdGal));galLayouts.add((LinearLayout) view.findViewById(R.id.fourthGal));
+        galImageViews.add((ImageView) view.findViewById(R.id.firstGalImageView));galImageViews.add((ImageView) view.findViewById(R.id.secondGalImageView));galImageViews.add((ImageView) view.findViewById(R.id.thirdGalImageView));
+        galTextViews.add((TextView) view.findViewById(R.id.firstGalTextView));galTextViews.add((TextView) view.findViewById(R.id.secondGalTextView));galTextViews.add((TextView) view.findViewById(R.id.thirdGalTextView));
+        galLayouts.add((LinearLayout) view.findViewById(R.id.firstGal));galLayouts.add((LinearLayout) view.findViewById(R.id.secondGal));galLayouts.add((LinearLayout) view.findViewById(R.id.thirdGal));
 
-        for(int i=0;i<4;i++){
+        for(int i=0;i<3;i++){
             galTextViews.get(i).setText(tex[i]);
+            ((MainActivity)getActivity()).setType("demibold",galTextViews.get(i));
             galLayouts.get(i).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -63,7 +66,7 @@ public class RadioFragment extends Fragment {
     }
 
     private void clearAll(){
-        for(int i=0;i<4;i++){
+        for(int i=0;i<3;i++){
             galImageViews.get(i).setBackgroundResource(R.drawable.grey_circle);
             galTextViews.get(i).setTextColor(getActivity().getResources().getColor(R.color.darkgrey));
         }

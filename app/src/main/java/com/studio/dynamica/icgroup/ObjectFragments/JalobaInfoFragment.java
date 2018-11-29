@@ -6,9 +6,11 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -46,11 +48,12 @@ import java.util.Map;
 public class JalobaInfoFragment extends Fragment {
     RecyclerView userRecyclerView, messageRecyclerView, radioRecyclerView, acceptRecyclerView;
     ConstraintLayout makeAnswerLayout;
-    LinearLayout answerLayout;
+    LinearLayout answerLayout, makeAnswerLinear;
+    EditText nameEditText;
     FrameLayout progressLayout;
     TextView mainObjectTitle, dateTextView,consultationTextView, jalobaAnswerLabelTextView, jalobaDateTextView, answerNameTextView, answerMessageTextView, answerPositionTextView,makeAnswerTextView;
     boolean answerable;
-    String id, point="";
+    String id, point="", role, usrid;
     List<RadioForm> radioForms;
     List<AcceptForm> acceptForms;
     UserRowAdapter userRowAdapter;
@@ -68,6 +71,9 @@ public class JalobaInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        usrid=((MainActivity)getActivity()).userid;
+        role=((MainActivity)getActivity()).role;
+        Log.d("ROLE",role);
         answerable=getArguments().getBoolean("answerable",false);
         id=getArguments().getString("id","");
         View view=inflater.inflate(R.layout.fragment_jaloba_info, container, false);
@@ -97,7 +103,12 @@ public class JalobaInfoFragment extends Fragment {
         messageRecyclerView.setAdapter(messageAdapter);
         radioRecyclerView.setAdapter(radioAdapter);
         acceptRecyclerView.setAdapter(acceptAdapter);
-
+        makeAnswerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendRepy();
+            }
+        });
         setAnswerable(answerable);
         getRequest();
         return view;
@@ -110,7 +121,9 @@ public class JalobaInfoFragment extends Fragment {
         acceptRecyclerView=(RecyclerView) view.findViewById(R.id.acceptRecyclerView);
 
         makeAnswerLayout=(ConstraintLayout) view.findViewById(R.id.makeAnswerLayout);
+        nameEditText=(EditText) view.findViewById(R.id.nameEditText);
         progressLayout=(FrameLayout) view.findViewById(R.id.progressLayout);
+        makeAnswerLinear=(LinearLayout) view.findViewById(R.id.makeAnswerLinear);
         answerLayout=(LinearLayout) view.findViewById(R.id.answerLayout);
         mainObjectTitle=(TextView) view.findViewById(R.id.mainObjectTitle);
         dateTextView=(TextView) view.findViewById(R.id.dateTextView);
@@ -134,11 +147,11 @@ public class JalobaInfoFragment extends Fragment {
     }
     public void setAnswerable(boolean a){
         if(a){
-            makeAnswerLayout.setVisibility(View.VISIBLE);
+            makeAnswerLinear.setVisibility(View.VISIBLE);
             answerLayout.setVisibility(View.GONE);
         }
         else{
-            makeAnswerLayout.setVisibility(View.GONE);
+            makeAnswerLinear.setVisibility(View.GONE);
             answerLayout.setVisibility(View.VISIBLE);
         }
     }
@@ -173,11 +186,17 @@ public class JalobaInfoFragment extends Fragment {
         try{
             rowForms.clear();
             rowForms.add(new UserRowForm( "Жалоба","Качество услуг"));
+            if(!object.isNull("is_curator_seen"))
             is_curator_seen=object.getBoolean("is_curator_seen");
+            if(!object.isNull("is_executive_seen"))
             is_executive_seen=object.getBoolean("is_executive_seen");
+            if(!object.isNull("is_producer_seen"))
             is_producer_seen=object.getBoolean("is_producer_seen");
             JSONArray array=object.getJSONArray("reasons");
-            JSONObject defendant=null, user=object.getJSONObject("author"), point=object.getJSONObject("point");
+            JSONObject defendant=null, user=object.getJSONObject("author"), point=object.getJSONObject("point"), reply_user=null;
+            if(!object.isNull("reply_user")){
+                reply_user=object.getJSONObject("reply_user");
+            }
             if(!object.isNull("defendant")){
                 defendant=object.getJSONObject("defendant");
                 String name=defendant.getString("fullname"), role=defendant.getString("role");
@@ -208,11 +227,15 @@ public class JalobaInfoFragment extends Fragment {
             boolean a=object.isNull("reply_comment");
             if(a){
                 setAnswerable(true);
+                makeAnswerLinear.setVisibility(View.GONE);
+                if(this.role.equals("SUPERADMIN")){
+                    makeAnswerLinear.setVisibility(View.VISIBLE);
+                }
             }
             else{
                 setAnswerable(false);
-                answerNameTextView.setText(defendant.getString("fullname"));
-                answerPositionTextView.setText(((MainActivity)getActivity()).positions.get(defendant.getString("role")));
+                answerNameTextView.setText(reply_user.getString("fullname"));
+                answerPositionTextView.setText(((MainActivity)getActivity()).positions.get(reply_user.getString("role")));
                 answerMessageTextView.setText("Комментарий:\n\n"+object.getString("reply_comment"));
                 String cret=object.getString("reply_time");
                 String cr=((MainActivity)getActivity()).getdate(cret);cr=cr.substring(0,cr.length()-6);
@@ -255,6 +278,10 @@ public class JalobaInfoFragment extends Fragment {
             String cStatus="Не просмотренно", pStatus="Не просмотренно";
             if(!object.isNull("curator")){
                 JSONObject contactor=object.getJSONObject("curator");
+                if(usrid.equals(contactor.getString("id"))){
+
+                    makeAnswerLinear.setVisibility(View.VISIBLE);
+                }
                 String cName=contactor.getString("fullname"), cRole=contactor.getString("role");
                 String cPos=((MainActivity)getActivity()).positions.get(cRole);
                 if(is_curator_seen){
@@ -265,6 +292,10 @@ public class JalobaInfoFragment extends Fragment {
             }
             if(!object.isNull("producer")) {
                 JSONObject producer = object.getJSONObject("producer");
+                if(usrid.equals(producer.getString("id"))){
+
+                    makeAnswerLinear.setVisibility(View.VISIBLE);
+                }
                 String pName = producer.getString("fullname"), pRole = producer.getString("role");
                 String pPos = ((MainActivity) getActivity()).positions.get(pRole);
                 if (is_producer_seen) {
@@ -323,6 +354,9 @@ public class JalobaInfoFragment extends Fragment {
                 l++;
             }
             JSONObject user=o.getJSONObject("user");
+            if(usrid.equals(user.getString("id"))){
+                makeAnswerLinear.setVisibility(View.VISIBLE);
+            }
             String name=user.getString("fullname"), role=user.getString("role");
             String position=((MainActivity)getActivity()).positions.get(role);
             String status="Не просмотренно";
@@ -335,5 +369,36 @@ public class JalobaInfoFragment extends Fragment {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+    private void sendRepy(){
+        progressLayout.setVisibility(View.VISIBLE);
+        String url=((MainActivity)getActivity()).MAIN_URL+"complaints/"+id+"/reply/";
+        JSONObject params=new JSONObject();
+        try {
+            params.put("reply_comment", nameEditText.getText() + "");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        JsonObjectRequest objectRequest=new JsonObjectRequest(Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                progressLayout.setVisibility(View.GONE);
+                Toast.makeText(getActivity(), "Ответ успешно добавлен", Toast.LENGTH_SHORT).show();
+                getRequest();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressLayout.setVisibility(View.GONE);
+            }
+        }){ @Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            HashMap<String, String> headers = new HashMap<String, String>();
+            headers.put("Accept", "application/json");
+            headers.put("Content-Type", "application/json; charset=utf-8");
+            headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
+            return headers;
+        }};((MainActivity)getActivity()).requestQueue.add(objectRequest);
     }
 }

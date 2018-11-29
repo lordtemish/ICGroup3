@@ -1,6 +1,16 @@
 package com.studio.dynamica.icgroup.Forms;
 
 public class InventorizationForm {
+    String id;
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
     String date;
     String name;
     String position;

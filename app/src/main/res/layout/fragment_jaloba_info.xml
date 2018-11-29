@@ -150,7 +150,7 @@
                 android:id="@+id/userRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:nestedScrollingEnabled="false"           android:layout_marginTop="10dp"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
                 >
@@ -159,7 +159,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/messageRecyclerView"
                 android:layout_marginBottom="20dp"
-                android:layout_width="match_parent"
+                android:nestedScrollingEnabled="false"          android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
 
@@ -169,7 +169,7 @@
                 android:id="@+id/radioRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="30dp"
+                android:paddingStart="30dp"   android:nestedScrollingEnabled="false"
                 android:paddingLeft="30dp"
                 android:paddingEnd="20dp"
                 android:paddingRight="20dp"
@@ -190,12 +190,41 @@
                 />
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/acceptRecyclerView"
-                android:layout_width="match_parent"
+                android:nestedScrollingEnabled="false"     android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 >
 
             </android.support.v7.widget.RecyclerView>
+            <LinearLayout
+                android:id="@+id/makeAnswerLinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <FrameLayout
+                    android:layout_marginBottom="10dp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:id="@+id/nameLayout"
+                    android:layout_marginTop="20sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="50sp"
+                    android:background="@drawable/black_line"
+                    >
+                    <EditText
+                        android:id="@+id/nameEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:inputType="text"
+                        android:textSize="13sp"
+                        android:layout_gravity="center"
+                        android:gravity="start"
+                        android:hint="Вводить сюда"
+                        android:textColorHint="@color/black"
+                        android:textColor="@color/black"
+                        />
+                </FrameLayout>
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/makeAnswerLayout"
                 android:visibility="visible"
@@ -233,6 +262,7 @@
                     android:layout_marginRight="10dp"
                     />
             </android.support.constraint.ConstraintLayout>
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/answerLayout"
                 android:layout_width="match_parent"

@@ -61,6 +61,12 @@ public class AttendanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 else if(itemForm.isReplace()){
                     s="repl";
                 }
+                else if(itemForm.isHalf()){
+                    s="half";
+                }
+                else if(itemForm.isThird()){
+                    s="third";
+                }
 
                 setStatus(textViews.get(i),s);
             }
@@ -98,6 +104,14 @@ public class AttendanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 case "repl":
                     view.setBackgroundResource(R.drawable.replace_circle);
                     view.setText("-");
+                    break;
+                case "half":
+                    view.setBackgroundResource(R.drawable.lightgreen_circle);
+                    view.setText("+");
+                    break;
+                case "third":
+                    view.setBackgroundResource(R.drawable.grey_circle);
+                    view.setText("+");
                     break;
                     default:
                         view.setBackgroundResource(R.drawable.green_circle_line);

@@ -27,6 +27,7 @@ import com.android.volley.request.JsonArrayRequest;
 import com.android.volley.request.JsonObjectRequest;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Activities.MapActivity;
+import com.studio.dynamica.icgroup.Activities.MapsActivity;
 import com.studio.dynamica.icgroup.Adapters.RadioAdapter;
 import com.studio.dynamica.icgroup.ExtraFragments.MapFragment;
 import com.studio.dynamica.icgroup.Forms.RadioForm;
@@ -49,7 +50,7 @@ RecyclerView jalobaRecyclerView;
 LinearLayout perfomanceLayout,objectLayout,jalobasLayout, attendaceLayout;
 FrameLayout spinnerFrame, progressLayout;
 Spinner spinner;
-TextView countJaloba,jalobaName,jalobaLabelTextView, jalobaDateTextView,jalobaPosition, attendaceTextView,PercentageTextView,perfomanceTextView,perfomancePercentageTextView , nameTextView, rateTextView, rateLabelTextView, positionUpTextView, positionLabelTextView, periodLabelTextView, positionTextView, periodTextView,addressLabelTextView, addressTextView, personidLabelTextView, personidTextView, phoneLabelTextView, mobilePhoneLabelTextView, emailLabelTextView, phoneTextView, mobilePhoneTextView, emailTextView ;
+TextView countJaloba,jalobaName,jalobaLabelTextView, jalobaDateTextView,jalobaPosition, attendaceTextView,PercentageTextView,perfomanceTextView,perfomancePercentageTextView , nameTextView, rateTextView, rateLabelTextView, positionUpTextView, positionLabelTextView, positionTextView, addressLabelTextView, addressTextView, personidLabelTextView, personidTextView, phoneLabelTextView, mobilePhoneLabelTextView, emailLabelTextView, phoneTextView, mobilePhoneTextView, emailTextView ;
 ImageView avatar, jalobaAvatar;
 ProgressBar ProgressBar, perfomanceProgressBar;
     List<String> categories;
@@ -107,12 +108,13 @@ ProgressBar ProgressBar, perfomanceProgressBar;
             }
         });
         jalobasLayout.setVisibility(View.GONE);
+        attendaceLayout.setVisibility(View.GONE);
         attendaceLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 /*                Fragment fragment=new MapFragment();
                 ((MainActivity)getActivity()).setFragment(R.id.content_frame,fragment);*/
-                Intent intent=new Intent((MainActivity)getActivity(),MapActivity.class);
+                Intent intent=new Intent((MainActivity)getActivity(),MapsActivity.class);
                 ((MainActivity)getActivity()).startActivity(intent);
             }
         });
@@ -165,7 +167,6 @@ private void setInfo(JSONObject object){
             else
                 mobilePhoneTextView.setText(user.getString("mobile"));
             addressTextView.setText(object.getString("address"));
-            periodTextView.setText(object.getString("period"));
             personidTextView.setText(object.getString("iin"));
             String a=Integer.parseInt(Math.round((object.getDouble("result_rate")*100))+"")+"";
             rateTextView.setText(a);
@@ -250,13 +251,11 @@ private void setInfo(JSONObject object){
         rateLabelTextView=(TextView) view.findViewById(R.id.rateLabelTextView);
         positionUpTextView=(TextView) view.findViewById(R.id.positionUpTextView);
         positionLabelTextView=(TextView) view.findViewById(R.id.positionLabelTextView);
-        periodLabelTextView=(TextView) view.findViewById(R.id.periodLabelTextView);
         phoneLabelTextView=(TextView) view.findViewById(R.id.phoneLabelTextView);
         personidTextView=(TextView) view.findViewById(R.id.personidTextView);
         personidLabelTextView=(TextView) view.findViewById(R.id.personidLabelTextView);
         addressTextView=(TextView) view.findViewById(R.id.addressTextView);
         addressLabelTextView=(TextView) view.findViewById(R.id.addressLabelTextView);
-        periodTextView=(TextView) view.findViewById(R.id.periodTextView);
         positionTextView=(TextView) view.findViewById(R.id.positionTextView);
         emailTextView=(TextView) view.findViewById(R.id.emailTextView);
         mobilePhoneTextView=(TextView) view.findViewById(R.id.mobilePhoneTextView);
@@ -274,8 +273,8 @@ private void setInfo(JSONObject object){
         countJaloba=(TextView) view.findViewById(R.id.countJaloba);
         ProgressBar=(ProgressBar)view.findViewById(R.id.ProgressBar);
         perfomanceProgressBar=(ProgressBar)view.findViewById(R.id.perfomanceProgressBar);
-        ((MainActivity)getActivity()).setType("demibold",countJaloba,jalobaName,jalobaLabelTextView,perfomanceTextView,attendaceTextView,PercentageTextView,perfomancePercentageTextView, nameTextView,positionTextView, periodTextView, addressTextView, personidTextView, mobilePhoneTextView, phoneTextView, emailTextView,rateTextView );
-        ((MainActivity)getActivity()).setType("light", jalobaDateTextView, jalobaPosition,positionUpTextView,addressLabelTextView, emailLabelTextView, mobilePhoneLabelTextView, periodLabelTextView, personidLabelTextView, phoneLabelTextView, positionLabelTextView, rateLabelTextView);
+        ((MainActivity)getActivity()).setType("demibold",countJaloba,jalobaName,jalobaLabelTextView,perfomanceTextView,attendaceTextView,PercentageTextView,perfomancePercentageTextView, nameTextView,positionTextView, addressTextView, personidTextView, mobilePhoneTextView, phoneTextView, emailTextView,rateTextView );
+        ((MainActivity)getActivity()).setType("light", jalobaDateTextView, jalobaPosition,positionUpTextView,addressLabelTextView, emailLabelTextView, mobilePhoneLabelTextView, personidLabelTextView, phoneLabelTextView, positionLabelTextView, rateLabelTextView);
     }
     private void setSpinner(){
        adapter=new ArrayAdapter<String>(getActivity(),R.layout.simple_spinner_item,categories){

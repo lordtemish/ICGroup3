@@ -180,7 +180,7 @@ public class OwnTasksFragment extends Fragment {
                     setInfo(response);
                 }
                 catch (Exception e){
-
+                    e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
@@ -189,14 +189,14 @@ public class OwnTasksFragment extends Fragment {
                 Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
                 progressLayout.setVisibility(View.GONE);
             }
-        }){@Override
-        public Map<String, String> getHeaders() throws AuthFailureError {
-            HashMap<String, String> headers = new HashMap<String, String>();
-            headers.put("Accept", "application/json");
-            headers.put("Content-Type", "application/json; charset=utf-8");
-            headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
-            return headers;
-        }};
+            }){@Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
+                return headers;
+            }};
         ((MainActivity) getActivity()).requestQueue.add(arrayRequest);
     }
     private void getNext(){

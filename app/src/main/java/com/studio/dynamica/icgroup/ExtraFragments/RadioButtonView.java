@@ -2,6 +2,7 @@ package com.studio.dynamica.icgroup.ExtraFragments;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -15,7 +16,9 @@ import java.util.List;
 public class RadioButtonView extends FrameLayout {
     List<RadioButton> radioButtons;
     List<LinearLayout> radioLinears;
-    int[] radios={R.id.button1, R.id.button2,R.id.button3,R.id.button4}, gals={R.id.firstGal,R.id.secondGal,R.id.thirdGal,R.id.fourthGal};
+    List<CounterView> counterViews;
+    int[] radios={R.id.button1, R.id.button2,R.id.button3,R.id.button4}, gals={R.id.firstGal,R.id.secondGal,R.id.thirdGal,R.id.fourthGal}
+        , counters={R.id.firstCounter, R.id.secondCounter,  R.id.thirdCounter,R.id.fourthCounter};
     int page=0;
     public RadioButtonView(Context context, AttributeSet attrs,int defstyle){
         super(context,attrs,defstyle);
@@ -34,30 +37,49 @@ public class RadioButtonView extends FrameLayout {
         View view = inflate(getContext(), R.layout.radiobutton_view, null);
         addView(view);
         createViews(view);
-        setChecked(page);
     }
     private void createViews(View view){
         radioButtons=new ArrayList<>();radioLinears=new ArrayList<>();
+        counterViews=new ArrayList<>();
         for(int i=0;i<4;i++){
             radioButtons.add((RadioButton) view.findViewById(radios[i]));
             radioLinears.add((LinearLayout) view.findViewById(gals[i]));
+            counterViews.add((CounterView)view.findViewById(counters[i]));
+            final int j=i;
             radioLinears.get(i).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    setClear();
-                    setChecked(radioLinears.indexOf(view));
+                    setChecked(j);
                 }
             });
         }
     }
-    private void setClear(){
-        for(int i=0;i<4;i++){
-            radioButtons.get(i).setChecked(false);
-
-        }
-    }
     private void setChecked(int i){
-        radioButtons.get(i).setChecked(true);
-        page=i;
+
+        boolean a=radioButtons.get(i).isChecked();
+        Log.d("index it", i+" "+a);
+        if(a){
+            counterViews.get(i).setVisibility(View.GONE);
+        }
+        else{
+            counterViews.get(i).setVisibility(View.VISIBLE);
+        }
+        radioButtons.get(i).setChecked(!a);
+        Log.d("index it", ""+(radioLinears.get(i).getVisibility()==View.VISIBLE));
+    }
+
+    public int[] getResults(){
+        int[] a={-1,-1,-1,-1};
+        for(int i=0;i<4;i++){
+            if(radioButtons.get(i).isChecked()){
+                a[i]=counterViews.get(i).getPage();
+            }
+        }
+        return a;
+    }
+    public void setResult(int index, int result){
+        radioButtons.get(index).setChecked(false);
+        setChecked(index);
+        counterViews.get(index).setPage(result);
     }
 }

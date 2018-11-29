@@ -12,8 +12,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.studio.dynamica.icgroup.Activities.MainActivity;
+import com.studio.dynamica.icgroup.InventoryFragments.ClothesFragment;
 import com.studio.dynamica.icgroup.InventoryFragments.EquipmentMainFragment;
+import com.studio.dynamica.icgroup.InventoryFragments.InventoryFrament;
 import com.studio.dynamica.icgroup.InventoryFragments.MaterialMainFragment;
+import com.studio.dynamica.icgroup.InventoryFragments.SeasonalFragment;
+import com.studio.dynamica.icgroup.InventoryFragments.UMCFragment;
 import com.studio.dynamica.icgroup.R;
 
 import java.util.List;
@@ -40,6 +44,11 @@ public class InventoryListAdapter extends RecyclerView.Adapter<RecyclerView.View
     public void setId(String id) {
         this.id = id;
     }
+    boolean object=false;
+
+    public void setObject(boolean object) {
+        this.object = object;
+    }
 
     @NonNull
     @Override
@@ -61,6 +70,7 @@ public class InventoryListAdapter extends RecyclerView.Adapter<RecyclerView.View
                         Fragment fragment=new EquipmentMainFragment();
                         Bundle bundle=new Bundle();
                         bundle.putString("id",id);
+                        bundle.putBoolean("object",object);
                         fragment.setArguments(bundle);
                         ((MainActivity)context).setFragment(R.id.content_frame, fragment);
                     }
@@ -73,6 +83,59 @@ public class InventoryListAdapter extends RecyclerView.Adapter<RecyclerView.View
                         Fragment fragment=new MaterialMainFragment();
                         Bundle bundle=new Bundle();
                         bundle.putString("id",id);
+                        bundle.putBoolean("object",object);
+                        fragment.setArguments(bundle);
+                        ((MainActivity)context).setFragment(R.id.content_frame, fragment);
+                    }
+                });
+                break;
+            case 2:
+                holder.wholeLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Fragment fragment=new InventoryFrament();
+                        Bundle bundle=new Bundle();
+                        bundle.putString("id",id);
+                        bundle.putBoolean("object",object);
+                        fragment.setArguments(bundle);
+                        ((MainActivity)context).setFragment(R.id.content_frame, fragment);
+                    }
+                });
+                break;
+            case 3:
+                holder.wholeLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Fragment fragment=new UMCFragment();
+                        Bundle bundle=new Bundle();
+                        bundle.putString("id",id);
+                        bundle.putBoolean("object",object);
+                        fragment.setArguments(bundle);
+                        ((MainActivity)context).setFragment(R.id.content_frame, fragment);
+                    }
+                });
+                break;
+            case 4:
+                holder.wholeLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Fragment fragment=new SeasonalFragment();
+                        Bundle bundle=new Bundle();
+                        bundle.putString("id",id);
+                        bundle.putBoolean("object",object);
+                        fragment.setArguments(bundle);
+                        ((MainActivity)context).setFragment(R.id.content_frame, fragment);
+                    }
+                });
+                break;
+            case 5:
+                holder.wholeLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Fragment fragment=new ClothesFragment();
+                        Bundle bundle=new Bundle();
+                        bundle.putString("id",id);
+                        bundle.putBoolean("object",object);
                         fragment.setArguments(bundle);
                         ((MainActivity)context).setFragment(R.id.content_frame, fragment);
                     }

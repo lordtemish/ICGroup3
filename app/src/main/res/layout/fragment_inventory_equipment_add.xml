@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ObjectFragments.InventoryEquipmentAddFragment"
-    android:orientation="vertical"
     android:background="@color/light_grey">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="50sp"
@@ -273,7 +276,11 @@
 
                     </LinearLayout>
                 </LinearLayout>
-
+                <com.studio.dynamica.icgroup.ExtraFragments.BigCounterView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/bigCounterView"
+                    android:layout_marginTop="20dp"></com.studio.dynamica.icgroup.ExtraFragments.BigCounterView>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
@@ -314,12 +321,13 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
+
                     android:paddingBottom="20dp"
                     android:orientation="vertical">
                     <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
                         android:layout_height="70dp">
                             <ImageView
                                 android:layout_width="34dp"
@@ -345,6 +353,8 @@
                     </android.support.constraint.ConstraintLayout>
                     <RadioGroup
                         android:layout_marginTop="10dp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                             <RadioButton
@@ -368,26 +378,31 @@
                             android:text=" Выбрать дату завершения"
                             />
                     </RadioGroup>
+                    <com.studio.dynamica.icgroup.ExtraFragments.TimePickView
+                        android:layout_marginTop="10dp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/counterView"
+                        />
+                    <com.studio.dynamica.icgroup.ExtraFragments.CalendarView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/calendarView"
+                        android:layout_marginTop="10dp"
+                        />
 
                     <LinearLayout
                         android:layout_marginTop="20sp"
-
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
                         android:layout_width="match_parent"
                         android:layout_height="50sp"
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_marginStart="5sp"
-                            android:layout_marginEnd="5sp"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:textColor="@color/greyy"
-                            android:text="Отменить задачу"
-                            android:textSize="15sp"
-                            />
-                        <TextView
+                            android:id="@+id/addTextView"
                             android:layout_marginStart="5sp"
                             android:layout_marginEnd="5sp"
                             android:layout_width="match_parent"
@@ -396,7 +411,7 @@
                             android:gravity="center"
                             android:background="@drawable/greenbutton"
                             android:textColor="@color/white"
-                            android:text="Добавить задачу +"
+                            android:text="Добавить задачу"
                             android:textSize="15sp"
                             />
                     </LinearLayout>
@@ -406,5 +421,19 @@
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
-
-</LinearLayout>
+    </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/icgGreenTra"
+        android:onClick="onClick"
+        android:visibility="gone"
+        android:id="@+id/progressLayout"
+        >
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            />
+    </FrameLayout>
+</FrameLayout>

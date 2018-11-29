@@ -51,7 +51,7 @@
                 android:layout_weight="1"
                 android:textColorHint="@color/darkgrey"
                 android:textColor="@color/black"
-                android:inputType="text"
+                android:inputType="phone"
                 android:hint="@string/inputLoginr"/>
 
         </LinearLayout>

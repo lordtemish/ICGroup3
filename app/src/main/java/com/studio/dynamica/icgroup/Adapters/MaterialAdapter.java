@@ -1,8 +1,10 @@
 package com.studio.dynamica.icgroup.Adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -84,17 +86,12 @@ public class MaterialAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
             });
 
-            plusImageVIew.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((MainActivity)context).setFragment(R.id.content_frame,new InventoryMaterialAddFragment());
-                }
-            });
+
 
             ((MainActivity)context).setType("demibold", nameTextView, idTextView, periodLabelTextView, num1TextView, num2TextView);
             ((MainActivity)context).setType("light", numbersTextView);
         }
-        public void setInfo(MaterialForm form){
+        public void setInfo(final MaterialForm form){
             id=form.getId();
             nameTextView.setText(form.getName());
             idTextView.setText(form.getVendor_code());
@@ -102,8 +99,9 @@ public class MaterialAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             num1TextView.setText(n1+"/");
             num2TextView.setText(n2+"");
             if(n2>0){
-                perc=(n1/n2)*100;
+                perc=Integer.parseInt(Math.round((Double.parseDouble(n1+"")/Double.parseDouble(n2+""))*100)+"");
             }
+            Log.d("cons"+id,perc+" "+n1+" "+n2);
             ProgressBar.setProgress(perc);
 
             List<OrderForm> orderForms=form.getOrderForms();
@@ -116,6 +114,22 @@ public class MaterialAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             else{
                 noOrdersTextView.setVisibility(View.VISIBLE);
             }
+            final int pp=perc;
+            plusImageVIew.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Fragment fragment=new InventoryMaterialAddFragment();
+                    Bundle bundle=new Bundle();
+                    bundle.putString("id",id);
+                    bundle.putString("name", form.getName());
+                    bundle.putString("vendor", form.getVendor_code());
+                    bundle.putInt("n1", form.getNum1());
+                    bundle.putInt("n2", form.getNum2());
+                    bundle.putInt("perc", pp);
+                    fragment.setArguments(bundle);
+                    ((MainActivity)context).setFragment(R.id.content_frame,fragment);
+                }
+            });
         }
         private void getReq(){
             progressLayout.setVisibility(View.VISIBLE);
@@ -186,6 +200,7 @@ public class MaterialAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         switch (priority){ case 2: pri="Средний"; break;case 3: pri="Высокий";
                             break;}
                         OrderForm form=new OrderForm(date, "IC"+id, "Снабжения",pri, status, nowdays, days);
+                        form.setId(id);
                         orderForms.add(form);
                     }
                     orderAdapter.notifyDataSetChanged();

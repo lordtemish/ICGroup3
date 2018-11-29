@@ -27,6 +27,7 @@ public class    DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     ArrayList<RowFormPTN> rowFormPTNS;
     Context context;
     private int clicked=-1;
+    private String role="SUPERADMIN";
     public class MyViewHolder extends RecyclerView.ViewHolder{
         ImageView iv;
         TextView name;
@@ -225,5 +226,9 @@ public class    DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         else {
             return 1;
         }
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

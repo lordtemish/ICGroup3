@@ -18,8 +18,10 @@ import com.android.volley.error.VolleyError;
 import com.android.volley.request.JsonArrayRequest;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Adapters.MaterialAdapter;
+import com.studio.dynamica.icgroup.Adapters.MaterialMainAdapter;
 import com.studio.dynamica.icgroup.Forms.EquipmentForm;
 import com.studio.dynamica.icgroup.Forms.MaterialForm;
+import com.studio.dynamica.icgroup.Forms.MaterialMainForm;
 import com.studio.dynamica.icgroup.Forms.OrderForm;
 import com.studio.dynamica.icgroup.Forms.RemontForms;
 import com.studio.dynamica.icgroup.R;
@@ -37,10 +39,12 @@ import java.util.Map;
  */
 public class MaterialMainFragment extends Fragment {
     RecyclerView recyclerView;
-    MaterialAdapter adapter;
+    MaterialAdapter adapter;MaterialMainAdapter mainAdapter;
     List<MaterialForm> forms;
+    List<MaterialMainForm> materialMainForms;
     FrameLayout progressLayout;
     String id="";
+    boolean object=false;
     public MaterialMainFragment() {
         // Required empty public constructor
     }
@@ -51,25 +55,36 @@ public class MaterialMainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         id=getArguments().getString("id");
+        object=getArguments().getBoolean("object");
         View view=inflater.inflate(R.layout.fragment_material_main, container, false);
         createViews(view);
         ((MainActivity)getActivity()).setRecyclerViewOrientation(recyclerView, LinearLayoutManager.VERTICAL);
-        List<OrderForm> orderForms=new ArrayList<>();
-        orderForms.add(new OrderForm("","","","","",1,4));orderForms.add(new OrderForm("","","","","",1,4));orderForms.add(new OrderForm("","","","","",1,4));
 
          adapter=new MaterialAdapter(forms);
+         mainAdapter=new MaterialMainAdapter(materialMainForms);
+         if (object)
          recyclerView.setAdapter(adapter);
+         else{
+             recyclerView.setAdapter(mainAdapter);
+         }
         getRequest();
         return view;
     }
     private void createViews(View view){
         forms=new ArrayList<>();
+        materialMainForms=new ArrayList<>();
         recyclerView=(RecyclerView)view.findViewById(R.id.recyclerView);
         progressLayout=(FrameLayout)view.findViewById(R.id.progressLayout);
     }
     private void getRequest(){
         progressLayout.setVisibility(View.VISIBLE);
-        String url=((MainActivity)getActivity()).MAIN_URL+"consumptions/?kind="+"CONSUMABLES&point="+id;
+        String url=((MainActivity)getActivity()).MAIN_URL;
+        if(object){
+            url+="consumptions/?inventory__kind="+"CONSUMABLES&point="+id;
+        }
+        else{
+            url+="inventories/?kind=CONSUMABLES";
+        }
         Log.d("urlEq", url);
         JsonArrayRequest arrayRequest=new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -95,21 +110,36 @@ public class MaterialMainFragment extends Fragment {
     }
     private void setInfo(JSONArray array){
         try{
-            forms.clear();
-            for(int i=0;i<array.length();i++){
-                JSONObject object=array.getJSONObject(i);
-                JSONObject inventory=object.getJSONObject("inventory");
-                JSONObject company=inventory.getJSONObject("company");
-                String name=inventory.getString("name"), id=object.getString("id"), unit=inventory.getString("unit"), vendor_code=inventory.getString("vendor_code");
-                int quantity=object.getInt("quantity"), limit=object.getInt("limit");
+            if(object) {
+                forms.clear();
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject object = array.getJSONObject(i);
+                    JSONObject inventory = object.getJSONObject("inventory");
+//                    JSONObject company = inventory.getJSONObject("company");
+                    String name = inventory.getString("name"), id = object.getString("id"), unit = inventory.getString("unit"), vendor_code = inventory.getString("vendor_code");
+                    int quantity = object.getInt("quantity"), limit = object.getInt("limit");
 
                /* EquipmentForm equipmentForm= new EquipmentForm(name,id,num, remontForms, new ArrayList<OrderForm>());
                 equipmentForm.setVendor_code(vendor_code);*/
-               MaterialForm materialForm=new MaterialForm(name, id, quantity, limit);
-               materialForm.setVendor_code(vendor_code);
-                forms.add(materialForm);
+                    MaterialForm materialForm = new MaterialForm(name, id, quantity, limit);
+                    materialForm.setVendor_code(vendor_code);
+                    forms.add(materialForm);
+                }
+                adapter.notifyDataSetChanged();
             }
-            adapter.notifyDataSetChanged();
+            else{
+                materialMainForms.clear();
+                for(int i=0;i<array.length();i++){
+                    JSONObject object=array.getJSONObject(i);
+//                    JSONObject company=object.getJSONObject("company");
+                    String vendor_code=object.getString("vendor_code");
+                    String id=object.getString("id"), name=object.getString("name"), unit=object.getString("unit");
+                    String uni=((MainActivity)getActivity()).inventoryUnits.get(unit);
+                    MaterialMainForm form=new MaterialMainForm(id,name,vendor_code,uni,0,0, uni, uni);
+                    materialMainForms.add(form);
+                }
+                mainAdapter.notifyDataSetChanged();
+            }
         }
         catch (Exception e){
             e.printStackTrace();

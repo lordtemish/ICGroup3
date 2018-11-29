@@ -18,7 +18,10 @@ import com.android.volley.error.VolleyError;
 import com.android.volley.request.JsonArrayRequest;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Adapters.EquipmentAdapter;
+import com.studio.dynamica.icgroup.Adapters.EquipmentMainAdapter;
+import com.studio.dynamica.icgroup.Adapters.EquipmentReqAdapter;
 import com.studio.dynamica.icgroup.Forms.EquipmentForm;
+import com.studio.dynamica.icgroup.Forms.EquipmentMainForm;
 import com.studio.dynamica.icgroup.Forms.OrderForm;
 import com.studio.dynamica.icgroup.Forms.RemontForms;
 import com.studio.dynamica.icgroup.R;
@@ -35,11 +38,16 @@ import java.util.Map;
  * A simple {@link Fragment} subclass.
  */
 public class EquipmentMainFragment extends Fragment {
-    RecyclerView recyclerView;
+    RecyclerView recyclerView, reqRecycler;
     EquipmentAdapter adapter;
+    EquipmentMainAdapter mainAdapter;
+    EquipmentReqAdapter reqAdapter;
     List<EquipmentForm> forms;
+    List<EquipmentMainForm> mainForms, allMainForms;
     String id="";
+    List<String> reqs;
     FrameLayout progressLayout;
+    boolean object;
     public EquipmentMainFragment() {
         // Required empty public constructor
     }
@@ -50,28 +58,54 @@ public class EquipmentMainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         id=getArguments().getString("id");
+        object=getArguments().getBoolean("object",false);
         View view=inflater.inflate(R.layout.fragment_equipment_main, container, false);
         createViews(view);
 
         ((MainActivity)getActivity()).setRecyclerViewOrientation(recyclerView, LinearLayoutManager.VERTICAL);
+        ((MainActivity)getActivity()).setRecyclerViewOrientation(reqRecycler, LinearLayoutManager.HORIZONTAL);
         forms=new ArrayList<>();
-        List<OrderForm> orderForms=new ArrayList<>();
-        orderForms.add(new OrderForm("","","","","",1,4));orderForms.add(new OrderForm("","","","","",1,4));orderForms.add(new OrderForm("","","","","",1,4));
-        List<RemontForms> remontForms=new ArrayList<>();
-        remontForms.add(new RemontForms("Ремонт",5));
-        forms.add(new EquipmentForm("name","someid","", remontForms,orderForms));
+        mainForms=new ArrayList<>();
+        allMainForms=new ArrayList<>();
          adapter=new EquipmentAdapter(forms);
+         mainAdapter=new EquipmentMainAdapter(mainForms);
+         if(object)
          recyclerView.setAdapter(adapter);
+         else
+             recyclerView.setAdapter(mainAdapter);
+
+         reqAdapter=new EquipmentReqAdapter(reqs);
+         reqAdapter.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 checkPage();
+             }
+         });
+         reqRecycler.setAdapter(reqAdapter);
+         if(!object){
+             reqRecycler.setVisibility(View.VISIBLE);
+         }
          getRequest();
         return view;
     }
     private void createViews(View view){
         recyclerView=(RecyclerView) view.findViewById(R.id.recyclerView);
+        reqRecycler=(RecyclerView) view.findViewById(R.id.reqRecycler);
         progressLayout=(FrameLayout) view.findViewById(R.id.progressLayout);
+
+        reqs=new ArrayList<>();
+        reqs.add("Все позииции");
+        reqs.add("На замену");
+        reqs.add("На ремонте");
     }
     private void getRequest(){
         progressLayout.setVisibility(View.VISIBLE);
-        String url=((MainActivity)getActivity()).MAIN_URL+"consumptions/?kind="+"EQUIPMENT&point="+id;
+        String url=((MainActivity)getActivity()).MAIN_URL;
+        if(object)
+            url+="consumptions/?inventory__kind="+"EQUIPMENT&point="+id;
+        else{
+            url+="inventories/?kind="+"EQUIPMENT";
+        }
         Log.d("urlEq", url);
         JsonArrayRequest arrayRequest=new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -97,32 +131,53 @@ public class EquipmentMainFragment extends Fragment {
     }
     private void setInfo(JSONArray array){
         try{
-            forms.clear();
-            for(int i=0;i<array.length();i++){
-                JSONObject object=array.getJSONObject(i);
-                JSONObject inventory=object.getJSONObject("inventory");
-                JSONObject company=inventory.getJSONObject("company");
-                String name=inventory.getString("name"), id=object.getString("id"), unit=inventory.getString("unit"), vendor_code=inventory.getString("vendor_code");
-                String num=object.getString("quantity")+" "+ ((MainActivity)getActivity()).inventoryUnits.get(unit);
-                int repair=object.getInt("repair"), replace=object.getInt("replace");
-                List<RemontForms> remontForms=new ArrayList<>();
-                if(repair>0){
-                    RemontForms form=new RemontForms("На ремонте", repair);
-                    remontForms.add(form);
+            if(object) {
+                forms.clear();
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject object = array.getJSONObject(i);
+                    JSONObject inventory = object.getJSONObject("inventory");
+                   // JSONObject company = inventory.getJSONObject("company");
+                    String name = inventory.getString("name"), id = object.getString("id"), unit = inventory.getString("unit"), vendor_code = inventory.getString("vendor_code");
+                    String num = object.getString("quantity") + " " + ((MainActivity) getActivity()).inventoryUnits.get(unit);
+                    int repair = object.getInt("repair"), replace = object.getInt("replace");
+                    List<RemontForms> remontForms = new ArrayList<>();
+                    if (repair > 0) {
+                        RemontForms form = new RemontForms("На ремонте", repair);
+                        remontForms.add(form);
+                    }
+                    if (replace > 0) {
+                        RemontForms form = new RemontForms("На замене", replace);
+                        remontForms.add(form);
+                    }
+                    EquipmentForm equipmentForm = new EquipmentForm(name, id, num, remontForms, new ArrayList<OrderForm>());
+                    equipmentForm.setVendor_code(vendor_code);
+                    forms.add(equipmentForm);
                 }
-                if(replace>0){
-                    RemontForms form=new RemontForms("На замене", replace);
-                    remontForms.add(form);
-                }
-                EquipmentForm equipmentForm= new EquipmentForm(name,id,num, remontForms, new ArrayList<OrderForm>());
-                equipmentForm.setVendor_code(vendor_code);
-                forms.add(equipmentForm);
+                adapter.notifyDataSetChanged();
             }
-            adapter.notifyDataSetChanged();
+            else{
+                mainForms.clear();
+                for(int i=0;i<array.length();i++){
+                    JSONObject object=array.getJSONObject(i);
+                    String vendor=object.getString("vendor_code");
+                    String name=object.getString("name"), uni=object.getString("unit"), id=object.getString("id");
+                    int qua=object.getInt("quantity");
+                    String unit=((MainActivity)getActivity()).inventoryUnits.get(uni);
+                    EquipmentMainForm mainForm=new EquipmentMainForm(id, name, unit, qua);
+
+                    mainForm.setVendor(vendor);
+                    allMainForms.add(mainForm);
+                    mainForms.add(mainForm);
+                }
+                mainAdapter.notifyDataSetChanged();
+            }
         }
         catch (Exception e){
             e.printStackTrace();
+            progressLayout.setVisibility(View.GONE);
         }
     }
-
+    private void checkPage(){
+        Log.d("page",reqAdapter.getClicked()+" clicked");
+    }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,7 @@ public class TechnoMapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             period.setText(form.getPeriod());
         }
         private void setStatus(int a){
+            Log.d("status TECHNOMAP",""+a);
             switch (a){
                 case 0:
                     setFailed();
@@ -75,6 +77,9 @@ public class TechnoMapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     break;
                 case 4:
                     setRelate();
+                    break;
+                case 5:
+                    waitForStart();
                     break;
             }
         }
@@ -110,11 +115,25 @@ public class TechnoMapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             timelabel.setTextColor(context.getResources().getColor(R.color.darkgrey));
             place.setTextColor(context.getResources().getColor(R.color.darkgrey));
             placelabel.setTextColor(context.getResources().getColor(R.color.darkgrey));
+
             status.setBackgroundResource(R.drawable.greyrow_page);
             methodlabel.setTextColor(context.getResources().getColor(R.color.darkgrey));
             method.setTextColor(context.getResources().getColor(R.color.black));
             period.setTextColor(context.getResources().getColor(R.color.darkgrey));
             status.setText("Выполнено");
+        }
+        private void waitForStart(){
+            wholeLayout.setBackgroundResource(R.drawable.inprocess_green_page);
+            time.setTextColor(context.getResources().getColor(R.color.white));
+            timelabel.setTextColor(context.getResources().getColor(R.color.white));
+            place.setTextColor(context.getResources().getColor(R.color.white));
+            placelabel.setTextColor(context.getResources().getColor(R.color.white));
+
+            status.setBackgroundResource(R.drawable.inwait_yellowpage);
+            methodlabel.setTextColor(context.getResources().getColor(R.color.white));
+            method.setTextColor(context.getResources().getColor(R.color.white));
+            period.setTextColor(context.getResources().getColor(R.color.white));
+            status.setText("В ожидании");
         }
         public void setinProcess(){
             wholeLayout.setBackgroundResource(R.drawable.inprocess_green_page);
@@ -122,6 +141,7 @@ public class TechnoMapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             timelabel.setTextColor(context.getResources().getColor(R.color.white));
             place.setTextColor(context.getResources().getColor(R.color.white));
             placelabel.setTextColor(context.getResources().getColor(R.color.white));
+
             status.setBackgroundResource(R.drawable.inwait_yellowpage);
             methodlabel.setTextColor(context.getResources().getColor(R.color.white));
             method.setTextColor(context.getResources().getColor(R.color.white));
@@ -134,6 +154,7 @@ public class TechnoMapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             timelabel.setTextColor(context.getResources().getColor(R.color.darkgrey));
             place.setTextColor(context.getResources().getColor(R.color.black));
             placelabel.setTextColor(context.getResources().getColor(R.color.darkgrey));
+
             status.setBackgroundResource(R.drawable.inprocess_green_page);
             methodlabel.setTextColor(context.getResources().getColor(R.color.darkgrey));
             method.setTextColor(context.getResources().getColor(R.color.black));
@@ -154,17 +175,33 @@ public class TechnoMapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         myHolder holder=(myHolder) holder1;
         final TechnoMapForm form=list.get(position);
         holder.setInfo(form);
+        if(list.get(position).isResult())
         holder.wholeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle=new Bundle();
                 bundle.putInt("status",list.get(position).getStat());
                 bundle.putString("id",form.getId());
+                bundle.putBoolean("is_result",true);
                 TechnoMapInfoFragment infoFragment=new TechnoMapInfoFragment();
                 infoFragment.setArguments(bundle);
                 ((MainActivity)context).setFragment(R.id.content_frame,infoFragment);
             }
         });
+        else{
+            holder.wholeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bundle bundle=new Bundle();
+                    bundle.putInt("status",list.get(position).getStat());
+                    bundle.putString("id",form.getId());
+                    bundle.putBoolean("is_result",false);
+                    TechnoMapInfoFragment infoFragment=new TechnoMapInfoFragment();
+                    infoFragment.setArguments(bundle);
+                    ((MainActivity)context).setFragment(R.id.content_frame,infoFragment);
+                }
+            });
+        }
     }
 
     @Override

@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ObjectFragments.InventoryPassInventorizationFragment"
-    android:orientation="vertical"
+
     android:background="@color/light_grey">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="50sp"
@@ -64,14 +68,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
+
                 android:orientation="vertical"
-                android:background="@drawable/whiterow_page">
+                >
 
                     <android.support.v7.widget.RecyclerView
+                        android:nestedScrollingEnabled="false"
                         android:id="@+id/passInventoryRecyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -79,7 +82,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:textColor="@color/whiteGreen"
+                        android:textColor="@color/white"
                         android:text="Завершить инвентаризацию"
                         android:textSize="15sp"
                         android:gravity="center"
@@ -88,10 +91,82 @@
                         android:layout_marginBottom="20dp"
                         android:layout_marginStart="30dp"
                         android:layout_marginEnd="30dp"
-
+                        android:id="@+id/endTextView"
                         />
 
             </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
-</LinearLayout>
+    </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="onClick"
+        android:id="@+id/progressFrame"
+        android:background="@color/icgGreenTra"
+        android:visibility="gone"
+        >
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            />
+    </FrameLayout>
+    <FrameLayout
+        android:visibility="gone"
+        android:id="@+id/ruSureLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="onClick"
+        android:background="@color/icgGreenTra"
+        >
+                <LinearLayout
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/whiterow_page"
+                    android:padding="20dp"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    >
+                        <TextView
+                            android:layout_marginBottom="5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxWidth="200dp"
+                            android:layout_gravity="center"
+                            android:textSize="17sp"
+                            android:textColor="@color/black"
+                            android:gravity="center"
+                            android:text="@string/rusure"
+                            />
+                    <LinearLayout
+                        android:layout_width="200dp"
+                        android:layout_height="30dp"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/noSure"
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textColor="@color/black"
+                            android:textSize="19sp"
+                            android:text="НЕТ"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:layout_weight="1"/>
+                        <TextView
+                            android:id="@+id/yesSure"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textColor="@color/white"
+                            android:textSize="19sp"
+                            android:text="ДА"
+                            android:background="@drawable/greenbutton"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+                </LinearLayout>
+    </FrameLayout>
+</FrameLayout>

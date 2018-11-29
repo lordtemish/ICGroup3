@@ -272,6 +272,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginLeft="5dp"
                         android:id="@+id/pagesRecyclerUp"
+                        android:nestedScrollingEnabled="true"
                         android:layout_width="wrap_content"
                         android:maxWidth="200dp"
                         android:layout_height="wrap_content"
@@ -297,6 +298,7 @@
                     android:id="@+id/allServicesRecyclerView"
                     android:layout_marginStart="10sp"
                     android:layout_marginEnd="10sp"
+                    android:nestedScrollingEnabled="false"
                     android:layout_marginBottom="20sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -324,6 +326,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginLeft="5dp"
                         android:id="@+id/pagesRecyclerBot"
+                        android:nestedScrollingEnabled="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintStart_toEndOf="@+id/leftImageBot"

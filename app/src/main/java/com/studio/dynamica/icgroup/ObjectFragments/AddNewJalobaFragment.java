@@ -591,6 +591,8 @@ public class AddNewJalobaFragment extends Fragment {
                         public void onResponse(JSONObject response) {
                             progressLayout.setVisibility(View.GONE);
                             Log.d("responseAnswer", response.toString());
+                            Toast.makeText(getActivity(), "Жалоба отправлена", Toast.LENGTH_SHORT).show();
+                            ((MainActivity)getActivity()).onBackPressed();
                         }
                     }, new Response.ErrorListener() {
                         @Override

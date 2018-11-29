@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
+import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Forms.RemontForms;
 import com.studio.dynamica.icgroup.R;
 
@@ -17,14 +19,23 @@ public class RemontAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private class myHolder extends RecyclerView.ViewHolder{
             RadioButton radioButton;
+            TextView textTextView,numberLabelTextView, num;
             private myHolder(View view){
                 super(view);
                 radioButton=(RadioButton) view.findViewById(R.id.radioButton);
-
+                textTextView=(TextView)view.findViewById(R.id.textTextView);
+                numberLabelTextView=(TextView)view.findViewById(R.id.numberLabelTextView);
+                num=(TextView)view.findViewById(R.id.num);
+                ((MainActivity)context).setType("demibold",numberLabelTextView);
+                ((MainActivity)context).setType("light",textTextView,num);
             }
             private void deleteRadio(){
                 radioButton.setVisibility(View.GONE);
 
+            }
+            private void setInfo(RemontForms forms){
+                textTextView.setText(forms.getText());
+                num.setText(forms.getNum()+"");
             }
     }
     List<RemontForms> list;
@@ -40,7 +51,7 @@ public class RemontAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context context=parent.getContext();
+       context=parent.getContext();
         View view= LayoutInflater.from(context).inflate(R.layout.remont_row,parent,false);
         return new myHolder(view);
     }
@@ -51,6 +62,7 @@ public class RemontAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if(!a){
             holder.deleteRadio();
         }
+        holder.setInfo(list.get(position));
     }
 
     @Override

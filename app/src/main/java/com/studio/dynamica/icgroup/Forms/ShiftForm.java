@@ -10,8 +10,9 @@ public class ShiftForm {
         try {
             begin = object.getString("begin").substring(0,5);
             end = object.getString("end").substring(0,5);
-            weekend = object.getBoolean("is_weekend");
-            shift=object.getInt("shift");
+            int day=object.getInt("day");
+            weekend =day>0;// object.getBoolean("is_active");
+            shift=1;//object.getInt("shift");
         }
         catch (Exception e){
             e.printStackTrace();

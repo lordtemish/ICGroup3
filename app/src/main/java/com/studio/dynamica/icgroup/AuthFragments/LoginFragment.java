@@ -87,7 +87,7 @@ public class LoginFragment extends Fragment {
         try{
             String url=((LoginActivity)getActivity()).MAIN_URL+"login/";
             JSONObject object=new JSONObject();
-            object.put("email",email);
+            object.put("phone",email);
             object.put("password",pass);
             JsonObjectRequest objectRequest=new JsonObjectRequest(Request.Method.POST, url, object, new Response.Listener<JSONObject>() {
                 @Override

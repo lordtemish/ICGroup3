@@ -9,6 +9,15 @@ public class TechnoMapForm {
     int stat=0;
     String method;
     String period;
+    boolean result=false;
+
+    public void setResult(boolean result) {
+        this.result = result;
+    }
+
+    public boolean isResult() {
+        return result;
+    }
 
     public void setId(String id) {
         this.id = id;

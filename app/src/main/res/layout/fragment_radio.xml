@@ -32,7 +32,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
                         android:layout_marginLeft="10dp"
-                        android:text="Умеренно"
+                        android:text="Низкий"
                         android:textSize="13sp"
                         android:textColor="@color/black"
                         android:gravity="center_vertical"
@@ -60,7 +60,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
-                    android:text="Умеренно"
+                    android:text="Средний"
                     android:textSize="13sp"
                     android:textColor="@color/black"
                     android:gravity="center_vertical"
@@ -93,39 +93,12 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
                         android:layout_marginLeft="10dp"
-                        android:text="Умеренно"
+                        android:text="Высокий"
                         android:textSize="13sp"
                         android:textColor="@color/black"
                         android:gravity="center_vertical"
                         />
                 </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/fourthGal"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:orientation="horizontal"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1">
-                <ImageView
-                    android:id="@+id/fourthGalImageView"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_white_galochka"
-                    android:padding="7dp"
-                    android:background="@drawable/green_circle"
-                    />
-                <TextView
-                    android:id="@+id/fourthGalTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:text="Умеренно"
-                    android:textSize="13sp"
-                    android:textColor="@color/black"
-                    android:gravity="center_vertical"
-                    />
-            </LinearLayout>
         </LinearLayout>
 </LinearLayout>

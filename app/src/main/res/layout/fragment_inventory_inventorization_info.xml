@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ObjectFragments.InventoryInventorizationInfoFragment"
     android:background="@color/light_grey"
-    android:orientation="vertical">
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="50sp"
@@ -74,6 +78,7 @@
                         android:layout_height="30dp"
                         android:layout_marginTop="10dp">
                         <TextView
+                            android:id="@+id/dateTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:layout_constraintTop_toTopOf="parent"
@@ -83,7 +88,6 @@
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/black"
                             android:textSize="15sp"
-                            android:text="@string/datestring"
                             />
                     </android.support.constraint.ConstraintLayout>
                     <LinearLayout
@@ -146,7 +150,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
                             android:textSize="11sp"
-                            android:text="@string/nameString"
+
                             />
                         <TextView
                             android:id="@+id/positionTextView"
@@ -154,7 +158,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
                             android:textSize="11sp"
-                            android:text="@string/positionExample"
+
                             />
                     </LinearLayout>
                 </LinearLayout>
@@ -177,4 +181,19 @@
                 </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
-</LinearLayout>
+    </LinearLayout>
+    <FrameLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/icgGreenTra"
+        android:onClick="onClick"
+        android:id="@+id/progressFrame"
+        >
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            />
+    </FrameLayout>
+</FrameLayout>

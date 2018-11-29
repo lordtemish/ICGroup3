@@ -3,12 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <LinearLayout
             android:onClick="onClick"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:paddingTop="10dp"
-            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/whiterow_page"
@@ -77,7 +79,7 @@
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/black"
                             android:textSize="15sp"
-                            android:text="Присутствовал"
+                            android:text="Полный день"
                             android:id="@+id/plusText"
                             />
                         <RadioButton
@@ -94,6 +96,92 @@
 
                             />
                     </android.support.constraint.ConstraintLayout>
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/halfLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="20dp">
+                    <TextView
+                        android:id="@+id/halfTextView"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:background="@drawable/lightgreen_circle"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/halfTextView"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:text="Пол дня"
+                        android:id="@+id/halfText"
+                        />
+                    <RadioButton
+                        android:id="@+id/halfRadio"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:button="@drawable/radiobutton1"
+                        android:checked="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+
+                        />
+                </android.support.constraint.ConstraintLayout>
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/thirdLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="20dp">
+                    <TextView
+                        android:id="@+id/thirdTextView"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:background="@drawable/grey_circle_line"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/thirdTextView"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:text="Треть дня"
+                        android:id="@+id/thirdText"
+                        />
+                    <RadioButton
+                        android:id="@+id/thirdRadio"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:button="@drawable/radiobutton1"
+                        android:checked="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+
+                        />
+                </android.support.constraint.ConstraintLayout>
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/minusLayout"
                     android:layout_width="match_parent"
@@ -256,6 +344,39 @@
                     </FrameLayout>
 
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="20sp"
+                    android:id="@+id/spinnerLinear3"
+                    android:layout_width="match_parent"
+                    android:layout_height="30sp"
+                    android:background="@drawable/spinner_back"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spinner3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:spinnerMode="dropdown" />
+
+                    <FrameLayout
+                        android:id="@+id/spinnerFrame3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="7">
+
+                        <ImageView
+                            android:layout_width="20sp"
+                            android:layout_height="20sp"
+                            android:layout_gravity="center"
+
+                            android:src="@drawable/ic_arrowdown_green" />
+                    </FrameLayout>
+
+                </LinearLayout>
             </LinearLayout>
             <FrameLayout
                 android:layout_margin="10dp"
@@ -274,4 +395,5 @@
                     />
             </FrameLayout>
         </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 </FrameLayout>

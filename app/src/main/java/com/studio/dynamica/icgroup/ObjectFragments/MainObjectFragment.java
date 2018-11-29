@@ -175,6 +175,13 @@ public class MainObjectFragment extends Fragment {
 
         changed=false;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        checkData();
+    }
+
     public void getRequest(final String url1){
         final String url=((MainActivity)getActivity()).MAIN_URL+url1;
 

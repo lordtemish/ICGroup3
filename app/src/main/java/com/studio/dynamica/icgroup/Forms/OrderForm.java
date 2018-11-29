@@ -18,6 +18,14 @@ public class OrderForm {
         this.num2=num2;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+            return id;
+    }
+
     public String getDate() {
         return date;
     }

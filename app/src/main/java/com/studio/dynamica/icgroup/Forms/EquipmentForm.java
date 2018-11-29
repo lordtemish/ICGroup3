@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EquipmentForm {
+    int replace=0, repair=0;
     String name, id;
     String vendor_code="";
     String num;
