@@ -403,7 +403,7 @@ public class InventoryMainFragment extends Fragment {
         progressFrame.setVisibility(View.VISIBLE);
         String url=((MainActivity)getActivity()).MAIN_URL+"replenishments";
         if(object)
-            url+="/?consumption__point="+id;
+            url+="/?point="+id;
         JsonArrayRequest arrayRequest=new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -476,6 +476,7 @@ public class InventoryMainFragment extends Fragment {
                     nowdays = 0;
                 }
                 AddOrderForm orderForm=new AddOrderForm(date,id,"", priority, status, rKind, nowdays, days);
+                orderForm.setMass(object.isNull("count"));
                 if(status.equals("FINISHED")){
                     archOrderForms.add(orderForm);
                 }

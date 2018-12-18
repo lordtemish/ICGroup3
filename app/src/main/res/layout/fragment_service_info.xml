@@ -1192,6 +1192,8 @@
                             android:id="@+id/butLayout"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
                         android:orientation="horizontal">
                         <TextView
                             android:id="@+id/cancelButText"

@@ -70,6 +70,12 @@ public class BigCounterView extends FrameLayout {
             page=max;
         checkPage();
     }
+
+    public void setPage(int page) {
+        this.page = page;
+        checkPage();
+    }
+
     private void checkPage(){
         number.setText(page+"");
     }

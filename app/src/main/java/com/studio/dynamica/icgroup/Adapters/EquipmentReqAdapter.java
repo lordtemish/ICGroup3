@@ -57,6 +57,7 @@ public class EquipmentReqAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public void setClicked(int clicked) {
         this.clicked = clicked;
+        notifyDataSetChanged();
     }
 
     public int getClicked() {

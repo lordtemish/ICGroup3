@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.error.AuthFailureError;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.JsonArrayRequest;
+import com.android.volley.request.JsonObjectRequest;
 import com.shawnlin.numberpicker.NumberPicker;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Adapters.AVRAdapter;
@@ -60,17 +62,20 @@ public class ClientControlObjectMainFragment extends Fragment {
     NumberPicker numberPicker, yearPicker;
     TextView pageInfo, addNewTextView,mainObjectTitle, clientControlInfoTextView, yearTextView, monthTextView,PercentageTextView;
     LinearLayout progressLayout, createNewLayout;
-    ConstraintLayout rateLayout;
+    ConstraintLayout rateLayout, addLayout;
     ImageView left, right, yearImageView, monthImageView;
     RecyclerView recyclerView, rateRecyclerView;
     Calendar cal;
     String[] data = {"Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"};
     ClientControlAdapter OlkAdapter, svodkaAdapter, checkListAdapter;
     AVRAdapter avrAdapter;
+    RateStarsAdapter rateStarsAdapter;
     View.OnClickListener createOlkListener, createCheckListListener, svodkaListener, avrListener;
     String id="", url, city;
     List<Object> olkForms,checkListForms, svodkaRateForms;
     List<AVRForm> avrForms;
+    ProgressBar ProgressBar;
+    boolean client=false;
     public ClientControlObjectMainFragment() {
         // Required empty public constructor
     }
@@ -85,15 +90,16 @@ public class ClientControlObjectMainFragment extends Fragment {
         url=((MainActivity)getActivity()).MAIN_URL+"controls/?point="+id;
         cal=Calendar.getInstance();
         cal.setTime(new Date());
+        client=((MainActivity)getActivity()).client;
         view=inflater.inflate(R.layout.fragment_client_control_object_main, container, false);
-
         createAllViews();
         setFonttypes();
         setAllListeners();
         PickerSettings();
 
         ((MainActivity)getActivity()).setRecyclerViewOrientation(rateRecyclerView,LinearLayoutManager.HORIZONTAL);
-        rateRecyclerView.setAdapter(new RateStarsAdapter(true));
+        rateStarsAdapter=new RateStarsAdapter(true);
+        rateRecyclerView.setAdapter(rateStarsAdapter);
 
         olkForms=new ArrayList<>();
         checkListForms=new ArrayList<>();
@@ -138,6 +144,13 @@ public class ClientControlObjectMainFragment extends Fragment {
 
         checkPage();
 
+        if(client){
+           // addLayout.setVisibility(View.GONE);
+            addLayout.setVisibility(View.VISIBLE);
+        }
+        else{
+            addLayout.setVisibility(View.VISIBLE);
+        }
         return view;
     }
     private void PickerSettings(){
@@ -206,12 +219,14 @@ public class ClientControlObjectMainFragment extends Fragment {
         progressLayout=(LinearLayout) view.findViewById(R.id.progressLayout);
         createNewLayout=(LinearLayout) view.findViewById(R.id.createNewLayout);
         rateLayout=(ConstraintLayout) view.findViewById(R.id.rateLayout);
+        addLayout=(ConstraintLayout) view.findViewById(R.id.addLayout);
         recyclerView=(RecyclerView) view.findViewById(R.id.CCRecyclerView);
         rateRecyclerView=(RecyclerView) view.findViewById(R.id.rateRecyclerView);
         extraLayout=(FrameLayout) view.findViewById(R.id.extraLayout);
 
         numberPicker=(NumberPicker) view.findViewById(R.id.numberPicker);
         yearPicker=(NumberPicker) view.findViewById(R.id.yearPicker);
+        ProgressBar=(ProgressBar) view.findViewById(R.id.ProgressBar);
     }
 
     private void  setAllListeners(){
@@ -291,20 +306,26 @@ public class ClientControlObjectMainFragment extends Fragment {
     public void checkPage(){
         extraLayout.setVisibility(View.VISIBLE);
         pageInfo.setText(pages.get(page));
+        String statUrl=((MainActivity)getActivity()).MAIN_URL;
         String cr="Создать ";
         String s="Чек лист";
+        boolean array=false;
         switch (page){
             case 0:
                 s="ОЛК";
                 setProgressLayout();
+                statUrl+="positioncontrols/questionnaire_stats/";
                 recyclerView.setAdapter(OlkAdapter);
+                array=true;
                 createNewLayout.setOnClickListener(createOlkListener);
                 break;
             case 1:
                 s="АВР";
                 setProgressLayout();
+                statUrl+="positioncontrols/performance_stats/";
                 recyclerView.setAdapter(avrAdapter);
                 createNewLayout.setOnClickListener(avrListener);
+
                 break;
             case 2:
                 s="Чек лист";
@@ -340,7 +361,108 @@ extraLayout.setVisibility(View.GONE);
             return headers;
         }};
         ((MainActivity)getActivity()).requestQueue.add(jsonArrayRequest);
+
+        statUrl+="?control__point="+id;
+       getStatistics(statUrl, array);
         addNewSetText(cr+s);
+    }
+    private void getStatistics(String url, boolean a){
+        if(url.contains("positioncontrols")) {
+            if(a){
+                JsonArrayRequest arrayRequest=new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        setStatistic(response);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }){
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap<String, String> headers = new HashMap<String, String>();
+                        headers.put("Accept", "application/json");
+                        headers.put("Content-Type", "application/json; charset=utf-8");
+                        headers.put("Authorization", "JWT " + ((MainActivity) getActivity()).token);
+                        return headers;
+                    }
+                };((MainActivity)getActivity()).requestQueue.add(arrayRequest);
+            }
+            else {
+                JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        extraLayout.setVisibility(View.GONE);
+                        setStatistic(response);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        extraLayout.setVisibility(View.GONE);
+                    }
+                }) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap<String, String> headers = new HashMap<String, String>();
+                        headers.put("Accept", "application/json");
+                        headers.put("Content-Type", "application/json; charset=utf-8");
+                        headers.put("Authorization", "JWT " + ((MainActivity) getActivity()).token);
+                        return headers;
+                    }
+                };
+                ((MainActivity) getActivity()).requestQueue.add(objectRequest);
+            }
+        }
+    }
+    private void setStatistic(JSONObject object){
+        try {
+            int it=0;
+            if(object.isNull("rate_avg")){
+                it=0;
+            }
+            else {
+                Log.d("response", object.toString() + "");
+                double rate = object.getDouble("rate_avg");
+                Log.d("rate_avg", rate + "");
+                it = Integer.parseInt("" + Math.round(rate * 20));
+            }
+            setStatistics(it);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    private void setStatistic(JSONArray object){
+        try {
+            Log.d("response",object.toString()+"");
+            int n=object.length();
+            double a=0;
+            for(int i=0;i<n;i++) {
+                JSONObject ob=object.getJSONObject(i);
+                int it=0;
+                if (ob.isNull("rate_avg")) {
+                    it=0;
+                }
+                else {
+                    double rate = ob.getDouble("rate_avg");
+                    Log.d("rate_avg", rate + "");
+                    it = Integer.parseInt("" + Math.round(rate * 20));
+                }
+                a+=it;
+            }
+            a=a/n;
+            int it=Integer.parseInt(Math.round(a)+"");
+            setStatistics(it);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    private void setStatistics(int it){
+        ProgressBar.setProgress(it);
+        PercentageTextView.setText(it+"%");
     }
     private String getdate(Calendar calendar){
         return calendar.get(Calendar.DAY_OF_MONTH)+" "+data[calendar.get(Calendar.MONTH)]+" "+calendar.get(Calendar.YEAR)+"|"+calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE);

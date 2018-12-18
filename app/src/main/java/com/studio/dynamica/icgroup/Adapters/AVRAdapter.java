@@ -285,6 +285,7 @@ public class AVRAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     try {
                         JSONObject contactor=response.getJSONObject("contactor");
                         JSONObject producer=response.getJSONObject("producer");
+                        //curator change
                         JSONObject curator=response.getJSONObject("curator");
                         if(is_producer_permitted>-1)
                             strings.set(2,new String[]{producer.getString("fullname"),producer.getString("role"), "-1"});

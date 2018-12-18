@@ -50,7 +50,7 @@ public class AttendanceMainFragment extends Fragment {
     FrameLayout chooseLayout;
     View.OnClickListener emptyL, postL;
     NumberPicker datePicker, yearPicker;
-    TextView mainObjectTitle, yearTextView, monthTextView, smenasTextView, smenaCountTextView;
+    TextView mainObjectTitle, yearTextView, monthTextView, smenasTextView, smenaCountTextView, totalDays,allWorkers, absents, heres;
     ImageView dateArrowImageView, yearArrowImageView, leftCalArrow, rightCalArrow, ImageRightView, ImageLeftView;
     Calendar cal, cal2;
     List<String> strings;
@@ -61,7 +61,7 @@ public class AttendanceMainFragment extends Fragment {
     String[] months = {"Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"}
         , weeks={"Пн","Вт","Ср","Чт","Пт","Сб","Вс"}
     ;
-    int shift_count=0,shift=1;
+    int shift_count=0,shift=1, location=1;
     AttendanceAdapter attendanceAdapter;
     public AttendanceMainFragment() {
         // Required empty public constructor
@@ -74,6 +74,7 @@ public class AttendanceMainFragment extends Fragment {
         // Inflate the layout for this fragment
         id=getArguments().getString("id");
         shift_count=getArguments().getInt("shift_count");
+        location=getArguments().getInt("location",1);
         atts=new ArrayList<>();
         cal=Calendar.getInstance();
         cal2=Calendar.getInstance();
@@ -136,6 +137,9 @@ public class AttendanceMainFragment extends Fragment {
             }
         });
         checkPage();
+        getPoint();
+
+        attendanceChooseView.setLocation(location);
         return view;
     }
     private void changePage(int a){
@@ -159,64 +163,72 @@ public class AttendanceMainFragment extends Fragment {
       //  Log.d("worker",choseworker);
     }
     private void postRequest(){
-        String url=((MainActivity)getActivity()).MAIN_URL+"visits/";
-        try {
-            progressLayout.setVisibility(View.VISIBLE);
-            JSONObject params = new JSONObject();
-            int i=attendanceChooseView.getCheckedPosition();
-            String s="PRESENT";
-            switch (i){
-                case 1:
-                    s="ABSENT";
-                    break;
-                case 2:
-                    s="ILL";
-                    break;
-                case 3:
-                    s="REPLACE";
-                    String st=attendanceChooseView.getChose();
-                    if(!st.equals("-1"))
-                    params.put("replacer", st);
-                    break;
-                case 4:
-                    s="HALF";
-                    break;
-                case 5:
-                    s="THIRD";
-                    break;
-                    default:
-                        s="FULL";
-            }
-            params.put("worker", choseworker);
-            params.put("kind", s);
-            Log.d("parametes",params.toString());
-            JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    progressLayout.setVisibility(View.GONE);
-                    chooseLayout.setVisibility(View.GONE);
-                    checkPage();
-                    Log.d("resp",response.toString());
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    progressLayout.setVisibility(View.GONE);
-                    Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
-                }
-            }){  @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Accept", "application/json");
-                headers.put("Content-Type", "application/json; charset=utf-8");
-                headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
-                return headers;
-            }};
-
-            ((MainActivity) getActivity()).requestQueue.add(jsonObjectRequest);
+        if(attendanceChooseView.getChose().equals("-1") && attendanceChooseView.getCheckedPosition()==3){
+            Toast.makeText(getActivity(), "Выберите заменяющего", Toast.LENGTH_SHORT).show();
         }
-        catch (Exception e){
+        else {
+            String url = ((MainActivity) getActivity()).MAIN_URL + "visits/";
+            try {
+                progressLayout.setVisibility(View.VISIBLE);
+                JSONObject params = new JSONObject();
+                int i = attendanceChooseView.getCheckedPosition();
+                String s = "PRESENT";
+                switch (i) {
+                    case 1:
+                        s = "ABSENT";
+                        break;
+                    case 2:
+                        s = "ILL";
+                        break;
+                    case 3:
+                        s = "REPLACE";
+                        String st = attendanceChooseView.getChose();
+                        if (!st.equals("-1"))
+                            params.put("replacer", st);
 
+                        break;
+                    case 4:
+                        s = "HALF";
+                        break;
+                    case 5:
+                        s = "THIRD";
+                        break;
+                    default:
+                        s = "FULL";
+                }
+                params.put("worker", choseworker);
+                params.put("kind", s);
+                params.put("salary",0);
+                Log.d("parametes", params.toString());
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        progressLayout.setVisibility(View.GONE);
+                        chooseLayout.setVisibility(View.GONE);
+                        checkPage();
+                        Log.d("resp", response.toString());
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressLayout.setVisibility(View.GONE);
+                        Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap<String, String> headers = new HashMap<String, String>();
+                        headers.put("Accept", "application/json");
+                        headers.put("Content-Type", "application/json; charset=utf-8");
+                        headers.put("Authorization", "JWT " + ((MainActivity) getActivity()).token);
+                        return headers;
+                    }
+                };
+
+                ((MainActivity) getActivity()).requestQueue.add(jsonObjectRequest);
+            } catch (Exception e) {
+
+            }
         }
     }
 
@@ -269,19 +281,28 @@ public class AttendanceMainFragment extends Fragment {
     private void setInfo(JSONArray array){
         progressLayout.setVisibility(View.VISIBLE);
         rowForms.clear();strings=new ArrayList<>();
+        Calendar calendar=Calendar.getInstance();calendar.setTime(new Date());
+        int count=calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        smenaCountTextView.setText( shift+"/"+shift_count);
+        totalDays.setText(count+"");
+        Log.d("COUNTCOUNT",count+" ");
+
         for(int i=0;i<array.length();i++){
             try {
                 JSONObject object = array.getJSONObject(i);
+                String status=object.getString("status");
                 JSONObject user=object.getJSONObject("user");
-                AttendanceRowForm rowForm=new AttendanceRowForm(object.getString("id"),user.getString("fullname"),getEmptyList(), 0,0);
-                rowForms.add(rowForm);
-                strings.add(rowForm.getId()+" "+rowForm.getName());
+                if(status.equals("STABLE")) {
+                    AttendanceRowForm rowForm = new AttendanceRowForm(object.getString("id"), user.getString("fullname"), getEmptyList(), 0, 0);
+                    rowForms.add(rowForm);
+                  //      strings.add(rowForm.getId() + " " + rowForm.getName());
+                }
             }
             catch (Exception e){
                 e.printStackTrace();
             }
         }
-        attendanceChooseView.setZamena(strings);
+     //   attendanceChooseView.setZamena(strings);
         attendanceAdapter.notifyDataSetChanged();
         String url=((MainActivity)getActivity()).MAIN_URL+"visits/?point="+id;
         JsonArrayRequest arrayRequest=new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -314,7 +335,7 @@ public class AttendanceMainFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         setChooseLayout(id);
-                        attendanceChooseView.setZamena(strings);
+                   //     attendanceChooseView.setZamena(strings);
                     }
                 });
             }
@@ -326,10 +347,20 @@ public class AttendanceMainFragment extends Fragment {
     }
     private void setAttReq(JSONArray array){
         try {
+            int abs=0, acc=0;
             for (int i = 0; i < array.length(); i++) {
                 JSONObject object = array.getJSONObject(i);
                 atts.add(object);
+                String kind=object.getString("kind");
+                if(kind.contains("ABS") || kind.equals("ILL")){
+                    abs++;
+                }
+                else{
+                    acc++;
+                }
             }
+            Log.d("Attendance", "Total: "+array.length()+"  absents: "+abs+"  here: "+acc);
+            absents.setText(abs+"");heres.setText(acc+"");
             dateAttCheck();
 
         }
@@ -342,7 +373,9 @@ public class AttendanceMainFragment extends Fragment {
             for (JSONObject object : atts) {
                 String date=object.getString("date");
                 String kind=object.getString("kind");
-                String id=object.getString("worker");
+
+                JSONObject worker=object.getJSONObject("worker");
+                String id=worker.getString("id");
                 for(AttendanceRowForm ro:rowForms){
                     if(ro.getId().equals(id)){
 
@@ -526,6 +559,10 @@ public class AttendanceMainFragment extends Fragment {
         yearTextView=(TextView) view.findViewById(R.id.yearTextView);
         smenasTextView=(TextView) view.findViewById(R.id.smenasTextView);
         smenaCountTextView=(TextView) view.findViewById(R.id.smenaCountTextView);
+        allWorkers=(TextView) view.findViewById(R.id.allWorkers);
+        absents=(TextView) view.findViewById(R.id.absents);
+        heres=(TextView) view.findViewById(R.id.heres);
+        totalDays=(TextView) view.findViewById(R.id.totalDays);
         attendanceChooseView=(AttendanceChooseView) view.findViewById(R.id.attendanceChooseView);
 
         calTextViews=new ArrayList<>();
@@ -560,6 +597,39 @@ public class AttendanceMainFragment extends Fragment {
     private void setTypeFace(String s, TextView... textViews) {
         for (int i = 0; i < textViews.length; i++) {
             textViews[i].setTypeface(((MainActivity) getActivity()).getTypeFace(s));
+        }
+    }
+
+    private void getPoint(){
+        progressLayout.setVisibility(View.VISIBLE);
+        String url=((MainActivity)getActivity()).MAIN_URL+"points/"+id;
+        JsonObjectRequest objectRequest=new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+            progressLayout.setVisibility(View.GONE);
+            setPoint(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressLayout.setVisibility(View.GONE);
+            }
+        }){ @Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            HashMap<String, String> headers = new HashMap<String, String>();
+            headers.put("Accept", "application/json");
+            headers.put("Content-Type", "application/json; charset=utf-8");
+            headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
+            return headers;
+        }};((MainActivity)getActivity()).requestQueue.add(objectRequest);
+    }
+    private void setPoint(JSONObject object){
+        try {
+            int worker=object.getInt("workers_count");
+            allWorkers.setText(worker+"");
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
     }
 }

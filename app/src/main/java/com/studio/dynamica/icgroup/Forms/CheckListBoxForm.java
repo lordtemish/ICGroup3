@@ -3,13 +3,21 @@ package com.studio.dynamica.icgroup.Forms;
 import java.util.List;
 
 public class CheckListBoxForm {
-    String name;
-    boolean accept;
+    String name, id="";
+    boolean accept, open=false;
     List<CheckListBoxRowForm> list;
-    public CheckListBoxForm(String name, boolean accept, List<CheckListBoxRowForm> forms){
+    public CheckListBoxForm( String name, boolean accept, List<CheckListBoxRowForm> forms){
         this.name=name;
-        this.accept=accept;
+        this.accept=accept;this.id=id;
         this.list=forms;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

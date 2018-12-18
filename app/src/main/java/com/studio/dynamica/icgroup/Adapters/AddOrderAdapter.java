@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Forms.AddOrderForm;
+import com.studio.dynamica.icgroup.InventoryFragments.MassCreationInfoFragment;
 import com.studio.dynamica.icgroup.ObjectFragments.AddOrderInfoFragment;
 import com.studio.dynamica.icgroup.R;
 
@@ -29,6 +30,7 @@ public class AddOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         ImageView boGalo;
         String status;
         String id="";
+        boolean mass=false;
         int d1,d2;
         private myHolder(View view){
             super(view);
@@ -61,16 +63,29 @@ public class AddOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             });
         }
         private void onclick(){
-            AddOrderInfoFragment infoFragment=new AddOrderInfoFragment();
-            Bundle bundle=new Bundle();
-            bundle.putString("status",status);
-            bundle.putString("id",id);
-            bundle.putInt("day1",d1);
-            bundle.putInt("day2",d2);
-            infoFragment.setArguments(bundle);
-            ((MainActivity)context).setFragment(R.id.content_frame,infoFragment);
+            if(mass) {
+                MassCreationInfoFragment infoFragment = new MassCreationInfoFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("status", status);
+                bundle.putString("id", id);
+                bundle.putInt("day1", d1);
+                bundle.putInt("day2", d2);
+                infoFragment.setArguments(bundle);
+                ((MainActivity) context).setFragment(R.id.content_frame, infoFragment);
+            }
+            else {
+                AddOrderInfoFragment infoFragment = new AddOrderInfoFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("status", status);
+                bundle.putString("id", id);
+                bundle.putInt("day1", d1);
+                bundle.putInt("day2", d2);
+                infoFragment.setArguments(bundle);
+                ((MainActivity) context).setFragment(R.id.content_frame, infoFragment);
+            }
         }
         private void setInfo(AddOrderForm form){
+            mass=form.isMass();
             d1=form.getDay1();d2=form.getDay2();
             id=form.getId();
             dateTextView.setText(form.getDate());
@@ -102,7 +117,7 @@ public class AddOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     boGalo.setBackgroundResource(R.drawable.failedrow_circle);
                     break;
                 case "WAITING":
-                    statusLayout.setBackgroundResource(R.drawable.icgreen_page);
+                    statusLayout.setBackgroundResource(R.drawable.inwait_yellowpage);
                     statusTextView.setText("Ожидает");
                     mainStatusTextView.setText("Ожидает");
                     boGalo.setBackgroundResource(R.drawable.green_circle);
@@ -115,8 +130,8 @@ public class AddOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     break;
                 case "FAILED":
                     statusLayout.setBackgroundResource(R.drawable.related_darkgreen_page);
-                    statusTextView.setText("Время вышло");
-                    mainStatusTextView.setText("Время вышло");
+                    statusTextView.setText("Провалено");
+                    mainStatusTextView.setText("Провалено");
                     boGalo.setBackgroundResource(R.drawable.related_darkgreen_circle);
                     break;
                 case "cancel":

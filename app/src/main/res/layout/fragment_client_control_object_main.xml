@@ -111,7 +111,8 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="100sp"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:id="@+id/addLayout">
             <TextView
                 android:layout_width="120sp"
                 android:layout_height="wrap_content"

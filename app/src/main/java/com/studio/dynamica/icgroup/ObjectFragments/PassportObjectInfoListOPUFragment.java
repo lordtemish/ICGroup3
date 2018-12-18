@@ -32,6 +32,7 @@ import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Adapters.CommentAdapter;
 import com.studio.dynamica.icgroup.Adapters.ReplacerAdapter;
 import com.studio.dynamica.icgroup.ExtraFragments.BigCounterView;
+import com.studio.dynamica.icgroup.ExtraFragments.HolidayFragmentView;
 import com.studio.dynamica.icgroup.Forms.CommentForm;
 import com.studio.dynamica.icgroup.Forms.JalobaForm;
 import com.studio.dynamica.icgroup.Forms.UserRowForm;
@@ -61,14 +62,29 @@ public class PassportObjectInfoListOPUFragment extends Fragment {
     ReplacerAdapter replacerAdapter;
     LinearLayout newComments,allComments;
     TextView newCommentTextView,planWorkTextView,allCommentTextView, mainObjectTitle, nameTextView, positionTextView, dateTextView, PercentageTextView,  employeeChangeTextView, emplChangeButton, emplDropTextView,
-            holidayTypeTop, holidayTypeTextView, holidayDate;
+            holidayTypeTop, holidayTypeTextView, holidayDate, holidaySetButton,replacedTextView;
     FrameLayout newCommentFrame, allCommentFrame, progressLayout;
     LinearLayout attendanceLayout, commentsLayout, holidayLayout;
     ProgressBar ProgressBar;
     ImageView circlePhoneImageView,arrowPlanImageView;
-    int shift, point;
+    int shift, point, planD=0;
     RadioButton checkRadio;
     JSONObject user;
+    HolidayFragmentView holidayFragmentView;
+    View.OnClickListener holidayListener=new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            holidayFragmentView.setVisibility(View.GONE);
+            getRequest();
+            ((MainActivity)getActivity()).setPressable(true, null);
+        }
+    }, lista=new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            holidayFragmentView.setVisibility(View.VISIBLE);
+            ((MainActivity)getActivity()).setPressable(false,holidayListener);
+        }
+    };
     boolean open=false;
 String id, name, phone, userid;
     public PassportObjectInfoListOPUFragment() {
@@ -167,19 +183,26 @@ String id, name, phone, userid;
         });
         spinner.setAdapter(spinnerAdapter);
         getRequest();
-
+        getVisits();
         arrowPlanImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 arrowPlan();
             }
         });
+        holidaySetButton.setOnClickListener(lista);
         return view;
     }
     private void arrowPlan(){
         if(counterView.getVisibility()==View.VISIBLE){
             counterView.setVisibility(View.GONE);
             arrowPlanImageView.setImageResource(R.drawable.ic_arrowdown);
+            JSONObject object=new JSONObject();
+            try{
+                object.put("plan_days",counterView.getPage());
+            }
+            catch (Exception e){e.printStackTrace();}
+            update(object);
         }
         else{
             counterView.setVisibility(View.VISIBLE);
@@ -203,6 +226,7 @@ String id, name, phone, userid;
         counterView=(BigCounterView)view.findViewById(R.id.counterView);
         counterView.setMax(30);
 
+        replacedTextView=(TextView) view.findViewById(R.id.replacedTextView);
         employeeChangeTextView=(TextView) view.findViewById(R.id.employeeChangeTextView);
         allCommentTextView=(TextView) view.findViewById(R.id.allCommentsTextView);
         newCommentTextView=(TextView) view.findViewById(R.id.newCommentTextView);
@@ -228,11 +252,14 @@ String id, name, phone, userid;
         checkRadio=(RadioButton) view.findViewById(R.id.checkRadio);
         dateTextView=(TextView) view.findViewById(R.id.dateTextView);
         PercentageTextView=(TextView) view.findViewById(R.id.PercentageTextView);
+        holidaySetButton=(TextView) view.findViewById(R.id.holidaySetButton);
         emplChangeButton=(TextView) view.findViewById(R.id.employeeChangeButton);
         emplDropTextView=(TextView) view.findViewById(R.id.employeeDropTextView);
         arrowPlanImageView=(ImageView) view.findViewById(R.id.arrowPlanImageView);
         circlePhoneImageView=(ImageView) view.findViewById(R.id.circlePhoneImageView);
         ProgressBar=(ProgressBar) view.findViewById(R.id.ProgressBar);
+
+        holidayFragmentView=(HolidayFragmentView)view.findViewById(R.id.holidayFragmentView);
     }
 
     private void setPage(boolean att){
@@ -264,8 +291,47 @@ String id, name, phone, userid;
     public void showSpinner(){
         spinner.performClick();
     }
-
-
+    private void getVisits(){
+        progressLayout.setVisibility(View.VISIBLE);
+        String url=((MainActivity)getActivity()).MAIN_URL+"visits/?replacer="+id;
+        JsonArrayRequest objectRequest=new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                progressLayout.setVisibility(View.GONE);
+                setVisits(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressLayout.setVisibility(View.GONE);
+                Toast.makeText(getActivity(), "CONNECTION_TROUBLE", Toast.LENGTH_SHORT).show();
+            }
+        }){  @Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            HashMap<String, String> headers = new HashMap<String, String>();
+            headers.put("Accept", "application/json");
+            headers.put("Content-Type", "application/json; charset=utf-8");
+            headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
+            return headers;
+        }};((MainActivity)getActivity()).requestQueue.add(objectRequest);
+    }
+    private void setVisits(JSONArray array){
+        try {
+            int n=array.length();
+            replacedTextView.setText(n+"");
+            userForms.clear();
+            for (int i=0;i<n;i++){
+                JSONObject object=array.getJSONObject(i);
+                JSONObject worker=object.getJSONObject("worker");
+                JSONObject user=worker.getJSONObject("user");
+                userForms.add(new UserRowForm(user.getString("fullname"), "ОПУ",object.getString("date")));
+            }
+            replacerAdapter.notifyDataSetChanged();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
     private void getRequest(){
         progressLayout.setVisibility(View.VISIBLE);
         String url=((MainActivity)getActivity()).MAIN_URL+"workers/"+id+"/";
@@ -293,19 +359,23 @@ String id, name, phone, userid;
     private void setInfo(JSONObject object){
         try{
             JSONObject point=object.getJSONObject("point");
+            holidayFragmentView.setId(id);
             this.point=point.getInt("id");
             user=object.getJSONObject("user");
+            holidayFragmentView.setName(user.getString("fullname"));
             shift=object.getInt("shift");
             String status=object.getString("status");
             Double dos=object.getDouble("attendance_rate");
             boolean aa=object.getBoolean("is_contract");
             int perfomance=(int)Math.round(dos*100), salary=object.getInt("salary"), plan_days=object.getInt("plan_days");
-            planWorkTextView.setText("План работ: "+plan_days+" дней");
+            planD=plan_days;
+            Calendar calendar=Calendar.getInstance();calendar.setTime(new Date());
+            int count=calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+            planWorkTextView.setText("План работ: "+0+" / "+plan_days);
+            counterView.setPage(plan_days);
             checkRadio.setText("  "+salary+"тг");
             ProgressBar.setProgress(perfomance);
             PercentageTextView.setText(perfomance+"%");
-            Date date=new Date();
-            Calendar calendar=Calendar.getInstance();calendar.setTime(date);
             String dateString="";
 
             if(aa){
@@ -319,27 +389,46 @@ String id, name, phone, userid;
             Log.d(dateString,dateString);
             dateTextView.setText(dateString);
             getReq();
+            holidaySetButton.setVisibility(View.VISIBLE);
+            holidayLayout.setVisibility(View.GONE);
             if(status.contains("HOLIDAY")){
                 holidayLayout.setVisibility(View.VISIBLE);
+                holidaySetButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        JSONObject object=new JSONObject();
+                        try{
+                            object.put("status","STABLE");
+                        }catch (Exception e){e.printStackTrace();}
+                        update(object);
+                    }
+                });
+                holidaySetButton.setText("ОТМЕНА ОТПУСКА");
                 if(status.contains("0")) {
                     holidayTypeTextView.setText("Отпуск без содержания");
+                    holidayTypeTop.setText("Отпуск (без содержания)");
                 }
                 else{
                     holidayTypeTextView.setText("Отпуск с содержанием");
+                    holidayTypeTop.setText("Отпуск (с содержанием)");
                 }
             }
             else if(status.equals("REMOVE")){
                 positionTextView.setText("ОПУ - уволен");
+                holidaySetButton.setVisibility(View.GONE);
             }
-
-            userForms.clear();
-            userForms.add(new UserRowForm("Арсланов Надат", "ОПУ","18.11.2018"));
-            replacerAdapter.notifyDataSetChanged();
+            else{
+                holidaySetButton.setOnClickListener(lista);
+                holidaySetButton.setText("ОТПУСК");
+            }
 
         }
         catch (Exception e){
             e.printStackTrace();
         }
+    }
+    private void setPlanDays(int a){
+        planWorkTextView.setText("План работ: "+a+" / "+planD);
     }
     private void delete(){
         progressLayout.setVisibility(View.VISIBLE);
@@ -436,6 +525,34 @@ String id, name, phone, userid;
         catch (Exception e){
             e.printStackTrace();
         }
+    }
+    private void update(JSONObject object){
+        progressLayout.setVisibility(View.VISIBLE);
+        String url=((MainActivity)getActivity()).MAIN_URL+"workers/"+id+"/";
+        JsonObjectRequest request=new JsonObjectRequest(Request.Method.PATCH, url, object, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                progressLayout.setVisibility(View.GONE);
+                getRequest();
+                Toast.makeText(getActivity(), "Сохранено", Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressLayout.setVisibility(View.GONE);
+                Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            HashMap<String, String> headers = new HashMap<String, String>();
+            headers.put("Accept", "application/json");
+            headers.put("Content-Type", "application/json; charset=utf-8");
+            headers.put("Authorization", "JWT " + ((MainActivity) getActivity()).token);
+            return headers;
+        }
+        };
+        ((MainActivity)getActivity()).requestQueue.add(request);
     }
 
 }

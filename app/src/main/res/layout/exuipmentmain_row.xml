@@ -92,15 +92,31 @@
                                 android:textColor="@color/darkgrey"
                                 />
                         </android.support.constraint.ConstraintLayout>
+                        <android.support.constraint.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/using">
                         <TextView
-                            android:layout_marginTop="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
                             android:textSize="11sp"
                             android:text="Используется на объектах"
                             android:id="@+id/usingLabel"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             />
+                            <ImageView
+                                android:visibility="invisible"
+                                android:id="@+id/buttonArrow"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:background="@drawable/green_circle"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:padding="7dp"
+                                android:src="@drawable/ic_arrowright"
+                                />
+                        </android.support.constraint.ConstraintLayout>
                     </LinearLayout>
                 </LinearLayout>
             <android.support.v7.widget.RecyclerView

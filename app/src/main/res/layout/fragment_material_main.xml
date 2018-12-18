@@ -64,9 +64,71 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80sp"
+                    android:id="@+id/addLayout"
+                    android:visibility="visible"
+                    android:background="@color/white">
+                    <TextView
+                        android:layout_width="120sp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/createNewLayout"
+                        android:gravity="start"
+                        android:id="@+id/clientControlInfoTextView"
+                        android:text="Сдаётся начальнику производства до 15 числа каждого месяца"
+                        android:textSize="10sp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/black"
+                        />
+                    <LinearLayout
+                        android:gravity="center"
+                        android:id="@+id/createNewLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:maxHeight="80dp"
+                        android:padding="10sp"
+                        android:paddingStart="20sp"
+                        android:paddingEnd="20sp"
+                        android:background="@drawable/green_circle"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/clientControlInfoTextView"
+
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/createNewTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxWidth="200dp"
+                            android:textSize="15sp"
+                            android:textColor="@color/white"
+                            android:text="Создать плановую заявку"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            />
+                        <TextView
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="17sp"
+                            android:textColor="@color/light_grey"
+                            android:text="+"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            />
+                    </LinearLayout>
+                </android.support.constraint.ConstraintLayout>
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
+                    android:nestedScrollingEnabled="false"
                     android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>

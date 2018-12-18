@@ -27,7 +27,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginStart="10sp"
                 android:layout_marginLeft="10sp"
-
+            android:src="@drawable/ic_backarr"
                 />
             <TextView
                 android:id="@+id/mainObjectTitle"

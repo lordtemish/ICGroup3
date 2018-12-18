@@ -1,6 +1,7 @@
 package com.studio.dynamica.icgroup.Adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Forms.EquipmentMObjectForm;
+import com.studio.dynamica.icgroup.ObjectFragments.MainObjectMainFrament;
 import com.studio.dynamica.icgroup.R;
 
 import java.util.List;
@@ -20,7 +22,7 @@ public class EquipmentMObjectAdapter extends RecyclerView.Adapter<RecyclerView.V
     private class myHolder extends RecyclerView.ViewHolder{
         TextView nameTextView, numberLabelTextView, numberTextView, totalLabelTextView, totalMarkTextView, totalUnitTextView;
         ProgressBar ProgressBar;
-        LinearLayout progressBarLayout, totalLayout;
+        LinearLayout progressBarLayout, totalLayout, wholeLayout;
         private myHolder(View view){
             super(view);
             nameTextView=(TextView) view.findViewById(R.id.nameTextView);
@@ -32,11 +34,24 @@ public class EquipmentMObjectAdapter extends RecyclerView.Adapter<RecyclerView.V
             ProgressBar=(ProgressBar)view.findViewById(R.id.ProgressBar);
             progressBarLayout=(LinearLayout) view.findViewById(R.id.progressBarLayout);
             totalLayout=(LinearLayout) view.findViewById(R.id.totalLayout);
+            wholeLayout=(LinearLayout) view.findViewById(R.id.wholeLayout);
             ((MainActivity)context).setType("demibold", nameTextView, numberTextView, totalMarkTextView, totalUnitTextView);
             ((MainActivity)context).setType("light", numberLabelTextView, totalLabelTextView);
         }
-        private void setInfo(EquipmentMObjectForm form){
+        private void setInfo(final EquipmentMObjectForm form){
             nameTextView.setText(form.getName());
+            wholeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MainObjectMainFrament frament=new MainObjectMainFrament();
+                    Bundle bundle =new Bundle();
+                    bundle.putString("id",form.getId());
+                    bundle.putString("name",form.getName());
+                    bundle.putInt("location",Integer.parseInt(((MainActivity)context).location));
+                    frament.setArguments(bundle);
+                    ((MainActivity)context).setFragment(R.id.content_frame,frament);
+                }
+            });
             if (form.isWhole()){
                 totalLayout.setVisibility(View.VISIBLE);
                 progressBarLayout.setVisibility(View.GONE);

@@ -2,11 +2,19 @@ package com.studio.dynamica.icgroup.Forms;
 
 
 public class SpinnerForm {
-    String id, name;
+    String id, name, text="";
     int num;
     public SpinnerForm(String i, String n){
         id=i;name=n;
         num=1;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getText() {
+        return text;
     }
 
     public String getId() {

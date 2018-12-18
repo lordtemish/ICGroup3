@@ -112,7 +112,7 @@ public class MainObjectMainFrament extends Fragment {
         buttonsList.add("Задачи");
         if(true)
         buttonsList.add("Технологическая карта");
-        if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("QC")|| (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
+        if(client || (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("QC")|| (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
         buttonsList.add("Контроль качества");
         if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("SUPPLY") || (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
         buttonsList.add("Инвентарь");
@@ -144,7 +144,7 @@ public class MainObjectMainFrament extends Fragment {
         listeners.add(serviceListener);
         if(true)
         listeners.add(TechnoMapListener);
-        if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("QC")|| (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
+        if(client || (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("QC")|| (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
         listeners.add(ClientControlListener);
         if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("SUPPLY") || (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
         listeners.add(listener);
@@ -282,9 +282,10 @@ public class MainObjectMainFrament extends Fragment {
         progressBar=(ConstraintLayout) view.findViewById(R.id.progressLayout);
 
         id=getArguments().getString("id");
+        ((MainActivity)getActivity()).setPoint(id);
         location=getArguments().getInt("location");
         ((MainActivity)getActivity()).setLocation(location+"");
-        city=getArguments().getString("city");
+        city=getArguments().getString("city","");
     }
 
     private void setRowPhones(List<PhonesRowForm> rowForms){

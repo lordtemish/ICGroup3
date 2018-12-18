@@ -3,8 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:layout_marginTop="20dp"
+    android:id="@+id/wholeLayout"
     android:orientation="vertical">
     <FrameLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/light_grey"

@@ -64,8 +64,18 @@ public class WorkScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 if(i==2){
                     ending="-яя";
                 }
-                smenasTexts.get(i).setText(shiftForms.get(i).getShift()+ending+" смена");
-                smenasTimes.get(i).setText("с "+shiftForms.get(i).getBegin()+" до "+shiftForms.get(i).getEnd());
+                if(shiftForms.get(i).isWeekend()){
+                    String sub="Суббота";
+                    if(shiftForms.get(i).getShift()>6){
+                        sub="Воскресенье";
+                    }
+                    smenasTexts.get(i).setText(sub);
+                    smenasTimes.get(i).setText("с " + shiftForms.get(i).getBegin() + " до " + shiftForms.get(i).getEnd());
+                }
+                else {
+                    smenasTexts.get(i).setText(shiftForms.get(i).getShift() + ending + " смена");
+                    smenasTimes.get(i).setText("с " + shiftForms.get(i).getBegin() + " до " + shiftForms.get(i).getEnd());
+                }
             }
         }
 
@@ -79,6 +89,7 @@ public class WorkScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder1, int position) {
         myHolder holder=(myHolder) holder1;
         holder.setInfo(list.get(position));
+
     }
 
     @NonNull

@@ -352,10 +352,15 @@ public class ServiceObjectMainFragment extends Fragment {
             }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
-                progressLayout.setVisibility(View.GONE);
+            public void onErrorResponse(VolleyError error)  {
+                try {
+                    error.printStackTrace();
+                    Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
+                    progressLayout.setVisibility(View.GONE);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         }){   @Override
         public Map<String, String> getHeaders() throws AuthFailureError {

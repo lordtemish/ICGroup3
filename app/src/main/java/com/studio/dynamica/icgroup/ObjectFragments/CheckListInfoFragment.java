@@ -152,6 +152,7 @@ public class CheckListInfoFragment extends Fragment {
             JSONObject author=object.getJSONObject("author");
             infoDateTextView.setText(((MainActivity)getActivity()).getDateText(object.getString("created_at")));
             nameInfoLayout.setText(author.getString("fullname"));
+                Log.d("TagTag",author.getString("fullname"));
             String comment=object.getString("comment");
             List<MessageForm> messageForms=messageAdapter.getList();
             messageForms.clear();if(comment.length()>0){
@@ -185,6 +186,7 @@ public class CheckListInfoFragment extends Fragment {
                     }
                 }
             }
+            boxForms.clear();
             boxForms.add(new CheckListBoxForm(forms.get(l).getName(),l%2==0,rowForms));
             adapter.notifyDataSetChanged();
 
@@ -350,11 +352,11 @@ public class CheckListInfoFragment extends Fragment {
                 try {
                     JSONObject contactor=response.getJSONObject("contactor");
                     JSONObject producer=response.getJSONObject("producer");
-                    JSONObject curator=response.getJSONObject("curator");
+//                    JSONObject curator=response.getJSONObject("curator");
                     if(is_producer_permitted>-1)
                         strings.set(2,new String[]{producer.getString("fullname"),producer.getString("role"), "-1"});
-                    if(is_curator_permitted>-1)
-                        strings.set(3,new String[]{curator.getString("fullname"),curator.getString("role"), "-1"});
+  /*                  if(is_curator_permitted>-1)
+                        strings.set(3,new String[]{curator.getString("fullname"),curator.getString("role"), "-1"});*/
                     if(is_contactor_permitted>-1)
                         strings.set(4,new String[]{contactor.getString("fullname"),contactor.getString("role"), "-1"});
                     checkAccepts();

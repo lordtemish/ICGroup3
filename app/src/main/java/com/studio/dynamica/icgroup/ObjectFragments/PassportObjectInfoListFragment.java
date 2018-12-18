@@ -60,11 +60,12 @@ public class PassportObjectInfoListFragment extends Fragment {
     List<List<ProgressPhoneForm>>  allForms;
     List<ProgressPhoneForm> forms;
     TextView title;
-    Boolean is_trainee=false;
+    boolean is_trainee=false, client=false;
     String id;
     LinearLayout emplLa;
     ImageView arrowTop;
     PassportObjectInfoListAddNewEmployeeFragment employeeFragment;
+    LinearLayout norForClient;
     public PassportObjectInfoListFragment() {
         // Required empty public constructor
     }
@@ -74,6 +75,7 @@ public class PassportObjectInfoListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        client=((MainActivity)getActivity()).client;
         id=getArguments().getString("id","0");
        view=inflater.inflate(R.layout.fragment_passport_object_info_list, container, false);
 
@@ -106,6 +108,7 @@ public class PassportObjectInfoListFragment extends Fragment {
         phonesRecycler.setLayoutManager(mLayoutManager);
         phonesRecycler.setItemAnimator(new DefaultItemAnimator());
         phonesRecycler.setAdapter(adapter);
+        norForClient=(LinearLayout) view.findViewById(R.id.norForClient);
         progressPhoneRecycler=(RecyclerView) view.findViewById(R.id.progressPhoneRecycle);
         allForms=new ArrayList<>();
         allForms.add(new ArrayList<ProgressPhoneForm>());
@@ -145,6 +148,11 @@ public class PassportObjectInfoListFragment extends Fragment {
                 showEmpls();
             }
         });
+
+        if(client){
+            norForClient.setVisibility(View.GONE);
+        }
+        else norForClient.setVisibility(View.VISIBLE);
         return view;
     }
     private void showEmpls(){
@@ -388,11 +396,13 @@ public class PassportObjectInfoListFragment extends Fragment {
                         String s="";
                         for(int i=0;i<administrators.length();i++){
                             JSONObject curator=administrators.getJSONObject(i);
-                            phonesRowForms.add(new PhonesRowForm(true, curator.getString("fullname"), "Куратор", curator.getString("phone")));
+                            String po=curator.getString("role");
+                            String position=((MainActivity)getActivity()).positions.get(po);
+                            phonesRowForms.add(new PhonesRowForm(true, curator.getString("fullname"), position, curator.getString("phone")));
                             s+=""+curator.getString("fullname")+"\n";
                         }
 
-                        mapText.get("infoListAdvisor").setText(s);
+                        mapText.get("infoListAdministrator").setText(s);
                     }
                     else{
                         mapText.get("infoListAdministrator").setText("");

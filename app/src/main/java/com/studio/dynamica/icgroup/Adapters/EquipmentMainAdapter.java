@@ -1,13 +1,16 @@
 package com.studio.dynamica.icgroup.Adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +22,7 @@ import com.android.volley.request.JsonArrayRequest;
 import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Forms.EquipmentMObjectForm;
 import com.studio.dynamica.icgroup.Forms.EquipmentMainForm;
+import com.studio.dynamica.icgroup.InventoryFragments.PointsFragment;
 import com.studio.dynamica.icgroup.R;
 
 import org.json.JSONArray;
@@ -35,6 +39,8 @@ public class EquipmentMainAdapter extends RecyclerView.Adapter<RecyclerView.View
         EquipmentMObjectAdapter mObjectAdapter;
         int index;
         List<EquipmentMObjectForm> forms;
+        ConstraintLayout using;
+        ImageView buttonArrow;
         TextView nameTextView, idTextView, wholeQuanLabelTextView, numberTextView, unitTextView, passportEqTextButton, usingLabel;
         private myHolder(View view)
         {
@@ -47,6 +53,8 @@ public class EquipmentMainAdapter extends RecyclerView.Adapter<RecyclerView.View
             unitTextView=(TextView)view.findViewById(R.id.unitTextView);
             passportEqTextButton=(TextView)view.findViewById(R.id.passportEqTextButton);
             usingLabel=(TextView)view.findViewById(R.id.usingLabel);
+            using=(ConstraintLayout)view.findViewById(R.id.using);
+            buttonArrow=(ImageView) view.findViewById(R.id.buttonArrow);
             recyclerView=(RecyclerView) view.findViewById(R.id.recyclerView);
             mObjectAdapter=new EquipmentMObjectAdapter(forms);
             recyclerView.setAdapter(mObjectAdapter);
@@ -90,28 +98,46 @@ public class EquipmentMainAdapter extends RecyclerView.Adapter<RecyclerView.View
             };
             ((MainActivity)context).requestQueue.add(arrayRequest);
         }
-        private void setArray(JSONArray array){
+        private void setArray(final JSONArray array){
             try {
                 forms.clear();
                 if(array.length()==0){
-                    usingLabel.setVisibility(View.GONE);
+                    using.setVisibility(View.GONE);
+                    buttonArrow.setVisibility(View.GONE);
                 }
-                else usingLabel.setVisibility(View.VISIBLE);
-                for(int i=0;i<array.length();i++){
-                    JSONObject object=array.getJSONObject(i);
-                    JSONObject point=object.getJSONObject("point");
-                    JSONObject inventory=object.getJSONObject("inventory");
-//                    JSONObject company=inventory.getJSONObject("company");
-                    String id=point.getString("id"), name=point.getString("name"), unit=inventory.getString("unit");
-                    String uni=((MainActivity)context).inventoryUnits.get(unit);
-                    double qua=object.getDouble("quantity"), limit=object.getDouble("limit");
-                    int invento_rate=Integer.parseInt(""+Math.round(qua/limit*100));
-                    int repair = object.getInt("repair"), replace = object.getInt("replace");
-                    list.get(index).addRepair(repair);list.get(index).addReplace(replace);
-                    EquipmentMObjectForm form=new EquipmentMObjectForm(id, name,uni, Integer.parseInt(Math.round(qua)+""),invento_rate);
-                    forms.add(form);
+                else {
+                    using.setVisibility(View.VISIBLE);
+                    buttonArrow.setVisibility(View.VISIBLE);
+                    buttonArrow.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            PointsFragment fragment=new PointsFragment();
+                            Bundle bundle=new Bundle();
+                            bundle.putString("name", list.get(index).getName());
+                            bundle.putString("array",array.toString());
+                            fragment.setArguments(bundle);
+                            ((MainActivity)context).setFragment(R.id.content_frame,fragment);
+                        }
+                    });
                 }
-                mObjectAdapter.notifyDataSetChanged();
+
+                    for(int i=0;i<array.length();i++){
+                        JSONObject object=array.getJSONObject(i);
+                        JSONObject point=object.getJSONObject("point");
+                        JSONObject inventory=object.getJSONObject("inventory");
+    //                    JSONObject company=inventory.getJSONObject("company");
+                   /*     String id=point.getString("id"), name=point.getString("name"), unit=inventory.getJSONObject("unit").getString("name");
+                        String uni=unit;
+                        double qua=object.getDouble("quantity"), limit=object.getDouble("limit");
+                        int invento_rate=Integer.parseInt(""+Math.round(qua/limit*100));*/
+                        int repair = object.getInt("repair"), replace = object.getInt("replace");
+                        list.get(index).addRepair(repair);list.get(index).addReplace(replace);
+                        /*EquipmentMObjectForm form=new EquipmentMObjectForm(id, name,uni, Integer.parseInt(Math.round(qua)+""),invento_rate);
+                        forms.add(form);*/
+                    }
+                wholeQuanLabelTextView.setText(whole);
+                 //   mObjectAdapter.notifyDataSetChanged();
+
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -120,6 +146,7 @@ public class EquipmentMainAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
     List<EquipmentMainForm> list;
     Context context;
+    String whole="Общее количество";
     public EquipmentMainAdapter(List<EquipmentMainForm> forms){
         list=forms;
     }
@@ -139,5 +166,9 @@ public class EquipmentMainAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    public void setWhole(String whole) {
+        this.whole = whole;
     }
 }

@@ -2,6 +2,7 @@ package com.studio.dynamica.icgroup.InventoryFragments;
 
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -41,6 +43,8 @@ public class UMCFragment extends Fragment {
     List<MaterialForm> forms;
     List<MaterialMainForm> materialMainForms;
     FrameLayout progressLayout;
+    ConstraintLayout addLayout;
+    LinearLayout createNewLayout;
     String id="";
     boolean object=false;
     public UMCFragment() {
@@ -60,10 +64,13 @@ public class UMCFragment extends Fragment {
 
         adapter=new MaterialAdapter(forms);
         mainAdapter=new MaterialMainAdapter(materialMainForms);
-        if (object)
+        if (object) {
             recyclerView.setAdapter(adapter);
+            addLayout.setVisibility(View.VISIBLE);
+        }
         else{
             recyclerView.setAdapter(mainAdapter);
+            addLayout.setVisibility(View.GONE);
         }
         getRequest();
         return view;
@@ -73,6 +80,8 @@ public class UMCFragment extends Fragment {
         materialMainForms=new ArrayList<>();
         recyclerView=(RecyclerView)view.findViewById(R.id.recyclerView);
         progressLayout=(FrameLayout)view.findViewById(R.id.progressLayout);
+        addLayout=(ConstraintLayout) view.findViewById(R.id.addLayout);
+        createNewLayout=(LinearLayout) view.findViewById(R.id.createNewLayout);
     }
     private void getRequest(){
         progressLayout.setVisibility(View.VISIBLE);
@@ -106,7 +115,7 @@ public class UMCFragment extends Fragment {
         }};
         ((MainActivity)getActivity()).requestQueue.add(arrayRequest);
     }
-    private void setInfo(JSONArray array){
+    private void setInfo(final JSONArray array){
         try{
             if(object) {
                 forms.clear();
@@ -124,6 +133,18 @@ public class UMCFragment extends Fragment {
                     forms.add(materialForm);
                 }
                 adapter.notifyDataSetChanged();
+                createNewLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        AddNewMassFragment fragment=new AddNewMassFragment();
+                        Bundle bundle=new Bundle();
+                        bundle.putString("array",array.toString());
+                        bundle.putString("kind","UMC");
+                        bundle.putString("point",id);
+                        fragment.setArguments(bundle);
+                        ((MainActivity)getActivity()).setFragment(R.id.content_frame,fragment);
+                    }
+                });
             }
             else{
                 materialMainForms.clear();
@@ -131,8 +152,8 @@ public class UMCFragment extends Fragment {
                     JSONObject object=array.getJSONObject(i);
 //                    JSONObject company=object.getJSONObject("company");
                     String vendor_code=object.getString("vendor_code");
-                    String id=object.getString("id"), name=object.getString("name"), unit=object.getString("unit");
-                    String uni=((MainActivity)getActivity()).inventoryUnits.get(unit);
+                    String id=object.getString("id"), name=object.getString("name"), unit=object.getJSONObject("unit").getString("name");
+                    String uni=unit;
                     MaterialMainForm form=new MaterialMainForm(id,name,vendor_code,uni,0,0, uni, uni);
                     materialMainForms.add(form);
                 }

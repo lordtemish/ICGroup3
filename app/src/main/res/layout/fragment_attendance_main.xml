@@ -333,11 +333,12 @@
                                 android:textSize="13sp" />
 
                             <TextView
+                                android:id="@+id/allWorkers"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="20dp"
                                 android:layout_marginStart="20dp"
-                                android:text="56"
+                                android:text="0"
                                 android:textColor="@color/black"
                                 android:textSize="13sp" />
                         </LinearLayout>
@@ -356,11 +357,12 @@
                                 android:textSize="13sp" />
 
                             <TextView
+                                android:id="@+id/totalDays"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="20dp"
                                 android:layout_marginStart="20dp"
-                                android:text="30"
+                                android:text="0"
                                 android:textColor="@color/black"
                                 android:textSize="13sp" />
                         </LinearLayout>
@@ -378,11 +380,12 @@
                                 android:textSize="13sp" />
 
                             <TextView
+                                android:id="@+id/absents"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="20dp"
                                 android:layout_marginStart="20dp"
-                                android:text="43"
+                                android:text="0"
                                 android:textColor="@color/black"
                                 android:textSize="13sp" />
                         </LinearLayout>
@@ -400,11 +403,12 @@
                                 android:textSize="13sp" />
 
                             <TextView
+                                android:id="@+id/heres"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="20dp"
                                 android:layout_marginStart="20dp"
-                                android:text="222"
+                                android:text="0"
                                 android:textColor="@color/black"
                                 android:textSize="13sp" />
                         </LinearLayout>

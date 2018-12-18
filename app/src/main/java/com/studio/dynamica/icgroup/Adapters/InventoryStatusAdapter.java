@@ -113,15 +113,16 @@ public class InventoryStatusAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 statusForms.clear();
                 for(int i=0;i<array.length();i++){
                     JSONObject object=array.getJSONObject(i);
-                    JSONObject inventory=object.getJSONObject("inventory");
-                    String unit=inventory.getString("unit"), vendor=inventory.getString("vendor_code");
-                    String uni=((MainActivity)context).inventoryUnits.get(unit);
+                    JSONObject inventory=object.getJSONObject("inventory"),
+                            un=inventory.getJSONObject("unit");
+                    String unit=un.getString("name"), vendor=inventory.getString("vendor_code");
+                    //String uni=unit;
                     String id=object.getString("id");
                     String name=inventory.getString("name");
                     int quantity=object.getInt("quantity");
                     InventoryStatusForm statusForm=new InventoryStatusForm(name, id, quantity);
                     statusForm.setVendor(vendor);
-                    statusForm.setUnit(uni);
+                    statusForm.setUnit(unit);
                     statusForm.setStatus(true);
                     statusForms.add(statusForm);
                 }

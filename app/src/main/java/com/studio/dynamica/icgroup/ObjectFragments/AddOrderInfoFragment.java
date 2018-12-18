@@ -176,9 +176,9 @@ public class AddOrderInfoFragment extends Fragment {
             created=created.substring(0,created.length()-6);
             JSONObject respondent=object.getJSONObject("respondent"),author=object.getJSONObject("author"), consumption=object.getJSONObject("consumption");
             JSONObject inventory=consumption.getJSONObject("inventory");
-            String name=inventory.getString("name"),vendor=inventory.getString("vendor_code"), unit=inventory.getString("unit");
+            String name=inventory.getString("name"),vendor=inventory.getString("vendor_code"), unit=inventory.getJSONObject("unit").getString("name");
             int quantity=consumption.getInt("quantity"),remainder=consumption.getInt("remainder");
-            String invUnit=((MainActivity)getActivity()).inventoryUnits.get(unit);
+            String invUnit=unit;
 
 
             if(priority>1){
@@ -187,7 +187,7 @@ public class AddOrderInfoFragment extends Fragment {
                     prio="Высокий";
                 }
             }
-            setStatus(status);
+                setStatus(status);
             dateTextView.setText(created);
             idTextView.setText("IC"+id);
             priorityTextView.setText(prio);

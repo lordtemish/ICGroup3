@@ -463,6 +463,12 @@
             >
         </android.support.v7.widget.RecyclerView>
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/norForClient">
+        <LinearLayout
+            android:id="@+id/smenaLayout"
             android:layout_marginTop="20sp"
             android:layout_marginBottom="20sp"
             android:layout_width="match_parent"
@@ -550,6 +556,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     />
         </android.support.constraint.ConstraintLayout>
+        </LinearLayout>
     </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
     <android.support.constraint.ConstraintLayout

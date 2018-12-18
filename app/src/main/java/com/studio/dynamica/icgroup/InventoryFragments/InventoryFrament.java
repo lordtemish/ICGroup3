@@ -2,6 +2,7 @@ package com.studio.dynamica.icgroup.InventoryFragments;
 
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -51,6 +52,8 @@ public class InventoryFrament extends Fragment {
     String id="";
     List<String> reqs;
     FrameLayout progressLayout;
+    ConstraintLayout addLayout;
+    LinearLayout createNewLayout;
     boolean object;
     public InventoryFrament() {
         // Required empty public constructor
@@ -89,7 +92,11 @@ public class InventoryFrament extends Fragment {
         });
         reqRecycler.setAdapter(reqAdapter);
         if(!object){
+            addLayout.setVisibility(View.GONE);
             reqRecycler.setVisibility(View.VISIBLE);
+        }
+        else{
+            addLayout.setVisibility(View.VISIBLE);
         }
         getRequest();
         return view;
@@ -98,6 +105,8 @@ public class InventoryFrament extends Fragment {
         recyclerView=(RecyclerView) view.findViewById(R.id.recyclerView);
         reqRecycler=(RecyclerView) view.findViewById(R.id.reqRecycler);
         progressLayout=(FrameLayout) view.findViewById(R.id.progressLayout);
+        addLayout=(ConstraintLayout) view.findViewById(R.id.addLayout);
+        createNewLayout=(LinearLayout) view.findViewById(R.id.createNewLayout);
 
         reqs=new ArrayList<>();
         reqs.add("Все позииции");
@@ -135,16 +144,16 @@ public class InventoryFrament extends Fragment {
         }};
         ((MainActivity)getActivity()).requestQueue.add(arrayRequest);
     }
-    private void setInfo(JSONArray array){
+    private void setInfo(final JSONArray array){
         try{
             if(object) {
                 forms.clear();
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject object = array.getJSONObject(i);
                     JSONObject inventory = object.getJSONObject("inventory");
-                    JSONObject company = inventory.getJSONObject("company");
-                    String name = inventory.getString("name"), id = object.getString("id"), unit = inventory.getString("unit"), vendor_code = inventory.getString("vendor_code");
-                    String num = object.getString("quantity") + " " + ((MainActivity) getActivity()).inventoryUnits.get(unit);
+//                    JSONObject company = inventory.getJSONObject("company");
+                    String name = inventory.getString("name"), id = object.getString("id"), unit = inventory.getJSONObject("unit").getString("name"), vendor_code = inventory.getString("vendor_code");
+                    String num = object.getString("quantity") + " " + unit;
                     int repair = object.getInt("repair"), replace = object.getInt("replace");
                     List<RemontForms> remontForms = new ArrayList<>();
                     if (repair > 0) {
@@ -160,15 +169,27 @@ public class InventoryFrament extends Fragment {
                     forms.add(equipmentForm);
                 }
                 adapter.notifyDataSetChanged();
+                createNewLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        AddNewMassFragment fragment=new AddNewMassFragment();
+                        Bundle bundle=new Bundle();
+                        bundle.putString("array",array.toString());
+                        bundle.putString("kind","INVENTORY");
+                        bundle.putString("point",id);
+                        fragment.setArguments(bundle);
+                        ((MainActivity)getActivity()).setFragment(R.id.content_frame,fragment);
+                    }
+                });
             }
             else{
                 mainForms.clear();
                 for(int i=0;i<array.length();i++){
                     JSONObject object=array.getJSONObject(i);
                     String vendor=object.getString("vendor_code");
-                    String name=object.getString("name"), uni=object.getString("unit"), id=object.getString("id");
+                    String name=object.getString("name"), uni=object.getJSONObject("unit").getString("name"), id=object.getString("id");
                     int qua=object.getInt("quantity");
-                    String unit=((MainActivity)getActivity()).inventoryUnits.get(uni);
+                    String unit=uni;
                     EquipmentMainForm mainForm=new EquipmentMainForm(id, name, unit, qua);
 
                     mainForm.setVendor(vendor);
@@ -185,6 +206,33 @@ public class InventoryFrament extends Fragment {
     }
     private void checkPage(){
         Log.d("page",reqAdapter.getClicked()+" clicked");
+        int page=reqAdapter.getClicked();
+        mainForms.clear();
+        switch (page){
+            case 1:
+                for(EquipmentMainForm form:allMainForms){
+                    if(form.getReplace()>0){
+                        mainForms.add(form);
+                        Log.d("Replace","+1");
+                    }
+                }
+                mainAdapter.setWhole("На замене:");
+                break;
+            case 2:
+                for(EquipmentMainForm form:allMainForms){
+                    if(form.getRepair()>0){
+                        mainForms.add(form);
+                        Log.d("Repair","+1");
+                    }
+                }
+                mainAdapter.setWhole("На ремонте:");
+                break;
+            default:
+                mainForms.addAll(allMainForms);
+                mainAdapter.setWhole("Общее количество:");
+        }
+
+        mainAdapter.notifyDataSetChanged();
     }
 }
 /*

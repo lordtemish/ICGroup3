@@ -20,10 +20,11 @@ public class CheckListBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     List<CheckListBoxForm> list;
     Context context;
     boolean text;
+    int open=0;
     private class myHolder extends RecyclerView.ViewHolder{
         LinearLayout wholeLayout;
         RecyclerView checkListBoxRowsRecyclerView;
-        ImageView galochkaImageView;
+        ImageView galochkaImageView, plusImageView;
         Context context;
         TextView infoTextView;
         private myHolder(View view){
@@ -31,6 +32,7 @@ public class CheckListBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             context=view.getContext();
             checkListBoxRowsRecyclerView=(RecyclerView) view.findViewById(R.id.checkListBoxRowsRecyclerView);
             galochkaImageView=(ImageView) view.findViewById(R.id.galochkaImageView);
+            plusImageView=(ImageView) view.findViewById(R.id.plusImageView);
             wholeLayout=(LinearLayout) view.findViewById(R.id.wholeLayout);
             infoTextView=(TextView) view.findViewById(R.id.infoTextView);
             setFonttype();
@@ -65,7 +67,7 @@ public class CheckListBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return new myHolder(view);
     }
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder1, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder1, final int position) {
         myHolder holder=(myHolder) holder1;
         ((MainActivity) context).setRecyclerViewOrientation(holder.checkListBoxRowsRecyclerView, LinearLayout.VERTICAL);
         holder.infoTextView.setText(list.get(position).getName());
@@ -78,6 +80,30 @@ public class CheckListBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if(position==list.size()-1){
             holder.setLast();
         }
+        holder.plusImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(open!=position){
+                    int o=open;
+                    open=position;
+                    notifyItemChanged(o);
+                    notifyItemChanged(open);
+                }
+            }
+        });
+
+        if(position==open){
+            holder.plusImageView.setImageResource(R.drawable.ic_minus);
+            holder.checkListBoxRowsRecyclerView.setVisibility(View.VISIBLE);
+        }
+        else{
+            holder.plusImageView.setImageResource(R.drawable.ic_plus);
+            holder.checkListBoxRowsRecyclerView.setVisibility(View.GONE);
+        }
+    }
+
+    public int getOpen() {
+        return open;
     }
 
     @Override

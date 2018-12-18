@@ -7,7 +7,10 @@ public class InventorizationPassingSetForm {
     private int number, repl=0, repa=0, miss=0, rema=0;
     private boolean status=true, created=false;
     private ExtraInfo info;
-
+    public  void obNul(){
+        created=false;status=true;
+        repl=0;repa=0;miss=0;rema=0;check="";
+    }
     public int getRema() {
         return rema;
     }

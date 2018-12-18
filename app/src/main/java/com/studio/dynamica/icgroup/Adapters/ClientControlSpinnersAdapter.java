@@ -4,11 +4,15 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -22,13 +26,34 @@ public class ClientControlSpinnersAdapter extends RecyclerView.Adapter {
     private class myHolder extends RecyclerView.ViewHolder{
         TextView rateTextView0;
         Spinner rateSpinner0;
+        EditText commentEditText;
+        int index=0;
         private myHolder(View view){
             super(view);
             rateTextView0=(TextView) view.findViewById(R.id.rateTextView0);
             rateSpinner0=(Spinner) view.findViewById(R.id.rateSpinner0);
+            commentEditText=(EditText) view.findViewById(R.id.commentEditText);
+            commentEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    Log.d("EDITED","EDITED");
+                    list.get(index).setText(commentEditText.getText()+"");
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                }
+            });
             setTypeface("light",rateTextView0);
         }
         private void setInfo(final SpinnerForm form){
+            index=list.indexOf(form);
             rateTextView0.setText(form.getName());
 
             String[] numbers={"1","2","3","4","5"};

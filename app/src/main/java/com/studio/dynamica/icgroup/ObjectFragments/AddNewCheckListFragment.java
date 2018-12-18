@@ -182,6 +182,7 @@ public class AddNewCheckListFragment extends Fragment {
             boxForms.clear();
             for(int i=0;i<array.length();i++){
                 JSONObject object=array.getJSONObject(i);
+                String id=object.getString("id");
                 JSONArray positions=object.getJSONArray("positions");
                 List<CheckListBoxRowForm> rowForms=new ArrayList<>();
                 for(int j=0;j<positions.length();j++){
@@ -193,7 +194,9 @@ public class AddNewCheckListFragment extends Fragment {
                 boolean galo=i%2==0;
                 String name=object.getString("name");
                 Log.d("thisname",name);
-                boxForms.add(new CheckListBoxForm(name,galo,rowForms));
+                CheckListBoxForm forma1=new CheckListBoxForm(name,galo,rowForms);
+                forma1.setId(id);
+                boxForms.add(forma1);
                 Log.d("length",positions.length()+" "+positions.toString());
             }
             adapter.notifyDataSetChanged();
@@ -391,9 +394,11 @@ public class AddNewCheckListFragment extends Fragment {
         try {
             progressLayout.setVisibility(View.VISIBLE);
             String url = ((MainActivity) getActivity()).MAIN_URL + "controls/";
+            CheckListBoxForm form1=boxForms.get(adapter.getOpen());
             JSONObject params = new JSONObject();
             params.put("author", author);
             params.put("kind", "CHECKLIST");
+            params.put("checklist", Integer.parseInt(form1.getId()));
             params.put("point", id);
             String comm=commentEditText.getText()+"";
             if(comm.length()>0){
@@ -416,14 +421,14 @@ public class AddNewCheckListFragment extends Fragment {
             }
 
             JSONArray array=new JSONArray();
-            for(CheckListBoxForm form1:boxForms){
+
                 for(CheckListBoxRowForm form:form1.getList()) {
                     JSONObject object = new JSONObject();
                     object.put("position", form.getId());
                     object.put("rate", form.getRate());
                     array.put(object);
                 }
-            }
+
 
             params.put("positions",array);
             Log.d("params",params.toString());

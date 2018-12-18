@@ -122,15 +122,18 @@ public class PassportObjectInfoListAddNewEmployeeFragment extends Fragment {
                 JSONObject user=new JSONObject();
                 user.put("fullname", nametext.getText() + "");
                 user.put("phone", "" + nametext1.getText());
+                user.put("role", "WORKER");
+                user.put("password", "anypassword");
                 params.put("user",user);
                 params.put("shift",  radioCheck());
-                params.put("point",  point);
+                params.put("point",  Integer.parseInt(point));
                 params.put("is_trainee",  is_trainee);
                 params.put("is_contract",  check);
                 params.put("salary", Integer.parseInt(salaryEditText.getText()+""));
             } catch (Exception e) {
 
             }
+            Log.d("params",params.toString());
             JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {

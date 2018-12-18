@@ -152,8 +152,8 @@ public class MaterialMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     JSONObject object=array.getJSONObject(i);
                     JSONObject inventory=object.getJSONObject("inventory");
                     JSONObject point=object.getJSONObject("point");
-                    String unit=inventory.getString("unit");
-                    String uni=((MainActivity)context).inventoryUnits.get(unit);
+                    String unit=inventory.getJSONObject("unit").getString("name");
+                    String uni=unit;
                     String id=object.getString("id"), name=point.getString("name");
                     double qua=object.getDouble("quantity"), limit=object.getDouble("limit");
                     int ttl=Integer.parseInt(""+Math.round(qua*100/limit));

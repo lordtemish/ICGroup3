@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     int page=-1;
     public RequestQueue requestQueue;
     public String location= "1";
-    public String token="", name="", role="", avatar="", userid="", epmloyeeid="";
+    public String token="", name="", role="", avatar="", userid="", epmloyeeid="", point="";
     Intent startIntent;
     DrawerFragment drawerF;
     Calendar cal;
@@ -113,6 +113,11 @@ public class MainActivity extends AppCompatActivity {
     public void setDpids(List<String> dpids) {
         this.dpids = dpids;
     }
+
+    public void setPoint(String point) {
+        this.point = point;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -77,7 +77,7 @@
                 android:textSize="13sp"
                 android:layout_gravity="center"
                 android:gravity="start"
-                android:hint="Введите сумму"
+                android:hint="Введите ФИО"
                 android:textColorHint="@color/darkgrey"
                 android:textColor="@color/black"
                 />

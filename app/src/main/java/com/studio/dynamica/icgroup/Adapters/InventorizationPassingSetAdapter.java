@@ -77,10 +77,10 @@ public class InventorizationPassingSetAdapter extends RecyclerView.Adapter<Recyc
             headerLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    boolean a=!list.get(index).isStatus();
+                    boolean a=list.get(index).isStatus();
                     Log.d("clicked",a+" "+index+" "+form.isCreated());
-                    if(!a) {
-                        list.get(index).setStatus(a);
+                    if(a) {
+                        list.get(index).setStatus(!a);
                         notifyItemChanged(index);
                     }
                     else{
@@ -88,7 +88,7 @@ public class InventorizationPassingSetAdapter extends RecyclerView.Adapter<Recyc
                             deleteIt();
                         }
                         else {
-                            list.get(index).setStatus(a);
+                            list.get(index).setStatus(!a);
                             notifyItemChanged(index);
                         }
                     }
@@ -133,21 +133,21 @@ public class InventorizationPassingSetAdapter extends RecyclerView.Adapter<Recyc
         }
         private void deleteIt(){
             progressFrame.setVisibility(View.VISIBLE);
-            String url=((MainActivity)context).MAIN_URL+"checks/"+check;
+            String url=((MainActivity)context).MAIN_URL+"checks/"+check+"/";
             Log.d("deleteURL",url);
             StringRequest request=new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     Log.d("deleteRespa",response);
                     progressFrame.setVisibility(View.GONE);
-                    list.get(index).setStatus(true);
-                    list.get(index).setCreated(false);
+                    list.get(index).obNul();
                     notifyItemChanged(index);
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     progressFrame.setVisibility(View.GONE);
+                    Log.d("deleteRespa",error.getMessage());
                     error.printStackTrace();
                 }
             }){@Override
@@ -160,67 +160,74 @@ public class InventorizationPassingSetAdapter extends RecyclerView.Adapter<Recyc
             }};((MainActivity)context).requestQueue.add(request);
         }
         private void updateIt(InventorizationPassingSetForm form){
-            progressFrame.setVisibility(View.VISIBLE);
-            String url=((MainActivity)context).MAIN_URL+"checks/"+check+"/";
-            JSONObject params=new JSONObject();
-            try {
-                params.put("consumption", Integer.parseInt(form.getConsumption()));
-                params.put("group",Integer.parseInt(form.getId()));
-                if(commentEditText.getText().length()>0){
-                    params.put("comment",commentEditText.getText()+"");
+            if(list.get(index).isCreated()) {
+                progressFrame.setVisibility(View.VISIBLE);
+                String url = ((MainActivity) context).MAIN_URL + "checks/" + check + "/";
+                JSONObject params = new JSONObject();
+                try {
+                    params.put("consumption", Integer.parseInt(form.getConsumption()));
+                    params.put("group", Integer.parseInt(form.getId()));
+                    if (commentEditText.getText().length() > 0) {
+                        params.put("comment", commentEditText.getText() + "");
+                    }
+                    int[] a = radioButtonView.getResults();
+                    int repair = a[0], replace = a[3], remainder = a[1], missing = a[2];
+                    if (repair >= 0) {
+                        params.put("repair", repair);
+                    }
+                    if (replace >= 0) {
+                        params.put("replace", replace);
+                    }
+                    if (remainder >= 0) {
+                        params.put("remainder", remainder);
+                    }
+                    if (missing >= 0) {
+                        params.put("missing", missing);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                int[] a=radioButtonView.getResults();
-                int repair=a[0], replace=a[3], remainder=a[1], missing=a[2];
-                if(repair>=0){
-                    params.put("repair",repair);
-                }
-                if(replace>=0){
-                    params.put("replace",replace);
-                }
-                if(remainder>=0){
-                    params.put("remainder",remainder);
-                }
-                if(missing>=0){
-                    params.put("missing",missing);
-                }
+                Log.d("thisPARAMS", params.toString());
+                JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.PUT, url, params, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject object) {
+                        progressFrame.setVisibility(View.GONE);
+                        Log.d("response in Check", object.toString());
+                        try {
+                            String id = object.getString("id");
+                            list.get(index).setRepa(object.getInt("repair"));
+                            list.get(index).setRepl(object.getInt("replace"));
+                            list.get(index).setMiss(object.getInt("missing"));
+                            list.get(index).setRema(object.getInt("remainder"));
+                            list.get(index).setComment(object.getString("comment"));
+                            list.get(index).setCheck(id);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(context, "Успешно сохранено", Toast.LENGTH_SHORT).show();
+                        notifyItemChanged(index);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressFrame.setVisibility(View.GONE);
+                        Toast.makeText(context, "Проблемы соеденения", Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap<String, String> headers = new HashMap<String, String>();
+                        headers.put("Accept", "application/json");
+                        headers.put("Content-Type", "application/json");
+                        headers.put("Authorization", "JWT " + ((MainActivity) context).token);
+                        return headers;
+                    }
+                };
+                ((MainActivity) context).requestQueue.add(objectRequest);
             }
-            catch (Exception e){
-                e.printStackTrace();
+            else {
+                Toast.makeText(context, "Update Exception", Toast.LENGTH_SHORT).show();
             }
-            Log.d("thisPARAMS", params.toString());
-            JsonObjectRequest objectRequest=new JsonObjectRequest(Request.Method.PUT, url, params, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject object) {
-                    progressFrame.setVisibility(View.GONE);
-                    Log.d("response in Check", object.toString());
-                    list.get(index).setCreated(true);
-                    try{
-                        String id=object.getString("id");
-                        list.get(index).setRepa(object.getInt("repair"));
-                        list.get(index).setRepl(object.getInt("replace"));
-                        list.get(index).setMiss(object.getInt("missing"));
-                        list.get(index).setRema(object.getInt("remainder"));
-                        list.get(index).setComment(object.getString("comment"));
-                        list.get(index).setCheck(id);
-                    }catch (Exception e){e.printStackTrace();}
-                    Toast.makeText(context, "Успешно сохранено", Toast.LENGTH_SHORT).show();
-                    notifyItemChanged(index);
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    progressFrame.setVisibility(View.GONE);
-                    Toast.makeText(context, "Проблемы соеденения", Toast.LENGTH_SHORT).show();
-                }
-            }){@Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Accept", "application/json");
-                headers.put("Content-Type", "application/json");
-                headers.put("Authorization", "JWT " + ((MainActivity) context).token);
-                return headers;
-            }};
-            ((MainActivity)context).requestQueue.add(objectRequest);
         }
         private void saveIt(InventorizationPassingSetForm form){
             progressFrame.setVisibility(View.VISIBLE);
@@ -250,7 +257,7 @@ public class InventorizationPassingSetAdapter extends RecyclerView.Adapter<Recyc
             catch (Exception e){
                 e.printStackTrace();
             }
-            Log.d("thisPARAMS", params.toString());
+            Log.d("thisPARAMS11", params.toString());
             JsonObjectRequest objectRequest=new JsonObjectRequest(Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject object) {

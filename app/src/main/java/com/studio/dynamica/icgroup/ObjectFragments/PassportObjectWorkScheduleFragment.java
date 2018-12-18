@@ -88,10 +88,10 @@ public class PassportObjectWorkScheduleFragment extends Fragment {
             }
         }
         if(workdayForms.size()>0) {
-            list.add(new WorkScheduleForm("Будние дни", "Пн-Пт(ежедневно по "+workdayForms.size()+" смены)", workdayForms));
+            list.add(new WorkScheduleForm("Будние дни", "Пн-Пт(ежедневно "+workdayForms.size()+" смена)", workdayForms));
         }
         if(weekendForms.size()>0) {
-            list.add(new WorkScheduleForm("Выходные дни", "Сб-Вс(ежедневно по "+weekendForms.size()+" смены)", weekendForms));
+            list.add(new WorkScheduleForm("Выходные дни", "Сб-Вс", weekendForms));
         }
         this.list.clear();this.list.addAll(list);
         adapter.notifyDataSetChanged();

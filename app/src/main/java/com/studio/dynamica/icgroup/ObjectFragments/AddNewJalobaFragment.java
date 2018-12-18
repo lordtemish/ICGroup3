@@ -54,7 +54,7 @@ public class AddNewJalobaFragment extends Fragment {
     LinearLayout employeeChooseLayout;
     RecyclerView radioRecycler, acceptRecycler;
     RadioAdapter adapter;
-    List<RadioForm> radioFormList;
+    List<RadioForm> radioFormList, defList, comList;
     List<String> employees, departments, emids, dpids, emplSpin, depaSpin, userIds;
     ArrayAdapter<String> depaAdapter, emplAdapter;
     boolean empls=false;
@@ -137,6 +137,8 @@ public class AddNewJalobaFragment extends Fragment {
         userIds=new ArrayList<>();
 
         radioFormList=new ArrayList<>();
+        defList=new ArrayList<>();
+        comList=new ArrayList<>();
         emplSpin=new ArrayList<>();
         depaSpin=new ArrayList<>();depaSpin.add("Работники объекта");
         employees=new ArrayList<>();
@@ -194,16 +196,20 @@ public class AddNewJalobaFragment extends Fragment {
     }
 
     private void setShown(){
+        radioFormList.clear();
         if(empls){
             qualityTextView.setTextColor(getActivity().getResources().getColor(R.color.greyy));
             workerTextView.setTextColor(getActivity().getResources().getColor(R.color.black));
             employeeChooseLayout.setVisibility(View.VISIBLE);
+            radioFormList.addAll(defList);
         }
         else{
             qualityTextView.setTextColor(getActivity().getResources().getColor(R.color.black));
             workerTextView.setTextColor(getActivity().getResources().getColor(R.color.greyy));
             employeeChooseLayout.setVisibility(View.GONE);
+            radioFormList.addAll(comList);
         }
+        adapter.notifyDataSetChanged();
     }
 
     private void getReasons() {
@@ -234,14 +240,20 @@ public class AddNewJalobaFragment extends Fragment {
     }
     private void setResults(JSONArray array){
         try{
-            radioFormList.clear();
+            defList.clear();
+            comList.clear();
             for(int i=0;i<array.length();i++){
                 JSONObject object=array.getJSONObject(i);
                 RadioForm form=new RadioForm(false,object.getString("name"));
                 form.setId(object.getString("id"));
-                radioFormList.add(form);
+                if(object.getString("kind").contains("COM")){
+                    comList.add(form);
+                }
+                else{
+                    defList.add(form);
+                }
             }
-            adapter.notifyDataSetChanged();
+          setShown();
         }
         catch (Exception e){
             e.printStackTrace();
@@ -558,9 +570,11 @@ public class AddNewJalobaFragment extends Fragment {
             String url = ((MainActivity) getActivity()).MAIN_URL + "complaints/";
             if (nameEditText.getText().length() < 1) {
                 Toast.makeText(getActivity(), "Напишите комментарий", Toast.LENGTH_SHORT).show();
+                progressLayout.setVisibility(View.GONE);
             } else {
                 if(empls && (emid.equals(""))){
                     Toast.makeText(getActivity(), "Выберите все пункты", Toast.LENGTH_SHORT).show();
+                    progressLayout.setVisibility(View.GONE);
                 }
                 else {
                     JSONObject params = new JSONObject();

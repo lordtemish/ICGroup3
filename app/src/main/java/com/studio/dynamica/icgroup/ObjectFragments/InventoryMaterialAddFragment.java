@@ -270,6 +270,7 @@ public class InventoryMaterialAddFragment extends Fragment {
             String url = ((MainActivity) getActivity()).MAIN_URL + "replenishments/";
             JSONObject object = new JSONObject();
             try {
+                object.put("point",Integer.parseInt(((MainActivity)getActivity()).point));
                 object.put("consumption",id);
                 object.put("kind",rkey);
                 object.put("respondent",emid);

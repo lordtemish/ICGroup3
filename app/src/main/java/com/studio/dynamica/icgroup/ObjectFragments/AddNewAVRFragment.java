@@ -209,6 +209,7 @@ public class AddNewAVRFragment extends Fragment {
                 JSONObject object=new JSONObject();
                 object.put("position",form.getId());
                 object.put("rate",form.getNum());
+                object.put("comment",form.getText());
                 array.put(object);
             }
 

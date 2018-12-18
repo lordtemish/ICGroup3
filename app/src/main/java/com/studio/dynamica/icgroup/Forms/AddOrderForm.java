@@ -4,6 +4,16 @@ public class AddOrderForm {
     String date;
     String id, place, priority, status, type, mainstatus;
     int day1,day2;
+    boolean mass=false;
+
+    public void setMass(boolean mass) {
+        this.mass = mass;
+    }
+
+    public boolean isMass() {
+        return mass;
+    }
+
     public AddOrderForm(String date, String id, String place, String priority, String status, String type, int day1, int day2){
         this.date=date;
         this.id=id;
