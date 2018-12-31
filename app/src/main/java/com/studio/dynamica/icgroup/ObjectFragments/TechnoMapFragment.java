@@ -206,6 +206,9 @@ public class TechnoMapFragment extends Fragment {
             adapter1.notifyDataSetChanged();
             if(!((MainActivity)getActivity()).client)
             resultRequest();
+            else{
+                extraLayout.setVisibility(View.GONE);
+            }
         }
         catch (Exception e){
             e.printStackTrace();
@@ -334,7 +337,8 @@ public class TechnoMapFragment extends Fragment {
         checkPage();
 
     }
-    public void checkPage(){try {
+    public void checkPage(){
+        try {
         extraLayout.setVisibility(View.VISIBLE);
         pageInfo.setText(pages.get(page));
         String url = ((MainActivity) getActivity()).MAIN_URL + "plans/?group=" + ids.get(page);

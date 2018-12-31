@@ -86,7 +86,7 @@ public class PassportObjectInfoListOPUFragment extends Fragment {
         }
     };
     boolean open=false;
-String id, name, phone, userid;
+String id, name, phone, userid, holid="";
     public PassportObjectInfoListOPUFragment() {
         // Required empty public constructor
     }
@@ -184,12 +184,12 @@ String id, name, phone, userid;
         spinner.setAdapter(spinnerAdapter);
         getRequest();
         getVisits();
-        arrowPlanImageView.setOnClickListener(new View.OnClickListener() {
+     /*   arrowPlanImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 arrowPlan();
             }
-        });
+        });*/
         holidaySetButton.setOnClickListener(lista);
         return view;
     }
@@ -202,7 +202,7 @@ String id, name, phone, userid;
                 object.put("plan_days",counterView.getPage());
             }
             catch (Exception e){e.printStackTrace();}
-            update(object);
+         //   update(object);
         }
         else{
             counterView.setVisibility(View.VISIBLE);
@@ -367,11 +367,11 @@ String id, name, phone, userid;
             String status=object.getString("status");
             Double dos=object.getDouble("attendance_rate");
             boolean aa=object.getBoolean("is_contract");
-            int perfomance=(int)Math.round(dos*100), salary=object.getInt("salary"), plan_days=object.getInt("plan_days");
+            int perfomance=(int)Math.round(dos*100), salary=object.getInt("salary"), plan_days=0;//object.getInt("plan_days");
             planD=plan_days;
             Calendar calendar=Calendar.getInstance();calendar.setTime(new Date());
             int count=calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-            planWorkTextView.setText("План работ: "+0+" / "+plan_days);
+            getShift(shift,calendar);
             counterView.setPage(plan_days);
             checkRadio.setText("  "+salary+"тг");
             ProgressBar.setProgress(perfomance);
@@ -396,11 +396,7 @@ String id, name, phone, userid;
                 holidaySetButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        JSONObject object=new JSONObject();
-                        try{
-                            object.put("status","STABLE");
-                        }catch (Exception e){e.printStackTrace();}
-                        update(object);
+                        cancelHoliday();
                     }
                 });
                 holidaySetButton.setText("ОТМЕНА ОТПУСКА");
@@ -412,6 +408,7 @@ String id, name, phone, userid;
                     holidayTypeTextView.setText("Отпуск с содержанием");
                     holidayTypeTop.setText("Отпуск (с содержанием)");
                 }
+                getHoliday();
             }
             else if(status.equals("REMOVE")){
                 positionTextView.setText("ОПУ - уволен");
@@ -422,6 +419,114 @@ String id, name, phone, userid;
                 holidaySetButton.setText("ОТПУСК");
             }
 
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    private void getShift(int shift, Calendar calendar){
+        progressLayout.setVisibility(View.VISIBLE);
+        int month=calendar.get(Calendar.MONTH), year=calendar.get(Calendar.YEAR), day=calendar.get(Calendar.DAY_OF_MONTH);
+        Log.d("itsdate",day+" "+month+" "+year);
+        String url=((MainActivity)getActivity()).MAIN_URL+"shifts/?shift="+shift+"&month="+(month+1)+"&day="+day+"&year="+year;
+        JsonArrayRequest arrayRequest=new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                progressLayout.setVisibility(View.GONE);
+                setShift(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressLayout.setVisibility(View.GONE);
+            }
+        }){@Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            HashMap<String, String> headers = new HashMap<String, String>();
+            headers.put("Accept", "application/json");
+            headers.put("Content-Type", "application/json");
+            headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
+            return headers;
+        }};((MainActivity)getActivity()).requestQueue.add(arrayRequest);
+    }
+    private void setShift(JSONArray array){
+        try{
+            if(array.length()>0){
+                JSONObject object=array.getJSONObject(0);
+                JSONArray days=object.getJSONArray("days");
+                planD=days.length();
+            }
+            else{
+                planD=0;
+            }
+            setPlanDays(0);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    private void getHoliday(){
+        progressLayout.setVisibility(View.VISIBLE);
+           final String url=((MainActivity)getActivity()).MAIN_URL+"holidays/?worker="+id;
+            JsonArrayRequest arrayRequest=new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    progressLayout.setVisibility(View.GONE);
+                    Log.d(url.substring(10,url.length()),response.toString());
+                    setHolidays(response);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    progressLayout.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
+                }
+            }){@Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
+                return headers;
+            }};
+        ((MainActivity)getActivity()).requestQueue.add(arrayRequest);
+    }
+    private void cancelHoliday(){
+        progressLayout.setVisibility(View.VISIBLE);
+           final String url=((MainActivity)getActivity()).MAIN_URL+"holidays/"+holid+"/cancel/";
+            JsonObjectRequest arrayRequest=new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    progressLayout.setVisibility(View.GONE);
+                    getRequest();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    progressLayout.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
+                }
+            }){@Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
+                return headers;
+            }};
+        ((MainActivity)getActivity()).requestQueue.add(arrayRequest);
+    }
+    private void setHolidays(JSONArray array){
+        try {
+            if(array.length()>0){
+                JSONObject object=array.getJSONObject(0);
+                holid=object.getString("id");
+                String date=object.getString("end");
+                date=date+"T00:00:00.0Z";
+                holidayDate.setText(((MainActivity)getActivity()).getDateText(date));
+            }else{
+                holidayDate.setText("");
+            }
         }
         catch (Exception e){
             e.printStackTrace();
@@ -528,11 +633,12 @@ String id, name, phone, userid;
     }
     private void update(JSONObject object){
         progressLayout.setVisibility(View.VISIBLE);
-        String url=((MainActivity)getActivity()).MAIN_URL+"workers/"+id+"/";
+        final String url=((MainActivity)getActivity()).MAIN_URL+"workers/"+id+"/";
         JsonObjectRequest request=new JsonObjectRequest(Request.Method.PATCH, url, object, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 progressLayout.setVisibility(View.GONE);
+                Log.d("updateUrl",url+"\n"+response.toString());
                 getRequest();
                 Toast.makeText(getActivity(), "Сохранено", Toast.LENGTH_SHORT).show();
             }

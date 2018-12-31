@@ -69,11 +69,12 @@ public class AddNewServiceFragment extends Fragment {
     RadioButton todayRadio, dateRadio, mediaRadio, photoRadio;
     RadioButton[] priorityRadios={null,null,null};
     TextView ObjectTitle,priorityLabelTextView, placeLabelTextView, serviceTypeLabeLTextView, otvLabelTextView, dateLabelTextView, opisanieLabelTextView, cancelTextView, addTextView, filesTextView, needAcceptTextView;
+    LinearLayout departmentLayout,respondentLayout,priorityLayout;
     List<Spinner> spinners;
     List<FrameLayout> spinnerButtonFrames;
     List<ArrayList<String>> spinnerLists;
     RecyclerView answerUserRecyclerView;
-    boolean media=false, photo=false;
+    boolean media=false, photo=false, client=false;
     View.OnClickListener photoListener;
     int[][] choseindexes={{0,0},{0,0}};
      int click=0, clickx=0, clicky=0, xmax=0, ymax=0;
@@ -97,6 +98,7 @@ public class AddNewServiceFragment extends Fragment {
         // Inflate the layout for this fragment
         id=getArguments().getString("id");
         location=getArguments().getInt("location");
+        client=((MainActivity)getActivity()).client;
         View view=inflater.inflate(R.layout.fragment_add_new_service, container, false);
 
         click=0;
@@ -166,6 +168,13 @@ public class AddNewServiceFragment extends Fragment {
         serviceAdapter=new ChooseAcceptServiceAdapter(acceptForms);
         answerUserRecyclerView.setAdapter(serviceAdapter);
         progressLayout.setVisibility(View.GONE);
+
+        if(client){
+            priorityLayout.setVisibility(View.GONE);
+            respondentLayout.setVisibility(View.GONE);
+            departmentLayout.setVisibility(View.GONE);
+        }
+
         getDepartments();
         getTaskKinds();
         getData();
@@ -243,6 +252,9 @@ public class AddNewServiceFragment extends Fragment {
         commentLayout=(FrameLayout) view.findViewById(R.id.commentLayout);
         progressLayout=(FrameLayout) view.findViewById(R.id.progressLayout);
         nameEditText=(EditText) view.findViewById(R.id.nameEditText);
+        priorityLayout=(LinearLayout) view.findViewById(R.id.priorityLayout);
+        departmentLayout=(LinearLayout) view.findViewById(R.id.departmentLayout);
+        respondentLayout=(LinearLayout) view.findViewById(R.id.respondentLayout);
 
         radioGroup=(RadioGroup) view.findViewById(R.id.radioGroup);
         mediaRadio=(RadioButton) view.findViewById(R.id.mediaRadioButton);
@@ -531,7 +543,7 @@ public class AddNewServiceFragment extends Fragment {
     private void saveThis(){
         progressLayout.setVisibility(View.VISIBLE);
         String url=((MainActivity)getActivity()).MAIN_URL+"tasks/";
-        if(tkid.length()==0 || emid.length()==0 || nameEditText.getText().length()==0 ){
+        if(tkid.length()==0 || (emid.length()==0 && !client) || nameEditText.getText().length()==0 ){
             Toast.makeText(getActivity(), "Введите все данные", Toast.LENGTH_SHORT).show();
             progressLayout.setVisibility(View.GONE);
         }
@@ -552,9 +564,11 @@ public class AddNewServiceFragment extends Fragment {
                 else s = 3;
                 JSONArray files=new JSONArray();
                 params.put("files",files);
-                params.put("priority", s);
                 params.put("point", Integer.parseInt(id));
-                params.put("respondent", Integer.parseInt(emid));
+                if(!client) {
+                    params.put("priority", s);
+                    params.put("respondent", Integer.parseInt(emid));
+                }
                 params.put("kind", Integer.parseInt(tkid));
                 params.put("description", nameEditText.getText() + "");
                 if(true){

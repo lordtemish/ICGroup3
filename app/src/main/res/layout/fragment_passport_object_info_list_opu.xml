@@ -322,6 +322,7 @@
 
                                 />
                             <ImageView
+                                android:visibility="gone"
                                 android:id="@+id/arrowPlanImageView"
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"

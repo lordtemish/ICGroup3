@@ -158,7 +158,12 @@ public class AddNewMassFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressFrame.setVisibility(View.GONE);
-                Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
+                if(error.networkResponse.statusCode==400){
+                    Toast.makeText(getActivity(), "Вы превысили лимит", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
+                }
             }
         }){@Override
         public Map<String, String> getHeaders() throws AuthFailureError {

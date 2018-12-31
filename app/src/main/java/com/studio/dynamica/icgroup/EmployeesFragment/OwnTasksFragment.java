@@ -391,14 +391,18 @@ public class OwnTasksFragment extends Fragment {
                 String status = object.getString("status");
                 JSONObject kind = object.getJSONObject("kind");
                 String kindText = kind.getString("name");
-                JSONObject respondent = object.getJSONObject("respondent");
-                JSONObject user = respondent.getJSONObject("user");
-                JSONObject department = respondent.getJSONObject("department");
-                String fname = user.getString("fullname");
-                String[] a = fname.split(" ");
-                if (fname.length() > 20) {
-                    if (a.length > 1) {
-                        fname = a[0] + " " + a[1];
+                String fname="", dpStr="";
+                if(!object.isNull("respondent")) {
+                    JSONObject respondent = object.getJSONObject("respondent");
+                    JSONObject user = respondent.getJSONObject("user");
+                    JSONObject department = respondent.getJSONObject("department");
+                    dpStr=department.getString("name");
+                    fname = user.getString("fullname");
+                    String[] a = fname.split(" ");
+                    if (fname.length() > 20) {
+                        if (a.length > 1) {
+                            fname = a[0] + " " + a[1];
+                        }
                     }
                 }
                 String created_at = object.getString("created_at"), deadline = object.getString("deadline");
@@ -420,7 +424,7 @@ public class OwnTasksFragment extends Fragment {
                 } else {
                     nowdays = 0;
                 }
-                ServiceForm serviceForm = new ServiceForm(kindText, fname, department.getString("name"), status, priority, nowdays, days);
+                ServiceForm serviceForm = new ServiceForm(kindText, fname, dpStr, status, priority, nowdays, days);
                 serviceForm.setId(object.getString("id"));
                 forms.add(serviceForm);
             }

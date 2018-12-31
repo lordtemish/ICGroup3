@@ -101,6 +101,7 @@
                         android:layout_gravity="center"
                         />
                     <TextView
+                        android:visibility="gone"
                         android:id="@+id/notificationNum"
                         android:layout_marginLeft="10sp"
                         android:layout_marginStart="10sp"

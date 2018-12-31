@@ -20,6 +20,7 @@ import com.studio.dynamica.icgroup.R;
 
 import org.json.JSONObject;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,7 +52,7 @@ public class HolidayFragmentView extends FrameLayout{
         butText.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveIt();
+                saveHoliday();
             }
         });
     }
@@ -77,7 +78,49 @@ public class HolidayFragmentView extends FrameLayout{
     public void setId(String id) {
         this.id = id;
     }
-
+    private void saveHoliday(){
+        Calendar cal=calendarView.getChose();
+        boolean holiday=withSod.isChecked();
+        if(cal==null) {
+            Toast.makeText(context, "Выберите дату", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            progressFrame.setVisibility(VISIBLE);
+            String url = ((MainActivity) context).MAIN_URL + "holidays/";
+            JSONObject object = new JSONObject();
+            try {
+                String s=((MainActivity)context).inputFormat.format(cal.getTime());
+                object.put("end", s.substring(0,10));
+                object.put("worker", id);
+                object.put("payable", holiday);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Log.d("responseHoliday", object.toString());
+            JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, object, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    saveIt();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    progressFrame.setVisibility(GONE);
+                    Toast.makeText(context, "Проблемы соеденения", Toast.LENGTH_SHORT).show();
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    headers.put("Accept", "application/json");
+                    headers.put("Content-Type", "application/json; charset=utf-8");
+                    headers.put("Authorization", "JWT " + ((MainActivity) context).token);
+                    return headers;
+                }
+            };
+            ((MainActivity) context).requestQueue.add(objectRequest);
+        }
+    }
     private void saveIt(){
         progressFrame.setVisibility(VISIBLE);
         String url=((MainActivity)context).MAIN_URL+"workers/"+id+"/";

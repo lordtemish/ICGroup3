@@ -7,6 +7,15 @@ public class JalobaForm {
    private String name;
    private String position;
    private String text;
+    boolean answered=false;
+
+    public void setAnswered(boolean answered) {
+        this.answered = answered;
+    }
+
+    public boolean isAnswered() {
+        return answered;
+    }
 
     public void setId(String id) {
         this.id = id;

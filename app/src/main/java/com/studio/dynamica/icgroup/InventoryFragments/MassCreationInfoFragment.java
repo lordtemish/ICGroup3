@@ -117,7 +117,7 @@ public class MassCreationInfoFragment extends Fragment {
                 object.put("comment_close","No message");
             }
             catch (Exception e){
-
+                e.printStackTrace();
             }
             postReq("replenishments/"+id+"/close/",object);
         }
@@ -125,7 +125,7 @@ public class MassCreationInfoFragment extends Fragment {
     private void close(){
         JSONObject object=new JSONObject();
         try {
-            object.put("status","FAILED");
+            object.put("status","CLOSED");
             object.put("score",5);
             object.put("comment_close","No message");
         }
@@ -137,7 +137,7 @@ public class MassCreationInfoFragment extends Fragment {
     private void checkRoles(){
         butLayout.setVisibility(View.GONE);
         if(role.equals("SUPERADMIN") || role.contains("SUPPLY") || role.contains("ADMIN_")){
-            if(status.equals("FINISHED") || status.equals("FAILED")){
+            if(status.equals("FINISHED") || status.equals("FAILED") || status.equals("CLOSED")){
                     butLayout.setVisibility(View.GONE);
             }
             else{
@@ -237,8 +237,12 @@ public class MassCreationInfoFragment extends Fragment {
                 statusTextView.setText("Провалено");
                 break;
             case "FINISHED":
-                statusLayout.setBackgroundResource(R.drawable.closed_page);
+                statusLayout.setBackgroundResource(R.drawable.greyrow_page);
                 statusTextView.setText("Завершенно");
+                break;
+            case "CLOSED":
+                statusLayout.setBackgroundResource(R.drawable.closed_page);
+                statusTextView.setText("Закрыто");
                 break;
         }
     }

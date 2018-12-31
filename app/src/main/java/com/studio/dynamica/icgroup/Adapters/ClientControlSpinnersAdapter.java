@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -26,13 +27,33 @@ public class ClientControlSpinnersAdapter extends RecyclerView.Adapter {
     private class myHolder extends RecyclerView.ViewHolder{
         TextView rateTextView0;
         Spinner rateSpinner0;
-        EditText commentEditText;
+        EditText commentEditText, nameEditText;
+        FrameLayout nameEditTextLayout;
         int index=0;
         private myHolder(View view){
             super(view);
             rateTextView0=(TextView) view.findViewById(R.id.rateTextView0);
             rateSpinner0=(Spinner) view.findViewById(R.id.rateSpinner0);
             commentEditText=(EditText) view.findViewById(R.id.commentEditText);
+            nameEditText=(EditText) view.findViewById(R.id.nameEditText);
+            nameEditTextLayout=(FrameLayout) view.findViewById(R.id.nameEditTextLayout);
+            nameEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    Log.d("EDITED","EDITED");
+                    list.get(index).setName(nameEditText.getText()+"");
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                }
+            });
             commentEditText.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -54,7 +75,15 @@ public class ClientControlSpinnersAdapter extends RecyclerView.Adapter {
         }
         private void setInfo(final SpinnerForm form){
             index=list.indexOf(form);
-            rateTextView0.setText(form.getName());
+            if(changeable){
+                rateTextView0.setVisibility(View.GONE);
+                nameEditTextLayout.setVisibility(View.VISIBLE);
+            }
+            else {
+                rateTextView0.setVisibility(View.VISIBLE);
+                nameEditTextLayout.setVisibility(View.GONE);
+                rateTextView0.setText(form.getName());
+            }
 
             String[] numbers={"1","2","3","4","5"};
             final ArrayAdapter<String> spinnerAdapter=new ArrayAdapter<String>(context,R.layout.rate_spinner_item,numbers){
@@ -93,8 +122,13 @@ public class ClientControlSpinnersAdapter extends RecyclerView.Adapter {
     }
     List<SpinnerForm> list;
     Context context;
+    boolean changeable=false;
     public ClientControlSpinnersAdapter(List<SpinnerForm> forms){
         list=forms;
+    }
+
+    public void setChangeable(boolean changeable) {
+        this.changeable = changeable;
     }
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder1, final int position) {

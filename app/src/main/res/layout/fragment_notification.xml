@@ -8,6 +8,236 @@
 
     android:background="@color/light_grey"
     >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_height="50sp"
+            >
+            <ImageView
+                android:layout_width="20sp"
+                android:layout_height="20sp"
+                android:id="@+id/backArrow"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginStart="10sp"
+                android:layout_marginLeft="10sp"
+                android:src="@drawable/ic_backarr"
+                android:onClick="onBackPressed"
+                android:tag="0"
+                />
+            <TextView
+                android:id="@+id/mainObjectTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Активности"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                />
+            <ImageView
+                android:layout_width="20sp"
+                android:layout_height="20sp"
+                android:src="@drawable/ic_menu_main"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginEnd="10sp"
+                android:layout_marginRight="10sp"
+
+                android:onClick="openDrawerOn"
+                />
+        </android.support.constraint.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            >
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/reqRecycler"
+                >
+
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60sp"
+                    android:background="@color/white"
+                    android:id="@+id/controlsLayout"
+                    >
+                    <ImageView
+                        android:id="@+id/ImageLeftView"
+                        android:layout_width="35sp"
+                        android:layout_height="35sp"
+                        android:padding="9sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:background="@drawable/green_circle"
+                        android:src="@drawable/ic_arrowwhiteleft"
+                        android:layout_marginLeft="10sp"
+                        android:layout_marginStart="10sp"
+                        />
+                    <TextView
+                        android:id="@+id/pageInfoTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:text="Опросной лист клиента"
+                        app:layout_constraintStart_toEndOf="@+id/ImageLeftView"
+                        app:layout_constraintEnd_toStartOf="@+id/ImageRightView"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        />
+                    <ImageView
+                        android:id="@+id/ImageRightView"
+                        android:layout_width="35sp"
+                        android:layout_height="35sp"
+                        android:padding="9sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:background="@drawable/green_circle"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginEnd="10sp"
+                        android:layout_marginRight="10sp"
+                        android:src="@drawable/ic_arrowwhiteright"
+                        />
+                </android.support.constraint.ConstraintLayout>
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingStart="20dp"
+                    android:id="@+id/topLayout"
+                    android:paddingEnd="20dp">
+                    <ImageView
+                        android:id="@+id/leftImageTop"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="9dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:background="@drawable/green_circle"
+                        android:src="@drawable/ic_arrowwhiteleft"
+                        />
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/pagesRecyclerUp"
+                        android:layout_width="wrap_content"
+                        android:maxWidth="200dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toEndOf="@+id/leftImageTop"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        ></android.support.v7.widget.RecyclerView>
+                    <ImageView
+                        android:id="@+id/rightImageTop"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="9dp"
+                        android:background="@drawable/green_circle"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        app:layout_constraintStart_toEndOf="@+id/pagesRecyclerUp"
+                        android:src="@drawable/ic_arrowwhiteright"
+                        />
+                </android.support.constraint.ConstraintLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:nestedScrollingEnabled="false"
+                    >
+                </android.support.v7.widget.RecyclerView>
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="10dp"
+                    android:paddingStart="20dp"
+                    android:id="@+id/botLayout"
+                    android:paddingEnd="20dp">
+                    <ImageView
+                        android:id="@+id/leftImageBot"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="9dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:background="@drawable/green_circle"
+
+                        android:src="@drawable/ic_arrowwhiteleft"
+                        />
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/pagesRecyclerBot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toEndOf="@+id/leftImageBot"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        ></android.support.v7.widget.RecyclerView>
+                    <ImageView
+                        android:id="@+id/rightImageBot"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="9dp"
+                        android:background="@drawable/green_circle"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        app:layout_constraintStart_toEndOf="@+id/pagesRecyclerBot"
+                        android:src="@drawable/ic_arrowwhiteright"
+                        />
+                </android.support.constraint.ConstraintLayout>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </LinearLayout>
+    <FrameLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="onClick"
+        android:background="@color/icgGreenTra"
+        android:id="@+id/progressLayout">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+</FrameLayout>
+<!--
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -35,7 +265,7 @@
             android:id="@+id/mainObjectTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Уведомления"
+            android:text="Активности"
             android:textSize="13sp"
             android:textColor="@color/black"
             app:layout_constraintTop_toTopOf="parent"
@@ -99,22 +329,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
+                android:nestedScrollingEnabled="false"
                 >
 
             </android.support.v7.widget.RecyclerView>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </LinearLayout>
-    <FrameLayout
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:onClick="onClick"
-        android:background="@color/icgGreenTra"
-        android:id="@+id/progressLayout">
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
-    </FrameLayout>
-</FrameLayout>
+-->

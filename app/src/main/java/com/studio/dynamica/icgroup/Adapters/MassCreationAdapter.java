@@ -40,7 +40,7 @@ public class MassCreationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((MainActivity)context).setType("demibold",nameTextView, minusTextView,numberTextView,plusTextView);
             ((MainActivity)context).setType("light",vendorTextView, dayLeftLabelTextView, num1, num2, unitLabelTextView, unitTextView);
         }
-        private void setInfo(MassCreationForm form){
+        private void setInfo(final MassCreationForm form){
             index=list.indexOf(form);
             if(update){
                 minusTextView.setOnClickListener(new View.OnClickListener() {
@@ -49,7 +49,7 @@ public class MassCreationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         int num=list.get(index).getTotal();
                         num--;
                         if(num<0){
-                            num=1000;
+                            num=form.getN2();
                         }
                         list.get(index).setTotal(num);
                         notifyItemChanged(index);
@@ -60,7 +60,7 @@ public class MassCreationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     public void onClick(View view) {
                         int num=list.get(index).getTotal();
                         num++;
-                        if(num>1000){
+                        if(num>form.getN2()){
                             num=0;
                         }
                         list.get(index).setTotal(num);

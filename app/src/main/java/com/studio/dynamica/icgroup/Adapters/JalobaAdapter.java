@@ -60,6 +60,9 @@ public class JalobaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             });
             if(!answer){
                 answerLayout.setVisibility(View.GONE);
+                if(!f.isAnswered()){
+                    answerLayout.setVisibility(View.VISIBLE);
+                }
             }
             else answerLayout.setVisibility(View.VISIBLE);
         }

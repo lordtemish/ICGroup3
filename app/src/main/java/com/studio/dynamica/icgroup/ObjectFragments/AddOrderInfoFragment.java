@@ -130,9 +130,9 @@ public class AddOrderInfoFragment extends Fragment {
                 statusLayout.setBackgroundResource(R.drawable.related_darkgreen_page);
                 statusTextView.setText("Время вышло");
                 break;
-            case "cancel":
-                statusLayout.setBackgroundResource(R.drawable.related_darkgreen_page);
-                statusTextView.setText("Отказано");
+            case "CLOSED":
+                statusLayout.setBackgroundResource(R.drawable.closed_page);
+                statusTextView.setText("Закрыто");
                 break;
             case "FAILED":
                 statusLayout.setBackgroundResource(R.drawable.related_darkgreen_page);

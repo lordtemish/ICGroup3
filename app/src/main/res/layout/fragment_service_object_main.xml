@@ -363,10 +363,10 @@
                         android:src="@drawable/ic_arrowwhiteright"
                         />
                 </android.support.constraint.ConstraintLayout>
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/allServicesRecyclerView"
-                    android:layout_marginStart="10sp"
-                    android:layout_marginEnd="10sp"
+                    android:nestedScrollingEnabled="false"
                     android:layout_marginBottom="20sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -399,7 +399,7 @@
                         app:layout_constraintStart_toEndOf="@+id/leftImageBot"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        ></android.support.v7.widget.RecyclerView>
+                        />
                     <ImageView
                         android:id="@+id/rightImageBot"
                         android:layout_width="40dp"

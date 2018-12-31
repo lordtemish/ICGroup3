@@ -120,12 +120,18 @@ public class AddOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     statusLayout.setBackgroundResource(R.drawable.inwait_yellowpage);
                     statusTextView.setText("Ожидает");
                     mainStatusTextView.setText("Ожидает");
-                    boGalo.setBackgroundResource(R.drawable.green_circle);
+                    boGalo.setBackgroundResource(R.drawable.yellow_circle);
                     break;
                 case "FINISHED":
-                    statusLayout.setBackgroundResource(R.drawable.closed_page);
+                    statusLayout.setBackgroundResource(R.drawable.greyrow_page);
                     statusTextView.setText("Завершенно");
                     mainStatusTextView.setText("Завершенно");
+                    boGalo.setBackgroundResource(R.drawable.grey_circle);
+                    break;
+                case "CLOSED":
+                    statusLayout.setBackgroundResource(R.drawable.closed_page);
+                    statusTextView.setText("Закрыто");
+                    mainStatusTextView.setText("Закрыто");
                     boGalo.setBackgroundResource(R.drawable.closed_circle);
                     break;
                 case "FAILED":

@@ -332,7 +332,7 @@
                 android:id="@+id/CCRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="true"
+                android:nestedScrollingEnabled="false"
                 >
 
             </android.support.v7.widget.RecyclerView>

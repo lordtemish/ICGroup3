@@ -400,57 +400,62 @@ public class AddNewOlkFragment extends Fragment {
         }
     }
     private void checkAccepts(){
-        acceptForms.clear();
-        adapter.notifyDataSetChanged();
-        int l=0;
-        for(String[] a:strings){
-            if(a.length==0){
-                l++;
-                continue;
-            }
-            Log.d("Strings"+l,a[0]+" "+a[1]+" "+a[2]);
-            String name=a[0];
-            String role=((MainActivity)getActivity()).positions.get(a[1]);
-            String dep="";
-            if(!a[2].equals("-1") && ((MainActivity)getActivity()).dpids.indexOf(a[2])!=-1) {
-                dep= ((MainActivity) getActivity()).departments.get(((MainActivity) getActivity()).dpids.indexOf(a[2]));
-            }
-            Boolean cl=l==4;
-            ChooseAcceptForm acceptForm=new ChooseAcceptForm(dep,name, role,cl);
-            final int num=l;
-            acceptForm.setListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //=-1,=-1,=-1,=-1,
-                    switch (num){
-                        case 0:
-                            is_executive_permitted++;
-                            is_executive_permitted=is_executive_permitted%2;
-                            break;
-                        case 1:
-                            is_technical_permitted++;
-                            is_technical_permitted=is_technical_permitted%2;
-                            break;
-                        case 2:
-                            is_producer_permitted++;
-                            is_producer_permitted=is_producer_permitted%2;
-                            break;
-                        case 3:
-                            is_curator_permitted++;
-                            is_curator_permitted=is_curator_permitted%2;
-                            break;
-                        case 4:
-                            is_contactor_permitted++;
-                            is_contactor_permitted=is_contactor_permitted%2;
-                            break;
-                    }
-                    Log.d("permits",is_executive_permitted+" "+is_technical_permitted+" "+is_producer_permitted+" "+is_curator_permitted+" "+is_contactor_permitted);
+        try {
+            acceptForms.clear();
+            adapter.notifyDataSetChanged();
+            int l = 0;
+            for (String[] a : strings) {
+                if (a.length == 0) {
+                    l++;
+                    continue;
                 }
-            });
-            acceptForms.add(acceptForm);
-            l++;
+                Log.d("Strings" + l, a[0] + " " + a[1] + " " + a[2]);
+                String name = a[0];
+                String role = ((MainActivity) getActivity()).positions.get(a[1]);
+                String dep = "";
+                if (!a[2].equals("-1") && ((MainActivity) getActivity()).dpids.indexOf(a[2]) != -1) {
+                    dep = ((MainActivity) getActivity()).departments.get(((MainActivity) getActivity()).dpids.indexOf(a[2]));
+                }
+                Boolean cl = l == 4;
+                ChooseAcceptForm acceptForm = new ChooseAcceptForm(dep, name, role, cl);
+                final int num = l;
+                acceptForm.setListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //=-1,=-1,=-1,=-1,
+                        switch (num) {
+                            case 0:
+                                is_executive_permitted++;
+                                is_executive_permitted = is_executive_permitted % 2;
+                                break;
+                            case 1:
+                                is_technical_permitted++;
+                                is_technical_permitted = is_technical_permitted % 2;
+                                break;
+                            case 2:
+                                is_producer_permitted++;
+                                is_producer_permitted = is_producer_permitted % 2;
+                                break;
+                            case 3:
+                                is_curator_permitted++;
+                                is_curator_permitted = is_curator_permitted % 2;
+                                break;
+                            case 4:
+                                is_contactor_permitted++;
+                                is_contactor_permitted = is_contactor_permitted % 2;
+                                break;
+                        }
+                        Log.d("permits", is_executive_permitted + " " + is_technical_permitted + " " + is_producer_permitted + " " + is_curator_permitted + " " + is_contactor_permitted);
+                    }
+                });
+                acceptForms.add(acceptForm);
+                l++;
+            }
+            adapter.notifyDataSetChanged();
         }
-        adapter.notifyDataSetChanged();
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 }

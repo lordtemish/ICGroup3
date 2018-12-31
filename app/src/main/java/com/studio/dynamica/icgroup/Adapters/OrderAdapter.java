@@ -98,6 +98,12 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     inprocessText.setText("Завершено");
                     galochkaImageView.setBackgroundResource(R.drawable.grey_circle);
                     break;
+                case "CLOSED":
+                    statusLayout.setBackgroundResource(R.drawable.closed_page);
+                    statusTextView.setText("Закрыто");
+                    inprocessText.setText("Закрыто");
+                    galochkaImageView.setBackgroundResource(R.drawable.closed_circle);
+                    break;
                 default:
                     statusLayout.setBackgroundResource(R.drawable.failedrow_green);
                     statusTextView.setText("Провалено");

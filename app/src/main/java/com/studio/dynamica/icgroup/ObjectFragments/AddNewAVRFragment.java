@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,8 +28,10 @@ import com.studio.dynamica.icgroup.Activities.MainActivity;
 import com.studio.dynamica.icgroup.Adapters.ChooseAcceptAdapter;
 import com.studio.dynamica.icgroup.Adapters.ClientControlSpinnersAdapter;
 import com.studio.dynamica.icgroup.Adapters.RadioUserAdapter;
+import com.studio.dynamica.icgroup.Adapters.ServicesAdapter;
 import com.studio.dynamica.icgroup.Forms.ChooseAcceptForm;
 import com.studio.dynamica.icgroup.Forms.RadioUserForm;
+import com.studio.dynamica.icgroup.Forms.ServiceForm;
 import com.studio.dynamica.icgroup.Forms.SpinnerForm;
 import com.studio.dynamica.icgroup.R;
 
@@ -36,29 +40,35 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class AddNewAVRFragment extends Fragment {
-    RecyclerView setAcceptRecyclerView, spinnersRecycler;
+    RecyclerView setAcceptRecyclerView, spinnersRecycler, recyclerView, taskRecyclerView;
     List<Spinner> spinners;
     List<TextView> rateTexts;
-    TextView acceptLabelTextView, createNewTextView, commentsLabelTextView, mainObjectTitle;
+    TextView taskButton,acceptLabelTextView, createNewTextView, commentsLabelTextView, mainObjectTitle, addTextView, deleteTextView;
     FrameLayout progressLayout;
+    LinearLayout buttonsLayout, taskLayout;
     List<RadioUserForm> radioUserForms;
+    ServicesAdapter servicesAdapter;
+    List<ServiceForm> serviceForms;
     RadioUserAdapter userAdapter;
+    RadioButton standartRadio,arbitaryRadio,taskRadio;
     List<ChooseAcceptForm> acceptForms;
     ConstraintLayout createNewLayout;
     ChooseAcceptAdapter adapter;
-    EditText commentEditText;
-    List<SpinnerForm> spinnerForms;
-    ClientControlSpinnersAdapter spinnersAdapter;
+    EditText commentEditText, taskEditText;
+    List<SpinnerForm> spinnerForms, arbitaryForms;
+    ClientControlSpinnersAdapter spinnersAdapter, arbitaryAdapter;
     String id, author;
-    int is_executive_permitted=-1,is_technical_permitted=-1,is_producer_permitted=-1,is_curator_permitted=-1,is_contactor_permitted=-1;
+    int is_executive_permitted=-1,is_technical_permitted=-1,is_producer_permitted=-1,is_curator_permitted=-1,is_contactor_permitted=-1, taskid=-1;
     List<String[]> strings;
     public AddNewAVRFragment() {
         // Required empty public constructor
@@ -76,17 +86,76 @@ public class AddNewAVRFragment extends Fragment {
         //   spinnerSet();
         setFonttype();
         ((MainActivity) getActivity()).setRecyclerViewOrientation(setAcceptRecyclerView, LinearLayoutManager.VERTICAL);
+        ((MainActivity) getActivity()).setRecyclerViewOrientation(recyclerView, LinearLayoutManager.VERTICAL);
+        ((MainActivity) getActivity()).setRecyclerViewOrientation(taskRecyclerView, LinearLayoutManager.VERTICAL);
         acceptForms=new ArrayList<>();
         adapter=new ChooseAcceptAdapter(acceptForms);
         setAcceptRecyclerView.setAdapter(adapter);
 
         ((MainActivity)getActivity()).setRecyclerViewOrientation(spinnersRecycler,LinearLayoutManager.VERTICAL);
+        serviceForms=new ArrayList<>();
         spinnerForms=new ArrayList<>();
+        arbitaryForms=new ArrayList<>();arbitaryForms.add(new SpinnerForm());
         spinnersAdapter=new ClientControlSpinnersAdapter(spinnerForms);
+        arbitaryAdapter=new ClientControlSpinnersAdapter(arbitaryForms);arbitaryAdapter.setChangeable(true);
+        servicesAdapter=new ServicesAdapter(serviceForms);
+        taskRecyclerView.setAdapter(servicesAdapter);
+        recyclerView.setAdapter(arbitaryAdapter );
+
         spinnersRecycler.setAdapter(spinnersAdapter);
 
         getPositions();
+        standartRadio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spinnersRecycler.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+                buttonsLayout.setVisibility(View.GONE);
+                taskLayout.setVisibility(View.GONE);
+            }
+        });
+        arbitaryRadio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spinnersRecycler.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+                buttonsLayout.setVisibility(View.VISIBLE);
+                taskLayout.setVisibility(View.GONE);
+            }
+        });
+        taskRadio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spinnersRecycler.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+                buttonsLayout.setVisibility(View.VISIBLE);
+                taskLayout.setVisibility(View.VISIBLE);
+            }
+        });
 
+        addTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                arbitaryForms.add(new SpinnerForm());
+                arbitaryAdapter.notifyDataSetChanged();
+            }
+        });
+        deleteTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(arbitaryForms.size()>1) {
+                    arbitaryForms.remove(arbitaryForms.size() - 1);
+                    arbitaryAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+        taskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getTask();
+            }
+        });
         createNewLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -171,73 +240,208 @@ public class AddNewAVRFragment extends Fragment {
         }
     }
     private void setFonttype(){
-        setTypeface("demibold", createNewTextView);
+        setTypeface("demibold", createNewTextView, taskButton);
         setTypeface("it", mainObjectTitle);
-        setTypeface("light",acceptLabelTextView, commentsLabelTextView);
+        setTypeface("light",acceptLabelTextView, commentsLabelTextView, commentEditText, taskEditText);
     }
-    private void saveThis(){
-        try {
+    private void getTask(){
+        if(taskEditText.getText().length()==0){
+            Toast.makeText(getActivity(), "Укажите id задачи", Toast.LENGTH_SHORT).show();
+        }
+        else {
             progressLayout.setVisibility(View.VISIBLE);
-            String url = ((MainActivity) getActivity()).MAIN_URL + "controls/";
-            JSONObject params = new JSONObject();
-            params.put("author",author);
-            params.put("kind", "PERFORMANCE");
-            params.put("point", id);
-
-            if(is_executive_permitted==0){
-                params.put("is_executive_permitted",false);
-            }
-            if(is_contactor_permitted==0){
-                params.put("is_contactor_permitted",false);
-            }
-            if(is_curator_permitted==0){
-                params.put("is_curator_permitted",false);
-            }
-            if(is_producer_permitted==0){
-                params.put("is_producer_permitted",false);
-            }
-            if(is_technical_permitted==0){
-                params.put("is_technical_permitted",false);
-            }
-
-            String comm=commentEditText.getText()+"";
-            if(comm.length()>0){
-                params.put("comment",comm);
-            }
-            JSONArray array=new JSONArray();
-            for(SpinnerForm form:spinnerForms){
-                JSONObject object=new JSONObject();
-                object.put("position",form.getId());
-                object.put("rate",form.getNum());
-                object.put("comment",form.getText());
-                array.put(object);
-            }
-
-            params.put("positions",array);Log.d("saving "+author,url+"\n" +params.toString());
-            JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+            String url = ((MainActivity) getActivity()).MAIN_URL + "tasks/" + taskEditText.getText()+"/avr/";
+            JsonObjectRequest objectRequest=new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     progressLayout.setVisibility(View.GONE);
-                    Log.d("SAVED",response.toString());
-                    ((MainActivity)getActivity()).onBackPressed();
-                    Toast.makeText(getActivity(), "Акт выполненных работ добавлек", Toast.LENGTH_LONG).show();
+                    setTask(response);
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    error.printStackTrace();
+                    if(error.networkResponse.statusCode==404){
+                        serviceForms.clear();servicesAdapter.notifyDataSetChanged();
+                        taskid=-1;
+                        Toast.makeText(getActivity(), "Задача не найдена", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                        Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
                     progressLayout.setVisibility(View.GONE);
-                    Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
                 }
-            }){  @Override
+            }){@Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Accept", "application/json");
                 headers.put("Content-Type", "application/json; charset=utf-8");
                 headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
                 return headers;
-            }};
-            ((MainActivity)getActivity()).requestQueue.add(jsonObjectRequest);
+            }};((MainActivity)getActivity()).requestQueue.add(objectRequest);
+        }
+    }
+    private void setTask(JSONObject object){
+        try {
+            int as = object.getInt("priority");
+            String priority = getPriority(as);
+            String status = object.getString("status");
+            JSONObject kind = object.getJSONObject("kind");
+            String kindText = kind.getString("name");
+            String fname="", dpStr="";
+            if(!object.isNull("respondent")) {
+                JSONObject respondent = object.getJSONObject("respondent");
+                JSONObject user = respondent.getJSONObject("user");
+                JSONObject department = respondent.getJSONObject("department");
+                dpStr=department.getString("name");
+                fname = user.getString("fullname");
+                String[] a = fname.split(" ");
+                if (fname.length() > 20) {
+                    if (a.length > 1) {
+                        fname = a[0] + " " + a[1];
+                    }
+                }
+            }
+            String created_at = object.getString("created_at"), deadline = object.getString("deadline");
+
+            if(deadline.length()==20 && deadline.length()>1){
+                deadline=deadline.substring(0,deadline.length()-1)+".0Z";
+            }
+            if(created_at.length()==20){
+                created_at=created_at.substring(0,created_at.length()-1)+".0Z";
+            }
+            Date created = ((MainActivity) getActivity()).inputFormat.parse(created_at), dead = ((MainActivity) getActivity()).inputFormat.parse(deadline);
+            Date now = new Date();
+            long wDays = dead.getTime() - created.getTime(), nDays = now.getTime() - created.getTime();
+            int days = Integer.parseInt(TimeUnit.DAYS.convert(wDays, TimeUnit.MILLISECONDS) + "");
+            int nowdays = Integer.parseInt(TimeUnit.DAYS.convert(nDays, TimeUnit.MILLISECONDS) + "");
+            if (days - nowdays > 0) {
+                Log.d("nowdays", days + " " + nowdays);
+                nowdays = days - nowdays;
+                Log.d("nowdays", (days - nowdays > 0) + "");
+            } else {
+                nowdays = 0;
+            }
+            ServiceForm serviceForm = new ServiceForm(kindText, fname, dpStr, status, priority, nowdays, days);
+            serviceForm.setId(object.getString("id"));
+            taskid=object.getInt("id");
+            serviceForms.clear();
+            serviceForms.add(serviceForm);
+            servicesAdapter.notifyDataSetChanged();
+        }
+        catch (Exception e){
+
+        }
+    }
+    private String getPriority(int ss){
+        String s="";
+        switch (ss){
+            case 1:
+                s="Низкий";
+                break;
+            case 2:
+                s="Средний";
+                break;
+            case 3:
+                s="Высокий";
+                break;
+            default:
+        }
+        return s;
+    }
+    private void saveThis(){
+        try {
+            if(taskid==-1 && taskRadio.isChecked()){
+                Toast.makeText(getActivity(), "Укажите id задачи", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                progressLayout.setVisibility(View.VISIBLE);
+                String url = ((MainActivity) getActivity()).MAIN_URL + "controls/";
+                JSONObject params = new JSONObject();
+                params.put("author", author);
+                params.put("kind", "PERFORMANCE");
+                params.put("point", id);
+                String avr_type = "STANDART";
+                if (arbitaryRadio.isChecked()) {
+                    avr_type = "ARBITRARY";
+                }
+                if (taskRadio.isChecked()) {
+                    avr_type = "TASK";
+                    params.put("task", taskid);
+                }
+                params.put("avr_type", avr_type);
+
+                if (is_executive_permitted == 0) {
+                    params.put("is_executive_permitted", false);
+                }
+                if (is_contactor_permitted == 0) {
+                    params.put("is_contactor_permitted", false);
+                }
+                if (is_curator_permitted == 0) {
+                    params.put("is_curator_permitted", false);
+                }
+                if (is_producer_permitted == 0) {
+                    params.put("is_producer_permitted", false);
+                }
+                if (is_technical_permitted == 0) {
+                    params.put("is_technical_permitted", false);
+                }
+
+                String comm = commentEditText.getText() + "";
+                if (comm.length() > 0) {
+                    params.put("comment", comm);
+                }
+                JSONArray array = new JSONArray();
+                if (standartRadio.isChecked())
+                    for (SpinnerForm form : spinnerForms) {
+                        JSONObject object = new JSONObject();
+
+                        object.put("position", form.getId());
+                        object.put("rate", form.getNum());
+                        if (form.getText().length() > 0)
+                            object.put("comment", form.getText());
+                        array.put(object);
+                    }
+                else {
+                    for (SpinnerForm form : arbitaryForms) {
+                        JSONObject object = new JSONObject();
+                        if(form.getName().length()==0){
+                            continue;
+                        }
+                        object.put("name", form.getName());
+                        object.put("rate", form.getNum());
+                        if (form.getText().length() > 0)
+                            object.put("comment", form.getText());
+                        array.put(object);
+                    }
+                }
+                params.put("positions", array);
+                Log.d("saving " + author, url + "\n" + params.toString());
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        progressLayout.setVisibility(View.GONE);
+                        Log.d("SAVED", response.toString());
+                        ((MainActivity) getActivity()).onBackPressed();
+                        Toast.makeText(getActivity(), "Акт выполненных работ добавлек", Toast.LENGTH_LONG).show();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        progressLayout.setVisibility(View.GONE);
+                        Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap<String, String> headers = new HashMap<String, String>();
+                        headers.put("Accept", "application/json");
+                        headers.put("Content-Type", "application/json; charset=utf-8");
+                        headers.put("Authorization", "JWT " + ((MainActivity) getActivity()).token);
+                        return headers;
+                    }
+                };
+                ((MainActivity) getActivity()).requestQueue.add(jsonObjectRequest);
+            }
         }
         catch (Exception e){
             e.printStackTrace();
@@ -252,14 +456,25 @@ public class AddNewAVRFragment extends Fragment {
         strings=new ArrayList<>();strings.add(new String[]{});strings.add(new String[]{});strings.add(new String[]{});strings.add(new String[]{});strings.add(new String[]{});
         setAcceptRecyclerView=(RecyclerView) view.findViewById(R.id.setAcceptRecyclerView);
         spinnersRecycler=(RecyclerView) view.findViewById(R.id.spinnersRecycler);
+        recyclerView=(RecyclerView) view.findViewById(R.id.recyclerView);
+        taskRecyclerView=(RecyclerView) view.findViewById(R.id.taskRecyclerView);
         acceptLabelTextView=(TextView) view.findViewById(R.id.acceptLabelTextView);
+        taskButton=(TextView) view.findViewById(R.id.taskButton);
         createNewTextView=(TextView) view.findViewById(R.id.createNewTextView);
+        deleteTextView=(TextView) view.findViewById(R.id.deleteTextView);
+        addTextView=(TextView) view.findViewById(R.id.addTextView);
         commentEditText=(EditText) view.findViewById(R.id.commentEditText);
+        taskEditText=(EditText) view.findViewById(R.id.taskEditText);
         commentsLabelTextView=(TextView) view.findViewById(R.id.commentsLabelTextView);
         mainObjectTitle=(TextView) view.findViewById(R.id.mainObjectTitle);
         progressLayout=(FrameLayout) view.findViewById(R.id.progressLayout);
+        buttonsLayout=(LinearLayout) view.findViewById(R.id.buttonsLayout);
         createNewLayout=(ConstraintLayout) view.findViewById(R.id.createNewLayout);
+        taskLayout=(LinearLayout) view.findViewById(R.id.taskLayout);
 
+        standartRadio=(RadioButton)view.findViewById(R.id.standartRadio);
+        arbitaryRadio=(RadioButton)view.findViewById(R.id.arbitaryRadio);
+        taskRadio=(RadioButton)view.findViewById(R.id.taskRadio);
     }
 
     private void getAccepts(){

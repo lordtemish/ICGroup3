@@ -8,7 +8,9 @@ public class SpinnerForm {
         id=i;name=n;
         num=1;
     }
-
+    public SpinnerForm(){
+        id="";name="";num=1;
+    }
     public void setText(String text) {
         this.text = text;
     }

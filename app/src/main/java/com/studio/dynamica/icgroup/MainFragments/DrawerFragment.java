@@ -74,18 +74,18 @@ public class DrawerFragment extends Fragment {
         rowFormPTNS.clear();
         clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_box,R.drawable.ic_box_u,"Объекты",-1));
         clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_solvves,R.drawable.ic_solvves_u,"Задачи",-1));
-        clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_bell,R.drawable.ic_bell_u,"Уведомления",22));
+        clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_bell,R.drawable.ic_bell_u,"Активности",-1));
         clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_settings,R.drawable.ic_settings_u,"Настройки",-1));
         if (true )
-            rowFormPTNS.add(new RowFormPTN(R.drawable.ic_box, R.drawable.ic_box_u, "Объекты", 34));
+            rowFormPTNS.add(new RowFormPTN(R.drawable.ic_box, R.drawable.ic_box_u, "Объекты", -1));
         if(true)
-            rowFormPTNS.add(new RowFormPTN(R.drawable.ic_solvves, R.drawable.ic_solvves_u, "Задачи", 47));
+            rowFormPTNS.add(new RowFormPTN(R.drawable.ic_solvves, R.drawable.ic_solvves_u, "Задачи", -1));
         if(role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("CHIEF"))
             rowFormPTNS.add(new RowFormPTN(R.drawable.ic_people, R.drawable.ic_people_u, "Сотрудники", -1));
         if(role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.equals("PRODUCTION_CHIEF"))
             rowFormPTNS.add(new RowFormPTN(R.drawable.ic_clients, R.drawable.ic_clients_u, "Клиенты", -1));
         if(role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("SUPPLY"))
-            rowFormPTNS.add(new RowFormPTN(R.drawable.ic_inventory, R.drawable.ic_inventory_u, "Инвентарь", 47));
+            rowFormPTNS.add(new RowFormPTN(R.drawable.ic_inventory, R.drawable.ic_inventory_u, "Инвентарь", -1));
     }
     public void setClient(boolean a){
         drawerAdapter.setClient(a);

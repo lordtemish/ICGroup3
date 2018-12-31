@@ -124,7 +124,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:textColor="@color/black"
-                    android:text="Осталось дней: "
+                    android:text="Остаток продукта: "
                     android:textSize="11sp"
                     android:gravity="start|center_vertical"
                     />

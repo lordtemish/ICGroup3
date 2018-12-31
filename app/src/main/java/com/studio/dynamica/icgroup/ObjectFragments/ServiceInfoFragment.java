@@ -439,19 +439,26 @@ public class ServiceInfoFragment extends Fragment {
             dateTextView.setText(date1);stopDateTextView.setText(dead1);
             serviceTypeTextView.setText(object.getJSONObject("kind").getString("name"));
 
-            JSONObject point=object.getJSONObject("point"), respondent=object.getJSONObject("respondent"), author=object.getJSONObject("author");
-            JSONObject user=respondent.getJSONObject("user");
-            this.point=point.getString("id");
-            dpid=respondent.getJSONObject("department").getString("id");
-            if(user.getString("id").equals(usrid)){
-                me=true;
-                meType="respondent";
+            JSONObject point=object.getJSONObject("point"), author=object.getJSONObject("author");
+            if(!object.isNull("respondent")) {
+                JSONObject respondent = object.getJSONObject("respondent");
+                JSONObject user = respondent.getJSONObject("user");
+
+                this.point = point.getString("id");
+                dpid = respondent.getJSONObject("department").getString("id");
+                if (user.getString("id").equals(usrid)) {
+                    me = true;
+                    meType = "respondent";
+                }
+                strings.set(4, new String[]{user.getString("fullname"), user.getString("role"), dpid});
+                objectNameTextView.setText(point.getString("name"));
+                placeTextView.setText(respondent.getJSONObject("department").getString("name"));
+                employeeNameTextView.setText(user.getString("fullname"));
+                employeePositionTextView.setText(((MainActivity) getActivity()).positions.get(user.getString("role")));
             }
-            strings.set(4 ,new String[]{user.getString("fullname"),user.getString("role"), dpid});
-            objectNameTextView.setText(point.getString("name"));
-            placeTextView.setText(respondent.getJSONObject("department").getString("name"));
-            employeeNameTextView.setText(user.getString("fullname"));
-            employeePositionTextView.setText(((MainActivity)getActivity()).positions.get(user.getString("role")));
+            else{
+
+            }
             autorNameTextView.setText(author.getString("fullname"));
             autorPositionTextView.setText(((MainActivity)getActivity()).positions.get(author.getString("role")));
             serviceInfoTextView.setText(object.getString("description"));
@@ -828,13 +835,14 @@ public class ServiceInfoFragment extends Fragment {
                 Log.d("RESPpermit", response.length()+" "+response);
                 Toast.makeText(getActivity(), "Задача подтверждена", Toast.LENGTH_SHORT).show();
                 ((MainActivity)getActivity()).onBackPressed();
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressLayout.setVisibility(View.GONE);
                 NetworkResponse response=error.networkResponse;
-                if(response.statusCode==400)
+                if(response.statusCode==400 || response.statusCode==500)
                     Toast.makeText(getActivity(), "Вы не можете подтвердить задачу", Toast.LENGTH_SHORT).show();
                 else
                 Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();

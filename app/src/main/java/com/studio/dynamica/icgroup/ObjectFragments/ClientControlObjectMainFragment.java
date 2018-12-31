@@ -340,27 +340,27 @@ public class ClientControlObjectMainFragment extends Fragment {
                 createNewLayout.setOnClickListener(svodkaListener);
                 break;
         }
-        JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, url + "&kind=" + ids.get(page), null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                setInfo(response);
-                extraLayout.setVisibility(View.GONE);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-extraLayout.setVisibility(View.GONE);
-                Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
-            }
-        }){  @Override
-        public Map<String, String> getHeaders() throws AuthFailureError {
-            HashMap<String, String> headers = new HashMap<String, String>();
-            headers.put("Accept", "application/json");
-            headers.put("Content-Type", "application/json; charset=utf-8");
-            headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
-            return headers;
-        }};
-        ((MainActivity)getActivity()).requestQueue.add(jsonArrayRequest);
+            JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, url + "&kind=" + ids.get(page), null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    setInfo(response);
+                    extraLayout.setVisibility(View.GONE);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+    extraLayout.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
+                }
+            }){  @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
+                return headers;
+            }};
+            ((MainActivity)getActivity()).requestQueue.add(jsonArrayRequest);
 
         statUrl+="?control__point="+id;
        getStatistics(statUrl, array);
