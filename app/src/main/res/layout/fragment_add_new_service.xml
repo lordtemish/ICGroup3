@@ -280,6 +280,140 @@
 
                             </LinearLayout>
                         </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <LinearLayout
+                                android:id="@+id/suppLin"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_weight="1">
+                                <RadioGroup
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+                                <RadioButton
+                                    android:textSize="11sp"
+                                    android:clickable="false"
+                                    android:background="@android:color/transparent"
+                                    android:button="@drawable/radiobutton"
+                                    android:layout_gravity="center"
+                                    android:id="@+id/suppRadio"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text=" Поставщик" />
+                                </RadioGroup>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:visibility="gone"
+                                android:id="@+id/suppLayout">
+                            <LinearLayout
+                                android:id="@+id/suppGroupLayout"
+                                android:layout_marginTop="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:id="@+id/suppGroupLabelTextView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="20sp"
+                                    android:textColor="@color/darkgrey"
+                                    android:textSize="11sp"
+                                    android:text="Группа поставщиков"
+                                    android:gravity="center_vertical"
+                                    />
+                                <LinearLayout
+                                    android:layout_marginBottom="20sp"
+                                    android:layout_marginTop="5sp"
+                                    android:id="@+id/suppGroupLinear"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35sp"
+                                    android:background="@drawable/spinner_back"
+                                    android:orientation="horizontal">
+
+                                    <Spinner
+                                        android:id="@+id/suppGroupSpinner"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:layout_weight="1"
+                                        android:background="@android:color/transparent"
+                                        android:gravity="start|center_vertical"
+                                        android:spinnerMode="dropdown" />
+
+                                    <FrameLayout
+                                        android:id="@+id/suppGroupFrameImage"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="7">
+
+                                        <ImageView
+                                            android:layout_width="20sp"
+                                            android:layout_height="20sp"
+                                            android:layout_gravity="center"
+
+                                            android:src="@drawable/ic_arrowdown_green" />
+                                    </FrameLayout>
+
+                                </LinearLayout>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/supplierLayout"
+                                android:layout_marginTop="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:id="@+id/supplierLabelTextView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="20sp"
+                                    android:textColor="@color/darkgrey"
+                                    android:textSize="11sp"
+                                    android:text="Компания"
+                                    android:gravity="center_vertical"
+                                    />
+                                <LinearLayout
+                                    android:layout_marginBottom="20sp"
+                                    android:layout_marginTop="5sp"
+                                    android:id="@+id/supplierLinear"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35sp"
+                                    android:background="@drawable/spinner_back"
+                                    android:orientation="horizontal">
+
+                                    <Spinner
+                                        android:id="@+id/supplierChangeSpinner"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:layout_weight="1"
+                                        android:background="@android:color/transparent"
+                                        android:gravity="start|center_vertical"
+                                        android:spinnerMode="dropdown" />
+
+                                    <FrameLayout
+                                        android:id="@+id/supplierFrameImage"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="7">
+
+                                        <ImageView
+                                            android:layout_width="20sp"
+                                            android:layout_height="20sp"
+                                            android:layout_gravity="center"
+
+                                            android:src="@drawable/ic_arrowdown_green" />
+                                    </FrameLayout>
+
+                                </LinearLayout>
+                            </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
@@ -375,15 +509,15 @@
                             android:text=" Выбрать дату завершения" />
                         </LinearLayout>
                     </RadioGroup>
-                    <com.studio.dynamica.icgroup.ExtraFragments.TimePickView
+                    <com.studio.crm.icgroup.ExtraFragments.TimePickView
                         android:id="@+id/timePickView"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></com.studio.dynamica.icgroup.ExtraFragments.TimePickView>
-                    <com.studio.dynamica.icgroup.ExtraFragments.CalendarView
+                        android:layout_height="wrap_content"></com.studio.crm.icgroup.ExtraFragments.TimePickView>
+                    <com.studio.crm.icgroup.ExtraFragments.CalendarView
                         android:id="@+id/calendarView"
                         android:visibility="gone"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></com.studio.dynamica.icgroup.ExtraFragments.CalendarView>
+                        android:layout_height="wrap_content"></com.studio.crm.icgroup.ExtraFragments.CalendarView>
 
                 </LinearLayout>
                 <LinearLayout

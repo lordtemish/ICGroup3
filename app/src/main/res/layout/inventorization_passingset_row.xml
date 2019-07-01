@@ -77,14 +77,14 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:id="@+id/radioFrame"/> -->
-        <com.studio.dynamica.icgroup.ExtraFragments.RadioButtonView
+        <com.studio.crm.icgroup.ExtraFragments.RadioButtonView
             android:id="@+id/radioButtonView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp">
 
-        </com.studio.dynamica.icgroup.ExtraFragments.RadioButtonView>
+        </com.studio.crm.icgroup.ExtraFragments.RadioButtonView>
 
         <LinearLayout
             android:layout_marginStart="20dp"

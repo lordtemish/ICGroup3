@@ -67,6 +67,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <LinearLayout
+
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:background="@color/white"
                     android:layout_height="60sp"
@@ -275,7 +277,7 @@
                         android:visibility="gone"
                         android:orientation="vertical">
 
-                        <com.studio.dynamica.icgroup.ExtraFragments.GraphicDateFrame
+                        <com.studio.crm.icgroup.ExtraFragments.GraphicDateFrame
                             android:id="@+id/graphicDateFrame"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
@@ -418,7 +420,7 @@
         </android.support.v4.widget.NestedScrollView>
     </LinearLayout>
 
-    <com.studio.dynamica.icgroup.ExtraFragments.MainObjectSetInfoFragment
+    <com.studio.crm.icgroup.ExtraFragments.MainObjectSetInfoFragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/setFragment"

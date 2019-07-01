@@ -961,7 +961,7 @@
                                 android:gravity="center_vertical"
                                 android:textColor="@color/black"
                                 android:textSize="13sp"
-                                android:text="Комментарии"
+                                android:text="Комментарий"
                                 />
                             <FrameLayout
                                 android:id="@+id/commentEditTextLayout"
@@ -982,13 +982,20 @@
                                     android:textColorHint="@color/black"
                                     />
                             </FrameLayout>
+                            <android.support.v7.widget.RecyclerView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:nestedScrollingEnabled="false"
+                                android:id="@+id/starsRecyclerView"
+                                />
                             <LinearLayout
                                 android:layout_marginTop="20sp"
                                 android:id="@+id/commentsMediaFilesLayout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
-                                android:visibility="visible">
+                                android:visibility="gone">
                                 <android.support.constraint.ConstraintLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="50sp">
@@ -1046,7 +1053,7 @@
                                 />
                             <android.support.constraint.ConstraintLayout
                                 android:visibility="gone"
-                                android:id="@+id/acceptButtonsLayout"
+                                        android:id="@+id/acceptButtonsLayout"
                                 android:layout_marginTop="20dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="40dp">

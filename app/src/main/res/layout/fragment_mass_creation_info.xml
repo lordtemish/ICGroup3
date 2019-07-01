@@ -315,22 +315,202 @@
                         android:id="@+id/recyclerView"
                         android:nestedScrollingEnabled="false"
                         />
+                    <LinearLayout
+                        android:id="@+id/serviceAcceptedLayout"
+                        android:visibility="visible"
+                        android:paddingTop="20sp"
+                        android:paddingBottom="20sp"
+                        android:paddingStart="20sp"
+                        android:paddingEnd="20sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+                        <android.support.constraint.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50sp">
+                            <TextView
+                                android:id="@+id/serviceAcceptedLabelTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:textColor="@color/black"
+                                android:textSize="17sp"
+                                android:text="Задача завершена"
+                                />
+                        </android.support.constraint.ConstraintLayout>
+                        <LinearLayout
+                            android:layout_marginTop="10sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/SAMessagesLabelTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="30sp"
+                                android:gravity="center_vertical"
+                                android:textColor="@color/black"
+                                android:textSize="13sp"
+                                android:text="Комментарий"
+                                />
+                            <FrameLayout
+                                android:id="@+id/commentEditTextLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="50sp"
+                                android:background="@drawable/black_line"
+                                >
+                                <EditText
+                                    android:id="@+id/commentEditText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@null"
+                                    android:inputType="text"
+                                    android:textSize="13sp"
+                                    android:layout_gravity="center"
+                                    android:gravity="start"
+                                    android:hint="Вводить сюда"
+                                    android:textColorHint="@color/black"
+                                    />
+                            </FrameLayout>
+                            <android.support.v7.widget.RecyclerView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:nestedScrollingEnabled="false"
+                                android:id="@+id/starsRecyclerView"
+                                />
+                            <LinearLayout
+                                android:layout_marginTop="20sp"
+                                android:id="@+id/commentsMediaFilesLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:visibility="gone">
+                                <android.support.constraint.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="50sp">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/commentMediaTextView"
+                                        android:textColor="@color/black"
+                                        android:textSize="13sp"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        android:text="Прикрепить медиа файлы"
+                                        />
+                                    <ImageView
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        android:layout_marginStart="10sp"
+                                        android:layout_marginLeft="10sp"
+                                        android:layout_width="40sp"
+                                        android:layout_height="40sp"
+                                        app:layout_constraintStart_toEndOf="@+id/commentMediaTextView"
+                                        android:src="@drawable/ic_bulavka"
+                                        />
+                                </android.support.constraint.ConstraintLayout>
+                                <android.support.v7.widget.RecyclerView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/mediaFileRecyclerView"></android.support.v7.widget.RecyclerView>
+                                <android.support.constraint.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="50sp">
+                                    <TextView
+                                        android:id="@+id/mediaFileOpenTextView"
+                                        android:layout_width="80sp"
+                                        android:layout_height="30sp"
+                                        android:background="@drawable/greenbutton"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        android:text="Обзор"
+                                        android:gravity="center"
+                                        android:textColor="@color/white"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        />
+                                </android.support.constraint.ConstraintLayout>
+                            </LinearLayout>
+                            <TextView
+                                android:id="@+id/needMarkPlease"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxWidth="200dp"
+                                android:layout_marginTop="20sp"
+                                android:textColor="@color/greyy"
+                                android:textSize="11sp"
+                                android:text="Обязательно все прочтите и оставьте оценку проделанной работе."
+                                />
+                            <android.support.constraint.ConstraintLayout
+                                android:visibility="gone"
+                                android:id="@+id/acceptButtonsLayout"
+                                android:layout_marginTop="20dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp">
+                                <TextView
+                                    android:id="@+id/notAcceptedButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:paddingStart="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:gravity="center"
+                                    android:textColor="@color/greyy"
+                                    android:textSize="13sp"
+                                    android:text="Задача не выполнена"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@+id/acceptedButton"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    />
+                                <TextView
+                                    android:id="@+id/acceptedButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:paddingStart="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:gravity="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="13sp"
+                                    android:background="@drawable/greenbutton"
+                                    android:text="Задача выполнена"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/notAcceptedButton"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    />
+                            </android.support.constraint.ConstraintLayout>
+                            <RadioButton
+                                android:visibility="gone"
+                                android:id="@+id/acceptedRadio"
+                                android:layout_marginTop="10dp"
+                                android:checked="false"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:button="@drawable/radiobutton2"
+                                android:textSize="11sp"
+                                android:textColor="@color/darkgrey"
+                                android:text="  Возобновление задачи"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="2dp"
                         android:background="@color/light_grey"></FrameLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
+                        android:layout_height="70dp"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginEnd="40dp"
                         android:layout_marginBottom="5dp"
                         android:visibility="gone"
                         android:id="@+id/butLayout"
                         android:orientation="horizontal">
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="40dp"
+                            android:layout_height="50dp"
                             android:gravity="center"
                             android:layout_gravity="center"
                             android:layout_weight="1"
@@ -341,7 +521,7 @@
                             />
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="40dp"
+                            android:layout_height="50dp"
                             android:gravity="center"
                             android:layout_gravity="center"
                             android:layout_weight="1"

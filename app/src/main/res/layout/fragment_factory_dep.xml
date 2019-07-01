@@ -97,10 +97,10 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <com.studio.dynamica.icgroup.ExtraFragments.MainObjectSetInfoFragment
+        <com.studio.crm.icgroup.ExtraFragments.MainObjectSetInfoFragment
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/setInfoFragment"></com.studio.dynamica.icgroup.ExtraFragments.MainObjectSetInfoFragment>
+            android:id="@+id/setInfoFragment"></com.studio.crm.icgroup.ExtraFragments.MainObjectSetInfoFragment>
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

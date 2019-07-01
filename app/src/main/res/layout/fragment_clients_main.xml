@@ -109,15 +109,24 @@
             android:paddingBottom="20dp">
 
         </android.support.v7.widget.RecyclerView>
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 >
+
+                <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/swipeRefreshLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:nestedScrollingEnabled="false"        android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </android.support.v7.widget.RecyclerView>
+                </android.support.v4.widget.SwipeRefreshLayout>
                 <ProgressBar
                     android:id="@+id/progressBar"
 
@@ -125,14 +134,8 @@
                     android:layout_height="50dp"
                     android:layout_gravity="center"
                     />
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerView"
-                    android:nestedScrollingEnabled="false"        android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                </android.support.v7.widget.RecyclerView>
             </FrameLayout>
-        </android.support.v4.widget.SwipeRefreshLayout>
+
     </LinearLayout>
 
 </FrameLayout>

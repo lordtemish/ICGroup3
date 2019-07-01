@@ -92,7 +92,7 @@
                             android:id="@+id/withoutSod"
                             />
                     </RadioGroup>
-                    <com.studio.dynamica.icgroup.ExtraFragments.CalendarView
+                    <com.studio.crm.icgroup.ExtraFragments.CalendarView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/calendarView"

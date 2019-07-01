@@ -342,6 +342,12 @@
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
     </LinearLayout>
+    <com.studio.crm.icgroup.ExtraFragments.PasswordChangeView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/passwordChangeView"
+        android:visibility="gone"
+        />
     <FrameLayout
         android:onClick="onClick"
         android:visibility="gone"

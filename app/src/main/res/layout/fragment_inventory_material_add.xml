@@ -324,11 +324,11 @@
 
                         </LinearLayout>
                     </LinearLayout>
-                    <com.studio.dynamica.icgroup.ExtraFragments.BigCounterView
+                    <com.studio.crm.icgroup.ExtraFragments.BigCounterView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/bigCounterView"
-                        android:layout_marginTop="20dp"></com.studio.dynamica.icgroup.ExtraFragments.BigCounterView>
+                        android:layout_marginTop="20dp"></com.studio.crm.icgroup.ExtraFragments.BigCounterView>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="20dp"
@@ -426,7 +426,7 @@
                                 android:text=" Выбрать дату завершения"
                                 />
                         </RadioGroup>
-                        <com.studio.dynamica.icgroup.ExtraFragments.TimePickView
+                        <com.studio.crm.icgroup.ExtraFragments.TimePickView
                             android:layout_marginTop="10dp"
                             android:paddingStart="20dp"
                             android:paddingEnd="20dp"
@@ -434,7 +434,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/counterView"
                             />
-                        <com.studio.dynamica.icgroup.ExtraFragments.CalendarView
+                        <com.studio.crm.icgroup.ExtraFragments.CalendarView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/calendarView"

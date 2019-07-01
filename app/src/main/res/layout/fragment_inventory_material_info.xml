@@ -483,6 +483,7 @@
                         android:text="Отменить заявку"
                         />
                 </android.support.constraint.ConstraintLayout>
+
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
@@ -520,6 +521,7 @@
                         android:background="@drawable/green_circle"
                         />
                 </android.support.constraint.ConstraintLayout>
+
             </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
