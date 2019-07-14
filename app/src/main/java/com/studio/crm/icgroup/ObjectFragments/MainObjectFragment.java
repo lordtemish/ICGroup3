@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,7 +61,8 @@ public class MainObjectFragment extends Fragment {
     HashMap<Integer,String> cities;
     List<String> cityNames, tasktypeNames, kindList;
     TasktypeAdapter taskTypeAdapter;
-    boolean client;
+    LinearLayout cityLayout;
+    boolean client, all=true;
     long time;
         boolean changed=false;
     int city=1;
@@ -118,9 +120,26 @@ public class MainObjectFragment extends Fragment {
                 onSwipeRefresh();
             }
         });
-        showCities();
-        setKinds();
+       checkRoles();
         return view;
+    }
+    private void checkRoles(){
+        String role=((MainActivity)getActivity()).role;
+        if(role.equals("CLIENT") || role.equals("POINT") || role.equals("PRODUCTION_CURATOR") || role.equals("PRODUCTION_ADMIN"))
+            all=false;
+        else
+            all=true;
+        if(all) {
+            tasktypeRecycler.setVisibility(View.VISIBLE);
+            cityLayout.setVisibility(View.VISIBLE);
+            showCities();
+            setKinds();
+        }
+        else{
+            tasktypeRecycler.setVisibility(View.GONE);
+            cityLayout.setVisibility(View.GONE);
+            onSwipeRefresh();
+        }
     }
     private void showCities(){
         if(cityRecycler.getVisibility()==View.VISIBLE){
@@ -133,36 +152,43 @@ public class MainObjectFragment extends Fragment {
         }
     }
     private void checkData(){
-        if(new Date().getTime()-time>120000 || changed){
-            list.clear();
-            mainObjectAdapter.notifyDataSetChanged();
-            String l="points/?";
-            if(kind.length()>0){
-                l+="kind="+kind;
-                if(city>-1){
-                    l+="&";
+        if((new Date().getTime()-time>120000 || changed) && all){
+            Log.d("checkData",all+"");
+            if(all) {
+                list.clear();
+                mainObjectAdapter.notifyDataSetChanged();
+                String l = "points/?";
+                if (kind.length() > 0) {
+                    l += "kind=" + kind;
+                    if (city > -1) {
+                        l += "&";
+                    }
                 }
+                if (city > -1) {
+                    l += "location=" + city;
+                }
+                if (cityNames.size() < 1) {
+                    getRequest("locations/");
+                }
+                Log.d("url", l);
+                getRequest(l);
             }
-            if(city>-1){
-                l+="location="+city;
-            }
-            if(cityNames.size()<1){
-                getRequest("locations/");
-            }
-            Log.d("url",l);
-            getRequest(l);
-
         }
         else{
-            List<MainObjectRowForm> rowForms=new ArrayList<MainObjectRowForm>();
-            rowForms.addAll(list);
-            setPoints(rowForms);
+            if(all) {
+                List<MainObjectRowForm> rowForms = new ArrayList<MainObjectRowForm>();
+                rowForms.addAll(list);
+                setPoints(rowForms);
+            }
+            else{
+                getRequest("points/?executor="+((MainActivity)getActivity()).userid);
+            }
         }
     }
 
     private void onSwipeRefresh(){
         refreshLayout.setRefreshing(false);
-        progressBar.setVisibility(View.VISIBLE);
+
         checkData();
     }
     public void setPoints(List<MainObjectRowForm> list){
@@ -180,11 +206,12 @@ public class MainObjectFragment extends Fragment {
     public void onResume() {
         super.onResume();
         checkData();
+        checkRoles();
     }
 
     public void getRequest(final String url1){
         final String url=((MainActivity)getActivity()).MAIN_URL+url1;
-
+        progressBar.setVisibility(View.VISIBLE);
         JsonArrayRequest getRequest= new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -257,6 +284,7 @@ public class MainObjectFragment extends Fragment {
         tasktypeRecycler=(RecyclerView) view.findViewById(R.id.tasktypeRecycler);
 
         RegionLayout=(ConstraintLayout) view.findViewById(R.id.mainObjectRegionLayout);
+        cityLayout=(LinearLayout) view.findViewById(R.id.cityLayout);
         RegionTextView=(TextView) view.findViewById(R.id.mainObjectRegionTextView);
         arrowCity=(ImageView) view.findViewById(R.id.arrowCity);
 

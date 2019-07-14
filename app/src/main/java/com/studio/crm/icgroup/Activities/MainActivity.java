@@ -742,6 +742,9 @@ public class MainActivity extends AppCompatActivity {
                         =object.getJSONObject("avatar");
                 this.avatar=SERVER_URL+avatar.getString("file");
             }
+            else{
+                this.avatar="";
+            }
             this.name=name;
             this.role=role;
             if(role.equals("POINT") || role.equals("CLIENT")){
@@ -755,6 +758,7 @@ public class MainActivity extends AppCompatActivity {
             drawerF.setRole(role);
             if(page==-1)
             setFragment(R.id.content_frame,new MainProfileFragment());
+            drawerF.dataChanged();
         }
         catch (Exception e){
 

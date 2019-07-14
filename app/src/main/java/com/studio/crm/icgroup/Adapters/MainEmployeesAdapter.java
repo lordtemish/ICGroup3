@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +51,7 @@ public class MainEmployeesAdapter  extends RecyclerView.Adapter<RecyclerView.Vie
             rateTextView.setText(form.getRate()+"");
             positionTextView.setText(form.getPosition());
             if(form.getUrl().length()>0){
+                Log.d("URLS",((MainActivity)context).SERVER_URL+" ---  "+form.getUrl());
                 ((MainActivity)context).setPhoto(form.getUrl(),avatar);
             }
             else{

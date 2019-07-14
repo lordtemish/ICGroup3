@@ -93,6 +93,9 @@ public class    DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             if(photo.length()>0){
                 a.setPhoto(photo,greenImage);
             }
+            else{
+                greenImage.setImageResource(R.drawable.circle_image);
+            }
         }
     }
     private class exHolder extends RecyclerView.ViewHolder{

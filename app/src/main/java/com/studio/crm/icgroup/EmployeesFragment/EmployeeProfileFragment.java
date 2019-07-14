@@ -159,7 +159,7 @@ private void setInfo(JSONObject object){
             nameTextView.setText(user.getString("fullname"));
             if(!user.isNull("avatar")) {
                 JSONObject avatar = user.getJSONObject("avatar");
-                String ava=((MainActivity)getActivity()).SERVER_URL+avatar.getString("file");
+                String ava=avatar.getString("file");
                 ((MainActivity)getActivity()).setPhoto(ava,this.avatar);
             }
             String pos=user.getString("role");

@@ -157,12 +157,14 @@ public class FactoryDepFragment extends Fragment {
                 int result_rate=Integer.parseInt(""+Math.round(object.getDouble("result_rate")*100));
                 form.setName(name);form.setRate(result_rate);form.setResult_rate(rate);
                 form.setId(object.getString("id"));
-                String avatar=user.getString("avatar")+"";
+
                 String pos=user.getString("role");
                 String position=((MainActivity)getActivity()).positions.get(pos);
                 form.setPosition(position);
-                if(!avatar.equals("null")){
-
+                if(!user.isNull("avatar")){
+                    JSONObject avatar=user.getJSONObject("avatar");
+                    String avatarq=avatar.getString("file");
+                    form.setUrl(avatarq);
                 }
                 forms.add(form);
             }
