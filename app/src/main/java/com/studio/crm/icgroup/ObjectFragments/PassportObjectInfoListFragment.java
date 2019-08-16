@@ -55,7 +55,8 @@ public class PassportObjectInfoListFragment extends Fragment {
     List<PhonesRowForm> phonesRowFormList;
     List<RecyclerView.Adapter> smenaSAdapter;
     ProgressPhonesAdapter adapter1;
-    int shifts=0;
+    int shifts=0, janitor_shifts_count=0, gardener_shifts_count=0, plumber_shifts_count=0,electrician_shifts_count=0;
+
     ConstraintLayout employeeLayout, progressLayout;
     List<List<ProgressPhoneForm>>  allForms;
     List<ProgressPhoneForm> forms;
@@ -70,6 +71,21 @@ public class PassportObjectInfoListFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public int getJanitor_shifts_count() {
+        return janitor_shifts_count;
+    }
+
+    public int getGardener_shifts_count() {
+        return gardener_shifts_count;
+    }
+
+    public int getPlumber_shifts_count() {
+        return plumber_shifts_count;
+    }
+
+    public int getElectrician_shifts_count() {
+        return electrician_shifts_count;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,6 +93,10 @@ public class PassportObjectInfoListFragment extends Fragment {
         // Inflate the layout for this fragment
         client=((MainActivity)getActivity()).client;
         id=getArguments().getString("id","0");
+        janitor_shifts_count=getArguments().getInt("janitor_shifts_count");
+        gardener_shifts_count=getArguments().getInt("gardener_shifts_count");
+        plumber_shifts_count=getArguments().getInt("plumber_shifts_count");
+        electrician_shifts_count=getArguments().getInt("electrician_shifts_count");
        view=inflater.inflate(R.layout.fragment_passport_object_info_list, container, false);
 
        emplLa=(LinearLayout)view.findViewById(R.id.emplLa);
@@ -166,7 +186,7 @@ public class PassportObjectInfoListFragment extends Fragment {
         }
     }
     private void setAddNewEmployee(){
-        Bundle bundle=new Bundle();
+        Bundle bundle=getArguments();
         bundle.putString("point",id);
         bundle.putInt("shifts",shifts);
         bundle.putBoolean("is_trainee",is_trainee);

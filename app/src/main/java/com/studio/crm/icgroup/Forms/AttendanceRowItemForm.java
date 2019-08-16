@@ -7,7 +7,9 @@ public class AttendanceRowItemForm {
         this.day=day;
         nothing=true;
     }
-
+    public void setAll(){
+        nothing=false;plus=false;absent=false;ill=false;replace=false;half=false;third=false;
+    }
     public void setHalf(boolean half) {
         nothing=false;
         this.half = half;

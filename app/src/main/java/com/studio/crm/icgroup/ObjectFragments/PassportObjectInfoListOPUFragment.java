@@ -539,16 +539,16 @@ String id, name, phone, userid, holid="";
     }
     private void delete(){
         progressLayout.setVisibility(View.VISIBLE);
-        String url=((MainActivity)getActivity()).MAIN_URL+"workers/"+id+"/";
+        String url=((MainActivity)getActivity()).MAIN_URL+"workers/"+id+"/remove/";
         JSONObject params=new JSONObject();
         try {
             //params.put("status","REMOVE");
         }
         catch (Exception e){e.printStackTrace();}
         Log.d("PARAMSdelete",params.toString());
-        StringRequest ob=new StringRequest(Request.Method.DELETE, url,new Response.Listener<String>() {
+        JsonObjectRequest ob=new JsonObjectRequest(Request.Method.POST, url,params,new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(String response) {
+            public void onResponse(JSONObject response) {
                 progressLayout.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), "ОПУ уволен", Toast.LENGTH_SHORT).show();
                 ((MainActivity)getActivity()).onBackPressed();

@@ -604,20 +604,28 @@ public class OwnTasksFragment extends Fragment {
         try {
             Log.d("Graphic info",""+object.length()+" ");
             JSONArray array=object.names();
+            String total="__total_count", fin="__finished_count";
             max=-1;
             List<List<Integer>> lists=new ArrayList<>();
             for (int i=0;i<array.length();i++){
                 String key=array.getString(i);
+                String day=(i/2+1)+"";if(day.length()==1) day="0"+day;
                 int val=object.getInt(key);
                 if(i%2==0) {
                     lists.add(new ArrayList<Integer>());
+                    val=object.getInt(key.substring(0,8)+day+total);
                     lists.get(i/2).add(val);
                     if(val>max)max=val;
                 }
                 else{
+                    val=object.getInt(key.substring(0,8)+day+fin);
                     lists.get(i/2).add(val);
                 }
             }
+            if(max==0){
+                max=1;
+            }
+            Log.d("MAXIMUM",max+"");
             setGraphic(lists);
         }
         catch (Exception e){

@@ -72,14 +72,24 @@ public class PassportObjectWorkScheduleFragment extends Fragment {
         List<WorkScheduleForm> list=new ArrayList<>();
         List<ShiftForm> weekendForms=new ArrayList<>();
         List<ShiftForm> workdayForms=new ArrayList<>();
+        List<ShiftForm> NworkdayForms=new ArrayList<>();
+        List<ShiftForm> NweekendForms=new ArrayList<>();
         for(int i=0;i<array.length();i++){
             try {
                 JSONObject object = array.getJSONObject(i);
                 ShiftForm form=new ShiftForm(object);
                 if(form.isWeekend()){
+                    if(form.isIs_night()){
+                        NweekendForms.add(form);
+                    }
+                    else
                     weekendForms.add(form);
                 }
                 else{
+                    if(form.isIs_night()){
+                        NworkdayForms.add(form);
+                    }
+                    else
                     workdayForms.add(form);
                 }
             }
@@ -88,10 +98,16 @@ public class PassportObjectWorkScheduleFragment extends Fragment {
             }
         }
         if(workdayForms.size()>0) {
-            list.add(new WorkScheduleForm("Будние дни", "Пн-Пт(ежедневно "+workdayForms.size()+" смена)", workdayForms));
+            list.add(new WorkScheduleForm("Будние дни (Дневная смена)", "Пн-Пт", workdayForms));
+        }
+        if(NworkdayForms.size()>0) {
+            list.add(new WorkScheduleForm("Будние дни (Ночная смена)", "Пн-Пт", NworkdayForms));
         }
         if(weekendForms.size()>0) {
-            list.add(new WorkScheduleForm("Выходные дни", "Сб-Вс", weekendForms));
+            list.add(new WorkScheduleForm("Выходные дни (Дневная смена)", "Сб-Вс ", weekendForms));
+        }
+        if(NweekendForms.size()>0) {
+            list.add(new WorkScheduleForm("Выходные дни (Ночная смена)  ", "Сб-Вс ", NweekendForms));
         }
         this.list.clear();this.list.addAll(list);
         adapter.notifyDataSetChanged();

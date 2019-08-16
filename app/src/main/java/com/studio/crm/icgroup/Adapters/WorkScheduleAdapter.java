@@ -19,8 +19,8 @@ import java.util.List;
 
 public class WorkScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private class myHolder extends RecyclerView.ViewHolder{
-        TextView days, schInfo, firstSmenaTextView, firstSmenaTimeTextView, secondSmenaTextView, secondSmenaTimeTextView, thirdSmenaTextView,thirdSmenaTimeTextView;
-        ConstraintLayout firstSmena, secondSmena, thirdSmena;
+        TextView days, schInfo, firstSmenaTextView, firstSmenaTimeTextView, secondSmenaTextView, secondSmenaTimeTextView, thirdSmenaTextView,thirdSmenaTimeTextView, fourthSmenaTextView,fourthSmenaTimeTextView, fifthSmenaTextView, fifthSmenaTimeTextView;
+        ConstraintLayout firstSmena, secondSmena, thirdSmena, fourthSmena, fifthSmena;
         List<TextView> smenasTexts, smenasTimes;
         List<ConstraintLayout> smenasLayouts;
         Context context;
@@ -33,7 +33,12 @@ public class WorkScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             firstSmena=(ConstraintLayout) view.findViewById(R.id.firstSmena);
             secondSmena=(ConstraintLayout) view.findViewById(R.id.secondSmena);
             thirdSmena=(ConstraintLayout) view.findViewById(R.id.thirdSmena);
-            smenasLayouts.add(firstSmena);smenasLayouts.add(secondSmena);smenasLayouts.add(thirdSmena);
+            fourthSmena=(ConstraintLayout) view.findViewById(R.id.fourthSmena);
+            fifthSmena=(ConstraintLayout) view.findViewById(R.id.fifthSmena);
+            smenasLayouts.add(firstSmena);smenasLayouts.add(secondSmena);
+            smenasLayouts.add(thirdSmena);
+            smenasLayouts.add(fourthSmena);
+            smenasLayouts.add(fifthSmena);
             days=(TextView) view.findViewById(R.id.days);
             days.setTypeface(((MainActivity)context).getTypeFace("bold"));
             schInfo=(TextView) view.findViewById(R.id.schInfo);
@@ -50,12 +55,22 @@ public class WorkScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             thirdSmenaTextView.setTypeface(((MainActivity)context).getTypeFace("medium"));
             thirdSmenaTimeTextView=(TextView) view.findViewById(R.id.thirdSmenaTimeTextView);
             thirdSmenaTimeTextView.setTypeface(((MainActivity)context).getTypeFace("medium"));
-            smenasTexts.add(firstSmenaTextView);smenasTexts.add(secondSmenaTextView);smenasTexts.add(thirdSmenaTextView);
-            smenasTimes.add(firstSmenaTimeTextView);smenasTimes.add(secondSmenaTimeTextView);smenasTimes.add(thirdSmenaTimeTextView);
+
+            fourthSmenaTextView=(TextView) view.findViewById(R.id.fourthSmenaTextView);
+            fourthSmenaTextView.setTypeface(((MainActivity)context).getTypeFace("medium"));
+            fourthSmenaTimeTextView=(TextView) view.findViewById(R.id.fourthSmenaTimeTextView);
+            fourthSmenaTimeTextView.setTypeface(((MainActivity)context).getTypeFace("medium"));
+
+            fifthSmenaTextView=(TextView) view.findViewById(R.id.fifthSmenaTextView);
+            fifthSmenaTextView.setTypeface(((MainActivity)context).getTypeFace("medium"));
+            fifthSmenaTimeTextView=(TextView) view.findViewById(R.id.fifthSmenaTimeTextView);
+            fifthSmenaTimeTextView.setTypeface(((MainActivity)context).getTypeFace("medium"));
+            smenasTexts.add(firstSmenaTextView);smenasTexts.add(secondSmenaTextView);smenasTexts.add(thirdSmenaTextView);smenasTexts.add(fourthSmenaTextView);smenasTexts.add(fifthSmenaTextView);
+            smenasTimes.add(firstSmenaTimeTextView);smenasTimes.add(secondSmenaTimeTextView);smenasTimes.add(thirdSmenaTimeTextView);smenasTimes.add(fourthSmenaTimeTextView);smenasTimes.add(fifthSmenaTimeTextView);
         }
         private void setInfo(WorkScheduleForm form){
             List<ShiftForm> shiftForms=form.getShiftForms();
-            int shifts=form.getShifts();
+            int shifts=shiftForms.size();
             days.setText(form.getDayType());
             schInfo.setText(form.getDayInfo());
             for(int i=0;i<shifts;i++){
@@ -66,16 +81,35 @@ public class WorkScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
                 if(shiftForms.get(i).isWeekend()){
                     String sub="Суббота";
-                    if(shiftForms.get(i).getShift()>6){
+                    if(shiftForms.get(i).getShift()==7){
                         sub="Воскресенье";
                     }
                     smenasTexts.get(i).setText(sub);
                     smenasTimes.get(i).setText("с " + shiftForms.get(i).getBegin() + " до " + shiftForms.get(i).getEnd());
                 }
                 else {
-                    smenasTexts.get(i).setText(shiftForms.get(i).getShift() + ending + " смена");
+                    String sub=getday(shiftForms.get(i).getShift());
+                    smenasTexts.get(i).setText(sub);
                     smenasTimes.get(i).setText("с " + shiftForms.get(i).getBegin() + " до " + shiftForms.get(i).getEnd());
                 }
+            }
+        }
+        private String getday(int shi){
+            switch (shi){
+                case 1:
+                    return "Понедельник";
+                case 2:
+                    return "Вторник";
+                case 3:
+                    return "Среда";
+                case 4:
+                    return "Четверг";
+                case 5:
+                    return "Пятница";
+                case 6:
+                    return "Суббота";
+                    default:
+                        return "Воскресенье";
             }
         }
 

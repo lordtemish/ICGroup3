@@ -14,9 +14,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,11 +50,12 @@ import java.util.Map;
  */
 public class MainObjectFragment extends Fragment {
     ProgressBar progressBar;
+    RadioButton searchRadio;
     MainObjectAdapter mainObjectAdapter;CityRadioAdapter cityRadioAdapter;
     RecyclerView mainObjectRecycle, cityRecycler , tasktypeRecycler;
     ConstraintLayout RegionLayout;
     ImageView arrowCity;
-    TextView RegionTextView;
+    TextView RegionTextView, searchT;
     ArrayList<MainObjectRowForm> list;
     TextView mainObjectTitle;
     SwipeRefreshLayout refreshLayout;
@@ -61,8 +64,9 @@ public class MainObjectFragment extends Fragment {
     HashMap<Integer,String> cities;
     List<String> cityNames, tasktypeNames, kindList;
     TasktypeAdapter taskTypeAdapter;
-    LinearLayout cityLayout;
-    boolean client, all=true;
+    EditText nameEditText;
+    LinearLayout cityLayout, nameLayout;
+    boolean client, all=true, search=true;
     long time;
         boolean changed=false;
     int city=1;
@@ -121,6 +125,13 @@ public class MainObjectFragment extends Fragment {
             }
         });
        checkRoles();
+
+       searchT.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               checkData();
+           }
+       });
         return view;
     }
     private void checkRoles(){
@@ -138,6 +149,7 @@ public class MainObjectFragment extends Fragment {
         else{
             tasktypeRecycler.setVisibility(View.GONE);
             cityLayout.setVisibility(View.GONE);
+            RegionLayout.setVisibility(View.GONE);
             onSwipeRefresh();
         }
     }
@@ -152,7 +164,7 @@ public class MainObjectFragment extends Fragment {
         }
     }
     private void checkData(){
-        if((new Date().getTime()-time>120000 || changed) && all){
+        if(((new Date().getTime()-time>120000 || changed) && all) || (all && search) ){
             Log.d("checkData",all+"");
             if(all) {
                 list.clear();
@@ -181,7 +193,11 @@ public class MainObjectFragment extends Fragment {
                 setPoints(rowForms);
             }
             else{
-                getRequest("points/?executor="+((MainActivity)getActivity()).userid);
+                String url="points/?executor="+((MainActivity)getActivity()).userid;
+                if(nameEditText.getText().length()>0){
+                    url+="&name="+nameEditText.getText();
+                }
+                getRequest(url);
             }
         }
     }
@@ -210,8 +226,11 @@ public class MainObjectFragment extends Fragment {
     }
 
     public void getRequest(final String url1){
-        final String url=((MainActivity)getActivity()).MAIN_URL+url1;
+
+        String url=((MainActivity)getActivity()).MAIN_URL+url1;
+        if(search && nameEditText.getText().length()>0) url+="&name="+nameEditText.getText();
         progressBar.setVisibility(View.VISIBLE);
+        Log.d("TaskURL",url);
         JsonArrayRequest getRequest= new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -272,10 +291,20 @@ public class MainObjectFragment extends Fragment {
         (((MainActivity)getActivity()).requestQueue).add(getRequest);
     }
 
-
+    private void setSearch(){
+        search=!search;
+        searchRadio.setChecked(search);
+        if(search){
+            nameLayout.setVisibility(View.VISIBLE);
+        }
+        else{
+            nameLayout.setVisibility(View.GONE);
+        }
+    }
     private void createViews(View view){
         client=((MainActivity) getActivity()).client;
 
+        searchRadio=(RadioButton) view.findViewById(R.id.searchRadio);
         progressBar=(ProgressBar) view.findViewById(R.id.progressBar);
         refreshLayout=(SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         mainObjectTitle=(TextView) view.findViewById(R.id.mainObjectTitle);
@@ -285,9 +314,18 @@ public class MainObjectFragment extends Fragment {
 
         RegionLayout=(ConstraintLayout) view.findViewById(R.id.mainObjectRegionLayout);
         cityLayout=(LinearLayout) view.findViewById(R.id.cityLayout);
+        nameLayout=(LinearLayout) view.findViewById(R.id.nameLayout);
+        nameEditText=(EditText) view.findViewById(R.id.nameEditText);
+        searchT=(TextView) view.findViewById(R.id.searchT);
         RegionTextView=(TextView) view.findViewById(R.id.mainObjectRegionTextView);
         arrowCity=(ImageView) view.findViewById(R.id.arrowCity);
 
+        searchRadio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setSearch();
+            }
+        });
 
         kindMap=new HashMap<>();
         kindList=new ArrayList<>();

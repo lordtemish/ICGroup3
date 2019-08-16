@@ -2,6 +2,7 @@ package com.studio.crm.icgroup.ObjectFragments;
 
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +24,7 @@ import com.android.volley.request.JsonObjectRequest;
 import com.shawnlin.numberpicker.NumberPicker;
 import com.studio.crm.icgroup.Activities.MainActivity;
 import com.studio.crm.icgroup.Adapters.AttendanceAdapter;
+import com.studio.crm.icgroup.Adapters.EquipmentReqAdapter;
 import com.studio.crm.icgroup.ExtraFragments.AttendanceChooseView;
 import com.studio.crm.icgroup.Forms.AttendanceRowForm;
 import com.studio.crm.icgroup.Forms.AttendanceRowItemForm;
@@ -44,8 +46,11 @@ import java.util.Map;
  */
 public class AttendanceMainFragment extends Fragment {
     List<AttendanceRowForm> rowForms;
+    List<String> pages;
+    EquipmentReqAdapter reqAdapter;
     FrameLayout todayFrame, progressLayout;
-    RecyclerView recyclerView;
+    ConstraintLayout smenaLayout;
+    RecyclerView recyclerView, reqRecycler ;
     AttendanceChooseView attendanceChooseView;
     FrameLayout chooseLayout;
     View.OnClickListener emptyL, postL;
@@ -61,7 +66,7 @@ public class AttendanceMainFragment extends Fragment {
     String[] months = {"Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"}
         , weeks={"Пн","Вт","Ср","Чт","Пт","Сб","Вс"}
     ;
-    int shift_count=0,shift=1, location=1;
+    int shift_count=0,shift_count1=0,shift=1, location=1, shifts=0, janitor_shifts_count=0, gardener_shifts_count=0, plumber_shifts_count=0, electrician_shifts_count=0;
     AttendanceAdapter attendanceAdapter;
     public AttendanceMainFragment() {
         // Required empty public constructor
@@ -74,6 +79,12 @@ public class AttendanceMainFragment extends Fragment {
         // Inflate the layout for this fragment
         id=getArguments().getString("id");
         shift_count=getArguments().getInt("shift_count");
+        shift_count1=shift_count;
+        janitor_shifts_count=getArguments().getInt("janitor_shifts_count");
+        gardener_shifts_count=getArguments().getInt("gardener_shifts_count");
+        plumber_shifts_count=getArguments().getInt("plumber_shifts_count");
+        electrician_shifts_count=getArguments().getInt("electrician_shifts_count");
+        shifts=shift_count*2;
         location=getArguments().getInt("location",1);
         atts=new ArrayList<>();
         cal=Calendar.getInstance();
@@ -89,6 +100,7 @@ public class AttendanceMainFragment extends Fragment {
         });
 
         ((MainActivity) getActivity()).setRecyclerViewOrientation(recyclerView, LinearLayoutManager.VERTICAL);
+        ((MainActivity) getActivity()).setRecyclerViewOrientation(reqRecycler, LinearLayoutManager.HORIZONTAL);
         rowForms = new ArrayList<>();
         List<AttendanceRowItemForm> itemForms = new ArrayList<>();
         final int d=25;
@@ -117,6 +129,15 @@ public class AttendanceMainFragment extends Fragment {
         attendanceAdapter = new AttendanceAdapter(rowForms);
         recyclerView.setAdapter(attendanceAdapter);
 
+        reqAdapter=new EquipmentReqAdapter(pages);
+        reqAdapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkReq();
+            }
+        });
+        reqRecycler.setAdapter(reqAdapter);
+
         pickerSettings();
         setDate();
         setFonttypes();
@@ -142,19 +163,143 @@ public class AttendanceMainFragment extends Fragment {
         attendanceChooseView.setLocation(location);
         return view;
     }
+    private void checkReq(){
+            Log.d("THIS PAGE", reqAdapter.getClicked()+"");
+            int page=reqAdapter.getClicked();
+
+            switch (page){
+                case 0:
+                    shifts=shift_count*2;
+                    shift=1;
+                    break;
+                case 3:
+                    if(janitor_shifts_count>0) {
+                        shifts = janitor_shifts_count * 2;
+                        shift = 1;
+                    }
+                    else{
+                        reqAdapter.setClicked(0);
+                        checkReq();
+                    }
+                    break;
+                case 4:
+                    if(gardener_shifts_count>0) {
+                        shifts = gardener_shifts_count * 2;
+                        shift = 1;
+                    }
+                    else {
+                        reqAdapter.setClicked(0);
+                        checkReq();
+                    }
+                    break;
+                case 5:
+                    if(plumber_shifts_count>0) {
+                        shifts = plumber_shifts_count * 2;
+                        shift = 1;
+                    }
+                    else{
+                        reqAdapter.setClicked(0);
+                        checkReq();
+                    }
+                    break;
+                case 6:
+                    if(electrician_shifts_count>0)
+                        {
+                            shifts = electrician_shifts_count * 2;
+                            shift = 1;
+                        }
+                    else {
+                        reqAdapter.setClicked(0);
+                        checkReq();
+                    }
+                    break;
+            }
+            changePage(0);
+    }
     private void changePage(int a){
         shift+=a;
         if(shift==0){
-            shift=shift_count;
+            shift=shifts;
         }
-        if(shift==shift_count+1){
+        if(shift==shifts+1){
             shift=1;
         }
         checkPage();
     }
     private void checkPage(){
-        smenasTextView.setText("Cмена "+shift);
-        getRequest("workers/?point="+id+"&shift="+shift);
+        int page=reqAdapter.getClicked();
+        if(page==0) {
+            smenaLayout.setVisibility(View.VISIBLE);
+            if(shift<=shift_count) {
+                smenasTextView.setText("Дневная смена " + shift);
+                getRequest("workers/?point=" + id + "&shift=" + shift + "&is_night=False");
+            }
+            else{
+                smenasTextView.setText("Ночная смена " + (shift-shift_count));
+                getRequest("workers/?point=" + id + "&shift=" + (shift-shift_count) + "&is_night=True");
+            }
+        }
+        else if(page==1 || page==2){
+            smenaLayout.setVisibility(View.GONE);
+            switch (page){
+                case 1:
+                    getRequest("workers/?point=" + id + "&keep=PIECER");
+                    break;
+                    default:
+                        getRequest("workers/?point=" + id + "&keep=INTERN");
+
+            }
+        }
+        else{
+            smenaLayout.setVisibility(View.VISIBLE);
+            switch (page){
+                case 3:
+
+                    if(shift<=janitor_shifts_count) {
+                        smenaLayout.setVisibility(View.VISIBLE);
+                        smenasTextView.setText("Дневная смена " + shift);
+                        getRequest("workers/?point=" + id + "&shift=" + shift + "&is_night=False&kind=JANITOR");
+                    }
+                    else{
+                        smenasTextView.setText("Ночная смена " + (shift-janitor_shifts_count));
+                        getRequest("workers/?point=" + id + "&shift=" + (shift-janitor_shifts_count) + "&is_night=True&kind=JANITOR");
+                    }
+                    break;
+                case 4:
+                    if(shift<=gardener_shifts_count) {
+                        smenaLayout.setVisibility(View.VISIBLE);
+                        smenasTextView.setText("Дневная смена " + shift);
+                        getRequest("workers/?point=" + id + "&shift=" + shift + "&is_night=False&kind=GARDENER");
+                    }
+                    else{
+                        smenasTextView.setText("Ночная смена " + (shift-gardener_shifts_count));
+                        getRequest("workers/?point=" + id + "&shift=" + (shift-gardener_shifts_count) + "&is_night=True&kind=GARDENER");
+                    }
+                    break;
+                case 5:
+                    if(shift<=plumber_shifts_count) {
+                        smenaLayout.setVisibility(View.VISIBLE);
+                        smenasTextView.setText("Дневная смена " + shift);
+                        getRequest("workers/?point=" + id + "&shift=" + shift + "&is_night=False&kind=PLUMBER");
+                    }
+                    else{
+                        smenasTextView.setText("Ночная смена " + (shift-plumber_shifts_count));
+                        getRequest("workers/?point=" + id + "&shift=" + (shift-plumber_shifts_count) + "&is_night=True&kind=PLUMBER");
+                    }
+                    break;
+                    default:
+                        if(shift<=electrician_shifts_count) {
+                            smenaLayout.setVisibility(View.VISIBLE);
+                            smenasTextView.setText("Дневная смена " + shift);
+                            getRequest("workers/?point=" + id + "&shift=" + shift + "&is_night=False&kind=ELECTRICIAN");
+                        }
+                        else{
+                            smenasTextView.setText("Ночная смена " + (shift-electrician_shifts_count));
+                            getRequest("workers/?point=" + id + "&shift=" + (shift-electrician_shifts_count) + "&is_night=True&kind=ELECTRICIAN");
+                        }
+
+            }
+        }
         // shifts- month year point
         if(today){
             getShifts();
@@ -239,6 +384,7 @@ public class AttendanceMainFragment extends Fragment {
     private void getRequest(String s){
         progressLayout.setVisibility(View.VISIBLE);
         String url=((MainActivity)getActivity()).MAIN_URL+s;
+        Log.d("Attendance URL", url);
         JsonArrayRequest arrayRequest=new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -340,6 +486,7 @@ public class AttendanceMainFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         setChooseLayout(id);
+                        Log.d("THIS ID",id+"");
                    //     attendanceChooseView.setZamena(strings);
                     }
                 });
@@ -349,7 +496,6 @@ public class AttendanceMainFragment extends Fragment {
                 //form.setListener(emptyL);
             }*/
             form.setRowForms(getEmptyList());
-
         }
         checkItemForms();
     }
@@ -392,10 +538,16 @@ public class AttendanceMainFragment extends Fragment {
                 String id=worker.getString("id");
                 for(AttendanceRowForm ro:rowForms){
                     if(ro.getId().equals(id)){
+                        int dd=0;
                         for(AttendanceRowItemForm itemForm:ro.getRowForms()){
                             if(itemForm.getDay().equals(date)){
-                                ro.setListener(emptyL);
+                                Log.d("Dateid",id+" '"+date);
+                                if(dd==3) {
+                                    ro.setListener(emptyL);
+                                }
+                                dd++;
                                 Log.d("attendancefound",id+" "+date+" "+kind);
+                                itemForm.setAll();
                                 switch (kind){
                                     case "REPLACE":
                                         itemForm.setReplace(true);
@@ -418,6 +570,7 @@ public class AttendanceMainFragment extends Fragment {
                                 }
                                 break;
                             }
+
                         }
                         break;
                     }
@@ -563,6 +716,7 @@ public class AttendanceMainFragment extends Fragment {
         datePicker = (NumberPicker) view.findViewById(R.id.datePicker);
         yearPicker = (NumberPicker) view.findViewById(R.id.yearPicker);
         recyclerView = (RecyclerView) view.findViewById(R.id.mainRecyclerView);
+        reqRecycler = (RecyclerView) view.findViewById(R.id.reqRecycler);
         mainObjectTitle = (TextView) view.findViewById(R.id.mainObjectTitle);
         dateArrowImageView = (ImageView) view.findViewById(R.id.dateArrowImageView);
         yearArrowImageView = (ImageView) view.findViewById(R.id.yearArrowImageView);
@@ -589,6 +743,7 @@ public class AttendanceMainFragment extends Fragment {
         todayFrame=(FrameLayout) view.findViewById(R.id.todayFrame);
 
         progressLayout=(FrameLayout) view.findViewById(R.id.progressLayout);
+        smenaLayout=(ConstraintLayout) view.findViewById(R.id.smenaLayout);
 
         emptyL=new View.OnClickListener() {
             @Override
@@ -603,6 +758,15 @@ public class AttendanceMainFragment extends Fragment {
             }
         };
         attendanceChooseView.setListener(postL);
+
+        pages=new ArrayList<>();
+        pages.add("ОПУ");
+        pages.add("Сдельщик");
+        pages.add("Стажировщик");
+        pages.add("Дворник");
+        pages.add("Садовник");
+        pages.add("Сантехник");
+        pages.add("Электрик");
     }
     private void setFonttypes(){
         setTypeFace("demibold", monthTextView, yearTextView);
@@ -695,7 +859,7 @@ public class AttendanceMainFragment extends Fragment {
             int day=cal.get(Calendar.DAY_OF_MONTH);
             Log.d("Today day",day+" ");
            // boolean has=false;
-            boolean has=true;
+
            /* for(int i=0;i<array.length();i++){
                 int d=array.getInt(i);
                 if (d==day){
@@ -703,7 +867,7 @@ public class AttendanceMainFragment extends Fragment {
                     break;
                 }
             }*/
-            working=has;
+
             dateAttCheck();
         }
         catch (Exception e){

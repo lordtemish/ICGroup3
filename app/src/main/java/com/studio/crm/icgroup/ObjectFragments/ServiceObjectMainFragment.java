@@ -713,18 +713,27 @@ public class ServiceObjectMainFragment extends Fragment {
             Log.d("Graphic info",""+object.length()+" ");
             JSONArray array=object.names();
             max=-1;
+            String total="__total_count", fin="__finished_count";
             List<List<Integer>> lists=new ArrayList<>();
             for (int i=0;i<array.length();i++){
                 String key=array.getString(i);
+                String day=(i/2+1)+"";if(day.length()==1) day="0"+day;
                 int val=object.getInt(key);
+                Log.d("somec ",key+"   "+val);
                 if(i%2==0) {
                     lists.add(new ArrayList<Integer>());
+
+                    val=object.getInt(key.substring(0,8)+day+total);
                     lists.get(i/2).add(val);
                     if(val>max)max=val;
                 }
                 else{
+                    val=object.getInt(key.substring(0,8)+day+fin);
                     lists.get(i/2).add(val);
                 }
+            }
+            if(max==0){
+                max=0;
             }
             setGraphic(lists);
         }
@@ -864,7 +873,8 @@ public class ServiceObjectMainFragment extends Fragment {
         ((MainActivity)getActivity()).setFragment(R.id.content_frame,fragment);
     }
     private void setGraphic(List<List<Integer>> lists){
-        Boolean thismonth=(cal.get(Calendar.MONTH)==cal2.get(Calendar.MONTH) && Math.abs(cal2.getTimeInMillis()-cal.getTimeInMillis())>1000*60*60*24*33);
+        int nnu=1000*60*60*24*33;
+        Boolean thismonth=(cal.get(Calendar.MONTH)==cal2.get(Calendar.MONTH) && Math.abs(cal2.getTimeInMillis()-cal.getTimeInMillis())>nnu);
         int start=1, end=cal.getActualMaximum(Calendar.DAY_OF_MONTH), end1=cal2.getActualMaximum(Calendar.DAY_OF_MONTH);
         int today=-1;
         if(thismonth)
@@ -875,6 +885,7 @@ public class ServiceObjectMainFragment extends Fragment {
         for(int i=start;i<=lists.size();i++){
             Boolean sego=i==today, clicked=false;
             List<Integer> integers=lists.get(i-1);
+            Log.d("days",i+" , "+integers.get(0)+"  "+integers.get(1));
             if(today==-1){
                 if(i==end){
                     clicked=true;

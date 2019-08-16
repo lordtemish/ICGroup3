@@ -235,14 +235,48 @@ public class AddNewServiceFragment extends Fragment {
         }
         suppRadio.setChecked(supp);
     }
-    private void setSpinners(){
-        for(int i=0;i<3;i++){
-            ArrayAdapter<String> adapter=new ArrayAdapter<String>(getActivity(),R.layout.simple_spinner_item,spinnerLists.get(i)){
-                public View getView(int position, View convertView,ViewGroup parent) {
-                View v = super.getView(position, convertView, parent);
-                ((TextView) v).setTypeface(((MainActivity) getContext()).getTypeFace("demibold"));
-                return v;
+        private void setSpinners(){
+            for(int i=0;i<3;i++){
+                ArrayAdapter<String> adapter=new ArrayAdapter<String>(getActivity(),R.layout.simple_spinner_item,spinnerLists.get(i)){
+                    public View getView(int position, View convertView,ViewGroup parent) {
+                    View v = super.getView(position, convertView, parent);
+                    ((TextView) v).setTypeface(((MainActivity) getContext()).getTypeFace("demibold"));
+                    return v;
+                }
+                    public View getDropDownView(int position, View convertView, ViewGroup parent) {
+
+                        View v = super.getView(position,convertView,parent);
+                        ((TextView) v).setTypeface(((MainActivity) getContext()).getTypeFace("demibold"));
+                        return v;
+
+                    }};
+                spinnerButtonFrames.get(i).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        spinners.get(spinnerButtonFrames.indexOf(view)).performClick();
+                    }
+                });
+                spinners.get(i).setAdapter(adapter);
+                adapters.add(adapter);
             }
+            suppGroupFrameImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    suppGroupSpinner.performClick();
+                }
+            });
+            supplierFrameImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    supplierFrameImage.performClick();
+                }
+            });
+            suppGroupAdapter=new ArrayAdapter<String>(getActivity(),R.layout.simple_spinner_item,suppGroupList){
+                public View getView(int position, View convertView,ViewGroup parent) {
+                    View v = super.getView(position, convertView, parent);
+                    ((TextView) v).setTypeface(((MainActivity) getContext()).getTypeFace("demibold"));
+                    return v;
+                }
                 public View getDropDownView(int position, View convertView, ViewGroup parent) {
 
                     View v = super.getView(position,convertView,parent);
@@ -250,57 +284,23 @@ public class AddNewServiceFragment extends Fragment {
                     return v;
 
                 }};
-            spinnerButtonFrames.get(i).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    spinners.get(spinnerButtonFrames.indexOf(view)).performClick();
+            suppGroupSpinner.setAdapter(suppGroupAdapter);
+            supplierAdapter=new ArrayAdapter<String>(getActivity(),R.layout.simple_spinner_item,suppliersList){
+                public View getView(int position, View convertView,ViewGroup parent) {
+                    View v = super.getView(position, convertView, parent);
+                    ((TextView) v).setTypeface(((MainActivity) getContext()).getTypeFace("demibold"));
+                    return v;
                 }
-            });
-            spinners.get(i).setAdapter(adapter);
-            adapters.add(adapter);
+                public View getDropDownView(int position, View convertView, ViewGroup parent) {
+
+                    View v = super.getView(position,convertView,parent);
+                    ((TextView) v).setTypeface(((MainActivity) getContext()).getTypeFace("demibold"));
+                    return v;
+
+                }};
+            supplierChangeSpinner.setAdapter(supplierAdapter);
+
         }
-        suppGroupFrameImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                suppGroupSpinner.performClick();
-            }
-        });
-        supplierFrameImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                supplierFrameImage.performClick();
-            }
-        });
-        suppGroupAdapter=new ArrayAdapter<String>(getActivity(),R.layout.simple_spinner_item,suppGroupList){
-            public View getView(int position, View convertView,ViewGroup parent) {
-                View v = super.getView(position, convertView, parent);
-                ((TextView) v).setTypeface(((MainActivity) getContext()).getTypeFace("demibold"));
-                return v;
-            }
-            public View getDropDownView(int position, View convertView, ViewGroup parent) {
-
-                View v = super.getView(position,convertView,parent);
-                ((TextView) v).setTypeface(((MainActivity) getContext()).getTypeFace("demibold"));
-                return v;
-
-            }};
-        suppGroupSpinner.setAdapter(suppGroupAdapter);
-        supplierAdapter=new ArrayAdapter<String>(getActivity(),R.layout.simple_spinner_item,suppliersList){
-            public View getView(int position, View convertView,ViewGroup parent) {
-                View v = super.getView(position, convertView, parent);
-                ((TextView) v).setTypeface(((MainActivity) getContext()).getTypeFace("demibold"));
-                return v;
-            }
-            public View getDropDownView(int position, View convertView, ViewGroup parent) {
-
-                View v = super.getView(position,convertView,parent);
-                ((TextView) v).setTypeface(((MainActivity) getContext()).getTypeFace("demibold"));
-                return v;
-
-            }};
-        supplierChangeSpinner.setAdapter(supplierAdapter);
-
-    }
     private void setFonttype(){
         ObjectTitle.setTypeface(((MainActivity)getActivity()).getTypeFace("it"));
         priorityLabelTextView.setTypeface(((MainActivity)getActivity()).getTypeFace("light"));

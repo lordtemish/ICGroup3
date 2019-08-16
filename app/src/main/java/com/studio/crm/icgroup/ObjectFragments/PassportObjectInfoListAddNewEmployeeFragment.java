@@ -12,10 +12,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,17 +33,24 @@ import com.studio.crm.icgroup.R;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
 public class PassportObjectInfoListAddNewEmployeeFragment extends Fragment {
     EditText nametext, nametext1,salaryEditText;
-    FrameLayout frontLayout;
-    TextView addTextView;
+    FrameLayout frontLayout,spinnerFrameImage, spinnerFrameImage2;
+    TextView addTextView, dayT, nightT;
     ConstraintLayout addLayout;
     RadioButton firstB, secondB, thirdB;
     RadioGroup radioGroup;
+    Spinner employeeChangeSpinner, employeeChangeSpinner2;
+    boolean is_night=false;
+    ArrayList<String> kinds, keeps;
+    int kind=0, keep=0,janitor_shifts_count=0, gardener_shifts_count=0, plumber_shifts_count=0,electrician_shifts_count=0;
+    List<String[]> strings, OPUroles, OPUkeeps;
     int shifts;
     String point;
     boolean is_trainee, check=false;
@@ -55,6 +65,27 @@ public class PassportObjectInfoListAddNewEmployeeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        janitor_shifts_count=getArguments().getInt("janitor_shifts_count");
+        gardener_shifts_count=getArguments().getInt("gardener_shifts_count");
+        plumber_shifts_count=getArguments().getInt("plumber_shifts_count");
+        electrician_shifts_count=getArguments().getInt("electrician_shifts_count");
+        OPUkeeps=new ArrayList<>();
+        OPUkeeps.add(new String[]{"Сотрудник","REGULAR"});
+        OPUkeeps.add(new String[]{"Сдельщик","PIECER"});
+        OPUkeeps.add(new String[]{"Стажировщик","INTERN"});
+        OPUroles=new ArrayList<>();
+        OPUroles.add(new String[]{"ОПУ","OPU"});
+        if(janitor_shifts_count>0)
+        OPUroles.add(new String[]{"Дворник","JANITOR"});
+        if(gardener_shifts_count>0)
+        OPUroles.add(new String[]{"Садовник","GARDENER"});
+        if(plumber_shifts_count>0)
+        OPUroles.add(new String[]{"Сантехник","PLUMBER"});
+        if(electrician_shifts_count>0)
+        OPUroles.add(new String[]{"Электрик","ELECTRICIAN"});
+        strings=new ArrayList<>();
+        strings.add(new String[]{});
+        strings.add(new String[]{});
         Bundle bundle=getArguments();
         shifts=bundle.getInt("shifts",0);
         point=bundle.getString("point");
@@ -77,12 +108,44 @@ public class PassportObjectInfoListAddNewEmployeeFragment extends Fragment {
                 setContract();
             }
         });
+        setSpinners();
+        checkNight();
+        dayT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                is_night=false;
+                checkNight();
+            }
+        });
+        nightT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                is_night=true;
+                checkNight();
+            }
+        });
         return view;
     }
     private void setContract(){
         contractRadio.setChecked(check);
     }
+    private void checkNight(){
+        if(is_night){
+            nightT.setBackgroundResource(R.drawable.green_corners_page);
+            nightT.setTextColor(getResources().getColor(R.color.white));
+            dayT.setBackgroundResource(R.drawable.greyrow_page);
+            dayT.setTextColor(getResources().getColor(R.color.black));
+        }
+        else{
+            dayT.setBackgroundResource(R.drawable.green_corners_page);
+            dayT.setTextColor(getResources().getColor(R.color.white));
+            nightT.setBackgroundResource(R.drawable.greyrow_page);
+            nightT.setTextColor(getResources().getColor(R.color.black));
+        }
+    }
     private void createViews(View view){
+        employeeChangeSpinner=(Spinner)view.findViewById(R.id.employeeChangeSpinner);
+        employeeChangeSpinner2=(Spinner)view.findViewById(R.id.employeeChangeSpinner2);
         frontLayout=(FrameLayout) view.findViewById(R.id.frontLayout);
         nametext=(EditText) view.findViewById(R.id.nameEditText);
         nametext1=(EditText) view.findViewById(R.id.nameEditText1);
@@ -94,6 +157,10 @@ public class PassportObjectInfoListAddNewEmployeeFragment extends Fragment {
         contractRadio=(RadioButton) view.findViewById(R.id.contractRadio);
         addLayout=(ConstraintLayout) view.findViewById(R.id.addLayout);
         addTextView=(TextView) view.findViewById(R.id.addTextView);
+        dayT=(TextView) view.findViewById(R.id.dayT);
+        nightT=(TextView) view.findViewById(R.id.nightT);
+        spinnerFrameImage=(FrameLayout) view.findViewById(R.id.spinnerFrameImage);
+        spinnerFrameImage2=(FrameLayout) view.findViewById(R.id.spinnerFrameImage2);
 
         if(shifts<=2){
             thirdB.setVisibility(View.GONE);
@@ -104,6 +171,80 @@ public class PassportObjectInfoListAddNewEmployeeFragment extends Fragment {
                 }
             }
         }
+    }
+    private void setSpinners()  {
+        kinds=new ArrayList<>();
+        keeps=new ArrayList<>();
+        for(int i=0;i<OPUroles.size();i++){
+            kinds.add(OPUroles.get(i)[0]);
+        }
+        for(int i=0;i<OPUkeeps.size();i++){
+            keeps.add(OPUkeeps.get(i)[0]);
+        }
+        ArrayAdapter<String> adapter=new ArrayAdapter<String>(getActivity(),R.layout.simple_spinner_item,kinds){
+            public View getView(int position, View convertView,ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setTypeface(((MainActivity) getContext()).getTypeFace("demibold"));
+                return v;
+            }
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+
+                View v = super.getView(position,convertView,parent);
+                ((TextView) v).setTypeface(((MainActivity) getContext()).getTypeFace("demibold"));
+                return v;
+
+            }};
+        spinnerFrameImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                employeeChangeSpinner.performClick();
+            }
+        });
+        employeeChangeSpinner.setAdapter(adapter);
+        employeeChangeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                kind=i;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+        ArrayAdapter<String> adapter1=new ArrayAdapter<String>(getActivity(),R.layout.simple_spinner_item,keeps){
+            public View getView(int position, View convertView,ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setTypeface(((MainActivity) getContext()).getTypeFace("demibold"));
+                return v;
+            }
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+
+                View v = super.getView(position,convertView,parent);
+                ((TextView) v).setTypeface(((MainActivity) getContext()).getTypeFace("demibold"));
+                return v;
+
+            }};
+        spinnerFrameImage2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                employeeChangeSpinner2.performClick();
+            }
+        });
+        employeeChangeSpinner2.setAdapter(adapter1);
+        employeeChangeSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                keep=i;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
     private void setInfo(JSONObject ov){
         frontLayout.setVisibility(View.GONE);
@@ -128,10 +269,13 @@ public class PassportObjectInfoListAddNewEmployeeFragment extends Fragment {
                 params.put("shift",  radioCheck());
                 params.put("point",  Integer.parseInt(point));
                 params.put("is_trainee",  is_trainee);
+                params.put("is_night",  is_night);
                 params.put("is_contract",  check);
                 params.put("salary", Integer.parseInt(salaryEditText.getText()+""));
+                params.put("kind",OPUroles.get(kind)[1]);
+                params.put("keep",OPUkeeps.get(keep)[1]);
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
             Log.d("params",params.toString());
             JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST, url, params, new Response.Listener<JSONObject>() {

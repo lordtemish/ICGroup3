@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:textColor="@color/black"
-            android:text="Понедельник - Пятница(ежедневно по 2 смены)"
+            android:text=""
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/days"
             />
@@ -112,43 +112,119 @@
                 />
 
         </android.support.constraint.ConstraintLayout>
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="50sp"
-        android:layout_marginStart="10sp"
-        android:layout_marginEnd="10sp"
-        android:background="@drawable/lightgreen_corners_page"
-        android:id="@+id/thirdSmena"
-        android:layout_marginBottom="10sp"
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="50sp"
+            android:layout_marginStart="10sp"
+            android:layout_marginEnd="10sp"
+            android:background="@drawable/lightgreen_corners_page"
+            android:id="@+id/thirdSmena"
+            android:layout_marginBottom="10sp"
 
-        >
-        <TextView
-            android:id="@+id/thirdSmenaTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginStart="20sp"
-            android:layout_marginLeft="20sp"
-            android:text="1-ая смена"
-            />
-        <TextView
-            android:id="@+id/thirdSmenaTimeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginEnd="20sp"
-            android:layout_marginRight="20sp"
-            android:text="c 07:00 до 23:00"
-            />
-    </android.support.constraint.ConstraintLayout>
+            >
+            <TextView
+                android:id="@+id/thirdSmenaTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="20sp"
+                android:layout_marginLeft="20sp"
+                android:text="1-ая смена"
+                />
+            <TextView
+                android:id="@+id/thirdSmenaTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="20sp"
+                android:layout_marginRight="20sp"
+                android:text="c 07:00 до 23:00"
+                />
+        </android.support.constraint.ConstraintLayout>
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="50sp"
+            android:layout_marginStart="10sp"
+            android:layout_marginEnd="10sp"
+            android:background="@drawable/green_corners_page"
+            android:id="@+id/fourthSmena"
+            android:layout_marginBottom="10sp"
+
+            >
+            <TextView
+                android:id="@+id/fourthSmenaTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="20sp"
+                android:layout_marginLeft="20sp"
+                android:text="1-ая смена"
+                />
+            <TextView
+                android:id="@+id/fourthSmenaTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="20sp"
+                android:layout_marginRight="20sp"
+                android:text="c 07:00 до 23:00"
+                />
+        </android.support.constraint.ConstraintLayout>
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="50sp"
+            android:layout_marginStart="10sp"
+            android:layout_marginEnd="10sp"
+            android:background="@drawable/lightgreen_corners_page"
+            android:id="@+id/fifthSmena"
+            android:layout_marginBottom="10sp"
+
+            >
+            <TextView
+                android:id="@+id/fifthSmenaTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="20sp"
+                android:layout_marginLeft="20sp"
+                android:text="1-ая смена"
+                />
+            <TextView
+                android:id="@+id/fifthSmenaTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="20sp"
+                android:layout_marginRight="20sp"
+                android:text="c 07:00 до 23:00"
+                />
+        </android.support.constraint.ConstraintLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

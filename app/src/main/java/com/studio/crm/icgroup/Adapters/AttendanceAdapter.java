@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +73,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 setStatus(textViews.get(i),s);
             }
             if(today){
+                Log.d("afasf",form.getId()+"");
                 try {
                     frameLayouts.get(3).setOnClickListener(form.getListener());
                     if(form.isFuck()){
@@ -86,7 +88,6 @@ public class AttendanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 frameLayouts.get(3).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                     }
                 });
             }

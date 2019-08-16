@@ -112,7 +112,7 @@ public class PasportObjectMainFragment extends Fragment {
     }
 
     public void SetFragment(Fragment fragment){
-        Bundle bundle=new Bundle();bundle.putString("id",id);
+        Bundle bundle=getArguments();
         fragment.setArguments(bundle);
         FragmentTransaction t = getActivity().getSupportFragmentManager().beginTransaction();
         t.replace(R.id.PassportObjectFrameLayout, fragment);
