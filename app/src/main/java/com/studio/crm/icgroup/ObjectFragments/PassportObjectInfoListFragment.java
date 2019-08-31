@@ -300,24 +300,24 @@ public class PassportObjectInfoListFragment extends Fragment {
                                 String status=object.getString("status");
                                 boolean is_contract=object.getBoolean("is_contract");
                                 if(!status.equals("REMOVE")) {
-                                    if (object.getBoolean("is_trainee")) {
+                                  /*  if (object.getBoolean("is_trainee")) {
                                         ProgressPhoneForm progressPhoneForm = new ProgressPhoneForm(new PhonesRowForm(true, user.get("fullname") + "", "Стажёр", user.getString("phone") + ""), Integer.parseInt("" + Math.round(object.getDouble("attendance_rate") * 100)));
                                         progressPhoneForm.setStatus(status);
                                         progressPhoneForm.setSalary(object.getInt("salary"));
                                         progressPhoneForm.setContract(is_contract);
                                         progressPhoneForm.setId(id);
                                         progressPhoneForm.setUserid(userid);
-
                                         phoneForms.get(3).add(progressPhoneForm);
-                                    } else {
-                                        ProgressPhoneForm progressPhoneForm = new ProgressPhoneForm(new PhonesRowForm(true, user.get("fullname") + "", "ОПУ", user.getString("phone") + ""), Integer.parseInt("" + Math.round(object.getDouble("attendance_rate") * 100)));
+                                    } else {*/
+                                        ProgressPhoneForm progressPhoneForm = new ProgressPhoneForm(new PhonesRowForm(true, user.get("fullname") + "", ((MainActivity)getActivity()).workerKinds.get(object.getString("kind")), user.getString("phone") + ""), Integer.parseInt("" + Math.round(object.getDouble("attendance_rate") * 100)));
                                         progressPhoneForm.setStatus(status);
+                                        progressPhoneForm.setRole(object.getString("kind"));
                                         progressPhoneForm.setSalary(object.getInt("salary"));
                                         progressPhoneForm.setContract(is_contract);
                                         progressPhoneForm.setId(id);
                                         progressPhoneForm.setUserid(userid);
                                         phoneForms.get(shift - 1).add(progressPhoneForm);
-                                    }
+                                    //}
                                 }
 
                             } catch (JSONException e) {
@@ -374,6 +374,7 @@ public class PassportObjectInfoListFragment extends Fragment {
             JSONArray administrators=object.getJSONArray("admins");
             try {
                 shifts=object.getInt("shifts_count");
+                adapter1.setShifts(shifts);
                 mapText.get("infoListObjectName").setText(name);
                 mapText.get("infoListRegion").setText(location.getString("name"));
                 mapText.get("infoListObjectAddress").setText(address);

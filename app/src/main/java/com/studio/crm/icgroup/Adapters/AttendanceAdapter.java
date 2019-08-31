@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.studio.crm.icgroup.Forms.AttendanceRowForm;
@@ -21,7 +22,8 @@ import java.util.List;
 public class AttendanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private class myHolder extends RecyclerView.ViewHolder{
         FrameLayout todayBack, todayBackTop;
-        TextView nameTextView, firstTextView, secondTextView, thirdTextView, fourthTextView, fifthTextView, overTextView;
+        TextView nameTextView, firstTextView, secondTextView, thirdTextView, fourthTextView, fifthTextView, overTextView, name;
+        LinearLayout rowLayout;
         List<TextView> textViews;
         List<FrameLayout> frameLayouts;
         private myHolder(View view){
@@ -31,6 +33,8 @@ public class AttendanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             frameLayouts=new ArrayList<>();
             textViews=new ArrayList<>();
+            rowLayout=(LinearLayout) view.findViewById(R.id.rowLayout);
+            name=(TextView)view.findViewById(R.id.name);
             nameTextView=(TextView)view.findViewById(R.id.nameTextView);
             overTextView=(TextView)view.findViewById(R.id.overTextView);
             firstTextView=(TextView)view.findViewById(R.id.firstTextView);

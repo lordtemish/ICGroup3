@@ -4,8 +4,16 @@ public class ProgressPhoneForm {
     PhonesRowForm form;
     int progress, salary=0;
     boolean change, contract=false;
-    String text, id, userid="", status;
+    String text, id, userid="", status, role="";
     PhonesRowForm changeForm;
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
 
     public void setSalary(int salary) {
         this.salary = salary;

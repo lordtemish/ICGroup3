@@ -3,6 +3,7 @@ package com.studio.crm.icgroup.ObjectFragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -53,6 +54,7 @@ import java.util.Map;
  */
 public class PassportObjectInfoListOPUFragment extends Fragment {
     RecyclerView commentsRecycler, archiveCommentsRecyclerView, replacerRecyclerView;
+    ConstraintLayout changeButton;
     Spinner spinner;
     BigCounterView counterView;
     boolean all=false;
@@ -67,7 +69,7 @@ public class PassportObjectInfoListOPUFragment extends Fragment {
     LinearLayout attendanceLayout, commentsLayout, holidayLayout;
     ProgressBar ProgressBar;
     ImageView circlePhoneImageView,arrowPlanImageView;
-    int shift, point, planD=0;
+    int shift, point, planD=0, salaryW=0, shifts=0;
     RadioButton checkRadio;
     JSONObject user;
     HolidayFragmentView holidayFragmentView;
@@ -87,6 +89,8 @@ public class PassportObjectInfoListOPUFragment extends Fragment {
     };
     boolean open=false;
 String id, name, phone, userid, holid="";
+    PassportObjectInfoListUpdateEmployeeFragment employeeFragment;
+
     public PassportObjectInfoListOPUFragment() {
         // Required empty public constructor
     }
@@ -97,6 +101,7 @@ String id, name, phone, userid, holid="";
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         id=getArguments().getString("id");
+        shifts=getArguments().getInt("shifts");
         userid=getArguments().getString("userid");
         name=getArguments().getString("name");
         phone=getArguments().getString("phone");
@@ -191,6 +196,14 @@ String id, name, phone, userid, holid="";
             }
         });*/
         holidaySetButton.setOnClickListener(lista);
+
+        changeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setAddNewEmployee();
+            }
+        });
+
         return view;
     }
     private void arrowPlan(){
@@ -223,6 +236,13 @@ String id, name, phone, userid, holid="";
         emplDropTextView.setTypeface(((MainActivity) context).getTypeFace("demibold"));
     }
     private void createViews(View view){
+        employeeFragment=new PassportObjectInfoListUpdateEmployeeFragment();
+        employeeFragment.click(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getRequest();
+            }
+        });
         counterView=(BigCounterView)view.findViewById(R.id.counterView);
         counterView.setMax(30);
 
@@ -239,6 +259,7 @@ String id, name, phone, userid, holid="";
         newComments=(LinearLayout) view.findViewById(R.id.newCommentLinearLayout);
         newCommentFrame=(FrameLayout) view.findViewById(R.id.newCommentFrameLayout);
         allComments=(LinearLayout) view.findViewById(R.id.allCommentsLinearLayout);
+        changeButton=(ConstraintLayout) view.findViewById(R.id.changeButton);
         allCommentFrame=(FrameLayout) view.findViewById(R.id.allCommentsFrameLayout);
         progressLayout=(FrameLayout) view.findViewById(R.id.progressLayout);
         mainObjectTitle=(TextView) view.findViewById(R.id.mainObjectTitle);
@@ -362,6 +383,26 @@ String id, name, phone, userid, holid="";
             holidayFragmentView.setId(id);
             this.point=point.getInt("id");
             user=object.getJSONObject("user");
+            nameTextView.setText(user.getString("fullname"));
+            positionTextView.setText(((MainActivity)getActivity()).workerKinds.get(object.getString("kind")));
+            checkRadio.setText(" "+object.getString("salary")+" тг");
+            phone=user.getString("phone");
+            if(phone!=null)
+            circlePhoneImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((MainActivity)getActivity()).callPhone(phone);
+                }
+            });
+            else{
+                circlePhoneImageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+            }
+            positionTextView.setText(((MainActivity)getActivity()).workerKinds.get(object.getString("kind")));
             holidayFragmentView.setName(user.getString("fullname"));
             shift=object.getInt("shift");
             String status=object.getString("status");
@@ -369,6 +410,7 @@ String id, name, phone, userid, holid="";
             boolean aa=object.getBoolean("is_contract");
             int perfomance=(int)Math.round(dos*100), salary=object.getInt("salary"), plan_days=0;//object.getInt("plan_days");
             planD=plan_days;
+            salaryW=salary;
             Calendar calendar=Calendar.getInstance();calendar.setTime(new Date());
             int count=calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
             getShift(shift,calendar);
@@ -384,7 +426,7 @@ String id, name, phone, userid, holid="";
             else{
                 checkRadio.setChecked(false);
             }
-
+            positionTextView.setText(((MainActivity)getActivity()).workerKinds.get(object.getString("kind")));
             dateString+=((MainActivity)getActivity()).data[calendar.get(Calendar.MONTH)]+" "+calendar.get(Calendar.YEAR);
             Log.d(dateString,dateString);
             dateTextView.setText(dateString);
@@ -663,4 +705,17 @@ String id, name, phone, userid, holid="";
         ((MainActivity)getActivity()).requestQueue.add(request);
     }
 
+
+
+
+    private void setAddNewEmployee(){
+        Bundle bundle=getArguments();
+        bundle.putString("worker",id);
+        bundle.putInt("shifts",shifts);
+        bundle.putString("name",name);
+        bundle.putString("phone",phone);
+        bundle.putInt("salary",salaryW);
+        employeeFragment.setArguments(bundle);
+        ((MainActivity) getActivity()).setFragment(R.id.extra_frame,employeeFragment);
+    }
 }

@@ -136,7 +136,7 @@ public class MainObjectFragment extends Fragment {
     }
     private void checkRoles(){
         String role=((MainActivity)getActivity()).role;
-        if(role.equals("CLIENT") || role.equals("POINT") || role.equals("PRODUCTION_CURATOR") || role.equals("PRODUCTION_ADMIN"))
+        if(role.equals("CLIENT") || role.equals("POINT") || role.equals("PRODUCTION_CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))
             all=false;
         else
             all=true;

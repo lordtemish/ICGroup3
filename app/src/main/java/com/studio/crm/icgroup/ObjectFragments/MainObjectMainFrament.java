@@ -114,7 +114,7 @@ public class MainObjectMainFrament extends Fragment {
         buttonsList.add("Задачи");
         if(true)
         buttonsList.add("Технологическая карта");
-        if(client || (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("QC")|| (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
+        if(client || (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("QC")|| (role.equals("PRODUCTION_NPO"))))
         buttonsList.add("Контроль качества");
         if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("SUPPLY") || (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
         buttonsList.add("Инвентарь");
@@ -146,7 +146,7 @@ public class MainObjectMainFrament extends Fragment {
         listeners.add(serviceListener);
         if(true)
         listeners.add(TechnoMapListener);
-        if(client || (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("QC")|| (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
+        if(client || (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("QC")|| ( role.equals("PRODUCTION_NPO"))))
         listeners.add(ClientControlListener);
         if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("SUPPLY") || (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
         listeners.add(listener);

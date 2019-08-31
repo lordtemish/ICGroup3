@@ -172,7 +172,11 @@ public class AttendanceMainFragment extends Fragment {
                     shifts=shift_count*2;
                     shift=1;
                     break;
-                case 3:
+                case 1:
+                    shifts=shift_count*2;
+                    shift=1;
+                    break;
+             /*   case 3:
                     if(janitor_shifts_count>0) {
                         shifts = janitor_shifts_count * 2;
                         shift = 1;
@@ -212,7 +216,7 @@ public class AttendanceMainFragment extends Fragment {
                         reqAdapter.setClicked(0);
                         checkReq();
                     }
-                    break;
+                    break;*/
             }
             changePage(0);
     }
@@ -228,18 +232,18 @@ public class AttendanceMainFragment extends Fragment {
     }
     private void checkPage(){
         int page=reqAdapter.getClicked();
-        if(page==0) {
-            smenaLayout.setVisibility(View.VISIBLE);
-            if(shift<=shift_count) {
+        //if(page==0) {
+        smenaLayout.setVisibility(View.VISIBLE);
+        if(shift<=shift_count) {
                 smenasTextView.setText("Дневная смена " + shift);
                 getRequest("workers/?point=" + id + "&shift=" + shift + "&is_night=False");
-            }
-            else{
+        }
+        else{
                 smenasTextView.setText("Ночная смена " + (shift-shift_count));
                 getRequest("workers/?point=" + id + "&shift=" + (shift-shift_count) + "&is_night=True");
-            }
         }
-        else if(page==1 || page==2){
+        //}
+       /* else if(page==1 || page==2){
             smenaLayout.setVisibility(View.GONE);
             switch (page){
                 case 1:
@@ -299,11 +303,12 @@ public class AttendanceMainFragment extends Fragment {
                         }
 
             }
-        }
+        }*/
         // shifts- month year point
-        if(today){
+
+       /* if(today){  // if needed put it
             getShifts();
-        }
+        }*/
     }
     public void setChooseLayout(String id){
         chooseLayout.setVisibility(View.VISIBLE);
@@ -383,7 +388,7 @@ public class AttendanceMainFragment extends Fragment {
 
     private void getRequest(String s){
         progressLayout.setVisibility(View.VISIBLE);
-        String url=((MainActivity)getActivity()).MAIN_URL+s;
+        String url=((MainActivity)getActivity()).MAIN_URL+s+"&status=STABLE";
         Log.d("Attendance URL", url);
         JsonArrayRequest arrayRequest=new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -428,6 +433,12 @@ public class AttendanceMainFragment extends Fragment {
         cal.add(Calendar.DAY_OF_YEAR,-1);
         return itemForms;
     }
+    private int getKindPage(String s){
+        if(s.equals("OPU") || s.equals("JANITOR") || s.equals("PIECER") || s.equals("INTERN")){
+            return 0;
+        }
+        else return 1;
+    }
     private void setInfo(JSONArray array){
         progressLayout.setVisibility(View.VISIBLE);
         rowForms.clear();strings=new ArrayList<>();
@@ -436,14 +447,18 @@ public class AttendanceMainFragment extends Fragment {
         smenaCountTextView.setText( shift+"/"+shift_count);
        // totalDays.setText(count+"");
         Log.d("COUNTCOUNT",count+" ");
-
+        int page=reqAdapter.getClicked();
         for(int i=0;i<array.length();i++){
             try {
                 JSONObject object = array.getJSONObject(i);
+                String kind=object.getString("kind");
+                int kp=getKindPage(kind);
+                if(kp!= page)
+                    continue;
                 String status=object.getString("status");
                 JSONObject user=object.getJSONObject("user");
                 if(status.equals("STABLE")) {
-                    AttendanceRowForm rowForm = new AttendanceRowForm(object.getString("id"), user.getString("fullname"), getEmptyList(), 0, 0);
+                    AttendanceRowForm rowForm = new AttendanceRowForm(object.getString("id"), user.getString("fullname")+"\n"+((MainActivity)getActivity()).workerKinds.get(kind), getEmptyList(), 0, 0);
                     rowForms.add(rowForm);
                   //      strings.add(rowForm.getId() + " " + rowForm.getName());
                 }
@@ -454,8 +469,8 @@ public class AttendanceMainFragment extends Fragment {
         }
      //   attendanceChooseView.setZamena(strings);
         attendanceAdapter.notifyDataSetChanged();
-        String url=((MainActivity)getActivity()).MAIN_URL+"visits/?point="+id;
-        JsonArrayRequest arrayRequest=new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+        String url=((MainActivity)getActivity()).MAIN_URL+"visits/?worker__point="+id;
+        JsonArrayRequest arrayRequest=new JsonArrayRequest(Request.Method.GET, url, null , new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 setAttReq(response);
@@ -760,13 +775,13 @@ public class AttendanceMainFragment extends Fragment {
         attendanceChooseView.setListener(postL);
 
         pages=new ArrayList<>();
-        pages.add("ОПУ");
-        pages.add("Сдельщик");
-        pages.add("Стажировщик");
+        pages.add("ОПУ/ОПУ ПТ");
+        pages.add("Адм Блок");
+       /* pages.add("Стажировщик");
         pages.add("Дворник");
         pages.add("Садовник");
         pages.add("Сантехник");
-        pages.add("Электрик");
+        pages.add("Электрик");*/
     }
     private void setFonttypes(){
         setTypeFace("demibold", monthTextView, yearTextView);

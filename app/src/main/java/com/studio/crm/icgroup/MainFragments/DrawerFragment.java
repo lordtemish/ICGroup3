@@ -27,18 +27,18 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class DrawerFragment extends Fragment {
-    RecyclerView drawerRV;
-    TextView nameText;
-    TextView positionText;
-    ArrayList<RowFormPTN> rowFormPTNS;
-    ArrayList<RowFormPTN> formPTNS;
-    ArrayList<RowFormPTN> clientRowFormPTNS;
-    DrawerAdapter  drawerAdapter;
-    FrameLayout wholeLayout;
-    String role="SUPERADMIN";
-    public DrawerFragment() {
-        // Required empty public constructor
-    }
+        RecyclerView drawerRV;
+        TextView nameText;
+        TextView positionText;
+        ArrayList<RowFormPTN> rowFormPTNS;
+        ArrayList<RowFormPTN> formPTNS;
+        ArrayList<RowFormPTN> clientRowFormPTNS;
+        DrawerAdapter  drawerAdapter;
+        FrameLayout wholeLayout;
+        String role="SUPERADMIN";
+        public DrawerFragment() {
+            // Required empty public constructor
+        }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,7 +80,7 @@ public class DrawerFragment extends Fragment {
             rowFormPTNS.add(new RowFormPTN(R.drawable.ic_box, R.drawable.ic_box_u, "Объекты", -1));
         if(true)
             rowFormPTNS.add(new RowFormPTN(R.drawable.ic_solvves, R.drawable.ic_solvves_u, "Задачи", -1));
-        if(role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("CHIEF"))
+        if(role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("CHIEF") || role.contains("PRODUCTION_NPO"))
             rowFormPTNS.add(new RowFormPTN(R.drawable.ic_people, R.drawable.ic_people_u, "Сотрудники", -1));
         if(role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.equals("PRODUCTION_CHIEF"))
             rowFormPTNS.add(new RowFormPTN(R.drawable.ic_clients, R.drawable.ic_clients_u, "Клиенты", -1));

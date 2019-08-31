@@ -24,6 +24,12 @@ public class ProgressPhonesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     List<ProgressPhoneForm> list;
     Context context;
     PassportObjectInfoListOPUFragment fragment;
+    int shifts=0;
+
+    public void setShifts(int shifts) {
+        this.shifts = shifts;
+    }
+
     private class myHolder extends RecyclerView.ViewHolder{
         RadioButton chechRadio;
         TextView nameTextView;
@@ -90,6 +96,7 @@ public class ProgressPhonesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             public void onClick(View v) {
                 Bundle bundle=new Bundle();
                 bundle.putString("id",form.getId());
+                bundle.putInt("shifts",shifts);
                 bundle.putString("userid",form.getUserid());
                 bundle.putString("name",form.getForm().getName());
                 bundle.putString("phone",form.getForm().getPhone());

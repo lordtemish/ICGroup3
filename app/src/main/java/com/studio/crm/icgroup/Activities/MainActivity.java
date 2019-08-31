@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     FileCompressor fileCompressor;
-    public HashMap<String,String> positions,  inventoryUnits, replKinds, clientKinds, dpKinds;
+    public HashMap<String,String> positions,  inventoryUnits, replKinds, clientKinds, dpKinds, workerKinds;
     public HashMap<String, ArrayList<String>> typeRoles;
     public List<String> departments, dpids, roles, rlids;
     public String[] months={"Января","Февраля","Марта","Апреля","Мая","Июня","Июля","Августа","Сентября","Октября","Ноября","Декабря"},data={"Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"},weeks={"Пн","Вт","Ср","Чт","Пт","Сб","Вс"};
@@ -303,6 +303,15 @@ public class MainActivity extends AppCompatActivity {
         positions.put("MOBILE_CHIEF","Начальник мобильной группы");//мобильная
         positions.put("MOBILE_WORKER","Работник мобильной группы");//мобильная
         positions.put("MOBILE_MANAGER","Менеджер мобильной группы");//мобильная
+        workerKinds=new HashMap<>();
+        workerKinds.put("OPU","ОПУ");
+        workerKinds.put("JANITOR","ОПУПТ");
+        workerKinds.put("GARDENER","Садовник");
+        workerKinds.put("PLUMBER","Сантехник");
+        workerKinds.put("ELECTRICIAN","Электрик");
+        workerKinds.put("DRIVER","Водитель");
+        workerKinds.put("PIECER","Сдельщик");
+        workerKinds.put("INTERN","Стажировщик");
         typeRoles=new HashMap<>();
         typeRoles.put("ADMIN",new ArrayList<String>());
         typeRoles.put("QC",new ArrayList<String>());

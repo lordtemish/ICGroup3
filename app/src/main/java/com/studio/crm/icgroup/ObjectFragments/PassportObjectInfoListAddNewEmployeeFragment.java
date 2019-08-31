@@ -69,20 +69,19 @@ public class PassportObjectInfoListAddNewEmployeeFragment extends Fragment {
         gardener_shifts_count=getArguments().getInt("gardener_shifts_count");
         plumber_shifts_count=getArguments().getInt("plumber_shifts_count");
         electrician_shifts_count=getArguments().getInt("electrician_shifts_count");
-        OPUkeeps=new ArrayList<>();
-        OPUkeeps.add(new String[]{"Сотрудник","REGULAR"});
-        OPUkeeps.add(new String[]{"Сдельщик","PIECER"});
-        OPUkeeps.add(new String[]{"Стажировщик","INTERN"});
         OPUroles=new ArrayList<>();
+        OPUroles.add(new String[]{"Сдельщик","PIECER"});
+        OPUroles.add(new String[]{"Стажировщик","INTERN"});
         OPUroles.add(new String[]{"ОПУ","OPU"});
-        if(janitor_shifts_count>0)
-        OPUroles.add(new String[]{"Дворник","JANITOR"});
-        if(gardener_shifts_count>0)
+     //   if(janitor_shifts_count>0)
+        OPUroles.add(new String[]{"ОПУ ПТ","JANITOR"});
+     //   if(gardener_shifts_count>0)
         OPUroles.add(new String[]{"Садовник","GARDENER"});
-        if(plumber_shifts_count>0)
+     //   if(plumber_shifts_count>0)
         OPUroles.add(new String[]{"Сантехник","PLUMBER"});
-        if(electrician_shifts_count>0)
+     //   if(electrician_shifts_count>0)
         OPUroles.add(new String[]{"Электрик","ELECTRICIAN"});
+        OPUroles.add(new String[]{"Водитель","DRIVER"});
         strings=new ArrayList<>();
         strings.add(new String[]{});
         strings.add(new String[]{});
@@ -178,9 +177,6 @@ public class PassportObjectInfoListAddNewEmployeeFragment extends Fragment {
         for(int i=0;i<OPUroles.size();i++){
             kinds.add(OPUroles.get(i)[0]);
         }
-        for(int i=0;i<OPUkeeps.size();i++){
-            keeps.add(OPUkeeps.get(i)[0]);
-        }
         ArrayAdapter<String> adapter=new ArrayAdapter<String>(getActivity(),R.layout.simple_spinner_item,kinds){
             public View getView(int position, View convertView,ViewGroup parent) {
                 View v = super.getView(position, convertView, parent);
@@ -255,25 +251,25 @@ public class PassportObjectInfoListAddNewEmployeeFragment extends Fragment {
         ((MainActivity)getActivity()).onBackPressed();
     }
     private void postRequest(String url){
-        if(nametext1.getText().length()>1  && nametext.getText().length()>0) {
+        if(nametext.getText().length()>0 ) {
             url = ((MainActivity) getActivity()).MAIN_URL + url;
             JSONObject params = new JSONObject();
             frontLayout.setVisibility(View.VISIBLE);
             try {
                 JSONObject user=new JSONObject();
                 user.put("fullname", nametext.getText() + "");
+                if(nametext1.getText().length()>0 && !(nametext1.getText()+"").contains(" "))
                 user.put("phone", "" + nametext1.getText());
                 user.put("role", "WORKER");
                 user.put("password", "anypassword");
                 params.put("user",user);
                 params.put("shift",  radioCheck());
                 params.put("point",  Integer.parseInt(point));
-                params.put("is_trainee",  is_trainee);
                 params.put("is_night",  is_night);
                 params.put("is_contract",  check);
+                if(salaryEditText.getText().length()>0)
                 params.put("salary", Integer.parseInt(salaryEditText.getText()+""));
                 params.put("kind",OPUroles.get(kind)[1]);
-                params.put("keep",OPUkeeps.get(keep)[1]);
             } catch (Exception e) {
                 e.printStackTrace();
             }
