@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,6 +57,7 @@ public class MainObjectMainFrament extends Fragment {
     TextView employees;
     TextView coms;
     TextView category;
+    ImageView arrowTop;
     ConstraintLayout progressBar;
     RecyclerView progresses, rateRecyclerView;
     RecyclerView buttons;
@@ -66,6 +68,7 @@ public class MainObjectMainFrament extends Fragment {
     MainFramentProgressRecycleAdapter progressRecycleAdapter;
     List<PhonesRowForm> phonesRowFormList;
     PhonesAdapter adapter;
+    LinearLayout hiddenLayout;
     String id, city, prodid, role;
     boolean client;
     int rate=3, location=0, shift_count=0, janitor_shifts_count=0, gardener_shifts_count=0, plumber_shifts_count=0, electrician_shifts_count=0;
@@ -82,6 +85,13 @@ public class MainObjectMainFrament extends Fragment {
         View view= inflater.inflate(R.layout.fragment_main_object_main_frament, container, false);
         createViews(view);
 
+        arrowTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showEmpls();
+            }
+        });
+        showEmpls();
         mainObjectTitle.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/AvenirNextLTPro-It.ttf"));
 
         name.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/AVENIRNEXT-DEMIBOLD.ttf"));
@@ -111,6 +121,8 @@ public class MainObjectMainFrament extends Fragment {
         buttonsList.add("Паспорт объекта");
         if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("PRODUCTION") || (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
             buttonsList.add("Посещения");
+        if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("PRODUCTION") || (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
+            buttonsList.add("Сотрудники");
         buttonsList.add("Задачи");
         if(true)
         buttonsList.add("Технологическая карта");
@@ -127,6 +139,10 @@ public class MainObjectMainFrament extends Fragment {
 
             ((MainActivity)getActivity()).setFragment(R.id.content_frame,getFragmentWithId(fragment));
         }};
+        View.OnClickListener workersListener=new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { ((MainActivity)getActivity()).setFragment(R.id.content_frame,getFragmentWithId(new WorkersFragment())); }
+        };
         View.OnClickListener serviceListener=new View.OnClickListener() {@Override public void onClick(View v) { ((MainActivity)getActivity()).setFragment(R.id.content_frame,getFragmentWithId(new ServiceObjectMainFragment())); }};
         View.OnClickListener TechnoMapListener=new View.OnClickListener() {@Override public void onClick(View v) { ((MainActivity)getActivity()).setFragment(R.id.content_frame,getFragmentWithId(new TechnoMapFragment())); }};
         View.OnClickListener ClientControlListener=new View.OnClickListener() {@Override public void onClick(View v) { ((MainActivity)getActivity()).setFragment(R.id.content_frame,getFragmentWithId(new ClientControlObjectMainFragment())); }};
@@ -143,6 +159,8 @@ public class MainObjectMainFrament extends Fragment {
         listeners.add(listenerPassport);
         if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("PRODUCTION") || (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
             listeners.add( AttendanceListener);
+        if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("PRODUCTION") || (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
+            listeners.add(workersListener);
         listeners.add(serviceListener);
         if(true)
         listeners.add(TechnoMapListener);
@@ -153,7 +171,7 @@ public class MainObjectMainFrament extends Fragment {
         if(client || role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("CHIEF")|| (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO")))
         listeners.add(CommentsListener);
 
-        ButtonAdapter buttonAdapter=new ButtonAdapter(buttonsList,getActivity(),listeners,R.drawable.ic_arrowrightgreen);
+        ButtonAdapter buttonAdapter=new ButtonAdapter(buttonsList,getActivity(),listeners,R.drawable.ic_arrowright);
         RecyclerView.LayoutManager mLayoutManagerq=new LinearLayoutManager(getActivity());
         buttons.setLayoutManager(mLayoutManagerq);
         buttons.setItemAnimator(new DefaultItemAnimator());
@@ -278,8 +296,20 @@ public class MainObjectMainFrament extends Fragment {
         (((MainActivity)getActivity()).requestQueue).add(objectRequest);
     }
 
+    private void showEmpls(){
+        if(hiddenLayout.getVisibility()==View.VISIBLE){
+            hiddenLayout.setVisibility(View.GONE);
+            arrowTop.setImageResource(R.drawable.ic_arrowdown);
+        }
+        else{
+            hiddenLayout.setVisibility(View.VISIBLE);
+            arrowTop.setImageResource(R.drawable.ic_arrowup);
+        }
+    }
+
     private void createViews(View view){
         client=((MainActivity) getActivity()).client;
+        arrowTop=(ImageView) view.findViewById(R.id.arrowTop);
         mainObjectTitle=(TextView) view.findViewById(R.id.mainObjectTitle);
         category=(TextView) view.findViewById(R.id.mainObjectMainFramentCategoryTextView);
         coms=(TextView) view.findViewById(R.id.mainObjectMainFramentCommsTextView);
@@ -290,6 +320,7 @@ public class MainObjectMainFrament extends Fragment {
         phonesRecycler=(RecyclerView) view.findViewById(R.id.phonesRecyclerView);
         rateRecyclerView=(RecyclerView) view.findViewById(R.id.rateRecyclerView);
         progressBar=(ConstraintLayout) view.findViewById(R.id.progressLayout);
+        hiddenLayout=(LinearLayout) view.findViewById(R.id.hiddenLayout);
 
         id=getArguments().getString("id");
         ((MainActivity)getActivity()).setPoint(id);

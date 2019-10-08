@@ -29,11 +29,11 @@ public class TasktypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             this.position=position;
             text.setText(s);
             if(position==page) {
-                wholeLayout.setBackgroundResource(R.drawable.icgreen_row_page);
+                wholeLayout.setBackgroundResource(R.drawable.icgreen_page);
                 text.setTextColor(context.getResources().getColor(R.color.white));
             }
             else{
-                wholeLayout.setBackgroundResource(R.drawable.greycornerspage_line);
+                wholeLayout.setBackgroundResource(R.drawable.whiterow_page);
                 text.setTextColor(context.getResources().getColor(R.color.darkgrey));
             }
         }

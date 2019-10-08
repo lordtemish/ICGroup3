@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,18 +50,19 @@ public class AttendanceMainFragment extends Fragment {
     List<String> pages;
     EquipmentReqAdapter reqAdapter;
     FrameLayout todayFrame, progressLayout;
-    ConstraintLayout smenaLayout;
+    ConstraintLayout smenaLayout, buttonLayout;
+    LinearLayout hiddenLayout;
     RecyclerView recyclerView, reqRecycler ;
     AttendanceChooseView attendanceChooseView;
     FrameLayout chooseLayout;
     View.OnClickListener emptyL, postL;
     NumberPicker datePicker, yearPicker;
     TextView mainObjectTitle, yearTextView, monthTextView, smenasTextView, smenaCountTextView, totalDays,allWorkers, absents, heres;
-    ImageView dateArrowImageView, yearArrowImageView, leftCalArrow, rightCalArrow, ImageRightView, ImageLeftView;
+    ImageView dateArrowImageView, yearArrowImageView, leftCalArrow, rightCalArrow, ImageRightView, ImageLeftView, buttonImage;
     Calendar cal, cal2;
     List<String> strings;
     List<TextView> calTextViews;
-    boolean swiped=false, today=true, working=false;
+    boolean swiped=false, today=true, working=false, start=true;
     String id="", choseworker="";
     List<JSONObject> atts;
     String[] months = {"Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"}
@@ -92,6 +94,9 @@ public class AttendanceMainFragment extends Fragment {
         cal.setTime(new Date());
         View view = inflater.inflate(R.layout.fragment_attendance_main, container, false);
         createViews(view);
+
+
+
         chooseLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,7 +114,7 @@ public class AttendanceMainFragment extends Fragment {
         View.OnClickListener listener=new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setChooseLayout("");
+                //setChooseLayout("");
             }
         };
         itemForms.add(itemForm);
@@ -137,6 +142,14 @@ public class AttendanceMainFragment extends Fragment {
             }
         });
         reqRecycler.setAdapter(reqAdapter);
+
+        buttonLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showHidden();
+            }
+        });
+        showHidden();
 
         pickerSettings();
         setDate();
@@ -310,14 +323,17 @@ public class AttendanceMainFragment extends Fragment {
             getShifts();
         }*/
     }
-    public void setChooseLayout(String id){
+    public void setChooseLayout(String id, String kind, boolean is_contract){
         chooseLayout.setVisibility(View.VISIBLE);
         choseworker=id;
         attendanceChooseView.setId(id);
+        attendanceChooseView.checkObjects();
+        attendanceChooseView.setIs_contract(is_contract);
+        attendanceChooseView.setKind(kind);
       //  Log.d("worker",choseworker);
     }
     private void postRequest(){
-        if(attendanceChooseView.getChose().equals("-1") && attendanceChooseView.getCheckedPosition()==3){
+        if(attendanceChooseView.getChose().equals("-1") && attendanceChooseView.isReplace()){
             Toast.makeText(getActivity(), "Выберите заменяющего", Toast.LENGTH_SHORT).show();
         }
         else {
@@ -327,6 +343,8 @@ public class AttendanceMainFragment extends Fragment {
                 JSONObject params = new JSONObject();
                 int i = attendanceChooseView.getCheckedPosition();
                 String s = "PRESENT";
+                boolean repl=attendanceChooseView.isReplace(), contract=attendanceChooseView.isIs_contract(), z_contract=attendanceChooseView.isZ_contract();
+                String st = attendanceChooseView.getChose();
                 switch (i) {
                     case 1:
                         s = "ABSENT";
@@ -335,11 +353,12 @@ public class AttendanceMainFragment extends Fragment {
                         s = "ILL";
                         break;
                     case 3:
-                        s = "REPLACE";
-                        String st = attendanceChooseView.getChose();
+                        //change it
+                        s = "CELEB";
+                       /* String st = attendanceChooseView.getChose();
                         if (!st.equals("-1"))
                             params.put("replacer", st);
-
+*/
                         break;
                     case 4:
                         s = "HALF";
@@ -351,7 +370,25 @@ public class AttendanceMainFragment extends Fragment {
                         s = "FULL";
                 }
                 params.put("worker", choseworker);
-                params.put("kind", s);
+                if(!repl) {
+                    if(i==0 && !contract){
+                        params.put("kind","HOURS");
+                        params.put("hours",attendanceChooseView.getHours_p());
+                    }
+                    else
+                    params.put("kind", s);
+                }
+                else{
+                    params.put("kind","REPLACE");
+                    if(z_contract)
+                        params.put("replacer_kind",s);
+                    else{
+                        params.put("replacer_kind","HOURS");
+                        params.put("hours",attendanceChooseView.getHours_p());
+                    }
+                    if (!st.equals("-1"))
+                        params.put("replacer", st);
+                }
                 params.put("salary",0);
                 Log.d("parametes", params.toString());
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
@@ -434,32 +471,45 @@ public class AttendanceMainFragment extends Fragment {
         return itemForms;
     }
     private int getKindPage(String s){
-        if(s.equals("OPU") || s.equals("JANITOR") || s.equals("PIECER") || s.equals("INTERN")){
+        //Для сдельщика еще один пункт
+        if(s.equals("OPU") || s.equals("JANITOR") || s.equals("INTERN")){
             return 0;
         }
+        else if(s.equals("PIECER"))
+            return 2;
         else return 1;
     }
     private void setInfo(JSONArray array){
         progressLayout.setVisibility(View.VISIBLE);
-        rowForms.clear();strings=new ArrayList<>();
+        rowForms.clear();
+        strings=new ArrayList<>();
         Calendar calendar=Calendar.getInstance();calendar.setTime(new Date());
         int count=calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         smenaCountTextView.setText( shift+"/"+shift_count);
        // totalDays.setText(count+"");
         Log.d("COUNTCOUNT",count+" ");
         int page=reqAdapter.getClicked();
+        HashMap<String,List<AttendanceRowForm>> map=new HashMap<>();
         for(int i=0;i<array.length();i++){
             try {
                 JSONObject object = array.getJSONObject(i);
                 String kind=object.getString("kind");
+                boolean is_contract=object.getBoolean("is_contract");
+                if(!map.containsKey(kind)){
+                    map.put(kind, new ArrayList<AttendanceRowForm>());
+                }
                 int kp=getKindPage(kind);
                 if(kp!= page)
                     continue;
                 String status=object.getString("status");
                 JSONObject user=object.getJSONObject("user");
                 if(status.equals("STABLE")) {
-                    AttendanceRowForm rowForm = new AttendanceRowForm(object.getString("id"), user.getString("fullname")+"\n"+((MainActivity)getActivity()).workerKinds.get(kind), getEmptyList(), 0, 0);
-                    rowForms.add(rowForm);
+                    //((MainActivity)getActivity()).workerKinds.get(kind)
+                    AttendanceRowForm rowForm = new AttendanceRowForm(object.getString("id"), user.getString("fullname"), getEmptyList(), 0, 0);
+                    rowForm.setKind(kind);
+                    rowForm.setContract(is_contract);
+                    map.get(kind).add(rowForm);
+                    // rowForms.add(rowForm);
                   //      strings.add(rowForm.getId() + " " + rowForm.getName());
                 }
             }
@@ -467,9 +517,17 @@ public class AttendanceMainFragment extends Fragment {
                 e.printStackTrace();
             }
         }
+        for(String key:map.keySet()){
+            if(map.get(key).size()>0)
+            rowForms.add(new AttendanceRowForm(((MainActivity)getActivity()).workerKinds.get(key)));
+            for(AttendanceRowForm i:map.get(key)){
+                rowForms.add(i);
+            }
+        }
      //   attendanceChooseView.setZamena(strings);
         attendanceAdapter.notifyDataSetChanged();
         String url=((MainActivity)getActivity()).MAIN_URL+"visits/?worker__point="+id;
+        Log.d("this url",url);
         JsonArrayRequest arrayRequest=new JsonArrayRequest(Request.Method.GET, url, null , new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -494,23 +552,28 @@ public class AttendanceMainFragment extends Fragment {
     }
     private void dateAttCheck(){
         for(AttendanceRowForm form:rowForms){
-            Log.d("Booleans",working +" "+ today +" "+ form.getRowForms().get(3).isNothing());
-            if(/*working && */today ) {
-                final String id=form.getId();
-                form.setListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        setChooseLayout(id);
-                        Log.d("THIS ID",id+"");
-                   //     attendanceChooseView.setZamena(strings);
-                    }
-                });
-            }
+            if(form.isText())
+                continue;
+            else {
+                Log.d("Booleans", working + " " + today + " " + form.getRowForms().get(3).isNothing());
+                if (/*working && */today) {
+                    final String id = form.getId(), kind=form.getKind();
+                    final boolean is_contract=form.isContract();
+                    form.setListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            setChooseLayout(id, kind, is_contract);
+                            Log.d("THIS ID", id + "");
+                            //     attendanceChooseView.setZamena(strings);
+                        }
+                    });
+                }
            /* else{
                 //form.setFucked(true);
                 //form.setListener(emptyL);
             }*/
-            form.setRowForms(getEmptyList());
+                form.setRowForms(getEmptyList());
+            }
         }
         checkItemForms();
     }
@@ -521,6 +584,7 @@ public class AttendanceMainFragment extends Fragment {
             calendar.set(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),1,0,0,0);
             for (int i = 0; i < array.length(); i++) {
                 JSONObject object = array.getJSONObject(i);
+               // Log.d("kind "+i, object.getString("kind"));
                 atts.add(object);
                 String kind=object.getString("kind");
                 String date=object.getString("date"),month=cal.get(Calendar.MONTH)+1+"";
@@ -552,6 +616,7 @@ public class AttendanceMainFragment extends Fragment {
                 JSONObject worker=object.getJSONObject("worker");
                 String id=worker.getString("id");
                 for(AttendanceRowForm ro:rowForms){
+                    if(!ro.isText())
                     if(ro.getId().equals(id)){
                         int dd=0;
                         for(AttendanceRowItemForm itemForm:ro.getRowForms()){
@@ -564,6 +629,9 @@ public class AttendanceMainFragment extends Fragment {
                                 Log.d("attendancefound",id+" "+date+" "+kind);
                                 itemForm.setAll();
                                 switch (kind){
+                                    case "CELEB":
+                                        itemForm.setHoliday(true);
+                                        break;
                                     case "REPLACE":
                                         itemForm.setReplace(true);
                                         break;
@@ -592,9 +660,13 @@ public class AttendanceMainFragment extends Fragment {
                 }
             }
             attendanceAdapter.notifyDataSetChanged();
+            if(start){
+                start=false;
+                dateChange(true);
+            }
         }
         catch (Exception e){
-
+            e.printStackTrace();
         }
     }
     private void onSwipe(){
@@ -726,6 +798,18 @@ public class AttendanceMainFragment extends Fragment {
             todayFrame.setVisibility(View.GONE);
         }
     }
+    private void showHidden(){
+        if(hiddenLayout.getVisibility()==View.VISIBLE){
+            hiddenLayout.setVisibility(View.GONE);
+            buttonImage.setImageResource(R.drawable.ic_arrowup_green);
+            //buttonLayout.setBackgroundResource(R.drawable.wh);
+        }
+        else{
+            buttonImage.setImageResource(R.drawable.ic_arrowdown_green);
+            hiddenLayout.setVisibility(View.VISIBLE);
+
+        }
+    }
     private void createViews(View view) {
         chooseLayout=(FrameLayout) view.findViewById(R.id.chooseLayout);
         datePicker = (NumberPicker) view.findViewById(R.id.datePicker);
@@ -733,6 +817,7 @@ public class AttendanceMainFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.mainRecyclerView);
         reqRecycler = (RecyclerView) view.findViewById(R.id.reqRecycler);
         mainObjectTitle = (TextView) view.findViewById(R.id.mainObjectTitle);
+        buttonImage = (ImageView) view.findViewById(R.id.buttonImage);
         dateArrowImageView = (ImageView) view.findViewById(R.id.dateArrowImageView);
         yearArrowImageView = (ImageView) view.findViewById(R.id.yearArrowImageView);
         leftCalArrow = (ImageView) view.findViewById(R.id.leftCalArrow);
@@ -747,7 +832,10 @@ public class AttendanceMainFragment extends Fragment {
         absents=(TextView) view.findViewById(R.id.absents);
         heres=(TextView) view.findViewById(R.id.heres);
         totalDays=(TextView) view.findViewById(R.id.totalDays);
+
         attendanceChooseView=(AttendanceChooseView) view.findViewById(R.id.attendanceChooseView);
+        attendanceChooseView.setShifts(shift_count);
+        attendanceChooseView.setPointid(id);
 
         calTextViews=new ArrayList<>();
         calTextViews.add((TextView) view.findViewById(R.id.f1CalTextView));
@@ -755,10 +843,13 @@ public class AttendanceMainFragment extends Fragment {
         calTextViews.add((TextView) view.findViewById(R.id.f3CalTextView));
         calTextViews.add((TextView) view.findViewById(R.id.f4CalTextView));
         calTextViews.add((TextView) view.findViewById(R.id.f5CalTextView));
+        hiddenLayout=(LinearLayout) view.findViewById(R.id.hiddenLayout);
         todayFrame=(FrameLayout) view.findViewById(R.id.todayFrame);
 
         progressLayout=(FrameLayout) view.findViewById(R.id.progressLayout);
         smenaLayout=(ConstraintLayout) view.findViewById(R.id.smenaLayout);
+        buttonLayout=(ConstraintLayout)view.findViewById(R.id.buttonLayout);
+
 
         emptyL=new View.OnClickListener() {
             @Override
@@ -777,6 +868,7 @@ public class AttendanceMainFragment extends Fragment {
         pages=new ArrayList<>();
         pages.add("ОПУ/ОПУ ПТ");
         pages.add("Адм Блок");
+        pages.add("Сдельщик");
        /* pages.add("Стажировщик");
         pages.add("Дворник");
         pages.add("Садовник");

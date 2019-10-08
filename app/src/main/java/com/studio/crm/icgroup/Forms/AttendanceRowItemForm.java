@@ -1,7 +1,7 @@
 package com.studio.crm.icgroup.Forms;
 
 public class AttendanceRowItemForm {
-    private boolean nothing=false, plus=false, absent=false,ill=false,replace=false, half=false, third=false;
+    private boolean nothing=false, plus=false, absent=false,ill=false,replace=false, half=false, third=false, holiday=false;
     String day;
     public AttendanceRowItemForm(String day){
         this.day=day;
@@ -9,10 +9,19 @@ public class AttendanceRowItemForm {
     }
     public void setAll(){
         nothing=false;plus=false;absent=false;ill=false;replace=false;half=false;third=false;
+        holiday=false;
     }
     public void setHalf(boolean half) {
         nothing=false;
         this.half = half;
+    }
+
+    public void setHoliday(boolean holiday) {
+        this.holiday = holiday;
+    }
+
+    public boolean isHoliday() {
+        return holiday;
     }
 
     public void setThird(boolean third) {

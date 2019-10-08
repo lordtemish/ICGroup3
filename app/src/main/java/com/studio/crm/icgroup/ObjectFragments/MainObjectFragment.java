@@ -54,8 +54,8 @@ public class MainObjectFragment extends Fragment {
     MainObjectAdapter mainObjectAdapter;CityRadioAdapter cityRadioAdapter;
     RecyclerView mainObjectRecycle, cityRecycler , tasktypeRecycler;
     ConstraintLayout RegionLayout;
-    ImageView arrowCity;
-    TextView RegionTextView, searchT;
+    ImageView arrowCity, searchImage;
+    TextView RegionTextView;
     ArrayList<MainObjectRowForm> list;
     TextView mainObjectTitle;
     SwipeRefreshLayout refreshLayout;
@@ -126,12 +126,13 @@ public class MainObjectFragment extends Fragment {
         });
        checkRoles();
 
-       searchT.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               checkData();
-           }
-       });
+        searchImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkData();
+            }
+        });
+
         return view;
     }
     private void checkRoles(){
@@ -257,6 +258,7 @@ public class MainObjectFragment extends Fragment {
                             setPoints(rowForms);
                         }
                         else{
+                            showCities();
                             cities.clear();
                             for (int i = 0; i < response.length(); i++) {
                                 try {
@@ -316,9 +318,10 @@ public class MainObjectFragment extends Fragment {
         cityLayout=(LinearLayout) view.findViewById(R.id.cityLayout);
         nameLayout=(LinearLayout) view.findViewById(R.id.nameLayout);
         nameEditText=(EditText) view.findViewById(R.id.nameEditText);
-        searchT=(TextView) view.findViewById(R.id.searchT);
+
         RegionTextView=(TextView) view.findViewById(R.id.mainObjectRegionTextView);
         arrowCity=(ImageView) view.findViewById(R.id.arrowCity);
+        searchImage=(ImageView) view.findViewById(R.id.searchImage);
 
         searchRadio.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -373,8 +376,8 @@ public class MainObjectFragment extends Fragment {
         if(keys.size()>0){
             city=keys.get(0);
         }
-        if(cityNames.size()>city)
-        setVal(cityNames.get(city-1),true);
+        //if(cityNames.size()>city)
+        setVal(cities.get(city),true);
     }
     private void setKinds(){
         final List<String> values=new ArrayList<>();

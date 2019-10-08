@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,18 +33,33 @@ import java.util.List;
 import java.util.Map;
 
 public class AttendanceChooseView extends FrameLayout{
-    TextView name, nothing;
-    ArrayAdapter<String> adapter, pointAdapter;
+    TextView name, nothing, attendanceTextView, replaceTextView;
+    ArrayAdapter<String> adapter, pointAdapter, myAdapter, hoursAdapter;
     List<TextView> textViews,texts;
     List<ConstraintLayout> layouts;
+    ConstraintLayout attendanceLayout, replaceLayout;
     Context context;
-    Spinner spinner, spinner3;
+    Spinner spinner, spinner3, spinnerHours;
     List<RadioButton> buttons;
-    FrameLayout saveLayout,spinnerFrame, spinnerFrame3, progressFrame;
-    List<String> zamena, zids, points, pids;
-    LinearLayout spinnerLinear2, spinnerLinear3;
-    int chose=0, location=1, point=0;
-    String id;
+    FrameLayout saveLayout,spinnerFrame, spinnerHoursFrame, spinnerFrame3, progressFrame;
+    List<String> zamena, zids, points, pids, myTypes, hours;
+    List<Boolean> zamenaContracts;
+    LinearLayout spinnerLinear2, spinnerLinear3,spinnerHoursLinear, zamenaLayout;
+    int chose=0, location=1, point=0, shifts=0, hours_p=0;
+    boolean replace=false, myObjects=true, is_contract=true, z_contract=true;
+    String kind="";
+    String id, pointid;
+
+    public void setPointid(String pointid) {
+        this.pointid = pointid;
+    }
+
+    LinearLayout radioGroup;
+    RadioButton myObject, otherObject;
+
+    public void setShifts(int shifts) {
+        this.shifts = shifts;
+    }
 
     public int getLocation() {
         return location;
@@ -95,18 +111,75 @@ public class AttendanceChooseView extends FrameLayout{
         initView();
     }
     private void initView(){
-        zamena=new ArrayList<>();zids=new ArrayList<>();
+        zamena=new ArrayList<>();zids=new ArrayList<>();zamenaContracts=new ArrayList<>();
         points=new ArrayList<>();pids=new ArrayList<>();
+        myTypes=new ArrayList<>();
+        hours=new ArrayList<>();
+        for(int i=0;i<12;i++){
+            String s;
+            int num=((i+1)*2);
+            s=num+" час";
+            if(num<6 || num>20) s+="а";
+            else s+="ов";
+            hours.add(s);
+        }
+
         View view = inflate(getContext(), R.layout.attendance_choose_view, null);
         context=view.getContext();
         addView(view);
         createViews(view);
+
+        attendanceLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                replace=false;
+                setReplace();
+            }
+        });
+        replaceLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                replace=true;
+                setReplace();
+            }
+        });
+
+        radioGroup.setVisibility(GONE);
+        spinnerLinear2.setVisibility(GONE);
+        spinnerLinear3.setVisibility(GONE);
     }
     private void createViews(View view){
         name=(TextView) view.findViewById(R.id.name);
         spinner=(Spinner) view.findViewById(R.id.spinner);
         spinner3=(Spinner) view.findViewById(R.id.spinner3);
+        spinnerHours=(Spinner) view.findViewById(R.id.spinnerHours);
         nothing=(TextView)view.findViewById(R.id.nothing);
+
+        radioGroup=(LinearLayout) view.findViewById(R.id.radioGroup);
+        myObject=(RadioButton)view.findViewById(R.id.myObject);
+        myAdapter=new ArrayAdapter<String>(context,R.layout.simple_spinner_item,myTypes);
+        otherObject=(RadioButton)view.findViewById(R.id.otherObject);
+        myObject.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myObjects=true;
+                checkObjects();
+            }
+        });
+        otherObject.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myObjects=false;
+                checkObjects();
+            }
+        });
+
+        attendanceTextView=(TextView)view.findViewById(R.id.attendanceTextView);
+        replaceTextView=(TextView)view.findViewById(R.id.replaceTextView);
+
+        attendanceLayout=(ConstraintLayout)view.findViewById(R.id.attendanceLayout);
+        replaceLayout=(ConstraintLayout)view.findViewById(R.id.replaceLayout);
+
 
         texts=new ArrayList<>();textViews=new ArrayList<>();layouts=new ArrayList<>();buttons=new ArrayList<>();
         texts.add((TextView) view.findViewById(R.id.plusText));texts.add((TextView) view.findViewById(R.id.minusText));texts.add((TextView) view.findViewById(R.id.illText));texts.add((TextView) view.findViewById(R.id.replText));texts.add((TextView) view.findViewById(R.id.halfText));texts.add((TextView) view.findViewById(R.id.thirdText));
@@ -117,9 +190,13 @@ public class AttendanceChooseView extends FrameLayout{
         progressFrame=(FrameLayout) view.findViewById(R.id.progressFrame);
         spinnerFrame=(FrameLayout) view.findViewById(R.id.spinnerFrame);
         spinnerFrame3=(FrameLayout) view.findViewById(R.id.spinnerFrame3);
+        spinnerHoursFrame=(FrameLayout) view.findViewById(R.id.spinnerHoursFrame);
         spinnerLinear2=(LinearLayout) view.findViewById(R.id.spinnerLinear2);
         spinnerLinear3=(LinearLayout) view.findViewById(R.id.spinnerLinear3);
+        spinnerHoursLinear=(LinearLayout) view.findViewById(R.id.spinnerHoursLinear);
+        zamenaLayout=(LinearLayout) view.findViewById(R.id.zamenaLayout);
         for(int i=0;i<6;i++){
+            final int j=i;
             layouts.get(i).setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -129,25 +206,171 @@ public class AttendanceChooseView extends FrameLayout{
             });
         }
         clearAll();setChose(0);
+        checkObjects();
     }
 
-    private void clearAll(){
-        for(int i=0;i<6;i++){
-            texts.get(i).setTextColor(getContext().getResources().getColor(R.color.darkgrey));
-            layouts.get(i).setBackgroundColor(getContext().getResources().getColor(android.R.color.transparent));
-            buttons.get(i).setChecked(false);
+    private void setReplace(){
+        clearAll();
+        if(!replace){
+            attendanceLayout.setBackgroundResource(R.drawable.icgreen_page);
+            attendanceTextView.setTextColor(getContext().getResources().getColor(R.color.white));
+            replaceLayout.setBackgroundResource(R.drawable.whiterow_page);
+            replaceTextView.setTextColor(getContext().getResources().getColor(R.color.black));
+
+            for(int i=1;i<=3;i++)
+                layouts.get(i).setVisibility(VISIBLE);
+
+            spinnerLinear2.setVisibility(GONE);
+            spinnerLinear3.setVisibility(GONE);
+            radioGroup.setVisibility(GONE);
+            setChose(0);
         }
-    }
-    private void setChose(int i){
-        texts.get(i).setTextColor(getContext().getResources().getColor(R.color.black));
-        layouts.get(i).setBackgroundResource(R.drawable.grey_corners_line);
-        buttons.get(i).setChecked(true);
-        spinnerLinear2.setVisibility(GONE);
-        spinnerLinear3.setVisibility(GONE);
-        if(i==3){
+        else{
+
+            replaceLayout.setBackgroundResource(R.drawable.icgreen_page);
+            replaceTextView.setTextColor(getContext().getResources().getColor(R.color.white));
+            attendanceLayout.setBackgroundResource(R.drawable.whiterow_page);
+            attendanceTextView.setTextColor(getContext().getResources().getColor(R.color.black));
+
+            for(int i=1;i<=3;i++)
+                layouts.get(i).setVisibility(GONE);
+
             spinnerLinear2.setVisibility(VISIBLE);
             spinnerLinear3.setVisibility(VISIBLE);
+            radioGroup.setVisibility(VISIBLE);
+            setChose(0);
         }
+        checkContract();
+    }
+
+    public int getHours_p() {
+        return (hours_p+1)*2;
+    }
+
+    public boolean isZ_contract() {
+        return z_contract;
+    }
+
+    public boolean isIs_contract() {
+        return is_contract;
+    }
+
+    private void checkContract(){
+        if(is_contract){
+            if(!replace)
+            layouts.get(2).setVisibility(VISIBLE);
+
+            layouts.get(4).setVisibility(VISIBLE);
+            layouts.get(5).setVisibility(VISIBLE);
+        }
+        else {
+            layouts.get(2).setVisibility(GONE);
+            layouts.get(4).setVisibility(GONE);
+            layouts.get(5).setVisibility(GONE);
+        }
+
+        if(replace && chose>0){
+            boolean z_contract=zamenaContracts.get(chose-1);
+            if(z_contract){
+                spinnerHoursLinear.setVisibility(GONE);
+                layouts.get(2).setVisibility(GONE);
+
+                layouts.get(4).setVisibility(VISIBLE);
+                layouts.get(5).setVisibility(VISIBLE);
+            }
+            else {
+                spinnerHoursLinear.setVisibility(VISIBLE);
+
+                layouts.get(2).setVisibility(GONE);
+                layouts.get(4).setVisibility(GONE);
+                layouts.get(5).setVisibility(GONE);
+            }
+            this.z_contract=z_contract;
+        }
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+        checkKind();
+    }
+    private void checkKind(){
+        if(kind.equals("INTERN")){
+            zamenaLayout.setVisibility(GONE);
+            spinnerHoursLinear.setVisibility(GONE);
+            for(int i=1;i<=5;i++){
+                layouts.get(i).setVisibility(GONE);
+            }
+        }
+        else{
+            zamenaLayout.setVisibility(VISIBLE);
+            for(int i=1;i<=5;i++){
+                layouts.get(i).setVisibility(VISIBLE);
+            }
+            setReplace();
+        }
+    }
+
+    public void setIs_contract(boolean is_contract) {
+        this.is_contract = is_contract;
+        checkContract();
+        clearAll();
+        setChose(0);
+    }
+
+    public void checkObjects(){
+        if(myObjects){
+            myTypes.clear();
+            myTypes.add("Выберите объект");
+            myTypes.add("Сдельщик");
+            for(int i=0;i<shifts;i++)
+                myTypes.add((i+1)+" смена");
+            myAdapter.notifyDataSetChanged();
+            spinner3.setAdapter(myAdapter);
+            getWorkers();
+        }
+        else{
+            spinner3.setAdapter(pointAdapter);
+        }
+    }
+    private void clearAll(){
+        for(int i=0;i<6;i++){
+                texts.get(i).setTextColor(getContext().getResources().getColor(R.color.darkgrey));
+                layouts.get(i).setBackgroundColor(getContext().getResources().getColor(android.R.color.transparent));
+                buttons.get(i).setChecked(false);
+        }
+    }
+    private void clearIt(int i){
+        texts.get(i).setTextColor(getContext().getResources().getColor(R.color.darkgrey));
+        layouts.get(i).setBackgroundColor(getContext().getResources().getColor(android.R.color.transparent));
+        buttons.get(i).setChecked(false);
+    }
+    private void setChose(int i){
+        spinnerHoursLinear.setVisibility(GONE);
+        setIt(i);
+        /*if(i!=3) {
+            setIt(i);
+        }
+        else{
+            replace=!replace;
+            if(replace) {
+                setIt(3);
+                spinnerLinear2.setVisibility(VISIBLE);
+                spinnerLinear3.setVisibility(VISIBLE);
+            }
+            else{
+                clearIt(3);
+                spinnerLinear2.setVisibility(GONE);
+                spinnerLinear3.setVisibility(GONE);
+            }
+        }*/
+    }
+    private void setIt(int i){
+        Log.d("CHECKING", is_contract+" "+i);
+        if(!is_contract && i==0)
+            spinnerHoursLinear.setVisibility(VISIBLE);
+        texts.get(i).setTextColor(getContext().getResources().getColor(R.color.black));
+        layouts.get(i).setBackgroundResource(R.drawable.lightgreyrow_page);
+        buttons.get(i).setChecked(true);
     }
     public int getCheckedPosition(){
         for(int i=0;i<buttons.size();i++){
@@ -156,6 +379,10 @@ public class AttendanceChooseView extends FrameLayout{
             }
         }
         return 0;
+    }
+
+    public boolean isReplace() {
+        return replace;
     }
 
     public String getChose() {
@@ -197,6 +424,7 @@ public class AttendanceChooseView extends FrameLayout{
                 chose=i;
                 if(chose>0)
                 Log.d("CHOSECHOSE",chose+" "+zids.get(chose-1)+" "+getChose());
+                checkContract();
             }
 
             @Override
@@ -205,7 +433,39 @@ public class AttendanceChooseView extends FrameLayout{
             }
         });
 
+        hoursAdapter=new ArrayAdapter<String>(context,R.layout.simple_spinner_item,hours){
+            public View getView(int position, View convertView,ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setTypeface(((MainActivity) getContext()).getTypeFace("demibold"));
+                return v;
+            }
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
 
+                View v = super.getView(position,convertView,parent);
+                ((TextView) v).setTypeface(((MainActivity) getContext()).getTypeFace("demibold"));
+                return v;
+
+            }
+        };
+        spinnerHoursFrame.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spinnerHours.performClick();
+            }
+        });
+        spinnerHours.setAdapter(hoursAdapter);
+        spinnerHours.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                hours_p=i;
+                Log.d("HOURS",i+"");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
     private void  setPointSp(){
         pointAdapter=new ArrayAdapter<String>(context,R.layout.simple_spinner_item,points){
@@ -221,13 +481,13 @@ public class AttendanceChooseView extends FrameLayout{
                 return v;
 
             }};
+
         spinnerFrame3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 spinner3.performClick();
             }
         });
-        spinner3.setAdapter(pointAdapter);
         spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -291,7 +551,23 @@ public class AttendanceChooseView extends FrameLayout{
         }
         else{
             progressFrame.setVisibility(VISIBLE);
-            String url=((MainActivity)context).MAIN_URL+"workers/?point="+pids.get(point-1);
+            String url="";
+            if(!myObjects)
+                url=((MainActivity)context).MAIN_URL+"workers/?point="+pids.get(point-1);
+            else{
+                int item=spinner3.getSelectedItemPosition();
+                url+=((MainActivity)context).MAIN_URL+"workers/?point="+pointid;
+                if(item==1){
+                    url+="&kind=PIECER";
+                }
+                else if(item>1){
+                    url+="&shift="+(item-1);
+                }
+                else{
+                    Toast.makeText(context, "Выберите объект", Toast.LENGTH_SHORT).show();
+                }
+            }
+            Log.d("WORKERURL",url);
             JsonArrayRequest arrayRequest=new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
@@ -323,16 +599,23 @@ public class AttendanceChooseView extends FrameLayout{
             for(int i=0;i<array.length();i++){
                 JSONObject object=array.getJSONObject(i);
                 String status=object.getString("status");
+                boolean is_contract=object.getBoolean("is_contract");
                 JSONObject user=object.getJSONObject("user");
                 String id= object.getString("id"),name=user.getString("fullname");
+                if(id.equals(this.id))
+                    continue;
                 Log.d("WORKER "+id+" : "+name,status);
                 if(status.equals("STABLE"))
                 {
-                    zamena.add(name);zids.add(id);
+                    zamena.add(name);zids.add(id);zamenaContracts.add(is_contract);
                 }
             }
-            setSpinner();
+            adapter.notifyDataSetChanged();
         }
         catch (Exception e){e.printStackTrace();}
+    }
+
+    public void setType(String s){
+
     }
 }

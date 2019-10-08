@@ -26,6 +26,8 @@
     <color name="failedProgressStart">#ff3315</color>
     <color name="failedProgressStop">#ff8702</color>
 
+    <color name="holidayPurple">#8e48fb</color>
+
     <color name="icgGreenTra">#904f695a</color>
 </resources>
 <!--    <color name="lightGteen">#53b683</color>     -->

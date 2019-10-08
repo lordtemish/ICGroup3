@@ -54,7 +54,7 @@ import java.util.Map;
  */
 public class PassportObjectInfoListOPUFragment extends Fragment {
     RecyclerView commentsRecycler, archiveCommentsRecyclerView, replacerRecyclerView;
-    ConstraintLayout changeButton;
+    ConstraintLayout changeButton, dropButton;
     Spinner spinner;
     BigCounterView counterView;
     boolean all=false;
@@ -63,7 +63,7 @@ public class PassportObjectInfoListOPUFragment extends Fragment {
     CommentAdapter commentAdapter, archCommentAdapter;
     ReplacerAdapter replacerAdapter;
     LinearLayout newComments,allComments;
-    TextView newCommentTextView,planWorkTextView,allCommentTextView, mainObjectTitle, nameTextView, positionTextView, dateTextView, PercentageTextView,  employeeChangeTextView, emplChangeButton, emplDropTextView,
+    TextView newCommentTextView,planWorkTextView,allCommentTextView, mainObjectTitle, nameTextView, positionTextView, dateTextView, PercentageTextView,  employeeChangeTextView, emplChangeButton,
             holidayTypeTop, holidayTypeTextView, holidayDate, holidaySetButton,replacedTextView;
     FrameLayout newCommentFrame, allCommentFrame, progressLayout;
     LinearLayout attendanceLayout, commentsLayout, holidayLayout;
@@ -145,7 +145,7 @@ String id, name, phone, userid, holid="";
             }
         });
 
-        emplDropTextView.setOnClickListener(new View.OnClickListener() {
+        dropButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 delete();
@@ -233,7 +233,6 @@ String id, name, phone, userid, holid="";
         allCommentTextView.setTypeface(((MainActivity) context).getTypeFace("demibold"));
         newCommentTextView.setTypeface(((MainActivity) context).getTypeFace("demibold"));
         emplChangeButton.setTypeface(((MainActivity) context).getTypeFace("demibold"));
-        emplDropTextView.setTypeface(((MainActivity) context).getTypeFace("demibold"));
     }
     private void createViews(View view){
         employeeFragment=new PassportObjectInfoListUpdateEmployeeFragment();
@@ -270,12 +269,14 @@ String id, name, phone, userid, holid="";
         holidayTypeTextView=(TextView) view.findViewById(R.id.holidayTypeTextView);
         planWorkTextView=(TextView) view.findViewById(R.id.planWorkTextView);
 
+        dropButton=(ConstraintLayout)view.findViewById(R.id.dropButton);
+
         checkRadio=(RadioButton) view.findViewById(R.id.checkRadio);
         dateTextView=(TextView) view.findViewById(R.id.dateTextView);
         PercentageTextView=(TextView) view.findViewById(R.id.PercentageTextView);
         holidaySetButton=(TextView) view.findViewById(R.id.holidaySetButton);
         emplChangeButton=(TextView) view.findViewById(R.id.employeeChangeButton);
-        emplDropTextView=(TextView) view.findViewById(R.id.employeeDropTextView);
+
         arrowPlanImageView=(ImageView) view.findViewById(R.id.arrowPlanImageView);
         circlePhoneImageView=(ImageView) view.findViewById(R.id.circlePhoneImageView);
         ProgressBar=(ProgressBar) view.findViewById(R.id.ProgressBar);

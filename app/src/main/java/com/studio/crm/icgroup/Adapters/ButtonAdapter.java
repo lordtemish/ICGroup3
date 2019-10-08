@@ -53,15 +53,9 @@ public class ButtonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public  void onBindViewHolder(RecyclerView.ViewHolder holder1, final int position) {
         MyHolder holder=(MyHolder) holder1;
         holder.textView.setText(list.get(position));
-        if(position==list.size()-1){
-            holder.frame.setVisibility(View.GONE);
-        }
-        else {
-            holder.frame.setVisibility(View.VISIBLE);
-        }
         try {
             holder.layout.setOnClickListener(listener.get(position));
-            holder.imageView.setImageResource(imageResource);
+                holder.imageView.setImageResource(imageResource);
         }
         catch (Exception e){
             holder.layout.setOnClickListener(new View.OnClickListener() {

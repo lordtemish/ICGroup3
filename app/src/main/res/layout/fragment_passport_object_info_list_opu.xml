@@ -152,27 +152,7 @@
                     app:layout_constraintStart_toStartOf="@+id/linearNames"
                     app:layout_constraintTop_toBottomOf="@+id/linearNames" />
             </android.support.constraint.ConstraintLayout>
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/changeButton"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/greenbutton_rec"
-                android:layout_height="40dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:text="Изменить"
-                    android:textSize="15sp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
 
-                    />
-            </android.support.constraint.ConstraintLayout>
             <LinearLayout
                 android:visibility="gone"
                 android:layout_width="match_parent"
@@ -556,15 +536,16 @@
                 </LinearLayout>
                 <android.support.constraint.ConstraintLayout
                     android:layout_marginTop="10dp"
-                    android:layout_gravity="center"
+                  android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                             <TextView
                                 android:id="@+id/holidaySetButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:paddingStart="10dp"
-                                android:paddingEnd="10dp"
+                                android:paddingStart="30dp"
+                                android:paddingEnd="30dp"
                                 android:paddingTop="10dp"
                                 android:paddingBottom="10dp"
                                 android:minWidth="100dp"
@@ -574,16 +555,11 @@
                                 android:textColor="@color/white"
                                 android:textSize="13sp"
                                 android:text="Отпуск"
-                                app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
                                 />
                 </android.support.constraint.ConstraintLayout>
-                <FrameLayout
-                    android:layout_marginTop="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="@color/light_grey"
-                    />
+
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:visibility="gone"
@@ -663,19 +639,59 @@
                             />
                 </android.support.constraint.ConstraintLayout>
 
-                <android.support.constraint.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="70sp">
-
-                    <TextView
-                        android:id="@+id/employeeDropTextView"
+                    android:layout_height="70sp"
+                    android:paddingTop="10dp"
+                    android:layout_marginTop="70dp"
+                    >
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/changeButton"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="Уволнение сотрудника"
-                        android:textColor="@color/darkgrey"
-                        android:textSize="20sp" />
-                </android.support.constraint.ConstraintLayout>
+                        android:background="@drawable/grey_circle"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:text="Редактировать"
+                            android:textSize="15sp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+
+                            />
+                    </android.support.constraint.ConstraintLayout>
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/dropButton"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/grey_circle"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:text="Уволить сотрудника"
+                            android:textSize="15sp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+
+                            />
+                    </android.support.constraint.ConstraintLayout>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
         </LinearLayout>

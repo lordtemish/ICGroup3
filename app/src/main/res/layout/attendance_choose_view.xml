@@ -10,7 +10,7 @@
             android:onClick="onClick"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:paddingTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/whiterow_page"
@@ -45,6 +45,164 @@
                     app:layout_constraintStart_toEndOf="@+id/name"
                     />
             </android.support.constraint.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/zamenaLayout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/attendanceLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/icgreen_page"
+                    >
+                    <TextView
+                        android:id="@+id/attendanceTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textSize="17sp"
+                        android:text="Посещение"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        />
+                </android.support.constraint.ConstraintLayout>
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/replaceLayout"
+                    android:background="@drawable/whiterow_page">
+                    <TextView
+                        android:id="@+id/replaceTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="17sp"
+                        android:text="Замена"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        />
+                </android.support.constraint.ConstraintLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:id="@+id/radioGroup">
+            <RadioGroup
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:button="@drawable/radiobutton1"
+                            android:layout_weight="1"
+                            android:checked="true"
+                            android:id="@+id/myObject"
+                            android:textSize="13sp"
+                            android:textColor="@color/black"
+                            android:text="  со своего объекта"
+                            />
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:button="@drawable/radiobutton1"
+                            android:id="@+id/otherObject"
+                            android:textSize="13sp"
+                            android:textColor="@color/black"
+                            android:text="  с другого объекта"
+
+                            />
+
+             </RadioGroup>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="20sp"
+                android:id="@+id/spinnerLinear3"
+                android:layout_width="match_parent"
+                android:layout_height="50sp"
+                android:background="@drawable/spinner_back"
+                android:orientation="horizontal"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                >
+
+                <Spinner
+                    android:id="@+id/spinner3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:spinnerMode="dropdown" />
+
+                <FrameLayout
+                    android:id="@+id/spinnerFrame3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7">
+
+                    <ImageView
+                        android:layout_width="20sp"
+                        android:layout_height="20sp"
+                        android:layout_gravity="center"
+
+                        android:src="@drawable/ic_arrowdown_green" />
+                </FrameLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="20sp"
+                android:id="@+id/spinnerLinear2"
+                android:layout_width="match_parent"
+                android:layout_height="50sp"
+                android:background="@drawable/spinner_back"
+                android:orientation="horizontal"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                >
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:spinnerMode="dropdown" />
+
+                <FrameLayout
+                    android:id="@+id/spinnerFrame"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7">
+
+                    <ImageView
+                        android:layout_width="20sp"
+                        android:layout_height="20sp"
+                        android:layout_gravity="center"
+
+                        android:src="@drawable/ic_arrowdown_green" />
+                </FrameLayout>
+
+            </LinearLayout>
+
+
             <LinearLayout
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="20dp"
@@ -56,7 +214,7 @@
                         android:id="@+id/plusLayout"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:background="@drawable/grey_corners_line"
+                        android:background="@drawable/lightgreyrow_page"
                         android:layout_marginBottom="10dp">
                         <TextView
                             android:id="@+id/plusTextView"
@@ -96,6 +254,40 @@
 
                             />
                     </android.support.constraint.ConstraintLayout>
+                <LinearLayout
+                    android:layout_marginBottom="10dp"
+                    android:id="@+id/spinnerHoursLinear"
+                    android:layout_width="match_parent"
+                    android:layout_height="50sp"
+                    android:background="@drawable/spinner_back"
+                    android:orientation="horizontal"
+                    >
+
+                    <Spinner
+                        android:id="@+id/spinnerHours"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:spinnerMode="dropdown" />
+
+                    <FrameLayout
+                        android:id="@+id/spinnerHoursFrame"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="7">
+
+                        <ImageView
+                            android:layout_width="20sp"
+                            android:layout_height="20sp"
+                            android:layout_gravity="center"
+
+                            android:src="@drawable/ic_arrowdown_green" />
+                    </FrameLayout>
+
+                </LinearLayout>
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/halfLayout"
                     android:layout_width="match_parent"
@@ -277,7 +469,7 @@
                         android:id="@+id/replTextView"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
-                        android:background="@drawable/replace_circle"
+                        android:background="@drawable/holiday_circle"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -294,7 +486,7 @@
                         android:layout_marginLeft="10dp"
                         android:textColor="@color/black"
                         android:textSize="15sp"
-                        android:text="Замена"
+                        android:text="Праздник (Выходной)"
                         android:id="@+id/replText"
                         />
                     <RadioButton
@@ -312,72 +504,7 @@
                         />
                 </android.support.constraint.ConstraintLayout>
 
-                <LinearLayout
-                    android:layout_marginTop="0sp"
-                    android:id="@+id/spinnerLinear3"
-                    android:layout_width="match_parent"
-                    android:layout_height="30sp"
-                    android:background="@drawable/spinner_back"
-                    android:orientation="horizontal">
 
-                    <Spinner
-                        android:id="@+id/spinner3"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:background="@android:color/transparent"
-                        android:gravity="center"
-                        android:spinnerMode="dropdown" />
-
-                    <FrameLayout
-                        android:id="@+id/spinnerFrame3"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="7">
-
-                        <ImageView
-                            android:layout_width="20sp"
-                            android:layout_height="20sp"
-                            android:layout_gravity="center"
-
-                            android:src="@drawable/ic_arrowdown_green" />
-                    </FrameLayout>
-
-                </LinearLayout>
-                <LinearLayout
-                android:layout_marginTop="20sp"
-                android:id="@+id/spinnerLinear2"
-                android:layout_width="match_parent"
-                android:layout_height="30sp"
-                android:background="@drawable/spinner_back"
-                android:orientation="horizontal">
-
-                <Spinner
-                    android:id="@+id/spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:gravity="center"
-                    android:spinnerMode="dropdown" />
-
-                <FrameLayout
-                    android:id="@+id/spinnerFrame"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="7">
-
-                    <ImageView
-                        android:layout_width="20sp"
-                        android:layout_height="20sp"
-                        android:layout_gravity="center"
-
-                        android:src="@drawable/ic_arrowdown_green" />
-                </FrameLayout>
-
-            </LinearLayout>
             </LinearLayout>
             <FrameLayout
                 android:layout_margin="10dp"

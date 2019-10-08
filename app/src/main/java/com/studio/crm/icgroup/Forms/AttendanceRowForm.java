@@ -9,15 +9,41 @@ public class AttendanceRowForm {
     View.OnClickListener listener;
     private String name;
     private int n1, n2;
-    boolean today;
-    String id;
-    boolean fuck=false;
+    boolean today, contract;
+    String id, kind;
+
+    public boolean isContract() {
+        return contract;
+    }
+
+    public void setContract(boolean contract) {
+        this.contract = contract;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    boolean fuck=false, text=false;
     public AttendanceRowForm(String id,String n, List<AttendanceRowItemForm> itemForms, int num1, int num2){
         this.id=id;
         name=n;
         rowForms=itemForms;
         n1=num1;
         n2=num2;
+        text=false;
+    }
+    public AttendanceRowForm(String name){
+        this.name=name;
+        text=true;
+    }
+
+    public boolean isText() {
+        return text;
     }
 
     public String getId() {

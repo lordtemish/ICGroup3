@@ -48,25 +48,22 @@ import java.util.Map;
 public class PassportObjectInfoListFragment extends Fragment {
     HashMap<String, TextView> mapText;
     RecyclerView phonesRecycler;
-    RecyclerView progressPhoneRecycler;
+
     View view;
-    List<TextView> smenaSTextView;
+
     PhonesAdapter adapter;
     List<PhonesRowForm> phonesRowFormList;
-    List<RecyclerView.Adapter> smenaSAdapter;
-    ProgressPhonesAdapter adapter1;
+
+
     int shifts=0, janitor_shifts_count=0, gardener_shifts_count=0, plumber_shifts_count=0,electrician_shifts_count=0;
 
-    ConstraintLayout employeeLayout, progressLayout;
-    List<List<ProgressPhoneForm>>  allForms;
-    List<ProgressPhoneForm> forms;
+    ConstraintLayout  progressLayout;
+
     TextView title;
     boolean is_trainee=false, client=false;
     String id;
     LinearLayout emplLa;
     ImageView arrowTop;
-    PassportObjectInfoListAddNewEmployeeFragment employeeFragment;
-    LinearLayout norForClient;
     public PassportObjectInfoListFragment() {
         // Required empty public constructor
     }
@@ -103,14 +100,10 @@ public class PassportObjectInfoListFragment extends Fragment {
         arrowTop=(ImageView)view.findViewById(R.id.arrowTop);
        title=(TextView) view.findViewById(R.id.title);
        title.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/AvenirNextLTPro-Bold.ttf"));
-       smenaSTextView=new ArrayList<>();
-       smenaSAdapter=new ArrayList<>();
+
         mapText=new HashMap<>();
         addAlltoMap();
-        setListener();
-        for(TextView i:smenaSTextView){
-            i.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/AvenirNextLTPro-Bold.ttf"));
-        }
+
         for (String i:
              mapText.keySet()) {
             if(i.contains("TextView")) {
@@ -128,29 +121,7 @@ public class PassportObjectInfoListFragment extends Fragment {
         phonesRecycler.setLayoutManager(mLayoutManager);
         phonesRecycler.setItemAnimator(new DefaultItemAnimator());
         phonesRecycler.setAdapter(adapter);
-        norForClient=(LinearLayout) view.findViewById(R.id.norForClient);
-        progressPhoneRecycler=(RecyclerView) view.findViewById(R.id.progressPhoneRecycle);
-        allForms=new ArrayList<>();
-        allForms.add(new ArrayList<ProgressPhoneForm>());
-        allForms.add(new ArrayList<ProgressPhoneForm>());
-        allForms.add(new ArrayList<ProgressPhoneForm>());
-        allForms.add(new ArrayList<ProgressPhoneForm>());
-        forms=new ArrayList<>();
-        forms.addAll(allForms.get(0));
-        adapter1=new ProgressPhonesAdapter(forms,getActivity());
-        smenaSAdapter.add(adapter1);
-        RecyclerView.LayoutManager mLayoutManager1=new LinearLayoutManager(getActivity());
-        progressPhoneRecycler.setLayoutManager(mLayoutManager1);
-        progressPhoneRecycler.setItemAnimator(new DefaultItemAnimator());
-        progressPhoneRecycler.setAdapter(adapter1);
 
-        employeeFragment=new PassportObjectInfoListAddNewEmployeeFragment();
-        employeeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setAddNewEmployee();
-            }
-        });
 
         getRequest("points/"+id);
         View.OnClickListener requestListener=new View.OnClickListener() {
@@ -159,7 +130,7 @@ public class PassportObjectInfoListFragment extends Fragment {
                 getRequest("points/"+id);
             }
         };
-        employeeFragment.click(requestListener);
+
 
         showEmpls();
         arrowTop.setOnClickListener(new View.OnClickListener() {
@@ -169,10 +140,7 @@ public class PassportObjectInfoListFragment extends Fragment {
             }
         });
 
-        if(client){
-            norForClient.setVisibility(View.GONE);
-        }
-        else norForClient.setVisibility(View.VISIBLE);
+
         return view;
     }
     private void showEmpls(){
@@ -185,68 +153,10 @@ public class PassportObjectInfoListFragment extends Fragment {
             arrowTop.setImageResource(R.drawable.ic_arrowup);
         }
     }
-    private void setAddNewEmployee(){
-        Bundle bundle=getArguments();
-        bundle.putString("point",id);
-        bundle.putInt("shifts",shifts);
-        bundle.putBoolean("is_trainee",is_trainee);
-        employeeFragment.setArguments(bundle);
-        ((MainActivity) getActivity()).setFragment(R.id.extra_frame,employeeFragment);
-    }
-    private void checkSmenaPages(){
-        setSmenasVisib();
-        for(int i=shifts;i<3;i++){
-            smenaSTextView.get(i).setVisibility(View.GONE);
-        }
-    }
-    private void setSmenasVisib(){ for(int i =0;i<3;i++){smenaSTextView.get(i).setVisibility(View.VISIBLE);}}
-    private void updateSmena(List<List<ProgressPhoneForm>> forms){
-        progressLayout.setVisibility(View.GONE);
-        allForms.clear();allForms.addAll(forms);
-        setSmena(0);
-    }
-    public void setSmena(int a){
-        try {
-            clearSmena();
-            if (a == 3) {
-                is_trainee = true;
-            } else
-                is_trainee = false;
-            smenaSTextView.get(a).setTextColor(getActivity().getResources().getColor(R.color.black));
-            forms.clear();
-            forms.addAll(allForms.get(a));
-            adapter1.notifyDataSetChanged();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-    public void setSmena(View view){
-        String tag=view.getTag().toString();
-        int a=Integer.parseInt(tag);
-        setSmena(a);
-    }
-    public void clearSmena() throws  NullPointerException{
-        for(TextView view:smenaSTextView){
-            try {
-                view.setTextColor(getActivity().getResources().getColor(R.color.greyy));
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-    }
-    public void setListener(){
-        int l=0;
-        for(TextView view:smenaSTextView){
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    setSmena(v);
-                }
-            });
-        }
-    }
+
+
+
+
     private void setPhonesAdapter(List<PhonesRowForm> forms){
         phonesRowFormList.clear();
         phonesRowFormList.addAll(forms);
@@ -279,71 +189,6 @@ public class PassportObjectInfoListFragment extends Fragment {
                     }
                 };
                 (((MainActivity) getActivity()).requestQueue).add(objectRequest);
-            } else if (url1.contains("workers")) {
-                JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        List<List<ProgressPhoneForm>> phoneForms = new ArrayList<>();
-                        phoneForms.add(new ArrayList<ProgressPhoneForm>());
-                        phoneForms.add(new ArrayList<ProgressPhoneForm>());
-                        phoneForms.add(new ArrayList<ProgressPhoneForm>());
-                        phoneForms.add(new ArrayList<ProgressPhoneForm>());
-                        for (int i = 0; i < response.length(); i++) {
-                            try {
-
-                                JSONObject object = response.getJSONObject(i);
-                                if (object.isNull("user")) continue;
-                                int shift = object.getInt("shift");
-                                JSONObject user = object.getJSONObject("user");
-                                Log.d("FUCKINGTROUBLE", "" + user.get("fullname"));
-                                String id = object.getString("id"), userid=user.getString("id");
-                                String status=object.getString("status");
-                                boolean is_contract=object.getBoolean("is_contract");
-                                if(!status.equals("REMOVE")) {
-                                  /*  if (object.getBoolean("is_trainee")) {
-                                        ProgressPhoneForm progressPhoneForm = new ProgressPhoneForm(new PhonesRowForm(true, user.get("fullname") + "", "Стажёр", user.getString("phone") + ""), Integer.parseInt("" + Math.round(object.getDouble("attendance_rate") * 100)));
-                                        progressPhoneForm.setStatus(status);
-                                        progressPhoneForm.setSalary(object.getInt("salary"));
-                                        progressPhoneForm.setContract(is_contract);
-                                        progressPhoneForm.setId(id);
-                                        progressPhoneForm.setUserid(userid);
-                                        phoneForms.get(3).add(progressPhoneForm);
-                                    } else {*/
-                                        ProgressPhoneForm progressPhoneForm = new ProgressPhoneForm(new PhonesRowForm(true, user.get("fullname") + "", ((MainActivity)getActivity()).workerKinds.get(object.getString("kind")), user.getString("phone") + ""), Integer.parseInt("" + Math.round(object.getDouble("attendance_rate") * 100)));
-                                        progressPhoneForm.setStatus(status);
-                                        progressPhoneForm.setRole(object.getString("kind"));
-                                        progressPhoneForm.setSalary(object.getInt("salary"));
-                                        progressPhoneForm.setContract(is_contract);
-                                        progressPhoneForm.setId(id);
-                                        progressPhoneForm.setUserid(userid);
-                                        phoneForms.get(shift - 1).add(progressPhoneForm);
-                                    //}
-                                }
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        updateSmena(phoneForms);
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), "Проблемы соеденения", Toast.LENGTH_SHORT).show();
-                        progressLayout.setVisibility(View.GONE);
-                    }
-                }) {
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        HashMap<String, String> headers = new HashMap<String, String>();
-                        headers.put("Accept", "application/json");
-                        headers.put("Content-Type", "application/json; charset=utf-8");
-                        headers.put("Authorization", "JWT " + ((MainActivity) getActivity()).token);
-                        return headers;
-                    }
-                };
-                (((MainActivity) getActivity()).requestQueue).add(arrayRequest);
             }
         }
         catch (Exception e){
@@ -373,8 +218,7 @@ public class PassportObjectInfoListFragment extends Fragment {
             JSONArray curators=object.getJSONArray("curators");
             JSONArray administrators=object.getJSONArray("admins");
             try {
-                shifts=object.getInt("shifts_count");
-                adapter1.setShifts(shifts);
+
                 mapText.get("infoListObjectName").setText(name);
                 mapText.get("infoListRegion").setText(location.getString("name"));
                 mapText.get("infoListObjectAddress").setText(address);
@@ -452,8 +296,6 @@ public class PassportObjectInfoListFragment extends Fragment {
         catch (JSONException e){
             e.printStackTrace();
         }
-        checkSmenaPages();
-        getRequest("workers/?point="+id);
     }
     private void setShiftInfo(JSONArray array){
 
@@ -475,13 +317,8 @@ public class PassportObjectInfoListFragment extends Fragment {
         }
     }
     public void addAlltoMap(){
-        employeeLayout=(ConstraintLayout) view.findViewById(R.id.addNewEmployeeLayout);
         progressLayout=(ConstraintLayout) view.findViewById(R.id.progressLayout);
 
-        smenaSTextView.add((TextView) view.findViewById(R.id.firstSmena));
-        smenaSTextView.add((TextView) view.findViewById(R.id.SecondSmena));
-        smenaSTextView.add((TextView) view.findViewById(R.id.thirdSmena));
-        smenaSTextView.add((TextView) view.findViewById(R.id.interns));
         mapText.put("infoListObjectNameTextView",(TextView) view.findViewById(R.id.infoListObjectNameTextView));
         mapText.put("infoListObjectName",(TextView) view.findViewById(R.id.infoListObjectName));
         mapText.put("infoListRegionTextView",(TextView) view.findViewById(R.id.infoListRegionTextView));

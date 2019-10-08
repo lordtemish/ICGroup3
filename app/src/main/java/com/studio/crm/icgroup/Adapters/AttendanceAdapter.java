@@ -21,20 +21,23 @@ import java.util.List;
 
 public class AttendanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private class myHolder extends RecyclerView.ViewHolder{
-        FrameLayout todayBack, todayBackTop;
-        TextView nameTextView, firstTextView, secondTextView, thirdTextView, fourthTextView, fifthTextView, overTextView, name;
-        LinearLayout rowLayout;
+        FrameLayout todayBack, todayBackTop, textToday;
+        TextView tex, nameTextView, firstTextView, secondTextView, thirdTextView, fourthTextView, fifthTextView, overTextView, name;
+        LinearLayout rowLayout, textLayout;
         List<TextView> textViews;
         List<FrameLayout> frameLayouts;
         private myHolder(View view){
             super(view);
             todayBack=(FrameLayout) view.findViewById(R.id.todayBack);
             todayBackTop=(FrameLayout) view.findViewById(R.id.todayBackTop);
+            textToday=(FrameLayout) view.findViewById(R.id.textToday);
 
             frameLayouts=new ArrayList<>();
             textViews=new ArrayList<>();
+            textLayout=(LinearLayout) view.findViewById(R.id.textLayout);
             rowLayout=(LinearLayout) view.findViewById(R.id.rowLayout);
             name=(TextView)view.findViewById(R.id.name);
+            tex=(TextView)view.findViewById(R.id.tex);
             nameTextView=(TextView)view.findViewById(R.id.nameTextView);
             overTextView=(TextView)view.findViewById(R.id.overTextView);
             firstTextView=(TextView)view.findViewById(R.id.firstTextView);
@@ -47,7 +50,14 @@ public class AttendanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
         }
+        private void setText(String s){
+            rowLayout.setVisibility(View.GONE);
+            textLayout.setVisibility(View.VISIBLE);
+            tex.setText(s);
+        }
         private void setInfo(AttendanceRowForm form){
+            rowLayout.setVisibility(View.VISIBLE);
+            textLayout.setVisibility(View.GONE);
             List<AttendanceRowItemForm> forms=form.getRowForms();
             nameTextView.setText(form.getName());
             overTextView.setText(form.getN1()+"/"+form.getN2());
@@ -57,6 +67,9 @@ public class AttendanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
                 if(itemForm.isPlus()){
                     s="+";
+                }
+                else if(itemForm.isHoliday()){
+                    s="holiday";
                 }
                 else if(itemForm.isAbsent()){
                     s="-";
@@ -122,6 +135,10 @@ public class AttendanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     view.setBackgroundResource(R.drawable.grey_circle);
                     view.setText("+");
                     break;
+                case "holiday":
+                    view.setBackgroundResource(R.drawable.holiday_circle);
+                    view.setText("-");
+                    break;
                     default:
                         view.setBackgroundResource(R.drawable.green_circle_line);
                         view.setText("");
@@ -132,9 +149,11 @@ public class AttendanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             if(today) {
                 todayBack.setVisibility(View.VISIBLE);
                 todayBackTop.setVisibility(View.VISIBLE);
+                textToday.setVisibility(View.VISIBLE);
             }
             else {   todayBack.setVisibility(View.GONE);
                 todayBackTop.setVisibility(View.GONE);
+                textToday.setVisibility(View.GONE);
 
             }
         }
@@ -160,8 +179,14 @@ public class AttendanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder1, int position) {
         myHolder holder=(myHolder) holder1;
+        AttendanceRowForm form=list.get(position);
         holder.setToday(today);
-        holder.setInfo(list.get(position));
+        if(form.isText()){
+            holder.setText(form.getName());
+        }
+        else {
+            holder.setInfo(form);
+        }
     }
 
     @Override
