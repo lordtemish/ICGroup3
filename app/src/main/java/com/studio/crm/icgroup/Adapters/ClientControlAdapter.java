@@ -69,10 +69,11 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     private class OlkHolder extends RecyclerView.ViewHolder{
         int is_executive_permitted=-1,is_technical_permitted=-1,is_producer_permitted=-1,is_curator_permitted=-1,is_contactor_permitted=-1;
-        ConstraintLayout markLayout;
+        ConstraintLayout markLayout, wholeLayout;
         RecyclerView commentsRecyclerView, acceptRecycler, phonesRecyclerView;
-        TextView wrapTextView, dateTextView, nameTextView, positionTextView, infoLabel, averageMarkTextView, quality, qualityMark, looking, lookingMark, inventory, inventoryMark,olkTook;
-        LinearLayout extraLayout;
+        TextView wrapTextView, dateTextView, nameTextView, positionTextView, infoLabel, averageMarkTextView, quality, qualityMark, looking, lookingMark, inventory, inventoryMark,olkTook
+                , authorName, authorPosition, contactorName;
+        LinearLayout extraLayout, infoLayout;
         FrameLayout progressLayout;
         Context context;
         boolean updated=false;
@@ -85,6 +86,8 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
         AcceptAdapter acceptAdapter;
         List<String[]> strings;
 
+
+
         private OlkHolder(View v){
             super(v);
             strings=new ArrayList<>();
@@ -92,10 +95,14 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
             context=v.getContext();
             acceptRecycler=(RecyclerView) v.findViewById(R.id.acceptRecyclerView);
             phonesRecyclerView=(RecyclerView) v.findViewById(R.id.phonesRecyclerView);
+            infoLayout=(LinearLayout) v.findViewById(R.id.infoLayout);
             extraLayout=(LinearLayout) v.findViewById(R.id.extraLayout);
             wrapTextView=(TextView) v.findViewById(R.id.wrapTextView);
             dateTextView=(TextView) v.findViewById(R.id.dateTextView);
             nameTextView=(TextView) v.findViewById(R.id.nameTextView);
+            authorName=(TextView) v.findViewById(R.id.authorName);
+            authorPosition=(TextView) v.findViewById(R.id.authorPosition);
+            contactorName=(TextView) v.findViewById(R.id.contactorName);
             infoLabel=(TextView) v.findViewById(R.id.infoLabel);
             positionTextView=(TextView) v.findViewById(R.id.positionTextView);
             quality=(TextView) v.findViewById(R.id.quality);
@@ -107,12 +114,23 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
             averageMarkTextView=(TextView) v.findViewById(R.id.averageMarkTextView);
             olkTook=(TextView) v.findViewById(R.id.olkTook);
             markLayout=(ConstraintLayout) v.findViewById(R.id.markLayout);
+
+            wholeLayout=(ConstraintLayout) v.findViewById(R.id.wholeLayout);
+
             progressLayout=(FrameLayout) v.findViewById(R.id.progressLayout);
             commentsRecyclerView=(RecyclerView) v.findViewById(R.id.commentsRecyclerView);
             wrapTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     clicked();
+                }
+            });
+            wholeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(markLayout.getVisibility()==View.VISIBLE){
+                        clicked();
+                    }
                 }
             });
             setFontType();
@@ -172,17 +190,25 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
             dateTextView.setText(form.getDate());
             averageMarkTextView.setText(form.getMark()+"");
             nameTextView.setText(form.getName());
+            authorName.setText(form.getName());
             positionTextView.setText(form.getPosition());
+            authorPosition.setText(form.getPosition());
+
+
             id=form.getId();
         }
         private void clicked(){
             if (updated) {
                 if (markLayout.getVisibility() == View.VISIBLE) {
                     markLayout.setVisibility(View.GONE);
+                    infoLayout.setVisibility(View.GONE);
+                    wrapTextView.setVisibility(View.VISIBLE);
                     wrapTextView.setText("Свернуть");
                     extraLayout.setVisibility(View.VISIBLE);
                 } else {
                     markLayout.setVisibility(View.VISIBLE);
+                    infoLayout.setVisibility(View.VISIBLE);
+                    wrapTextView.setVisibility(View.GONE);
                     wrapTextView.setText("Развернуть");
                     extraLayout.setVisibility(View.GONE);
                 }
@@ -202,6 +228,9 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
                             messageForms.add(new MessageForm(message));
                             JSONObject poin=response.getJSONObject("point");
                             point=poin.getString("id");
+                            JSONObject contactor=poin.getJSONObject("contactor");
+                            String cName=contactor.getString("fullname");
+                            contactorName.setText(cName);
 
                             JSONArray positions=response.getJSONArray("positions");
                             if(positions.length()>2){
@@ -220,17 +249,18 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
                                 lookingMark.setText(0+"");
                                 inventoryMark.setText(0+"");
                             }
-
+                            /*
                             JSONObject author=response.getJSONObject("author");
                             rowForms.clear();
                             String role=author.getString("role");
                             String position=((MainActivity)context).positions.get(role);
                             rowForms.add(new PhonesRowForm(false,author.getString("fullname"),position,author.getString("phone")));
 
-                            phonesAdapter.notifyDataSetChanged();
+                            phonesAdapter.notifyDataSetChanged();*/
                             acceptAdapter.notifyDataSetChanged();
                             messageAdapter.notifyDataSetChanged();
 
+                            /*
                             if(response.isNull("is_executive_permitted")){ is_executive_permitted=-1; }
                             else{is_executive_permitted=0;
                             if(response.getBoolean("is_executive_permitted")){
@@ -264,9 +294,9 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
                                 if(response.getBoolean("is_contactor_permitted")){
                                     is_contactor_permitted=1;
                                 }
-                            }
+                            }*/
 
-                            getAccepts();
+                            //getAccepts();
 
                             clicked();
                         }

@@ -128,8 +128,8 @@ public class MainObjectMainFrament extends Fragment {
         buttonsList.add("Технологическая карта");
         if(client || (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("QC")|| (role.equals("PRODUCTION_NPO"))))
         buttonsList.add("Контроль качества");
-        if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("SUPPLY") || (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
-        buttonsList.add("Инвентарь");
+     /*   if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("SUPPLY") || (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
+        buttonsList.add("Инвентарь");*/
         if(client || role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("CHIEF")|| (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO")))
         buttonsList.add("Жалобы");
 
@@ -155,7 +155,7 @@ public class MainObjectMainFrament extends Fragment {
             bundle.putInt("location",location);
             fragment.setArguments(bundle);
             ((MainActivity)getActivity()).setFragment(R.id.content_frame,fragment); }};
-        View.OnClickListener listener=new View.OnClickListener() {@Override public void onClick(View v) { ((MainActivity)getActivity()).setFragment(R.id.content_frame,getFragmentWithId(new InventoryMainFragment())); }};
+     //   View.OnClickListener listener=new View.OnClickListener() {@Override public void onClick(View v) { ((MainActivity)getActivity()).setFragment(R.id.content_frame,getFragmentWithId(new InventoryMainFragment())); }};
         listeners.add(listenerPassport);
         if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("PRODUCTION") || (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
             listeners.add( AttendanceListener);
@@ -166,8 +166,8 @@ public class MainObjectMainFrament extends Fragment {
         listeners.add(TechnoMapListener);
         if(client || (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("QC")|| ( role.equals("PRODUCTION_NPO"))))
         listeners.add(ClientControlListener);
-        if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("SUPPLY") || (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
-        listeners.add(listener);
+    /*    if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("SUPPLY") || (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
+        listeners.add(listener);*/
         if(client || role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("CHIEF")|| (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO")))
         listeners.add(CommentsListener);
 
@@ -227,15 +227,15 @@ public class MainObjectMainFrament extends Fragment {
                 coms.setText(comms+"");
                 category.setText(categories+"");
 
-                double usp=object.getDouble("performance_rate");
+                double usp=object.getDouble("result_rate");
                 double pos=object.getDouble("attendance_rate");
                 double kac=object.getDouble("quality_rate");
-                double inv=object.getDouble("inventory_rate");
+//                double inv=object.getDouble("inventory_rate");
                 if(client){
                     setProgresses(doubletoInt(usp));
                 }
                 else
-                setProgresses(doubletoInt(usp), doubletoInt(pos), doubletoInt(kac), doubletoInt(inv));
+                setProgresses(doubletoInt(usp), doubletoInt(pos), doubletoInt(kac), doubletoInt(0.0));//inv));
 
                 List<PhonesRowForm> rowForms=new ArrayList<>();
                 JSONObject contactor=getJsObject(object,"contactor");

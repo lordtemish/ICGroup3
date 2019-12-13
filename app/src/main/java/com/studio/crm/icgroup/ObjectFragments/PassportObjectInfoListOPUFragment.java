@@ -66,7 +66,7 @@ public class PassportObjectInfoListOPUFragment extends Fragment {
     TextView newCommentTextView,planWorkTextView,allCommentTextView, mainObjectTitle, nameTextView, positionTextView, dateTextView, PercentageTextView,  employeeChangeTextView, emplChangeButton,
             holidayTypeTop, holidayTypeTextView, holidayDate, holidaySetButton,replacedTextView;
     FrameLayout newCommentFrame, allCommentFrame, progressLayout;
-    LinearLayout attendanceLayout, commentsLayout, holidayLayout;
+    LinearLayout attendanceLayout, commentsLayout, holidayLayout, buttonLayout;
     ProgressBar ProgressBar;
     ImageView circlePhoneImageView,arrowPlanImageView;
     int shift, point, planD=0, salaryW=0, shifts=0;
@@ -252,6 +252,7 @@ String id, name, phone, userid, holid="";
         replacerRecyclerView=(RecyclerView) view.findViewById(R.id.replacerRecyclerView);
         archiveCommentsRecyclerView=(RecyclerView) view.findViewById(R.id.archiveCommentsRecyclerView);
         commentsRecycler=(RecyclerView) view.findViewById(R.id.commentsRecyclerView);
+        buttonLayout=(LinearLayout) view.findViewById(R.id.buttonLayout);
         holidayLayout=(LinearLayout) view.findViewById(R.id.holidayLayout);
         attendanceLayout=(LinearLayout) view.findViewById(R.id.attendanceLayout);
         commentsLayout=(LinearLayout) view.findViewById(R.id.commentsLayout);
@@ -291,12 +292,14 @@ String id, name, phone, userid, holid="";
             commentsLayout.setVisibility(View.GONE);
             attendanceLayout.setVisibility(View.VISIBLE);
             newCommentFrame.setVisibility(View.VISIBLE);
+            buttonLayout.setVisibility(View.VISIBLE);
         }
         else {
             allCommentTextView.setTextColor(getActivity().getResources().getColor(R.color.black));
             commentsLayout.setVisibility(View.VISIBLE);
             attendanceLayout.setVisibility(View.GONE);
             allCommentFrame.setVisibility(View.VISIBLE);
+            buttonLayout.setVisibility(View.GONE);
         }
     }
     public void setComment(boolean all){

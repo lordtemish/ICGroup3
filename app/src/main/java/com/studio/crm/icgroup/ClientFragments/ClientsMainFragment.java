@@ -211,8 +211,20 @@ public class ClientsMainFragment extends Fragment {
             list.clear();
             for(int i=0;i<array.length();i++){
                 JSONObject object=array.getJSONObject(i);
-                JSONObject contactor=object.getJSONObject("contactor");
-                JSONArray points=object.getJSONArray("points");
+
+                String fullName="", avatar="";
+                if(object.isNull("contactor")){
+                    Log.d("NULL ID", object.getString("id"));
+                    fullName="NO CONTACTOR";
+                }
+                else {
+                    JSONObject contactor = object.getJSONObject("contactor");
+                    fullName = contactor.getString("fullname");
+                    if(!contactor.isNull("avatar")){
+                        avatar=contactor.getString("avatar");
+                    }
+                }
+                JSONArray points=new JSONArray();//object.getJSONArray("points");
                 List<ClientsPointForm> clientsPointForms=new ArrayList<>();
                 for(int j=0;j<points.length();j++){
                     JSONObject point=points.getJSONObject(j);
@@ -234,11 +246,8 @@ public class ClientsMainFragment extends Fragment {
                 String poName=((MainActivity)getActivity()).clientKinds.get(kind)+" "+name;
                 double result_rate=object.getDouble("score_rate");
                 int rate=Integer.parseInt(Math.round(result_rate*5)+"");
-                String fullName=contactor.getString("fullname");
-                String avatar="";
-                if(!contactor.isNull("avatar")){
-                    avatar=contactor.getString("avatar");
-                }
+
+
                 ClientsMainForm mainForm=new ClientsMainForm(id, poName,fullName,rate);
                 if(avatar.length()>0){
                     mainForm.setAvatar(avatar);

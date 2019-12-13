@@ -184,10 +184,12 @@ public class CommentsMainFragment extends Fragment {
     }
     private void setInfo(JSONArray array){
         try{
+
             jalobaForms.clear();
             secondForm.clear();
             firstForm.clear();
             for(int i=0;i<array.length();i++){
+
                 JSONObject object=array.getJSONObject(i);
                 JSONObject author=object.getJSONObject("author");
                 if(!object.isNull("defendant")) {

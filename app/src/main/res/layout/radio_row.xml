@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:button="@drawable/radiobutton"
         android:text="  Халатное отношение"
+        android:checked="false"
         android:clickable="false"
         />
 </android.support.constraint.ConstraintLayout>

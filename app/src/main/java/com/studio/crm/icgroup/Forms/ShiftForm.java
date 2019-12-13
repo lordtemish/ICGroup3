@@ -11,7 +11,7 @@ public class ShiftForm {
             begin = object.getString("begin").substring(0,5);
             end = object.getString("end").substring(0,5);
             int day=object.getInt("day");
-            is_night=object.getBoolean("is_night");
+            //is_night=object.getBoolean("is_night");
             weekend =day>5;// object.getBoolean("is_active");
             shift=day;//object.getInt("shift");
         }

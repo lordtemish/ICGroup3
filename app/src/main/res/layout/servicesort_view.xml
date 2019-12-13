@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            >
+            <FrameLayout
+                android:id="@+id/statusButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+
+                android:gravity="center"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:text="По статусу"
+                android:id="@+id/statusTextView"
+                />
+                <FrameLayout
+                    android:id="@+id/statusFrame"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@color/icgGreen"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    />
+            </FrameLayout>
+            <FrameLayout
+                android:id="@+id/typesButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+
+                android:id="@+id/typesTextView"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:textColor="@color/darkgrey"
+                android:text="По типу задачи"
+                />
+                <FrameLayout
+                    android:id="@+id/typesFrame"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@color/icgGreen"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+
+                    android:visibility="gone"
+                    />
+            </FrameLayout>
+        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioRecyclerView"
+
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="30dp"
+            />
+    </LinearLayout>
+</FrameLayout>

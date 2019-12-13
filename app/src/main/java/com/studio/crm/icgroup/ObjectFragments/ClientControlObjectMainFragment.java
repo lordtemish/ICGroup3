@@ -29,6 +29,7 @@ import com.studio.crm.icgroup.Activities.MainActivity;
 import com.studio.crm.icgroup.Adapters.AVRAdapter;
 import com.studio.crm.icgroup.Adapters.ClientControlAdapter;
 import com.studio.crm.icgroup.Adapters.RateStarsAdapter;
+import com.studio.crm.icgroup.ExtraFragments.YearMonthView;
 import com.studio.crm.icgroup.Forms.AVRForm;
 import com.studio.crm.icgroup.Forms.AcceptForm;
 import com.studio.crm.icgroup.Forms.CheckListBoxForm;
@@ -36,6 +37,7 @@ import com.studio.crm.icgroup.Forms.CheckListBoxRowForm;
 import com.studio.crm.icgroup.Forms.CheckListForm;
 import com.studio.crm.icgroup.Forms.MessageWorkForm;
 import com.studio.crm.icgroup.Forms.OlkForm;
+import com.studio.crm.icgroup.Forms.OneCallBack;
 import com.studio.crm.icgroup.Forms.svodkaRateForm;
 import com.studio.crm.icgroup.R;
 
@@ -61,9 +63,14 @@ public class ClientControlObjectMainFragment extends Fragment {
     FrameLayout extraLayout;
     NumberPicker numberPicker, yearPicker;
     TextView pageInfo, addNewTextView,mainObjectTitle, clientControlInfoTextView, yearTextView, monthTextView,PercentageTextView;
+
+    TextView calendarTextView;
+    YearMonthView yearMonthView;
+
     LinearLayout progressLayout, createNewLayout;
     ConstraintLayout rateLayout, addLayout;
-    ImageView left, right, yearImageView, monthImageView;
+    ImageView left, right, yearImageView, monthImageView,
+                addNewImageView;
     RecyclerView recyclerView, rateRecyclerView;
     Calendar cal;
     String[] data = {"Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"};
@@ -76,6 +83,8 @@ public class ClientControlObjectMainFragment extends Fragment {
     List<AVRForm> avrForms;
     ProgressBar ProgressBar;
     boolean client=false;
+    private boolean timeChange=false;
+
     public ClientControlObjectMainFragment() {
         // Required empty public constructor
     }
@@ -146,10 +155,10 @@ public class ClientControlObjectMainFragment extends Fragment {
 
         if(client){
            // addLayout.setVisibility(View.GONE);
-            addLayout.setVisibility(View.VISIBLE);
+            addLayout.setVisibility(View.GONE);
         }
         else{
-            addLayout.setVisibility(View.VISIBLE);
+            addLayout.setVisibility(View.GONE);
         }
         return view;
     }
@@ -206,6 +215,23 @@ public class ClientControlObjectMainFragment extends Fragment {
     }
     private void createAllViews(){
         mainObjectTitle=(TextView) view.findViewById(R.id.mainObjectTitle);
+
+        calendarTextView=(TextView) view.findViewById(R.id.calendarTextView);
+        calendarTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                arrowClick();
+            }
+        });
+        yearMonthView=(YearMonthView) view.findViewById(R.id.yearMonthView);
+        yearMonthView.setPickers(cal);
+        yearMonthView.setCallBack(new OneCallBack() {
+            @Override
+            public void callBackCal() {
+                arrowClick();
+            }
+        });
+
         clientControlInfoTextView=(TextView) view.findViewById(R.id.clientControlInfoTextView);
         addNewTextView=(TextView) view.findViewById(R.id.createNewTextView);
         pageInfo=(TextView) view.findViewById(R.id.pageInfoTextView);
@@ -218,6 +244,7 @@ public class ClientControlObjectMainFragment extends Fragment {
         monthImageView=(ImageView) view.findViewById(R.id.monthImageView);
         progressLayout=(LinearLayout) view.findViewById(R.id.progressLayout);
         createNewLayout=(LinearLayout) view.findViewById(R.id.createNewLayout);
+        addNewImageView=(ImageView) view.findViewById(R.id.addNewImageView);
         rateLayout=(ConstraintLayout) view.findViewById(R.id.rateLayout);
         addLayout=(ConstraintLayout) view.findViewById(R.id.addLayout);
         recyclerView=(RecyclerView) view.findViewById(R.id.CCRecyclerView);
@@ -305,6 +332,8 @@ public class ClientControlObjectMainFragment extends Fragment {
     }
     public void checkPage(){
         extraLayout.setVisibility(View.VISIBLE);
+        calendarTextView.setText(data[cal.get(Calendar.MONTH)]+" "+cal.get(Calendar.YEAR));
+
         pageInfo.setText(pages.get(page));
         String statUrl=((MainActivity)getActivity()).MAIN_URL;
         String cr="Создать ";
@@ -317,30 +346,58 @@ public class ClientControlObjectMainFragment extends Fragment {
                 statUrl+="positioncontrols/questionnaire_stats/";
                 recyclerView.setAdapter(OlkAdapter);
                 array=true;
-                createNewLayout.setOnClickListener(createOlkListener);
+                addNewImageView.setOnClickListener(createOlkListener);
                 break;
             case 1:
                 s="АВР";
                 setProgressLayout();
                 statUrl+="positioncontrols/performance_stats/";
                 recyclerView.setAdapter(avrAdapter);
-                createNewLayout.setOnClickListener(avrListener);
+                addNewImageView.setOnClickListener(avrListener);
 
                 break;
             case 2:
                 s="Чек лист";
                 setProgressLayout();
                 recyclerView.setAdapter(checkListAdapter);
-                createNewLayout.setOnClickListener(createCheckListListener);
+                addNewImageView.setOnClickListener(createCheckListListener);
                 break;
             case 3:
                 s="сводку";
                 setSvodkaRate();
                 recyclerView.setAdapter(svodkaAdapter);
-                createNewLayout.setOnClickListener(svodkaListener);
+                addNewImageView.setOnClickListener(svodkaListener);
                 break;
         }
-            JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, url + "&kind=" + ids.get(page), null, new Response.Listener<JSONArray>() {
+
+
+        Calendar cali=Calendar.getInstance();
+        cali.setTime(cal.getTime());
+        cali.set(Calendar.DAY_OF_MONTH,1);
+        cali.set(Calendar.HOUR_OF_DAY,0);
+        cali.set(Calendar.MINUTE,0);
+        cali.set(Calendar.SECOND,0);
+        //cali.add(Calendar.HOUR_OF_DAY,-6);
+        String s1=((MainActivity)getActivity()).inputFormat.format(cali.getTime());
+        cali.setTime(cal.getTime());
+        cali.set(Calendar.DAY_OF_MONTH,cali.getActualMaximum(Calendar.DAY_OF_MONTH));
+        cali.set(Calendar.HOUR_OF_DAY,23);
+        cali.set(Calendar.MINUTE,59);
+        cali.set(Calendar.SECOND,59);
+        //  cali.add(Calendar.HOUR_OF_DAY,-6);
+        String e=((MainActivity)getActivity()).inputFormat.format(cali.getTime());
+        try {
+
+            s1 = s1.substring(0, 10);
+            e = e.substring(0,10);
+            Log.d("TIMES 1 1 1", s1+" | "+e);
+        }catch (Exception e2){e2.printStackTrace();}
+
+
+        String urlReq=url + "&kind=" + ids.get(page)+"&created_at__lte="+e+"&created_at__gte="+s1;
+
+        Log.d("URL CONTROLS", urlReq);
+            JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, urlReq, null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     setInfo(response);
@@ -366,6 +423,23 @@ public class ClientControlObjectMainFragment extends Fragment {
        getStatistics(statUrl, array);
         addNewSetText(cr+s);
     }
+
+
+    private void arrowClick(){
+        if(timeChange) {
+            timeChange = false;
+            yearMonthView.setVisibility(View.GONE);
+            cal.set(yearMonthView.yearPicker.getValue(),yearMonthView.monthPicker.getValue(),1);
+            checkPage();
+        }
+        else{
+            timeChange=true;
+            yearMonthView.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+
     private void getStatistics(String url, boolean a){
         if(url.contains("positioncontrols")) {
             if(a){

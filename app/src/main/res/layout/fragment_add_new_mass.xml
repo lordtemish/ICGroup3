@@ -65,11 +65,127 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:orientation="horizontal">
+                        <android.support.constraint.ConstraintLayout
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_weight="1"
+                            android:layout_gravity="center"
+                            android:background="@drawable/whitebutton"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            >
+                            <TextView
+                                android:id="@+id/yearTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="30dp"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginRight="30dp"
+                                android:layout_marginStart="15dp"
+                                android:text="2019"
+                                android:textColor="@color/black"
+                                android:textSize="19sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/yearArrowImageView"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <com.shawnlin.numberpicker.NumberPicker
+                                android:id="@+id/yearPicker"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:visibility="gone"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/yearArrowImageView"
+                                app:np_dividerColor="@android:color/transparent"
+                                app:np_selectedTextColor="@color/black"
+                                app:np_selectedTextSize="19sp"
+                                app:np_textColor="@color/greyy"
+                                app:np_textSize="15sp"/>
+
+                            <ImageView
+                                android:id="@+id/yearArrowImageView"
+                                android:padding="5dp"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_marginEnd="90dp"
+                                android:layout_marginRight="10dp"
+                                android:src="@drawable/ic_arrowdown_green"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </android.support.constraint.ConstraintLayout>
+                        <android.support.constraint.ConstraintLayout
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
+
+                            android:id="@+id/dateLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/whitebutton"
+                            android:paddingEnd="20dp"
+                            android:paddingStart="20dp"
+                            android:layout_gravity="center">
+
+                            <ImageView
+                                android:padding="5dp"
+                                android:id="@+id/dateArrowImageView"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/ic_arrowdown_green"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <com.shawnlin.numberpicker.NumberPicker
+                                android:id="@+id/datePicker"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginStart="10dp"
+                                android:visibility="gone"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/dateArrowImageView"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:np_dividerColor="@android:color/transparent"
+                                app:np_selectedTextColor="@color/black"
+                                app:np_selectedTextSize="19sp"
+                                app:np_textColor="@color/greyy"
+                                app:np_textSize="15sp"
+                                />
+
+                            <TextView
+                                android:id="@+id/monthTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginStart="15dp"
+                                android:text="Январь"
+                                android:textColor="@color/black"
+                                android:textSize="19sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/dateArrowImageView"
+                                app:layout_constraintTop_toTopOf="parent"
+
+                                />
+
+                        </android.support.constraint.ConstraintLayout>
+
+                    </LinearLayout>
+                    <LinearLayout
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
+
                         android:layout_marginBottom="20dp"
                         android:background="@drawable/whiterow_page"
                         android:orientation="vertical"

@@ -94,14 +94,20 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginStart="10sp"
+                            android:layout_marginLeft="10sp"
+                            android:visibility="gone"
                             />
                         <TextView
                             android:id="@+id/calendarTextView"
+                            android:padding="8dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/arrowCalendarImageView"
+                            app:layout_constraintStart_toStartOf="parent"
+
+                            android:background="@drawable/greybutton_rec"
 
                             android:textSize="16sp"
                             android:textColor="@color/black"
@@ -210,11 +216,16 @@
                         android:layout_height="300dp"
                         android:visibility="gone"
                         android:orientation="vertical">
-
+                        <com.studio.crm.icgroup.ExtraFragments.ServiceSortView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/serviceSortView"
+                            />
                         <com.studio.crm.icgroup.ExtraFragments.GraphicDateFrame
                             android:id="@+id/graphicDateFrame"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"/>
                     </LinearLayout>
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -235,7 +246,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
                             android:textSize="16sp"
-                            android:text="Все задачи на 24.02"
+                            android:text="Сортировка"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -371,5 +382,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         /></FrameLayout>
-
+    <com.studio.crm.icgroup.ExtraFragments.YearMonthView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/yearMonthView"
+        android:visibility="gone"
+        android:background="@color/icgGreenTra"
+        />
 </FrameLayout>

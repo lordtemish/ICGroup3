@@ -51,7 +51,7 @@ public class ClientsPointAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     Bundle bundle=new Bundle();
                     bundle.putString("id",holder.getId());
                     bundle.putString("name",holder.getName());
-                    bundle.putInt("location",holder.getLocation());
+
                     bundle.putString("city",holder.getCity());
                     fragment.setArguments(bundle);
                     ((MainActivity)context).setFragment(R.id.content_frame,fragment);

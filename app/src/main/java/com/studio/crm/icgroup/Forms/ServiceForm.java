@@ -10,6 +10,19 @@ public class ServiceForm {
     int day1;
     int day2;
 
+    String day, time;
+    public void setTime(String d, String t){
+        day=d;time=t;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public String getDay() {
+            return day;
+    }
+
     public void setId(String id) {
         this.id = id;
     }

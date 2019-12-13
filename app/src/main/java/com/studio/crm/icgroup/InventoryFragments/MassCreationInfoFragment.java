@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.error.AuthFailureError;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.JsonObjectRequest;
+import com.shawnlin.numberpicker.NumberPicker;
 import com.studio.crm.icgroup.Activities.MainActivity;
 import com.studio.crm.icgroup.Adapters.MassCreationAdapter;
 import com.studio.crm.icgroup.Adapters.RateStarsAdapter;
@@ -31,6 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +55,11 @@ public class MassCreationInfoFragment extends Fragment {
     String id, kind, array, role;
     String status="";
     EditText commentEditText;
+    private NumberPicker datePicker,yearPicker;
+    private TextView monthTextView, yearTextView;
+    private ImageView dateArrowImageView, yearArrowImageView;
+
+
     public MassCreationInfoFragment() {
         // Required empty public constructor
     }
@@ -65,6 +73,7 @@ public class MassCreationInfoFragment extends Fragment {
         id=getArguments().getString("id");
         View view=inflater.inflate(R.layout.fragment_mass_creation_info, container, false);
         createViews(view);
+
         adapter=new MassCreationAdapter(forms);
         ((MainActivity)getActivity()).setRecyclerViewOrientation(recyclerView, LinearLayoutManager.VERTICAL);
         ((MainActivity)getActivity()).setRecyclerViewOrientation(startsRecyclerView, LinearLayoutManager.VERTICAL);
@@ -113,7 +122,12 @@ public class MassCreationInfoFragment extends Fragment {
         statusLayout=(LinearLayout)view.findViewById(R.id.statusLayout);
         commentEditText=(EditText)view.findViewById(R.id.commentEditText);
         forms=new ArrayList<>();
+
+
     }
+
+
+
     private void confirm(){
         if(status.equals("WAITING")){
             JSONObject object=new JSONObject();

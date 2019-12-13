@@ -32,6 +32,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/starsRecyclerView"
+            android:visibility="gone"
             >
 
         </android.support.v7.widget.RecyclerView>

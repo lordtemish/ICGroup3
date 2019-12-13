@@ -293,7 +293,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:id="@+id/attendanceLayout">
+                    android:id="@+id/attendanceLayout"
+                    android:visibility="visible"
+                    >
                     <LinearLayout
                         android:background="@drawable/greycornerspage_line"
                         android:layout_width="match_parent"
@@ -320,7 +322,7 @@
 
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent"
-
+                                app:layout_constraintStart_toStartOf="parent"
                                 />
                             <ImageView
                                 android:visibility="gone"
@@ -534,6 +536,14 @@
 
                     </android.support.v7.widget.RecyclerView>
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+
+                    android:id="@+id/buttonLayout"
+                    >
                 <android.support.constraint.ConstraintLayout
                     android:layout_marginTop="10dp"
                   android:layout_marginStart="10dp"
@@ -692,6 +702,7 @@
                             />
                     </android.support.constraint.ConstraintLayout>
                 </LinearLayout>
+                   </LinearLayout>
             </LinearLayout>
         </LinearLayout>
         </LinearLayout>

@@ -13,8 +13,8 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="50sp"
-        android:background="@color/white">
-
+        android:background="@color/white"
+        >
         <ImageView
             android:id="@+id/backArrow"
             android:layout_width="20sp"
@@ -70,63 +70,67 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white">
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/smenaLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="60sp"
+                    >
+
+                    <ImageView
+                        android:id="@+id/ImageLeftView"
+                        android:layout_width="35sp"
+                        android:layout_height="35sp"
+                        android:layout_marginLeft="10sp"
+                        android:layout_marginStart="10sp"
+                        android:background="@drawable/green_circle"
+                        android:padding="9sp"
+                        android:src="@drawable/ic_arrowwhiteleft"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/smenasTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Смена 1"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/ImageRightView"
+                        app:layout_constraintStart_toEndOf="@+id/ImageLeftView"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/ImageRightView"
+                        android:layout_width="35sp"
+                        android:layout_height="35sp"
+                        android:layout_marginEnd="10sp"
+                        android:layout_marginRight="10sp"
+                        android:background="@drawable/green_circle"
+                        android:padding="9sp"
+                        android:src="@drawable/ic_arrowwhiteright"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </android.support.constraint.ConstraintLayout>
+            </FrameLayout>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/reqRecycler"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 />
-            </FrameLayout>
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/smenaLayout"
-                android:layout_width="match_parent"
-                android:layout_height="60sp"
-                >
 
-                <ImageView
-                    android:id="@+id/ImageLeftView"
-                    android:layout_width="35sp"
-                    android:layout_height="35sp"
-                    android:layout_marginLeft="10sp"
-                    android:layout_marginStart="10sp"
-                    android:background="@drawable/green_circle"
-                    android:padding="9sp"
-                    android:src="@drawable/ic_arrowwhiteleft"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/smenasTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Смена 1"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/ImageRightView"
-                    app:layout_constraintStart_toEndOf="@+id/ImageLeftView"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/ImageRightView"
-                    android:layout_width="35sp"
-                    android:layout_height="35sp"
-                    android:layout_marginEnd="10sp"
-                    android:layout_marginRight="10sp"
-                    android:background="@drawable/green_circle"
-                    android:padding="9sp"
-                    android:src="@drawable/ic_arrowwhiteright"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </android.support.constraint.ConstraintLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone"
+                >
                 <android.support.constraint.ConstraintLayout
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"

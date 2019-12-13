@@ -73,9 +73,10 @@ public class JalobaInfoFragment extends Fragment {
         // Inflate the layout for this fragment
         usrid=((MainActivity)getActivity()).userid;
         role=((MainActivity)getActivity()).role;
-        Log.d("ROLE",role);
+
         answerable=getArguments().getBoolean("answerable",false);
         id=getArguments().getString("id","");
+        Log.d("ROLE",role+" "+id);
         View view=inflater.inflate(R.layout.fragment_jaloba_info, container, false);
         createViews(view);
         setFonttype();
@@ -241,8 +242,25 @@ public class JalobaInfoFragment extends Fragment {
                 String cr=((MainActivity)getActivity()).getdate(cret);cr=cr.substring(0,cr.length()-6);
                 jalobaDateTextView.setText(cr);
             }
-            getExec();
-            getPoint();
+            acceptForms.clear();
+            JSONArray permits=object.getJSONArray("permits");
+            Log.d("perm",permits.toString());
+            for(int i=0;i<permits.length();i++){
+                JSONObject jsonObject=permits.getJSONObject(i);
+                JSONObject jsonUser=jsonObject.getJSONObject("user");
+                String name=jsonUser.getString("fullname"), jsonRole=jsonUser.getString("role");
+                String position=((MainActivity)getActivity()).positions.get(jsonRole);
+                String status="Не просмотренно";
+                boolean st=jsonObject.getBoolean("permitted");
+                if(st){
+                    status="Просмотренно";
+                }
+                AcceptForm acceptForm=new AcceptForm(name,"",position, status, st);
+                acceptForms.add(acceptForm);
+            }
+            acceptAdapter.notifyDataSetChanged();
+            //getExec();
+            //getPoint();
         }
         catch (Exception e){
             e.printStackTrace();
@@ -370,6 +388,8 @@ public class JalobaInfoFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
+
     private void sendRepy(){
         progressLayout.setVisibility(View.VISIBLE);
         String url=((MainActivity)getActivity()).MAIN_URL+"complaints/"+id+"/reply/";

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.error.AuthFailureError;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.JsonObjectRequest;
+import com.shawnlin.numberpicker.NumberPicker;
 import com.studio.crm.icgroup.Activities.MainActivity;
 import com.studio.crm.icgroup.Adapters.MassCreationAdapter;
 import com.studio.crm.icgroup.Forms.EquipmentForm;
@@ -30,6 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +49,12 @@ public class AddNewMassFragment extends Fragment {
     List<MassCreationForm> forms;
     TextView depLabelTextView, orderNameTextView, depTextView, justText, cancelOrderTextView, acceptOrderTextView;
     String id, kind, array;
+    private NumberPicker datePicker, yearPicker;
+    private TextView monthTextView, yearTextView;
+    private ImageView dateArrowImageView, yearArrowImageView;
+
+    String[] months = {"Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"};
+    Calendar cal;
     public AddNewMassFragment() {
         // Required empty public constructor
     }
@@ -59,7 +68,9 @@ public class AddNewMassFragment extends Fragment {
         kind=getArguments().getString("kind");
         array=getArguments().getString("array");
         View view=inflater.inflate(R.layout.fragment_add_new_mass, container, false);
+        cal=Calendar.getInstance();
         createViews(view);
+
         adapter=new MassCreationAdapter(forms,true);
         ((MainActivity)getActivity()).setRecyclerViewOrientation(recyclerView, LinearLayoutManager.VERTICAL);
         recyclerView.setAdapter(adapter);
@@ -92,6 +103,16 @@ public class AddNewMassFragment extends Fragment {
         cancelOrderTextView=(TextView)view.findViewById(R.id.cancelOrderTextView);
         acceptOrderTextView=(TextView)view.findViewById(R.id.acceptOrderTextView);
         forms=new ArrayList<>();
+
+        datePicker = (NumberPicker) view.findViewById(R.id.datePicker);
+        yearPicker = (NumberPicker) view.findViewById(R.id.yearPicker);
+        monthTextView=(TextView) view.findViewById(R.id.monthTextView);
+        yearTextView=(TextView) view.findViewById(R.id.yearTextView);
+        dateArrowImageView = (ImageView) view.findViewById(R.id.dateArrowImageView);
+        yearArrowImageView = (ImageView) view.findViewById(R.id.yearArrowImageView);
+
+        pickerSettings();
+        setListeners();
     }
 
     private void setInfo(JSONArray array){
@@ -133,6 +154,9 @@ public class AddNewMassFragment extends Fragment {
             params.put("point",Integer.parseInt(((MainActivity)getActivity()).point));
             params.put("respondent",Integer.parseInt(((MainActivity)getActivity()).userid));
             params.put("deadline", tex);
+            params.put("month",datePicker.getValue());
+            params.put("year",yearPicker.getValue());
+          //  Log.d("MONTH", datePicker.getValue()+" "+yearPicker.getValue());
             JSONArray array=new JSONArray();
             for(MassCreationForm form:forms){
                 JSONObject object=new JSONObject();
@@ -174,5 +198,53 @@ public class AddNewMassFragment extends Fragment {
             return headers;
         }};
         ((MainActivity)getActivity()).requestQueue.add(request);
+    }
+
+
+    private void pickerSettings() {
+        datePicker.setMinValue(1);
+        datePicker.setMaxValue(months.length);
+        datePicker.setDisplayedValues(months);
+        datePicker.setValue(9);
+
+        yearPicker.setMinValue(cal.get(Calendar.YEAR)-2);
+        yearPicker.setMaxValue(cal.get(Calendar.YEAR)+1);
+        yearPicker.setValue(2018);
+    }
+
+    private void setListeners(){
+        View.OnClickListener dateLi=new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dateClick();
+            }
+        };
+        yearArrowImageView.setOnClickListener(dateLi);
+        dateArrowImageView.setOnClickListener(dateLi);
+        monthTextView.setOnClickListener(dateLi);
+        yearTextView.setOnClickListener(dateLi);
+
+    }
+    private void dateClick(){
+        if(datePicker.getVisibility()!=View.VISIBLE){
+            dateArrowImageView.setImageResource(R.drawable.ic_arrowup_green);
+            yearArrowImageView.setImageResource(R.drawable.ic_arrowup_green);
+            yearPicker.setVisibility(View.VISIBLE);
+            datePicker.setVisibility(View.VISIBLE);
+            monthTextView.setVisibility(View.GONE);
+            yearTextView.setVisibility(View.GONE);
+        }
+        else {
+            dateArrowImageView.setImageResource(R.drawable.ic_arrowdown_green);
+            yearArrowImageView.setImageResource(R.drawable.ic_arrowdown_green);
+            yearPicker.setVisibility(View.GONE);
+            datePicker.setVisibility(View.GONE);
+            monthTextView.setVisibility(View.VISIBLE);
+            yearTextView.setVisibility(View.VISIBLE);
+
+            monthTextView.setText(months[datePicker.getValue()-1]);
+            yearTextView.setText(yearPicker.getValue()+"");
+
+        }
     }
 }

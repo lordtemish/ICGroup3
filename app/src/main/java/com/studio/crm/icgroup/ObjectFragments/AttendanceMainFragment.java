@@ -51,7 +51,7 @@ public class AttendanceMainFragment extends Fragment {
     EquipmentReqAdapter reqAdapter;
     FrameLayout todayFrame, progressLayout;
     ConstraintLayout smenaLayout, buttonLayout;
-    LinearLayout hiddenLayout;
+    LinearLayout hiddenLayout, statisticLayout;
     RecyclerView recyclerView, reqRecycler ;
     AttendanceChooseView attendanceChooseView;
     FrameLayout chooseLayout;
@@ -74,6 +74,15 @@ public class AttendanceMainFragment extends Fragment {
         // Required empty public constructor
     }
 
+    private void checkRole(){
+        String role=((MainActivity)getActivity()).role;
+        if(role.equals("SUPERADMIN") || role.contains("ADMIN_")){
+            statisticLayout.setVisibility(View.VISIBLE);
+        }
+        else{
+            statisticLayout.setVisibility(View.GONE);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,6 +104,7 @@ public class AttendanceMainFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_attendance_main, container, false);
         createViews(view);
 
+        checkRole();
 
 
         chooseLayout.setOnClickListener(new View.OnClickListener() {
@@ -138,7 +148,7 @@ public class AttendanceMainFragment extends Fragment {
         reqAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkReq();
+                 checkReq();
             }
         });
         reqRecycler.setAdapter(reqAdapter);
@@ -182,11 +192,11 @@ public class AttendanceMainFragment extends Fragment {
 
             switch (page){
                 case 0:
-                    shifts=shift_count*2;
+                    shifts=shift_count;
                     shift=1;
                     break;
                 case 1:
-                    shifts=shift_count*2;
+                    shifts=shift_count;
                     shift=1;
                     break;
              /*   case 3:
@@ -236,27 +246,24 @@ public class AttendanceMainFragment extends Fragment {
     private void changePage(int a){
         shift+=a;
         if(shift==0){
-            shift=shifts;
+            shift=3;
         }
-        if(shift==shifts+1){
+        if(shift==4){
             shift=1;
         }
         checkPage();
     }
     private void checkPage(){
         int page=reqAdapter.getClicked();
-        //if(page==0) {
-        smenaLayout.setVisibility(View.VISIBLE);
-        if(shift<=shift_count) {
-                smenasTextView.setText("Дневная смена " + shift);
-                getRequest("workers/?point=" + id + "&shift=" + shift + "&is_night=False");
-        }
-        else{
-                smenasTextView.setText("Ночная смена " + (shift-shift_count));
-                getRequest("workers/?point=" + id + "&shift=" + (shift-shift_count) + "&is_night=True");
-        }
+
         //}
-       /* else if(page==1 || page==2){
+       /*
+           int page=reqAdapter.getClicked();
+        smenaLayout.setVisibility(View.VISIBLE);
+        smenasTextView.setText("Смена " + shift);
+                getRequest("workers/?point=" + id + "&shift=" + shift);
+
+        else if(page==1 || page==2){
             smenaLayout.setVisibility(View.GONE);
             switch (page){
                 case 1:
@@ -843,6 +850,9 @@ public class AttendanceMainFragment extends Fragment {
         calTextViews.add((TextView) view.findViewById(R.id.f3CalTextView));
         calTextViews.add((TextView) view.findViewById(R.id.f4CalTextView));
         calTextViews.add((TextView) view.findViewById(R.id.f5CalTextView));
+
+        statisticLayout=(LinearLayout) view.findViewById(R.id.statisticLayout);
+
         hiddenLayout=(LinearLayout) view.findViewById(R.id.hiddenLayout);
         todayFrame=(FrameLayout) view.findViewById(R.id.todayFrame);
 
@@ -866,9 +876,12 @@ public class AttendanceMainFragment extends Fragment {
         attendanceChooseView.setListener(postL);
 
         pages=new ArrayList<>();
-        pages.add("ОПУ/ОПУ ПТ");
+        for(int i=0;i<shift_count;i++){
+            pages.add("Смена "+(i+1));
+        }
+        /*pages.add("ОПУ/ОПУ ПТ");
         pages.add("Адм Блок");
-        pages.add("Сдельщик");
+        pages.add("Сдельщик");*/
        /* pages.add("Стажировщик");
         pages.add("Дворник");
         pages.add("Садовник");

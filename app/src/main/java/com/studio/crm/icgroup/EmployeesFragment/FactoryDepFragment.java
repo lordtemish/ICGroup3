@@ -123,6 +123,7 @@ public class FactoryDepFragment extends Fragment {
         if(rlid.length()>0){
             url+="&user__role="+rlid;
         }
+        Log.d("REQ URL",url);
         JsonArrayRequest arrayRequest=new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -149,13 +150,15 @@ public class FactoryDepFragment extends Fragment {
         try{
             forms.clear();
             for(int i=0;i<array.length();i++){
+
                 JSONObject object=array.getJSONObject(i);
                 JSONObject user=object.getJSONObject("user");
                 MainEmployeeForm form=new MainEmployeeForm();
                 String name=user.getString("fullname");
-                int rate=Integer.parseInt(""+Math.round(object.getDouble("performance_rate")*100));
-                int result_rate=Integer.parseInt(""+Math.round(object.getDouble("result_rate")*100));
-                form.setName(name);form.setRate(result_rate);form.setResult_rate(rate);
+               // int rate=Integer.parseInt(""+Math.round(object.getDouble("performance_rate")*100));
+               // int result_rate=Integer.parseInt(""+Math.round(object.getDouble("result_rate")*100));
+                form.setName(name);form.setRate(0);form.setResult_rate(0);
+                //form.setName(name);form.setRate(result_rate);form.setResult_rate(rate);
                 form.setId(object.getString("id"));
 
                 String pos=user.getString("role");

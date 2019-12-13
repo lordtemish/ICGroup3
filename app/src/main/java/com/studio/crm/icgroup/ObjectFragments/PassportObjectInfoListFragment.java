@@ -133,6 +133,7 @@ public class PassportObjectInfoListFragment extends Fragment {
 
 
         showEmpls();
+        showEmpls();
         arrowTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -209,7 +210,7 @@ public class PassportObjectInfoListFragment extends Fragment {
                 e.printStackTrace();
             }
             String address=object.getString("address");
-            String area=object.getString("area");
+            //       String area=object.getString("area");
             JSONObject location=getJsObject(object,"location");
 
             JSONObject contactor=getJsObject(object,"contactor");
@@ -233,7 +234,7 @@ public class PassportObjectInfoListFragment extends Fragment {
                 if(ff.length()>6)
                 mapText.get("infoListWorkStop").setText(ff.substring(0,ff.length()-6));
 
-                mapText.get("infoListObjectArea").setText(area);
+                mapText.get("infoListObjectArea").setText("");// area);
                 try {
                     phonesRowFormList.clear();
                     List<PhonesRowForm> phonesRowForms=new ArrayList<>();

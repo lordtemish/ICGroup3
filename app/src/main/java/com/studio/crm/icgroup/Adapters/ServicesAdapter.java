@@ -26,7 +26,7 @@ public class    ServicesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         LinearLayout infoLayout, wholeLayout;
         TextView serviceTypeTextView, serviceTypeLabelTextView;
         TextView emplTextView, emplLabelTextView, emplPositionTextView;
-        TextView statusTextView;
+        TextView statusTextView, timeTextView, dayTextView;
         TextView dayLeftLabelTextView, dayLeftTextView, priorityLabelTextView, priorityTextView;
         ProgressBar progressBar;
         Context context;
@@ -41,6 +41,9 @@ public class    ServicesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             emplTextView=(TextView) view.findViewById(R.id.employeeTextView);
             emplLabelTextView=(TextView) view.findViewById(R.id.employeeLabelTextView);
             emplPositionTextView=(TextView) view.findViewById(R.id.employeePositionTextView);
+
+            timeTextView=(TextView) view.findViewById(R.id.timeTextView);
+            dayTextView=(TextView) view.findViewById(R.id.dayTextView);
 
             statusTextView=(TextView) view.findViewById(R.id.statusTextView);
 
@@ -183,6 +186,8 @@ public class    ServicesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder1, final int position) {
             myHolder holder=(myHolder) holder1;
             ServiceForm form=list.get(position);
+            holder.dayTextView.setText(form.getDay());
+            holder.timeTextView.setText(form.getTime());
             holder.serviceTypeTextView.setText(form.getServiceType());
             holder.emplTextView.setText(form.getEmpl());
             holder.emplPositionTextView.setText(form.getPosition());
@@ -193,7 +198,7 @@ public class    ServicesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
             holder.dayLeftTextView.setText("Осталось дней: "+form.getDay1()+"/"+form.getDay2());
             int make=1;
-        Log.d("Status",form.getStatus()+" "+getItemCount()+" "+position);
+            Log.d("Status",form.getStatus()+" "+getItemCount()+" "+position);
             switch (form.getStatus()){
                 case "FINISHED":
                     holder.setAccepted();

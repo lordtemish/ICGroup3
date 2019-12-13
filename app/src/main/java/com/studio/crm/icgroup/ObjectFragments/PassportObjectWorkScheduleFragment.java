@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.error.AuthFailureError;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.JsonArrayRequest;
+import com.google.gson.Gson;
 import com.studio.crm.icgroup.Activities.MainActivity;
 import com.studio.crm.icgroup.Adapters.WorkScheduleAdapter;
 import com.studio.crm.icgroup.Forms.ShiftForm;
@@ -70,45 +72,28 @@ public class PassportObjectWorkScheduleFragment extends Fragment {
     private void setInfo(JSONArray array){
         progressLayout.setVisibility(View.GONE);
         List<WorkScheduleForm> list=new ArrayList<>();
-        List<ShiftForm> weekendForms=new ArrayList<>();
-        List<ShiftForm> workdayForms=new ArrayList<>();
-        List<ShiftForm> NworkdayForms=new ArrayList<>();
-        List<ShiftForm> NweekendForms=new ArrayList<>();
+        List<ShiftForm> weekForms=new ArrayList<>(), weekendForms=new ArrayList<>();
         for(int i=0;i<array.length();i++){
             try {
                 JSONObject object = array.getJSONObject(i);
                 ShiftForm form=new ShiftForm(object);
-                if(form.isWeekend()){
-                    if(form.isIs_night()){
-                        NweekendForms.add(form);
-                    }
-                    else
-                    weekendForms.add(form);
+                int day=object.getInt("day");
+                if(day<=5){
+                    weekForms.add(form);
                 }
                 else{
-                    if(form.isIs_night()){
-                        NworkdayForms.add(form);
-                    }
-                    else
-                    workdayForms.add(form);
+                    weekendForms.add(form);
                 }
             }
             catch (Exception e){
+                e.printStackTrace();
                 continue;
             }
         }
-        if(workdayForms.size()>0) {
-            list.add(new WorkScheduleForm("Будние дни (Дневная смена)", "Пн-Пт", workdayForms));
-        }
-        if(NworkdayForms.size()>0) {
-            list.add(new WorkScheduleForm("Будние дни (Ночная смена)", "Пн-Пт", NworkdayForms));
-        }
-        if(weekendForms.size()>0) {
-            list.add(new WorkScheduleForm("Выходные дни (Дневная смена)", "Сб-Вс ", weekendForms));
-        }
-        if(NweekendForms.size()>0) {
-            list.add(new WorkScheduleForm("Выходные дни (Ночная смена)  ", "Сб-Вс ", NweekendForms));
-        }
+        WorkScheduleForm week=new WorkScheduleForm("Будние дни","Пн-Пт", weekForms), weekend=new WorkScheduleForm("Выходные дни","Сб-Вс", weekendForms);
+        if(weekForms.size()>0)list.add(week);
+        if(weekendForms.size()>0)list.add(weekend);
+        Log.d("PASOBWOSCHFR weeks", new Gson().toJson(list)+"");
         this.list.clear();this.list.addAll(list);
         adapter.notifyDataSetChanged();
     }
@@ -118,6 +103,7 @@ public class PassportObjectWorkScheduleFragment extends Fragment {
         JsonArrayRequest arrayRequest=new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
+                Log.d("PaObWoScFr REQUEST",response.toString());
                 setInfo(response);
             }
         }, new Response.ErrorListener() {

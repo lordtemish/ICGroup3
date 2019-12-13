@@ -36,7 +36,10 @@ import com.studio.crm.icgroup.Adapters.PagesAdapter;
 import com.studio.crm.icgroup.Adapters.ServicesAdapter;
 import com.studio.crm.icgroup.ExtraFragments.GraphicDateFrame;
 import com.studio.crm.icgroup.ExtraFragments.MainObjectSetInfoFragment;
+import com.studio.crm.icgroup.ExtraFragments.ServiceSortView;
+import com.studio.crm.icgroup.ExtraFragments.YearMonthView;
 import com.studio.crm.icgroup.Forms.GraphicDateForm;
+import com.studio.crm.icgroup.Forms.OneCallBack;
 import com.studio.crm.icgroup.Forms.ServiceForm;
 import com.studio.crm.icgroup.ObjectFragments.AddNewServiceFragment;
 import com.studio.crm.icgroup.R;
@@ -77,10 +80,14 @@ public class OwnTasksFragment extends Fragment {
     MainObjectSetInfoFragment setFragment;
     boolean timeChange=false;
     List<String> pages;
+    private ServiceSortView serviceSortView;
+    private YearMonthView yearMonthView;
+
     public OwnTasksFragment() {
         // Required empty public constructor
     }
 
+    OneCallBack callBack;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -96,7 +103,7 @@ public class OwnTasksFragment extends Fragment {
 
         createViews(view);
         setFonttype();
-        PickerSettings();
+        //PickerSettings();
 
         allServicesLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,7 +141,6 @@ public class OwnTasksFragment extends Fragment {
          pagesRecyclerUp.setAdapter(pagesAdapter);
          pagesRecyclerBot.setAdapter(pagesAdapter);
 
-        setTaskType();
         setFragment.setVisibility(View.GONE);
         setFragment.setWholeLayoutList(new View.OnClickListener() {
             @Override
@@ -160,7 +166,7 @@ public class OwnTasksFragment extends Fragment {
     public void onResume() {
         super.onResume();
         page=1;
-        getRequest();
+        setDate();
     }
 
     private void setTaskType(){
@@ -175,12 +181,14 @@ public class OwnTasksFragment extends Fragment {
         }
         Calendar cali=Calendar.getInstance();
         cali.setTime(cal.getTime());
+        cali.set(Calendar.DAY_OF_MONTH,1);
         cali.set(Calendar.HOUR_OF_DAY,0);
         cali.set(Calendar.MINUTE,0);
         cali.set(Calendar.SECOND,0);
         //cali.add(Calendar.HOUR_OF_DAY,-6);
         String s=((MainActivity)getActivity()).inputFormat.format(cali.getTime());
         cali.setTime(cal.getTime());
+        cali.set(Calendar.DAY_OF_MONTH,cali.getActualMaximum(Calendar.DAY_OF_MONTH));
         cali.set(Calendar.HOUR_OF_DAY,23);
         cali.set(Calendar.MINUTE,59);
         cali.set(Calendar.SECOND,59);
@@ -205,6 +213,12 @@ public class OwnTasksFragment extends Fragment {
                     break;
             }
         }
+        if(graphLinear.getVisibility()==View.VISIBLE){
+            String ur="&";
+            ur+=serviceSortView.getUrl();
+            url+=ur;
+        }
+
         Log.d("url",url);
         if(page>1){
             url+="&page="+page;
@@ -463,6 +477,8 @@ public class OwnTasksFragment extends Fragment {
                     created_at=created_at.substring(0,created_at.length()-1)+".0Z";
                 }
                 Date created = ((MainActivity) getActivity()).getNowDate(created_at), dead = ((MainActivity) getActivity()).getNowDate(deadline);
+                Calendar cal=Calendar.getInstance();
+                cal.setTime(created);cal.add(Calendar.HOUR,6);
                 Date now = new Date();
                 long wDays = dead.getTime() - created.getTime(), nDays = now.getTime() - created.getTime();
                 int days = Integer.parseInt(TimeUnit.DAYS.convert(wDays, TimeUnit.MILLISECONDS) + "");
@@ -476,6 +492,10 @@ public class OwnTasksFragment extends Fragment {
                 }
                 ServiceForm serviceForm = new ServiceForm(kindText, fname, dpStr, status, priority, nowdays, days);
                 serviceForm.setId(object.getString("id"));
+                String time1=((MainActivity)getActivity()).inputFormat.format(cal.getTime());
+                Log.d("TIME",time1.substring(11,16)+ " "+time1.substring(0,10));
+                serviceForm.setTime(time1.substring(11,16),time1.substring(0,10));
+
                 forms.add(serviceForm);
             }
             Log.d("res", forms.size() + "");
@@ -528,19 +548,18 @@ public class OwnTasksFragment extends Fragment {
     private void arrowClick(){
         if(timeChange) {
             timeChange = false;
-            calendarTextView.setVisibility(View.VISIBLE);
-            monthPicker.setVisibility(View.GONE);
-            yearPicker.setVisibility(View.GONE);
-            cal.set(yearPicker.getValue(),monthPicker.getValue(),1);
+            yearMonthView.setVisibility(View.GONE);
+
+            cal.set(yearMonthView.yearPicker.getValue(),yearMonthView.monthPicker.getValue(),1);
+            if(cal.get(Calendar.MONTH)==cal2.get(Calendar.MONTH) && Math.abs(cal2.getTimeInMillis()-cal.getTimeInMillis())>1000*60*60*24*33) {
+                cal.set(Calendar.DAY_OF_MONTH,cal2.get(Calendar.DAY_OF_MONTH));
+            }
             setDate();
-            arrowCalendarImageView.setImageResource(R.drawable.ic_arrowdown_green);
         }
         else{
             timeChange=true;
-            calendarTextView.setVisibility(View.GONE);
-            monthPicker.setVisibility(View.VISIBLE);
-            yearPicker.setVisibility(View.VISIBLE);
-            arrowCalendarImageView.setImageResource(R.drawable.ic_arrowup_green);
+
+            yearMonthView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -656,7 +675,14 @@ public class OwnTasksFragment extends Fragment {
         yearPicker.setValue(cal.get(Calendar.YEAR));
     }
     private void createViews(View view){
-
+        serviceSortView=(ServiceSortView) view.findViewById(R.id.serviceSortView);
+        serviceSortView.radioAdapter.setCallBack(new OneCallBack() {
+            @Override
+            public void callBackCal() {
+                setDate();
+            }
+        });
+        yearMonthView=(YearMonthView)view.findViewById(R.id.yearMonthView);
 
         progressLayout=(FrameLayout)view.findViewById(R.id.progressLayout);
         setFragment=(MainObjectSetInfoFragment) view.findViewById(R.id.setFragment);
@@ -666,6 +692,15 @@ public class OwnTasksFragment extends Fragment {
         cal2=Calendar.getInstance();
         cal.setTime(new Date());
         cal2.setTime(new Date());
+
+        yearMonthView.setPickers(cal);
+        yearMonthView.setCallBack(new OneCallBack() {
+            @Override
+            public void callBackCal() {
+                arrowClick();
+            }
+        });
+        yearMonthView.setVisibility(View.GONE);
 
         ObjectTitle=(TextView) view.findViewById(R.id.mainObjectTitle);
         PercentageTextView=(TextView) view.findViewById(R.id.PercentageTextView);
@@ -794,6 +829,6 @@ public class OwnTasksFragment extends Fragment {
             date+="0"+mo;
         else
             date+=mo;
-        allServicesTextView.setText("Все задачи на "+date);
+        //allServicesTextView.setText("Все задачи на "+date);
     }
 }

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.RadioButton;
 
 import com.studio.crm.icgroup.Activities.MainActivity;
+import com.studio.crm.icgroup.Forms.OneCallBack;
 import com.studio.crm.icgroup.Forms.RadioForm;
 import com.studio.crm.icgroup.R;
 
@@ -30,15 +31,23 @@ public class RadioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
     List<RadioForm> list;
     Context context;
-    boolean checkable=false;
+    boolean checkable=false, radioable=false;
+    public int check=0;
+    OneCallBack callBack;
+
+    public void setCallBack(OneCallBack callBack) {
+        this.callBack = callBack;
+    }
 
     public void setCheckable(boolean checkable) {
         this.checkable = checkable;
     }
 
-    public RadioAdapter(List<RadioForm> forms){
-        this.list=forms;
+    public void setRadioable(boolean radioable) {
+        this.radioable = radioable;
     }
+
+    public RadioAdapter(List<RadioForm> forms){ this.list=forms; }
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -51,12 +60,30 @@ public class RadioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder1, final int position) {
         myHolder holder=(myHolder) holder1;
         holder.setInfo(list.get(position));
+        if(radioable && check==position){
+            holder.radioButton.setChecked(true);
+        }
+        else{
+            holder.radioButton.setChecked(false);
+        }
         if(checkable) {
             holder.radioButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     list.get(position).setStatus(!list.get(position).isStatus());
                     notifyItemChanged(position);
+                }
+            });
+        }
+        if(radioable){
+            holder.radioButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int prev=check;
+                    check=position;
+                    notifyItemChanged(prev);
+                    notifyItemChanged(check);
+                    callBack.callBackCal();
                 }
             });
         }

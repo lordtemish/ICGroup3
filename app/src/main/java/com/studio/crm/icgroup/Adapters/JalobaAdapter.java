@@ -22,7 +22,7 @@ import java.util.List;
 public class JalobaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private class myHolder extends RecyclerView.ViewHolder{
         ConstraintLayout answerLayout;
-        LinearLayout jalobaInfoLayout;
+        LinearLayout jalobaInfoLayout, backLayout;
         TextView  senderTextView, senderInfoTextView,nameTextView, positionTextView, textTextView, dateTextView,answerTextView;
         ImageView mainPhotoImageView;
         private myHolder(View view){
@@ -30,6 +30,7 @@ public class JalobaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             answerLayout=(ConstraintLayout) view.findViewById(R.id.answerLayout);
 
+            backLayout=(LinearLayout) view.findViewById(R.id.backLayout);
             jalobaInfoLayout=(LinearLayout) view.findViewById(R.id.jalobaInfoLayout);
             senderTextView=(TextView) view.findViewById(R.id.senderTextView);senderInfoTextView=(TextView) view.findViewById(R.id.senderInfoTextView);
             nameTextView=(TextView) view.findViewById(R.id.nameTextView);positionTextView=(TextView) view.findViewById(R.id.positionTextView);
@@ -93,7 +94,7 @@ public class JalobaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder1, final int position) {
         myHolder holder=(myHolder) holder1;
         holder.setInfo(list.get(position));
-        holder.jalobaInfoLayout.setOnClickListener(new View.OnClickListener() {
+        holder.backLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Bundle bundle=new Bundle();

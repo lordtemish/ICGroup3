@@ -2,14 +2,17 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="200dp"
+    android:minHeight="110dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginStart="10sp"
     android:layout_marginEnd="10sp"
     android:background="@drawable/whiterow_page"
     android:paddingTop="20sp"
     android:paddingBottom="20sp"
-    android:layout_marginTop="20sp">
+    android:layout_marginTop="20sp"
+
+    android:id="@+id/wholeLayout"
+    >
     <TextView
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
@@ -34,16 +37,19 @@
         android:textSize="11sp"
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
+        android:visibility="gone"
         />
     <LinearLayout
         android:id="@+id/infoLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/dateTextView"
-        android:layout_marginTop="10sp"
+        android:layout_marginTop="20sp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:orientation="vertical"
+
+        android:visibility="visible"
         >
         <TextView
             android:id="@+id/nameTextView"
@@ -65,22 +71,22 @@
     </LinearLayout>
     <android.support.constraint.ConstraintLayout
         android:visibility="visible"
-        android:layout_width="match_parent"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_height="80sp"
         android:id="@+id/markLayout"
-        app:layout_constraintTop_toBottomOf="@+id/infoLayout"
+        app:layout_constraintTop_toTopOf=   "parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         >
             <TextView
                 android:id="@+id/infoLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="15sp"
-                android:text="Общая Оценка спроса"
+                android:textSize="11sp"
+                android:text="Общая Оценка"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -88,15 +94,15 @@
                 />
             <TextView
                 android:id="@+id/averageMarkTextView"
-                android:layout_width="70sp"
-                android:layout_height="70sp"
-                android:background="@drawable/green_circle_line"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
+                android:background="@drawable/green_circle"
+                app:layout_constraintStart_toEndOf="@+id/infoLabel"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:textColor="@color/black"
-                android:layout_marginEnd="10sp"
-                android:layout_marginRight="10sp"
+                android:textColor="@color/white"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:text="3"
                 android:gravity="center"
                 android:textSize="32sp"
@@ -111,10 +117,100 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/infoLayout"
         >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:textColor="@color/black"
+                    android:textSize="11sp"
+                    android:text="Обзвон осуществлял"
+                    />
+                <TextView
+                    android:id="@+id/authorName"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:text="@string/nameString"
+                    />
+                <TextView
+                    android:id="@+id/authorPosition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:textColor="@color/black"
+                    android:textSize="11sp"
+                    android:text="@string/positionExample"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:textColor="@color/black"
+                    android:textSize="11sp"
+                    android:text="Принял ОЛК"
+                    />
+                <TextView
+                    android:id="@+id/contactorName"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:text="@string/nameString"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:textColor="@color/black"
+                    android:textSize="11sp"
+                    android:text="Представитель клиента"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                android:text="Комментарии к ОЛК"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                />
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/commentsRecyclerView"
                 android:layout_width="match_parent"
-                android:nestedScrollingEnabled="false"             android:layout_height="wrap_content">
+                android:nestedScrollingEnabled="false"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
 
             </android.support.v7.widget.RecyclerView>
         <LinearLayout
@@ -134,28 +230,28 @@
                 android:orientation="vertical"
                 >
                 <TextView
-                    android:id="@+id/quality"
-                    android:maxWidth="100dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="60dp"
-                    android:gravity="center"
-                    android:textColor="@color/darkgrey"
-                    android:textSize="13sp"
-                    android:text="Качество уборки"
-                    android:layout_gravity="center"
-                    />
-                <TextView
                     android:id="@+id/qualityMark"
                     android:layout_marginTop="5dp"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:text="3"
                     android:textSize="32sp"
-                    android:background="@drawable/green_circle_line"
+                    android:background="@drawable/green_circle"
                     />
+                <TextView
+                android:id="@+id/quality"
+                android:maxWidth="100dp"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:textColor="@color/darkgrey"
+                android:textSize="11sp"
+                android:text="Качество уборки"
+                android:layout_gravity="center"
+                />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -163,17 +259,7 @@
                 android:layout_weight="1"
                 android:orientation="vertical"
                 >
-                <TextView
-                    android:id="@+id/looking"
-                    android:maxWidth="100dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="60dp"
-                    android:gravity="center"
-                    android:textColor="@color/darkgrey"
-                    android:textSize="13sp"
-                    android:text="Внешний вид ОПУ/ОПУ-ТП"
-                    android:layout_gravity="center"
-                    />
+
                 <TextView
                     android:id="@+id/lookingMark"
                     android:layout_marginTop="5dp"
@@ -182,10 +268,21 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:text="3"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="32sp"
-                    android:background="@drawable/green_circle_line"
+                    android:background="@drawable/green_circle"
                     />
+                <TextView
+                android:id="@+id/looking"
+                android:maxWidth="100dp"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:textColor="@color/darkgrey"
+                android:textSize="13sp"
+                android:text="Внешний вид ОПУ/ОПУ-ТП"
+                android:layout_gravity="center"
+                />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -193,17 +290,7 @@
                 android:layout_weight="1"
                 android:orientation="vertical"
                 >
-                <TextView
-                    android:id="@+id/inventory"
-                    android:maxWidth="100dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="60dp"
-                    android:gravity="center"
-                    android:textColor="@color/darkgrey"
-                    android:textSize="13sp"
-                    android:text="Инвентарное оборудование"
-                    android:layout_gravity="center"
-                    />
+
                 <TextView
                     android:id="@+id/inventoryMark"
                     android:layout_marginTop="5dp"
@@ -211,11 +298,22 @@
                     android:layout_height="70dp"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:text="3"
                     android:textSize="32sp"
-                    android:background="@drawable/green_circle_line"
+                    android:background="@drawable/green_circle"
                     />
+                <TextView
+                android:id="@+id/inventory"
+                android:maxWidth="100dp"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:textColor="@color/darkgrey"
+                android:textSize="13sp"
+                android:text="Инвентарное оборудование"
+                android:layout_gravity="center"
+                />
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -223,6 +321,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+
+            android:visibility="gone"
             >
             <TextView
                 android:id="@+id/olkTook"
@@ -248,7 +348,10 @@
             android:layout_marginTop="20dp"
             android:id="@+id/phonesRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+            android:layout_height="wrap_content"
+
+            android:visibility="gone"
+            ></android.support.v7.widget.RecyclerView>
     </LinearLayout>
     <FrameLayout
         app:layout_constraintBottom_toBottomOf="parent"

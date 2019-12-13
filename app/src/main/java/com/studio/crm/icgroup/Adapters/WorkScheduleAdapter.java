@@ -74,24 +74,11 @@ public class WorkScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             days.setText(form.getDayType());
             schInfo.setText(form.getDayInfo());
             for(int i=0;i<shifts;i++){
+                ShiftForm f=shiftForms.get(i);
                 smenasLayouts.get(i).setVisibility(View.VISIBLE);
-                String ending="-ая";
-                if(i==2){
-                    ending="-яя";
-                }
-                if(shiftForms.get(i).isWeekend()){
-                    String sub="Суббота";
-                    if(shiftForms.get(i).getShift()==7){
-                        sub="Воскресенье";
-                    }
+                String sub=getday(f.getShift());
                     smenasTexts.get(i).setText(sub);
-                    smenasTimes.get(i).setText("с " + shiftForms.get(i).getBegin() + " до " + shiftForms.get(i).getEnd());
-                }
-                else {
-                    String sub=getday(shiftForms.get(i).getShift());
-                    smenasTexts.get(i).setText(sub);
-                    smenasTimes.get(i).setText("с " + shiftForms.get(i).getBegin() + " до " + shiftForms.get(i).getEnd());
-                }
+                    smenasTimes.get(i).setText("с " + f.getBegin() + " до " + f.getEnd());
             }
         }
         private String getday(int shi){

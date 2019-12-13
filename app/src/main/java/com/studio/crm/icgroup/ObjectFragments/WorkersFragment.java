@@ -45,10 +45,13 @@ public class WorkersFragment extends Fragment {
     String id;
     int shifts=0;
     List<TextView> smenaSTextView;
+    List<TextView> pages;
+    List<List<List<ProgressPhoneForm>>> allPositionsForms;
     List<List<ProgressPhoneForm>>  allForms;
     List<ProgressPhoneForm> forms;
     ProgressPhonesAdapter adapter1;
     RecyclerView progressPhoneRecycler;
+    int page=0;
     public WorkersFragment() {
         // Required empty public constructor
     }
@@ -66,7 +69,7 @@ public class WorkersFragment extends Fragment {
         setListeners();
         checkSmenaPages();
 
-        getRequest("workers/?point="+id);
+        getRequest();
         return view;
     }
     private void createViews(View view){
@@ -74,7 +77,7 @@ public class WorkersFragment extends Fragment {
         View.OnClickListener requestListener=new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getRequest("workers/?point="+id);
+                getRequest();
             }
         };
         employeeFragment.click(requestListener);
@@ -89,6 +92,8 @@ public class WorkersFragment extends Fragment {
         smenaSTextView.add((TextView) view.findViewById(R.id.interns));
 
         progressPhoneRecycler=(RecyclerView) view.findViewById(R.id.progressPhoneRecycle);
+
+        allPositionsForms=new ArrayList<>();
 
         allForms=new ArrayList<>();
         allForms.add(new ArrayList<ProgressPhoneForm>());
@@ -106,6 +111,19 @@ public class WorkersFragment extends Fragment {
 
         for(TextView i:smenaSTextView){
             i.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/AvenirNextLTPro-Bold.ttf"));
+        }
+
+        int[] ids={R.id.page0,R.id.page1,R.id.page2,R.id.page3};
+        pages=new ArrayList<>();
+        for(int i=0;i<4;i++){
+            pages.add((TextView)view.findViewById(ids[i]));
+            final int j=i;
+            pages.get(i).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    page=j;
+                }
+            });
         }
     }
 
@@ -136,10 +154,10 @@ public class WorkersFragment extends Fragment {
     private void setSmenasVisib(){ for(int i =0;i<3;i++){smenaSTextView.get(i).setVisibility(View.VISIBLE);}}
 
 
-    private void getRequest(final String url1) {
+    private void getRequest() {
         try {
             progressLayout.setVisibility(View.VISIBLE);
-            final String url = ((MainActivity) getActivity()).MAIN_URL + url1;
+            final String url = ((MainActivity) getActivity()).MAIN_URL + "workers/?point="+id;
             JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
