@@ -29,33 +29,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:maxWidth="170dp"
                 />
-        <android.support.v7.widget.RecyclerView
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:id="@+id/rateRecyclerView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
     </android.support.constraint.ConstraintLayout>
 
-    <LinearLayout
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp">
-        <TextView
-            android:id="@+id/role"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/darkgrey"
-            android:textSize="11sp"
-            android:text="Представитель клиента"
-            />
-
-    </LinearLayout>
         <LinearLayout
             android:layout_marginTop="10dp"
             android:layout_marginStart="20dp"
@@ -69,17 +44,34 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:background="@drawable/grey_circle"/>
-                <TextView
-                    android:id="@+id/nameTextView"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:text="@string/nameString"
+                    android:orientation="vertical"
                     android:layout_gravity="center"
-                    />
+                    android:layout_marginStart="15dp"
+                    android:layout_marginLeft="15dp"
+                    >
+                    <TextView
+                        android:id="@+id/nameTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:text="@string/nameString"
+                        android:layout_gravity="start"
+                        />
+                    <TextView
+                        android:id="@+id/role"
+                        android:layout_gravity="start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/darkgrey"
+                        android:textSize="11sp"
+                        android:text="Представитель клиента"
+                        />
+                </LinearLayout>
+
         </LinearLayout>
         <LinearLayout
             android:layout_marginTop="10dp"

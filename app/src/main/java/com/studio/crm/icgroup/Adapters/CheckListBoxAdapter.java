@@ -83,16 +83,13 @@ public class CheckListBoxAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         holder.plusImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(open!=position){
-                    int o=open;
-                    open=position;
-                    notifyItemChanged(o);
-                    notifyItemChanged(open);
-                }
+                boolean open=list.get(position).isOpen();
+                list.get(position).setOpen(!open);
+                notifyItemChanged(position);
             }
         });
 
-        if(position==open){
+        if(list.get(position).isOpen()){
             holder.plusImageView.setImageResource(R.drawable.ic_minus);
             holder.checkListBoxRowsRecyclerView.setVisibility(View.VISIBLE);
         }

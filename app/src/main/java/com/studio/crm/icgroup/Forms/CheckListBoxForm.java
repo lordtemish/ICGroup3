@@ -10,6 +10,15 @@ public class CheckListBoxForm {
         this.name=name;
         this.accept=accept;this.id=id;
         this.list=forms;
+        open=false;
+    }
+
+    public boolean isOpen() {
+        return open;
+    }
+
+    public void setOpen(boolean open) {
+        this.open = open;
     }
 
     public String getId() {

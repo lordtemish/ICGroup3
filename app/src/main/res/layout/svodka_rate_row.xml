@@ -8,24 +8,18 @@
     android:layout_marginEnd="10dp"
     android:layout_marginTop="20dp"
     android:orientation="vertical"
+
+    android:id="@+id/wholeLayout"
     >
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         >
-                <TextView
-                    android:id="@+id/dateTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="13sp"
-                    android:textColor="@color/black"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:text="23 января 2018"
-                    />
+
+
         <android.support.v7.widget.RecyclerView
             android:layout_width="wrap_content"
             android:nestedScrollingEnabled="false"       android:layout_height="wrap_content"
@@ -39,23 +33,35 @@
     </android.support.constraint.ConstraintLayout>
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="60dp"
+
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
+
+        android:id="@+id/closeLayout"
+        android:visibility="visible"
         >
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="23 января 2018"
+            />
         <TextView
             android:id="@+id/positionTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Менеджер отдела контроля"
             android:textColor="@color/black"
             android:textSize="11sp"
-            android:text="Менеджер отдела контроля"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/nameTextView"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
         <TextView
             android:id="@+id/nameTextView"
             android:layout_width="wrap_content"
@@ -77,8 +83,111 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+
+            android:visibility="gone"
             />
-    </android.support.constraint.ConstraintLayout>a
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+
+                android:textColor="@color/black"
+                android:textSize="11sp"
+                android:text="Общая оценка"
+                />
+            <TextView
+                android:id="@+id/averageMarkTextView"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
+                android:background="@drawable/green_circle"
+                android:textColor="@color/white"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:text="3"
+                android:gravity="center"
+                android:textSize="32sp"
+                />
+        </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"
+        android:id="@+id/openLayout"
+        >
+        <TextView
+            android:id="@+id/wrapTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            android:textColor="@color/icgGreen"
+            android:text="Свернуть"
+            android:textSize="11sp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:visibility="visible"
+            />
+        <TextView
+            android:id="@+id/averageOpenTextView"
+            android:layout_width="60sp"
+            android:layout_height="60sp"
+            android:background="@drawable/green_circle"
+            android:textColor="@color/white"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:text="3"
+            android:gravity="center"
+            android:textSize="32sp"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+
+            android:textColor="@color/black"
+            android:textSize="11sp"
+            android:text="Общая оценка"
+
+            app:layout_constraintBottom_toBottomOf="@+id/averageOpenTextView"
+            app:layout_constraintStart_toEndOf="@+id/averageOpenTextView"
+            app:layout_constraintTop_toBottomOf="@+id/dateOpenTextView"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:id="@+id/openRateLabel"
+            />
+        <TextView
+            android:id="@+id/dateOpenTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/black"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            app:layout_constraintTop_toTopOf="@+id/averageOpenTextView"
+            app:layout_constraintStart_toEndOf="@+id/averageOpenTextView"
+            app:layout_constraintBottom_toTopOf="@+id/openRateLabel"
+
+            android:text="23 января 2018"
+            />
+
+    </android.support.constraint.ConstraintLayout>
     <FrameLayout
         android:visibility="gone"
         android:layout_width="match_parent"
@@ -95,20 +204,15 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:orientation="vertical"
+        android:layout_marginBottom="10dp"
         >
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@color/light_grey"
+                android:visibility="gone"
                 />
-        <android.support.v7.widget.RecyclerView
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:id="@+id/commentsRecyclerView"
-            android:nestedScrollingEnabled="false"          android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-        </android.support.v7.widget.RecyclerView>
         <LinearLayout
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
@@ -116,90 +220,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:layout_weight="1"
-                        >
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="20dp"
-                            android:gravity="center_vertical"
-                            android:text="№ отделения"
-                            android:textColor="@color/darkgrey"
-                            android:textSize="11sp"
-                            android:id="@+id/placeNumLabel"
-                            />
-                        <TextView
-                            android:id="@+id/placeNum"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:minHeight="30dp"
-                            android:textColor="@color/black"
-                            android:gravity="center_vertical"
-                            android:textSize="13sp"
-                            android:text="4"
-                            />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:layout_weight="1"
-                        >
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="20dp"
-                            android:gravity="center_vertical"
-                            android:text="Город"
-                            android:textColor="@color/darkgrey"
-                            android:textSize="11sp"
-                            android:id="@+id/cityLabel"
-                            />
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:minHeight="30dp"
-                            android:textColor="@color/black"
-                            android:gravity="center_vertical"
-                            android:textSize="13sp"
-                            android:text="Алматы"
-                            android:id="@+id/city"
-                            />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:layout_weight="1"
-                        >
-                        <TextView
-                            android:id="@+id/addressLabel"
-                            android:layout_width="match_parent"
-                            android:layout_height="20dp"
-                            android:gravity="center_vertical"
-                            android:text="Адрес"
-                            android:textColor="@color/darkgrey"
-                            android:textSize="11sp"
-                            />
-                        <TextView
-                            android:id="@+id/address"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:minHeight="30dp"
-                            android:textColor="@color/black"
-                            android:gravity="center_vertical"
-                            android:textSize="13sp"
-                            android:text="ул. Байкадамова 2Д"
-                            />
-                    </LinearLayout>
-                </LinearLayout>
+
                 <LinearLayout
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
@@ -208,17 +229,6 @@
                     android:minHeight="50dp"
                     android:orientation="horizontal"
                     >
-                    <TextView
-                        android:id="@+id/clientLabel"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_weight="1"
-                        android:gravity="start"
-                        android:textColor="@color/darkgrey"
-                        android:textSize="11sp"
-                        android:text="Представитель клиента"
-
-                        />
                     <LinearLayout
 
                         android:layout_width="match_parent"
@@ -227,6 +237,53 @@
                         android:orientation="vertical"
                         android:layout_weight="1"
                         >
+                        <TextView
+                            android:id="@+id/workerLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="start"
+                            android:textColor="@color/darkgrey"
+                            android:textSize="11sp"
+                            android:text="Представитель клиента"
+
+                            />
+                        <TextView
+                            android:id="@+id/workerName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:text="Алмасов Темирлан "
+                            />
+                        <TextView
+                            android:id="@+id/workerPosition"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/darkgrey"
+                            android:textSize="13sp"
+                            android:text="Начальник Хоз. части"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="50dp"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        >
+                        <TextView
+                            android:id="@+id/clientLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="start"
+                            android:textColor="@color/darkgrey"
+                            android:textSize="11sp"
+                            android:text="Представитель клиента"
+
+                            />
                         <TextView
                             android:id="@+id/clientName"
                             android:layout_width="wrap_content"
@@ -245,11 +302,97 @@
                             />
                     </LinearLayout>
                 </LinearLayout>
+                <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        android:gravity="center_vertical"
+                        android:text="Объект"
+                        android:textColor="@color/darkgrey"
+                        android:textSize="11sp"
+                        android:id="@+id/placeNumLabel"
+                        />
+                    <TextView
+                        android:id="@+id/placeNum"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="30dp"
+                        android:textColor="@color/black"
+                        android:gravity="center_vertical"
+                        android:textSize="13sp"
+                        android:text="4"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        android:gravity="center_vertical"
+                        android:text="Город"
+                        android:textColor="@color/darkgrey"
+                        android:textSize="11sp"
+                        android:id="@+id/cityLabel"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="30dp"
+                        android:textColor="@color/black"
+                        android:gravity="center_vertical"
+                        android:textSize="13sp"
+                        android:text="Алматы"
+                        android:id="@+id/city"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    >
+                    <TextView
+                        android:id="@+id/addressLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        android:gravity="center_vertical"
+                        android:text="Адрес"
+                        android:textColor="@color/darkgrey"
+                        android:textSize="11sp"
+                        />
+                    <TextView
+                        android:id="@+id/address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="30dp"
+                        android:textColor="@color/black"
+                        android:gravity="center_vertical"
+                        android:textSize="13sp"
+                        android:text="ул. Байкадамова 2Д"
+                        />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone"
+            >
             <TextView
                 android:id="@+id/tookLabel"
                 android:layout_marginStart="20dp"
@@ -269,5 +412,12 @@
 
             </android.support.v7.widget.RecyclerView>
         </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:id="@+id/commentsRecyclerView"
+            android:nestedScrollingEnabled="false"          android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
     </LinearLayout>
 </LinearLayout>

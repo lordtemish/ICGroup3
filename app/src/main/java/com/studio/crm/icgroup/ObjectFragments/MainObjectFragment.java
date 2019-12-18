@@ -54,7 +54,7 @@ public class MainObjectFragment extends Fragment {
     MainObjectAdapter mainObjectAdapter;CityRadioAdapter cityRadioAdapter;
     RecyclerView mainObjectRecycle, cityRecycler , tasktypeRecycler;
     ConstraintLayout RegionLayout;
-    ImageView arrowCity, searchImage;
+    ImageView  searchImage;
     TextView RegionTextView;
     ArrayList<MainObjectRowForm> list;
     TextView mainObjectTitle;
@@ -157,11 +157,11 @@ public class MainObjectFragment extends Fragment {
     private void showCities(){
         if(cityRecycler.getVisibility()==View.VISIBLE){
             cityRecycler.setVisibility(View.GONE);
-            arrowCity.setImageResource(R.drawable.ic_arrowdown_green);
+
         }
         else{
             cityRecycler.setVisibility(View.VISIBLE);
-            arrowCity.setImageResource(R.drawable.ic_arrowup_green);
+
         }
     }
     private void checkData(){
@@ -194,9 +194,9 @@ public class MainObjectFragment extends Fragment {
                 setPoints(rowForms);
             }
             else{
-                String url="points/?executor="+((MainActivity)getActivity()).userid;
+                String url="points/?";
                 if(nameEditText.getText().length()>0){
-                    url+="&name="+nameEditText.getText();
+                    url+="name="+nameEditText.getText();
                 }
                 getRequest(url);
             }
@@ -320,7 +320,7 @@ public class MainObjectFragment extends Fragment {
         nameEditText=(EditText) view.findViewById(R.id.nameEditText);
 
         RegionTextView=(TextView) view.findViewById(R.id.mainObjectRegionTextView);
-        arrowCity=(ImageView) view.findViewById(R.id.arrowCity);
+
         searchImage=(ImageView) view.findViewById(R.id.searchImage);
 
         searchRadio.setOnClickListener(new View.OnClickListener() {
@@ -336,7 +336,9 @@ public class MainObjectFragment extends Fragment {
         kindMap.put("SHOPPING_CENTER","Торговый центр");kindList.add("SHOPPING_CENTER");
         kindMap.put("BUSINESS_CENTER","Бизнес центр");kindList.add("BUSINESS_CENTER");
         kindMap.put("SMALL_OBJECT","Малый объект");kindList.add("SMALL_OBJECT");
-        kindMap.put("INDUSTRIAL_BASE","Промышленная база");kindList.add("INDUSTRIAL_BASE");
+        kindMap.put("MIDDLE_OBJECT","Средний объект");kindList.add("MIDDLE_OBJECT");
+        kindMap.put("BIG_OBJECT","Большой объект");kindList.add("BIG_OBJECT");
+        kindMap.put("INDUSTRIAL_BASE","Пром.\nбаза");kindList.add("INDUSTRIAL_BASE");
 
         List<String> cities=new ArrayList<>();
         cityNames=new ArrayList<>();

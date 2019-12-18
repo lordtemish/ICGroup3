@@ -11,8 +11,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/lightgrey_line"
-            android:padding="10dp"
+            android:paddingTop="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:orientation="vertical"
 
             android:id="@+id/backLayout"
@@ -86,12 +87,15 @@
                     >
                     <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="50dp">
+                        android:layout_height="50dp"
+                        android:layout_marginBottom="10dp">
                         <ImageView
                             android:id="@+id/mainPhotoImageView"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
-                            android:background="@drawable/grey_circle"/>
+                            android:background="@drawable/grey_circle"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"/>
                         <TextView
                             android:id="@+id/nameTextView"
                             android:layout_width="wrap_content"
@@ -118,6 +122,7 @@
                             />
                     </android.support.constraint.ConstraintLayout>
                     <TextView
+                        android:visibility="gone"
                         android:id="@+id/textTextView"
                         android:padding="10dp"
                         android:gravity="start"
@@ -130,15 +135,15 @@
                 </LinearLayout>
         </LinearLayout>
     <android.support.constraint.ConstraintLayout
-        android:background="@drawable/transparent_grey_clicked_background"
         android:id="@+id/answerLayout"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:padding="10dp"
+        android:layout_height="60dp"
         >
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:textColor="@color/black"
                 android:textSize="13sp"
                 android:text="Ответить на жалобу"
@@ -146,7 +151,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+
+                android:gravity="center"
+                android:background="@drawable/lightgreyrow_page"
                 />
     </android.support.constraint.ConstraintLayout>
 </LinearLayout>

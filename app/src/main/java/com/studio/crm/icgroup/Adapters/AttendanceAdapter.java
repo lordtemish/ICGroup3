@@ -90,7 +90,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 setStatus(textViews.get(i),s);
             }
             if(today){
-                Log.d("afasf",form.getId()+"");
+                //Log.d("afasf",form.getId()+"");
                 try {
                     frameLayouts.get(3).setOnClickListener(form.getListener());
                     if(form.isFuck()){

@@ -33,7 +33,7 @@ public class ClientsMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private class myHolder extends RecyclerView.ViewHolder{
         TextView title,role,nameTextView, objectsLabel;
         ImageView settings,avatar, arrowDown;
-        RecyclerView rateRecyclerView, recyclerView;
+        RecyclerView  recyclerView;
         ProgressBar progressBar;
         String id;
         boolean open=false, first=false;
@@ -49,9 +49,9 @@ public class ClientsMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             arrowDown=(ImageView) view.findViewById(R.id.arrowDown);
             avatar=(ImageView) view.findViewById(R.id.avatar);
             recyclerView=(RecyclerView) view.findViewById(R.id.recyclerView);
-            rateRecyclerView=(RecyclerView) view.findViewById(R.id.rateRecyclerView);
+
             ((MainActivity)context).setRecyclerViewOrientation(recyclerView, LinearLayoutManager.VERTICAL);
-            ((MainActivity)context).setRecyclerViewOrientation(rateRecyclerView, LinearLayoutManager.VERTICAL);
+
             ((MainActivity)context).setType("demibold", title,nameTextView, objectsLabel);
             ((MainActivity)context).setType("light", role);
             arrowDown.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +87,7 @@ public class ClientsMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 this.form=form;
                 adapter=new ClientsPointAdapter(form.getPointForms());
                   recyclerView.setAdapter(adapter);
-                rateRecyclerView.setAdapter(new RateStarsAdapter(form.getRate()));
+
         }
         private void getRequest(){
             progressBar.setVisibility(View.VISIBLE);

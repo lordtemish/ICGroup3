@@ -25,6 +25,7 @@ import com.studio.crm.icgroup.Activities.MainActivity;
 import com.studio.crm.icgroup.Forms.AVRForm;
 import com.studio.crm.icgroup.Forms.AcceptForm;
 import com.studio.crm.icgroup.Forms.MessageWorkForm;
+import com.studio.crm.icgroup.ObjectFragments.AvrInfoFragment;
 import com.studio.crm.icgroup.R;
 
 import org.json.JSONArray;
@@ -41,10 +42,10 @@ public class AVRAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private class myHolder extends RecyclerView.ViewHolder{
         String id, point;
         int pos;
-        TextView dateTextView,wholeMark,markTextView,workDone,wrapTextView, worksLabelTextView, markLabelTextView, workerTextView, nameTextView, positionTextView;
+        TextView dateTextView,wholeMark,markTextView,workDone, worksLabelTextView, markLabelTextView, workerTextView, nameTextView, positionTextView;
         RecyclerView tableRecyclerView, acceptRecyclerView;
-        RadioButton radioButton;
-        LinearLayout extraLayout;
+        //RadioButton radioButton;
+        LinearLayout extraLayout, wholeLayout;
         FrameLayout progressLayout;
         MessageWorkAdapter workAdapter;
         AcceptAdapter acceptAdapter;
@@ -60,9 +61,9 @@ public class AVRAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             strings=new ArrayList<>();strings.add(new String[]{});strings.add(new String[]{});strings.add(new String[]{});strings.add(new String[]{});strings.add(new String[]{});
             dateTextView=(TextView) view.findViewById(R.id.dateTextView);
             wholeMark=(TextView) view.findViewById(R.id.wholeMark);
-            markTextView=(TextView) view.findViewById(R.id.markTextView);
-            workDone=(TextView) view.findViewById(R.id.workDone);
-            wrapTextView=(TextView) view.findViewById(R.id.wrapTextView);
+            markTextView=(TextView) view.findViewById(R.id.averageMarkTextView);
+           // workDone=(TextView) view.findViewById(R.id.workDone);
+          //  wrapTextView=(TextView) view.findViewById(R.id.wrapTextView);
             worksLabelTextView=(TextView) view.findViewById(R.id.worksLabelTextView);
             markLabelTextView=(TextView) view.findViewById(R.id.markLabelTextView);
             workerTextView=(TextView) view.findViewById(R.id.workerTextView);
@@ -70,22 +71,23 @@ public class AVRAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             positionTextView=(TextView) view.findViewById(R.id.positionTextView);
             tableRecyclerView=(RecyclerView) view.findViewById(R.id.tableRecyclerView);
             acceptRecyclerView=(RecyclerView) view.findViewById(R.id.acceptRecyclerView);
-            radioButton=(RadioButton) view.findViewById(R.id.radioButton);
+          //  radioButton=(RadioButton) view.findViewById(R.id.radioButton);
+            wholeLayout=(LinearLayout) view.findViewById(R.id.wholeLayout);
             extraLayout=(LinearLayout) view.findViewById(R.id.extraLayout);
             progressLayout=(FrameLayout) view.findViewById(R.id.progressLayout);
 
             setFonttypes();
 
-            wrapTextView.setOnClickListener(new View.OnClickListener() {
+          /*  wrapTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     setVisible();
                 }
-            });
+            });*/
         }
         private void setFonttypes(){
-            setTypeFace("demibold", dateTextView, radioButton, markTextView,workerTextView, nameTextView  );
-            setTypeFace("light", wholeMark, worksLabelTextView, workDone, wrapTextView, markLabelTextView, positionTextView);
+            setTypeFace("demibold", dateTextView, markTextView,workerTextView, nameTextView  );
+            setTypeFace("light", wholeMark, worksLabelTextView, markLabelTextView, positionTextView);
         }
         private void setTypeFace(String s, TextView... textViews){
             for (int i=0;i<textViews.length;i++){
@@ -94,6 +96,7 @@ public class AVRAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
         private void setInfo(AVRForm form, int position){
             id=form.getId();
+            final String tId=id;
             pos=position;
             dateTextView.setText(form.getDate());
             markTextView.setText(form.getMark()+"");
@@ -103,22 +106,24 @@ public class AVRAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             ((MainActivity)context).setRecyclerViewOrientation(acceptRecyclerView, LinearLayoutManager.HORIZONTAL);
             ((MainActivity)context).setRecyclerViewOrientation(tableRecyclerView, LinearLayoutManager.VERTICAL);
-            workForms=form.getMessageWorkForms();
-            workAdapter=new MessageWorkAdapter(workForms);
-            tableRecyclerView.setAdapter(workAdapter);
-            acceptForms=form.getAcceptForms();
-            acceptAdapter=new AcceptAdapter(acceptForms);
-            acceptRecyclerView.setAdapter(acceptAdapter);
+
+            wholeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AvrInfoFragment fragment=new AvrInfoFragment();
+                    ((MainActivity)context).setFragment(R.id.content_frame,fragment);
+                }
+            });
         }
         private void setVisible(){
             if(updated) {
                 visible = !visible;
                 if (visible) {
                     extraLayout.setVisibility(View.VISIBLE);
-                    wrapTextView.setText("Свернуть");
+                  //  wrapTextView.setText("Свернуть");
                 } else {
                     extraLayout.setVisibility(View.GONE);
-                    wrapTextView.setText("Развернуть");
+                  //  wrapTextView.setText("Развернуть");
                 }
             }
             else{
@@ -161,7 +166,7 @@ public class AVRAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                             positionTextView.setText(position);
                             workAdapter.notifyItemChanged(pos);
 
-
+                            /*
                             if(response.isNull("is_executive_permitted")){ is_executive_permitted=-1; }
                             else{is_executive_permitted=0;
                                 if(response.getBoolean("is_executive_permitted")){
@@ -195,8 +200,8 @@ public class AVRAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                                 if(response.getBoolean("is_contactor_permitted")){
                                     is_contactor_permitted=1;
                                 }
-                            }
-                            getAccepts();
+                            }*/
+                            //getAccepts();
                         }
                         catch (Exception e){
                             e.printStackTrace();

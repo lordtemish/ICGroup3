@@ -419,7 +419,7 @@ public class AddNewJalobaFragment extends Fragment {
             for(int i=0;i<array.length();i++){
                 JSONObject object=array.getJSONObject(i);
                 JSONObject user=object.getJSONObject("user");
-                String id=object.getString("id"), userId=user.getString("id"), name=user.getString("fullname")+" НПО";
+                String id=object.getString("id"), userId=user.getString("id"), name=user.getString("fullname");
                 employees.add(name);
                 emids.add(id);userIds.add(userId);
                 emplSpin.add(name);

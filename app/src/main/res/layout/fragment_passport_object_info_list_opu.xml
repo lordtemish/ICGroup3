@@ -42,18 +42,25 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             />
-        <ImageView
-            android:layout_width="20sp"
-            android:layout_height="20sp"
-            android:src="@drawable/ic_menu_main"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginEnd="10sp"
-            android:layout_marginRight="10sp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
 
-            android:onClick="openDrawerOn"
+            android:id="@+id/holidaySetButton"
+
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="11sp"
+            android:text="Отпуск"
+            android:background="@drawable/lightgreyrow_page"
             />
     </android.support.constraint.ConstraintLayout>
     <android.support.v4.widget.NestedScrollView
@@ -544,31 +551,7 @@
 
                     android:id="@+id/buttonLayout"
                     >
-                <android.support.constraint.ConstraintLayout
-                    android:layout_marginTop="10dp"
-                  android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                            <TextView
-                                android:id="@+id/holidaySetButton"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="30dp"
-                                android:paddingEnd="30dp"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-                                android:minWidth="100dp"
-                                android:maxWidth="200dp"
-                                android:background="@drawable/greenbutton"
-                                android:gravity="center"
-                                android:textColor="@color/white"
-                                android:textSize="13sp"
-                                android:text="Отпуск"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                />
-                </android.support.constraint.ConstraintLayout>
+
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"

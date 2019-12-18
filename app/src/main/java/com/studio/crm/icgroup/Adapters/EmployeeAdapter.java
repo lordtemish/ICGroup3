@@ -40,8 +40,6 @@ public class EmployeeAdapter extends RecyclerView.Adapter {
             ((MainActivity)context).setType("light", resultRL, employeeLabelTextView);
         }
         private void setInfo(final EmployeeForm form){
-            PercentageTextView.setText(form.getResult_rate()+"");
-            ProgressBar.setProgress(form.getResult_rate());
             nameTextView.setText(form.getName());
             employeeTextView.setText(form.getEmpls()+"");
             wholeLayout.setOnClickListener(new View.OnClickListener() {

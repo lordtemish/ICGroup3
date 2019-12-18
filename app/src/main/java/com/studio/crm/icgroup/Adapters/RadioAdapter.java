@@ -3,6 +3,7 @@ package com.studio.crm.icgroup.Adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,10 +71,13 @@ public class RadioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             holder.radioButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    list.get(position).setStatus(!list.get(position).isStatus());
+                    boolean a=!list.get(position).isStatus();
+                    Log.d("position "+position,a+" bool");
+                    list.get(position).setStatus(a);
                     notifyItemChanged(position);
                 }
             });
+            holder.radioButton.setChecked(list.get(position).isStatus());
         }
         if(radioable){
             holder.radioButton.setOnClickListener(new View.OnClickListener() {

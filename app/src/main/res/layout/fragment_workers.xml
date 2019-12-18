@@ -83,7 +83,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
 
-                android:textColor="@color/black"
+                android:textColor="@color/greyy"
                 android:textSize="14sp"
                 android:gravity="center"
                 android:text="Адм. блок"
@@ -95,26 +95,13 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
 
-                android:textColor="@color/black"
+                android:textColor="@color/greyy"
                 android:textSize="14sp"
                 android:gravity="center"
                 android:text="Сдельщики"
 
                 android:id="@+id/page2"
                 />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:gravity="center"
-                android:text="Стажеры"
-
-                android:id="@+id/page3"
-                />
-
         </LinearLayout>
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"

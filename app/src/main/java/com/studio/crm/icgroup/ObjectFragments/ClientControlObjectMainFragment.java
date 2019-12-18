@@ -400,6 +400,7 @@ public class ClientControlObjectMainFragment extends Fragment {
             JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, urlReq, null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
+                    Log.d("URL RESPONSE",response.toString());
                     setInfo(response);
                     extraLayout.setVisibility(View.GONE);
                 }
@@ -539,7 +540,11 @@ public class ClientControlObjectMainFragment extends Fragment {
         PercentageTextView.setText(it+"%");
     }
     private String getdate(Calendar calendar){
-        return calendar.get(Calendar.DAY_OF_MONTH)+" "+data[calendar.get(Calendar.MONTH)]+" "+calendar.get(Calendar.YEAR)+"|"+calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE);
+        String min=calendar.get(Calendar.MINUTE)+"";
+        if(min.length()==1){
+            min="0"+min;
+        }
+        return calendar.get(Calendar.DAY_OF_MONTH)+" "+data[calendar.get(Calendar.MONTH)]+" "+calendar.get(Calendar.YEAR)+"|"+calendar.get(Calendar.HOUR_OF_DAY)+":"+min;
     }
     private String getdate(Calendar calendar, int a){
         return calendar.get(Calendar.DAY_OF_MONTH)+" "+data[calendar.get(Calendar.MONTH)]+" "+calendar.get(Calendar.YEAR);
@@ -581,10 +586,11 @@ public class ClientControlObjectMainFragment extends Fragment {
                 avrForms.clear();
                 for(int i=0;i<array.length();i++){
                     JSONObject object=array.getJSONObject(i);
+                    JSONObject author=object.getJSONObject("author");
                     String date1=object.getString("created_at");
                     Date date=((MainActivity)getActivity()).getNowDate(date1);
                     Calendar calendar=Calendar.getInstance();calendar.setTime(date);
-                    String thatdate=getdate(calendar,0);
+                    String thatdate=getdate(calendar);
                     int sum=0;
                     JSONArray pos=object.getJSONArray("positions");
                     for(int j=0;j<pos.length();j++){
@@ -596,8 +602,10 @@ public class ClientControlObjectMainFragment extends Fragment {
                     else{
                         sum=0;
                     }
+                    String name=author.getString("fullname"), role=author.getString("role");
+                    String posi=((MainActivity)getActivity()).positions.get(role);
 
-                    AVRForm avrForm=new AVRForm(thatdate,sum, "","","");
+                    AVRForm avrForm=new AVRForm(thatdate,sum, "",name,posi);
                     avrForm.setId(object.getString("id"));
                     avrForms.add(avrForm);
                 }
@@ -610,7 +618,7 @@ public class ClientControlObjectMainFragment extends Fragment {
                      String date1=object.getString("created_at");
                      Date date=((MainActivity)getActivity()).getNowDate(date1);
                      Calendar calendar=Calendar.getInstance();calendar.setTime(date);
-                     String thatdate=getdate(calendar,0);
+                     String thatdate=getdate(calendar);
                      int sum=0;
                      JSONArray pos=object.getJSONArray("positions");
                      for(int j=0;j<pos.length();j++){
@@ -639,7 +647,7 @@ public class ClientControlObjectMainFragment extends Fragment {
                      String date1=object.getString("created_at");
                      Date date=((MainActivity)getActivity()).getNowDate(date1);
                      Calendar calendar=Calendar.getInstance();calendar.setTime(date);
-                     String thatdate=getdate(calendar,0);
+                     String thatdate=getdate(calendar);
                      int sum=0;
                      JSONArray pos=object.getJSONArray("positions");
                      for(int j=0;j<pos.length();j++){

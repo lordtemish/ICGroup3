@@ -73,13 +73,13 @@ public class DrawerFragment extends Fragment {
         clientRowFormPTNS.clear();
         rowFormPTNS.clear();
         clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_box,R.drawable.ic_box_u,"Объекты",-1));
-        clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_solvves,R.drawable.ic_solvves_u,"Задачи",-1));
+        clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_solvves,R.drawable.ic_solvves_u,"Доп. работы",-1));
         clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_bell,R.drawable.ic_bell_u,"Активности",-1));
       //  clientRowFormPTNS.add(new RowFormPTN(R.drawable.ic_settings,R.drawable.ic_settings_u,"Настройки",-1));
         if (true )
             rowFormPTNS.add(new RowFormPTN(R.drawable.ic_box, R.drawable.ic_box_u, "Объекты", -1));
         if(true)
-            rowFormPTNS.add(new RowFormPTN(R.drawable.ic_solvves, R.drawable.ic_solvves_u, "Задачи", -1));
+            rowFormPTNS.add(new RowFormPTN(R.drawable.ic_solvves, R.drawable.ic_solvves_u, "Доп. работы", -1));
         if(role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("CHIEF") || role.contains("PRODUCTION_NPO"))
             rowFormPTNS.add(new RowFormPTN(R.drawable.ic_people, R.drawable.ic_people_u, "Сотрудники", -1));
         if(role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.equals("PRODUCTION_CHIEF"))

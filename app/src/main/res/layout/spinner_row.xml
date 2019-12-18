@@ -84,6 +84,7 @@
         android:layout_height="50dp"
         android:minHeight="50dp"
         android:background="@drawable/grey_line"
+        android:visibility="gone"
         >
         <EditText
             android:id="@+id/commentEditText"

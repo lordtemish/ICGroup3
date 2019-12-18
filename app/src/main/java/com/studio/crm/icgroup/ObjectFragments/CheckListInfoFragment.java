@@ -152,6 +152,9 @@ public class CheckListInfoFragment extends Fragment {
             JSONObject author=object.getJSONObject("author");
             infoDateTextView.setText(((MainActivity)getActivity()).getDateText(object.getString("created_at")));
             nameInfoLayout.setText(author.getString("fullname"));
+            String role=author.getString("role");
+            String positionM=((MainActivity)getActivity()).positions.get(role);
+            revisorLabelTextView.setText(positionM);
                 Log.d("TagTag",author.getString("fullname"));
             String comment=object.getString("comment");
             List<MessageForm> messageForms=messageAdapter.getList();

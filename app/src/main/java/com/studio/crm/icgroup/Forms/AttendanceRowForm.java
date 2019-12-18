@@ -10,7 +10,7 @@ public class AttendanceRowForm {
     private String name;
     private int n1, n2;
     boolean today, contract;
-    String id, kind;
+    String id, kind="";
 
     public boolean isContract() {
         return contract;

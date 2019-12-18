@@ -109,7 +109,6 @@ public class MainObjectMainFrament extends Fragment {
         progresList.add(new MainFramentProgressForm("Успеваемость",55));
         progresList.add(new MainFramentProgressForm("Посещаемость",85));
         progresList.add(new MainFramentProgressForm("Качество",15));
-        progresList.add(new MainFramentProgressForm("Инветарь",38));
         progressRecycleAdapter=new MainFramentProgressRecycleAdapter(progresList,getActivity());
         RecyclerView.LayoutManager mLayoutManager=new LinearLayoutManager(getActivity());
         progresses.setLayoutManager(mLayoutManager);
@@ -123,15 +122,15 @@ public class MainObjectMainFrament extends Fragment {
             buttonsList.add("Посещения");
         if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("PRODUCTION") || (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
             buttonsList.add("Сотрудники");
-        buttonsList.add("Задачи");
-        if(true)
-        buttonsList.add("Технологическая карта");
+        buttonsList.add("Доп. Работы");
         if(client || (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("QC")|| (role.equals("PRODUCTION_NPO"))))
         buttonsList.add("Контроль качества");
      /*   if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("SUPPLY") || (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
         buttonsList.add("Инвентарь");*/
         if(client || role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("CHIEF")|| (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO")))
         buttonsList.add("Жалобы");
+        if(true)
+            buttonsList.add("Файлы");
 
         List<View.OnClickListener> listeners=new ArrayList<>();
         View.OnClickListener listenerPassport=new View.OnClickListener() {@Override public void onClick(View v) {
@@ -162,14 +161,14 @@ public class MainObjectMainFrament extends Fragment {
         if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("PRODUCTION") || (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
             listeners.add(workersListener);
         listeners.add(serviceListener);
-        if(true)
-        listeners.add(TechnoMapListener);
         if(client || (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("QC")|| ( role.equals("PRODUCTION_NPO"))))
         listeners.add(ClientControlListener);
     /*    if(!client && (role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("SUPPLY") || (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO"))))
         listeners.add(listener);*/
         if(client || role.equals("SUPERADMIN") || role.contains("ADMIN_") || role.contains("CHIEF")|| (role.contains("CURATOR") || role.equals("PRODUCTION_ADMIN") || role.equals("PRODUCTION_NPO")))
         listeners.add(CommentsListener);
+        if(true)
+            listeners.add(TechnoMapListener);
 
         ButtonAdapter buttonAdapter=new ButtonAdapter(buttonsList,getActivity(),listeners,R.drawable.ic_arrowright);
         RecyclerView.LayoutManager mLayoutManagerq=new LinearLayoutManager(getActivity());
@@ -235,7 +234,7 @@ public class MainObjectMainFrament extends Fragment {
                     setProgresses(doubletoInt(usp));
                 }
                 else
-                setProgresses(doubletoInt(usp), doubletoInt(pos), doubletoInt(kac), doubletoInt(0.0));//inv));
+                setProgresses(doubletoInt(usp), doubletoInt(pos), doubletoInt(kac));//inv));
 
                 List<PhonesRowForm> rowForms=new ArrayList<>();
                 JSONObject contactor=getJsObject(object,"contactor");
@@ -340,12 +339,12 @@ public class MainObjectMainFrament extends Fragment {
         rateStarsAdapter.notifyDataSetChanged();
     }
 
-    public void setProgresses(int a, int b, int c, int d){
+    public void setProgresses(int a, int b, int c){
         progresList.clear();
         progresList.add(new MainFramentProgressForm("Успеваемость",a));
         progresList.add(new MainFramentProgressForm("Посещаемость",b));
         progresList.add(new MainFramentProgressForm("Качество",c));
-        progresList.add(new MainFramentProgressForm("Инветарь",d));
+        //progresList.add(new MainFramentProgressForm("Инветарь",d));
         progressRecycleAdapter.notifyDataSetChanged();
     }
     public void setProgresses(int a){

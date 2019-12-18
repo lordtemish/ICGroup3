@@ -3,9 +3,11 @@
     android:layout_marginTop="10sp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:id="@+id/wholeLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    >
 
     <ImageView
         android:layout_width="55sp"
@@ -15,6 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginLeft="15sp"
         android:layout_marginStart="15sp"
+        android:visibility="gone"
         />
 
     <android.support.constraint.ConstraintLayout

@@ -15,43 +15,31 @@
             android:layout_height="50sp"
             >
             <android.support.constraint.ConstraintLayout
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/mainObjectTitle"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:background="@drawable/lightgreyrow_page"
                 app:layout_constraintStart_toStartOf="parent"
                 android:id="@+id/mainObjectRegionLayout"
                 android:layout_weight="1">
-                <FrameLayout
-                    android:id="@+id/regionObjectArrowFrame"
-                    android:layout_width="30sp"
-                    android:layout_height="match_parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginStart="10sp"
-                    android:layout_marginLeft="10sp"
-                    >
-                    <ImageView
-                        android:id="@+id/arrowCity"
-                        android:layout_width="15sp"
-                        android:layout_height="20sp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_arrowdown_green"
-                        />
-                </FrameLayout>
+
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    app:layout_constraintStart_toEndOf="@+id/regionObjectArrowFrame"
-                    app:layout_constraintLeft_toRightOf="@+id/regionObjectArrowFrame"
+                    android:layout_height="wrap_content"
                     android:text="Регион"
                     android:gravity="center"
-                    android:layout_marginStart="5sp"
-                    android:layout_marginLeft="5sp"
                     android:id="@+id/mainObjectRegionTextView"
                     android:textColor="@color/black"
                     android:textSize="15sp"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     />
                 <RadioButton
                     android:visibility="gone"
@@ -167,8 +155,12 @@
                 android:layout_height="match_parent"
                 android:layout_weight="5"
                 android:src="@drawable/ic_search"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                android:paddingStart="15dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
                 />
             </LinearLayout>
         </LinearLayout>

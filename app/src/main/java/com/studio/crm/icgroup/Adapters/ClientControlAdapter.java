@@ -497,12 +497,12 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
     private class checkListHolder extends RecyclerView.ViewHolder{
-        LinearLayout wholeLayout;
+        ConstraintLayout wholeLayout;
         TextView dateTextView,revisorTextView, nameTextView, rateTextView;
         String id, rate;
         private checkListHolder(View v){
             super(v);
-            wholeLayout=(LinearLayout) v.findViewById(R.id.wholeLayout);
+            wholeLayout=(ConstraintLayout) v.findViewById(R.id.wholeLayout);
             dateTextView=(TextView) v.findViewById(R.id.dateTextView);
             revisorTextView=(TextView) v.findViewById(R.id.revisorTextView);
             nameTextView=(TextView) v.findViewById(R.id.nameTextView);
@@ -541,9 +541,10 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
         List<String[]> strings;
         int is_executive_permitted=-1,is_technical_permitted=-1,is_producer_permitted=-1,is_curator_permitted=-1,is_contactor_permitted=-1;
         RecyclerView rateStartRecycler, commentsRecyclerView, acceptRecyclerView;
-        TextView dateTextView, positionTextView, nameTextView, placeNum, placeNumLabel, cityLabel, city, address, addressLabel, clientLabel, clientName, clientPosition,tookLabel;
+        TextView workerName,workerPosition,  dateOpenTextView,averageOpenTextView, averageMarkTextView,wrapTextView,dateTextView, positionTextView, nameTextView, placeNum, placeNumLabel, cityLabel, city, address, addressLabel, clientLabel, clientName, clientPosition,tookLabel;
         ImageView arrowImage;
-        LinearLayout extraLayout;
+        LinearLayout extraLayout, wholeLayout;
+        ConstraintLayout closeLayout,openLayout;
         FrameLayout progressLayout;
         MessageAdapter adapter;
         AcceptAdapter acceptAdapter;
@@ -572,15 +573,24 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
         private svodkaRateHolder(View view){
             super(view);
             strings=new ArrayList<>();strings.add(new String[]{});strings.add(new String[]{});strings.add(new String[]{});strings.add(new String[]{});strings.add(new String[]{});
+            wholeLayout=(LinearLayout) view.findViewById(R.id.wholeLayout);
             extraLayout=(LinearLayout) view.findViewById(R.id.extraLayout);
+            closeLayout=(ConstraintLayout) view.findViewById(R.id.closeLayout);
+            openLayout=(ConstraintLayout) view.findViewById(R.id.openLayout);
             progressLayout=(FrameLayout) view.findViewById(R.id.progressLayout);
             arrowImage=(ImageView) view.findViewById(R.id.arrowImageView);
             rateStartRecycler=(RecyclerView) view.findViewById(R.id.starsRecyclerView);
             commentsRecyclerView=(RecyclerView) view.findViewById(R.id.commentsRecyclerView);
             acceptRecyclerView=(RecyclerView) view.findViewById(R.id.acceptRecyclerView);
+            wrapTextView=(TextView) view.findViewById(R.id.wrapTextView);
+            averageMarkTextView=(TextView) view.findViewById(R.id.averageMarkTextView);
+            averageOpenTextView=(TextView) view.findViewById(R.id.averageOpenTextView);
             dateTextView=(TextView) view.findViewById(R.id.dateTextView);
+            dateOpenTextView=(TextView) view.findViewById(R.id.dateOpenTextView);
+            workerName=(TextView) view.findViewById(R.id.workerName);
             nameTextView=(TextView) view.findViewById(R.id.nameTextView);
             positionTextView=(TextView) view.findViewById(R.id.positionTextView);
+            workerPosition=(TextView) view.findViewById(R.id.workerPosition);
             placeNum=(TextView) view.findViewById(R.id.placeNum);
             placeNumLabel=(TextView) view.findViewById(R.id.placeNumLabel);
             cityLabel=(TextView) view.findViewById(R.id.cityLabel);
@@ -592,10 +602,18 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
             clientPosition=(TextView) view.findViewById(R.id.clientPosition );
             tookLabel=(TextView) view.findViewById(R.id.tookLabel );
 
-            arrowImage.setOnClickListener(new View.OnClickListener() {
+            wrapTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     buttonClicked();
+                }
+            });
+            wholeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(extraLayout.getVisibility()==View.GONE){
+                        buttonClicked();
+                    }
                 }
             });
             setFontType();
@@ -614,13 +632,21 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
         private void setVisibility(int visibility){
             extraLayout.setVisibility(visibility);
+            wrapTextView.setVisibility(visibility);
+            openLayout.setVisibility(visibility);
         }
 
         private void setInfo(svodkaRateForm form, int pos){
             this.pos=pos;
             dateTextView.setText(form.getDate());
+            dateOpenTextView.setText(form.getDate());
             nameTextView.setText(form.getName());
+            workerName.setText(form.getName());
             positionTextView.setText(form.getPosition());
+            workerPosition.setText(form.getPosition());
+            averageMarkTextView.setText(form.getRate()+"");
+            averageOpenTextView.setText(form.getRate()+"");
+
             id=form.getId();
         }
         private void buttonClicked(){
@@ -628,9 +654,11 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
                 if (extraLayout.getVisibility() == View.VISIBLE) {
                     setArrowResource(R.drawable.ic_arrowdown);
                     setVisibility(View.GONE);
+                    closeLayout.setVisibility(View.VISIBLE);
                 } else {
                     setArrowResource(R.drawable.ic_arrowup);
                     setVisibility(View.VISIBLE);
+                    closeLayout.setVisibility(View.GONE);
                 }
             }
             else{
@@ -644,6 +672,7 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
                             updated=true;
                             JSONObject point = response.getJSONObject("point");
                             poin=point.getString("id");
+                            placeNum.setText(point.getString("name"));
                             JSONObject contactor = point.getJSONObject("contactor");
                             String address1=point.getString("address");
                             String CName=contactor.getString("fullname");
@@ -663,7 +692,7 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
                             clientPosition.setText(position);
 
 
-                            if(response.isNull("is_executive_permitted")){ is_executive_permitted=-1; }
+                          /*  if(response.isNull("is_executive_permitted")){ is_executive_permitted=-1; }
                             else{is_executive_permitted=0;
                                 if(response.getBoolean("is_executive_permitted")){
                                     is_executive_permitted=1;
@@ -697,8 +726,8 @@ public class ClientControlAdapter extends RecyclerView.Adapter<RecyclerView.View
                                     is_contactor_permitted=1;
                                 }
                             }
-
-                            getAccepts();
+*/
+                           // getAccepts();
                             buttonClicked();
                         }
                         catch (Exception e){

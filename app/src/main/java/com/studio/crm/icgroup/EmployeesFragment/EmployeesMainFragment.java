@@ -2,6 +2,7 @@ package com.studio.crm.icgroup.EmployeesFragment;
 
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -45,9 +46,8 @@ public class EmployeesMainFragment extends Fragment {
     TextView cityTextLayout;
     List<EmployeeForm> forms;
     FrameLayout progressLayout;
-    LinearLayout cityLayout;
+    ConstraintLayout cityLayout;
     RecyclerView recyclerView, cityRecycler;
-    ImageView arrowImageView;
     public EmployeesMainFragment() {
         // Required empty public constructor
     }
@@ -83,11 +83,11 @@ public class EmployeesMainFragment extends Fragment {
     private void showCity(){
         if(cityRecycler.getVisibility()==View.VISIBLE){
             cityRecycler.setVisibility(View.GONE);
-            arrowImageView.setImageResource(R.drawable.ic_arrowdown_green);
+
         }
         else{
             cityRecycler.setVisibility(View.VISIBLE);
-            arrowImageView.setImageResource(R.drawable.ic_arrowup_green);
+
         }
     }
     private void getCitites() {
@@ -207,13 +207,13 @@ public class EmployeesMainFragment extends Fragment {
         }
     private void createViews(View view){
         forms=new ArrayList<>();
-        cityLayout=(LinearLayout)view.findViewById(R.id.cityLayout);
+        cityLayout=(ConstraintLayout) view.findViewById(R.id.cityLayout);
         cityTextLayout=(TextView) view.findViewById(R.id.cityTextLayout);
         cities=new HashMap<>();
         cityNames=new ArrayList<>();
         cityRecycler=(RecyclerView) view.findViewById(R.id.cityRecycler);
         recyclerView=(RecyclerView) view.findViewById(R.id.recyclerView);
         progressLayout=(FrameLayout)view.findViewById(R.id.progressLayout);
-        arrowImageView=(ImageView)view.findViewById(R.id.arrowImageView);
+
     }
 }

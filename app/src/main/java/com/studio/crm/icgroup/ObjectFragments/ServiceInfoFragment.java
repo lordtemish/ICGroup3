@@ -91,6 +91,7 @@ public class ServiceInfoFragment extends Fragment {
         butLayout.setVisibility(View.GONE);
         setFonttypes();
         setAdapters();
+
        // setFailed();
       //  setFailedRetake();
       //  autorClosed();

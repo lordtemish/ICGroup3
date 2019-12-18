@@ -405,21 +405,6 @@ public class AddNewCheckListFragment extends Fragment {
             if(comm.length()>0){
                 params.put("comment",comm);
             }
-            if(is_executive_permitted==0){
-                params.put("is_executive_permitted",false);
-            }
-            if(is_contactor_permitted==0){
-                params.put("is_contactor_permitted",false);
-            }
-            if(is_curator_permitted==0){
-                params.put("is_curator_permitted",false);
-            }
-            if(is_producer_permitted==0){
-                params.put("is_producer_permitted",false);
-            }
-            if(is_technical_permitted==0){
-                params.put("is_technical_permitted",false);
-            }
 
             params.put("permits",permits);
             JSONArray array=new JSONArray();

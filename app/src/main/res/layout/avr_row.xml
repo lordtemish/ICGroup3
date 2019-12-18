@@ -7,78 +7,109 @@
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp"
     android:layout_marginTop="20dp"
-    android:background="@drawable/whiterow_page">
-    <LinearLayout
+    android:background="@drawable/whiterow_page"
+    android:id="@+id/wholeLayout"
+    >
+    <android.support.constraint.ConstraintLayout
         android:layout_margin="10dp"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <android.support.constraint.ConstraintLayout
+        <TextView
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/dateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5sp"
+            android:textSize="11sp"
+            android:text="27 января 2018|10:43"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/black"
+            />
+
+        <LinearLayout
+            android:id="@+id/infoLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:padding="10dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/dateTextView"
-                android:textColor="@color/black"
-                android:textSize="11sp"
-                android:text="@string/datestring"
-                />
-        </android.support.constraint.ConstraintLayout>
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/dateTextView"
+            android:layout_marginTop="20sp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="vertical"
+
+            android:visibility="visible"
             >
             <TextView
+                android:id="@+id/nameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:textSize="13sp"
-                android:text="Общая оценка:"
-                android:id="@+id/wholeMark"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/markTextView"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
+                android:text="Иваненко Иван"
                 />
             <TextView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="5sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/positionTextView"
+                android:textColor="@color/black"
+                android:textSize="11sp"
+                android:text="Менеджер отдела Контролая качества"
+                />
+        </LinearLayout>
+        <android.support.constraint.ConstraintLayout
+            android:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_height="80sp"
+            android:id="@+id/markLayout"
+            app:layout_constraintTop_toTopOf=   "parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+            <TextView
+                android:id="@+id/wholeMark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="11sp"
+                android:text="Общая Оценка"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/green_circle_line"
-                android:textColor="@color/black"
-                android:textSize="31sp"
-                android:text="5"
+                app:layout_constraintStart_toStartOf="parent"
+
+                />
+            <TextView
+                android:id="@+id/averageMarkTextView"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
+                android:background="@drawable/green_circle"
+                app:layout_constraintStart_toEndOf="@+id/wholeMark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textColor="@color/white"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="3"
                 android:gravity="center"
-                android:id="@+id/markTextView"
+                android:textSize="32sp"
                 />
         </android.support.constraint.ConstraintLayout>
-    </LinearLayout>
-    <TextView
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="11sp"
-        android:text="Работы выполнены"
-        android:id="@+id/workDone"
-        />
+    </android.support.constraint.ConstraintLayout>
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_marginTop="10dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginEnd="10dp">
+        android:layout_marginEnd="10dp"
+
+        android:visibility="gone"
+        >
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -185,7 +216,7 @@
             android:textSize="11sp"
             android:text="@string/nameString"
             android:textColor="@color/black"
-            android:id="@+id/nameTextView"
+            android:id="@+id/nameTextView1"
             />
             <TextView
                 android:layout_width="wrap_content"
@@ -193,7 +224,7 @@
                 android:textSize="11sp"
                 android:text="@string/positionExample"
                 android:textColor="@color/black"
-                android:id="@+id/positionTextView"
+                android:id="@+id/positionTextView1"
                 />
         </LinearLayout>
     </LinearLayout>

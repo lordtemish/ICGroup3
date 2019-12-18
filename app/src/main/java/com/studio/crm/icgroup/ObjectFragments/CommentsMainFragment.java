@@ -69,7 +69,8 @@ public class CommentsMainFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         setListeners();
-        getReq();
+        //getReq();
+        setChose(0);
         return view;
     }
 
@@ -125,9 +126,16 @@ public class CommentsMainFragment extends Fragment {
             }
         });
     }
-    private void getReq(){
+    private void getReq(int a){
         progressLayout.setVisibility(View.VISIBLE);
-        String url=((MainActivity)getActivity()).MAIN_URL+"complaints/?"+type+"="+id;
+        String s="&";
+        if(a==0){
+            s+="is_reply=False";
+        }
+        else{
+            s+="is_reply=True";
+        }
+        String url=((MainActivity)getActivity()).MAIN_URL+"complaints/?"+type+"="+id+s;
         JsonArrayRequest objectRequest=new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -158,20 +166,21 @@ public class CommentsMainFragment extends Fragment {
         switch (a){
             case 0:
 
-                jalobaForms.addAll(firstForm);
+                //jalobaForms.addAll(firstForm);
                 adapter.setAnswer(true);
                 setBlackTextView(notAnswered);
                 setGreyTextView(ArchiveTextView);
-                adapterChanged();
+                //adapterChanged();
                 break;
                 default:
-                    jalobaForms.addAll(secondForm);
+                    //jalobaForms.addAll(secondForm);
                     adapter.setAnswer(false);
                     setBlackTextView(ArchiveTextView);
                     setGreyTextView(notAnswered);
-                    adapterChanged();
+                    //adapterChanged();
                     break;
         }
+        getReq(a);
     }
     private void adapterChanged(){
         adapter.notifyDataSetChanged();
@@ -207,13 +216,10 @@ public class CommentsMainFragment extends Fragment {
                 jalobaForm.setId(id);
                 if(arch){
                     jalobaForm.setAnswered(true);
-                    secondForm.add(jalobaForm);
                 }
-                else{
-                    firstForm.add(jalobaForm);
-                }
+                jalobaForms.add(jalobaForm);
             }
-            setChose(chose);
+            adapter.notifyDataSetChanged();
         }
         catch (Exception e){
             e.printStackTrace();

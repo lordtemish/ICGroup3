@@ -243,7 +243,7 @@ public class JalobaInfoFragment extends Fragment {
                 jalobaDateTextView.setText(cr);
             }
             acceptForms.clear();
-            JSONArray permits=object.getJSONArray("permits");
+            /*JSONArray permits=object.getJSONArray("permits");
             Log.d("perm",permits.toString());
             for(int i=0;i<permits.length();i++){
                 JSONObject jsonObject=permits.getJSONObject(i);
@@ -258,7 +258,7 @@ public class JalobaInfoFragment extends Fragment {
                 AcceptForm acceptForm=new AcceptForm(name,"",position, status, st);
                 acceptForms.add(acceptForm);
             }
-            acceptAdapter.notifyDataSetChanged();
+            acceptAdapter.notifyDataSetChanged();*/
             //getExec();
             //getPoint();
         }

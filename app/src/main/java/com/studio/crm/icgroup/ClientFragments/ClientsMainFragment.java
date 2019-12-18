@@ -52,7 +52,6 @@ public class ClientsMainFragment extends Fragment {
         TextView mainObjectRegionTextView;
         CityRadioAdapter cityRadioAdapter;
         List<String> cityNames;
-        ImageView arrowCity;
     int city=1;    HashMap<Integer,String> cities;
     boolean changed=false;
     List<ClientsMainForm> list;
@@ -95,11 +94,9 @@ public class ClientsMainFragment extends Fragment {
     private void showCityRec(){
         if(cityRecycler.getVisibility()==View.VISIBLE){
             cityRecycler.setVisibility(View.GONE);
-            arrowCity.setImageResource(R.drawable.ic_arrowdown_green);
         }
         else{
             cityRecycler.setVisibility(View.VISIBLE);
-            arrowCity.setImageResource(R.drawable.ic_arrowup_green);
         }
     }
     private void createViews(View view){
@@ -110,7 +107,7 @@ public class ClientsMainFragment extends Fragment {
         swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipeRefreshLayout);
         mainObjectRegionLayout=(ConstraintLayout)view.findViewById(R.id.mainObjectRegionLayout);
         mainObjectRegionTextView=(TextView)view.findViewById(R.id.mainObjectRegionTextView);
-        arrowCity=(ImageView)view.findViewById(R.id.arrowCity);
+
 
         cities=new HashMap<>();
         cityNames=new ArrayList<>();

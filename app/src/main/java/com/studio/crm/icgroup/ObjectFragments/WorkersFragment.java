@@ -69,8 +69,17 @@ public class WorkersFragment extends Fragment {
         setListeners();
         checkSmenaPages();
 
-        getRequest();
+        checkPage();
         return view;
+    }
+
+    private void checkPage(){
+        for(int i=0;i<3;i++){
+            pages.get(i).setTextColor(getActivity().getResources().getColor(R.color.greyy));
+        }
+        pages.get(page).setTextColor(getActivity().getResources().getColor(R.color.black));
+
+        getRequest();
     }
     private void createViews(View view){
         employeeFragment=new PassportObjectInfoListAddNewEmployeeFragment();
@@ -90,6 +99,8 @@ public class WorkersFragment extends Fragment {
         smenaSTextView.add((TextView) view.findViewById(R.id.SecondSmena));
         smenaSTextView.add((TextView) view.findViewById(R.id.thirdSmena));
         smenaSTextView.add((TextView) view.findViewById(R.id.interns));
+
+        smenaSTextView.get(3).setVisibility(View.GONE);
 
         progressPhoneRecycler=(RecyclerView) view.findViewById(R.id.progressPhoneRecycle);
 
@@ -113,15 +124,16 @@ public class WorkersFragment extends Fragment {
             i.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/AvenirNextLTPro-Bold.ttf"));
         }
 
-        int[] ids={R.id.page0,R.id.page1,R.id.page2,R.id.page3};
+        int[] ids={R.id.page0,R.id.page1,R.id.page2};
         pages=new ArrayList<>();
-        for(int i=0;i<4;i++){
+        for(int i=0;i<3;i++){
             pages.add((TextView)view.findViewById(ids[i]));
             final int j=i;
             pages.get(i).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     page=j;
+                    checkPage();
                 }
             });
         }
@@ -157,6 +169,7 @@ public class WorkersFragment extends Fragment {
     private void getRequest() {
         try {
             progressLayout.setVisibility(View.VISIBLE);
+            String kind;
             final String url = ((MainActivity) getActivity()).MAIN_URL + "workers/?point="+id;
             JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                 @Override
@@ -177,7 +190,29 @@ public class WorkersFragment extends Fragment {
                             String id = object.getString("id"), userid=user.getString("id");
                             String status=object.getString("status");
                             boolean is_contract=object.getBoolean("is_contract");
-                            if(!status.equals("REMOVE")) {
+                            String kind=object.getString("kind");
+
+                            Log.d("WORKER "+id,kind);
+                            boolean show=false;
+                            switch (page){
+                                case 0:
+                                    if(kind.equals("OPU") || kind.equals("JANITOR") || kind.equals("INTERN")){
+                                        show=true;
+                                    }
+                                    break;
+                                case 1:
+                                    if(kind.equals("GARDENER") || kind.equals("PLUMBER") || kind.equals("ELECTRICIAN") || kind.equals("DRIVER")){
+                                        show=true;
+                                    }
+                                    break;
+                                case 2:
+                                    if(kind.equals("PIECER")){
+                                        show=true;
+                                    }
+                                    break;
+                            }
+
+                            if(!status.equals("REMOVE") && show) {
                                   /*  if (object.getBoolean("is_trainee")) {
                                         ProgressPhoneForm progressPhoneForm = new ProgressPhoneForm(new PhonesRowForm(true, user.get("fullname") + "", "Стажёр", user.getString("phone") + ""), Integer.parseInt("" + Math.round(object.getDouble("attendance_rate") * 100)));
                                         progressPhoneForm.setStatus(status);
@@ -189,17 +224,16 @@ public class WorkersFragment extends Fragment {
                                     } else {*/
                                 ProgressPhoneForm progressPhoneForm = new ProgressPhoneForm(new PhonesRowForm(true, user.get("fullname") + "", ((MainActivity)getActivity()).workerKinds.get(object.getString("kind")), user.getString("phone") + ""), Integer.parseInt("" + Math.round(object.getDouble("attendance_rate") * 100)));
                                 progressPhoneForm.setStatus(status);
-                                String kind=object.getString("kind");
+
                                 progressPhoneForm.setRole(kind);
                                 progressPhoneForm.setSalary(object.getInt("salary"));
                                 progressPhoneForm.setContract(is_contract);
                                 progressPhoneForm.setId(id);
                                 progressPhoneForm.setUserid(userid);
-                                if(!kind.equals("INTERN"))
+
+
                                 phoneForms.get(shift - 1).add(progressPhoneForm);
-                                else{
-                                    phoneForms.get(3).add(progressPhoneForm);
-                                }
+
                                 //}
                             }
 
