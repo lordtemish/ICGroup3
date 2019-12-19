@@ -114,6 +114,7 @@
                                 android:button="@drawable/radiobutton3"
                                 android:textColor="@color/black"
                                 android:text="  Cтандартный"
+                                android:visibility="gone"
                                 />
                             <RadioButton
                                 android:layout_marginTop="5dp"
@@ -123,6 +124,7 @@
                                 android:button="@drawable/radiobutton3"
                                 android:textColor="@color/black"
                                 android:text="  Произвольный"
+                                android:checked="true"
                                 />
                             <RadioButton
                                 android:visibility="visible"
@@ -132,7 +134,7 @@
                                 android:layout_height="wrap_content"
                                 android:button="@drawable/radiobutton3"
                                 android:textColor="@color/black"
-                                android:text="  Задача"
+                                android:text="  Прикрепить Доп. работу"
                                 />
                         </RadioGroup>
                     </LinearLayout>
@@ -197,6 +199,7 @@
                                         android:text="НАЙТИ"
                                         />
                             </android.support.constraint.ConstraintLayout>
+
                         <android.support.v7.widget.RecyclerView
                             android:background="@color/light_grey"
                             android:layout_width="match_parent"
@@ -205,12 +208,109 @@
                                 android:id="@+id/taskRecyclerView"
                            ></android.support.v7.widget.RecyclerView>
                         </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:orientation="vertical"
+                            android:layout_marginTop="10dp"
+                            >
+                            <EditText
+                                android:layout_marginBottom="10dp"
+                                android:id="@+id/serviceTypeTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:background="@drawable/lightgreyrow_page"
+                                android:paddingEnd="10dp"
+                                android:paddingStart="10dp"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:inputType="text"
+                                android:textSize="15sp"
+                                android:layout_gravity="center"
+                                android:gravity="center_vertical"
+                                android:hint="Вид услуги"
+                                android:textColorHint="@color/black"
+                                />
+                            <EditText
+                                android:layout_marginBottom="10dp"
+                                android:id="@+id/serviceProcessTypeTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:background="@drawable/lightgreyrow_page"
+                                android:paddingEnd="10dp"
+                                android:paddingStart="10dp"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:inputType="text"
+                                android:textSize="15sp"
+                                android:layout_gravity="center"
+                                android:gravity="center_vertical"
+                                android:hint="Вид оказания услуги"
+                                android:textColorHint="@color/black"
+                                />
+
+                            <EditText
+                                android:layout_marginTop="20dp"
+                                android:layout_marginBottom="10dp"
+                                android:id="@+id/areaTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:background="@drawable/lightgreyrow_page"
+                                android:paddingEnd="10dp"
+                                android:paddingStart="10dp"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:inputType="number"
+                                android:textSize="15sp"
+                                android:layout_gravity="center"
+                                android:gravity="center_vertical"
+                                android:hint="Площадь"
+                                android:textColorHint="@color/black"
+                                />
+                            <EditText
+                                android:layout_marginBottom="10dp"
+                                android:id="@+id/priceTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:background="@drawable/lightgreyrow_page"
+                                android:paddingEnd="10dp"
+                                android:paddingStart="10dp"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:inputType="number"
+                                android:textSize="15sp"
+                                android:layout_gravity="center"
+                                android:gravity="center_vertical"
+                                android:hint="Цена"
+                                android:textColorHint="@color/black"
+                                />
+                            <EditText
+                                android:layout_marginBottom="10dp"
+                                android:id="@+id/summTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:background="@drawable/lightgreyrow_page"
+                                android:paddingEnd="10dp"
+                                android:paddingStart="10dp"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:inputType="number"
+                                android:textSize="15sp"
+                                android:layout_gravity="center"
+                                android:gravity="center_vertical"
+                                android:hint="Сумма"
+                                android:textColorHint="@color/black"
+                                />
+
+                        </LinearLayout>
                         <android.support.v7.widget.RecyclerView
                             android:visibility="gone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:nestedScrollingEnabled="false"
                             android:id="@+id/recyclerView" />
+
                         <LinearLayout
                             android:visibility="gone"
                             android:id="@+id/buttonsLayout"
@@ -255,7 +355,9 @@
                             android:nestedScrollingEnabled="false"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/spinnersRecycler"></android.support.v7.widget.RecyclerView>
+                            android:id="@+id/spinnersRecycler"
+                            android:visibility="gone"
+                            ></android.support.v7.widget.RecyclerView>
 
                     </LinearLayout>
                     <TextView
@@ -289,6 +391,8 @@
                         android:textSize="11sp"
                         android:text="Написать комментарий"
                         android:gravity="center_vertical"
+
+                        android:visibility="gone"
                         />
                     <FrameLayout
                         android:layout_marginStart="20dp"
@@ -300,19 +404,22 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:minHeight="50dp"
-                        android:background="@drawable/grey_line"
+                        android:visibility="gone"
                         >
                         <EditText
                             android:id="@+id/commentEditText"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@null"
+                            android:background="@drawable/lightgreyrow_page"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="10dp"
                             android:inputType="text"
                             android:textSize="15sp"
                             android:layout_gravity="center"
                             android:gravity="center_vertical"
                             android:hint="Вводить сюда"
                             android:textColorHint="@color/black"
+
                             />
                     </FrameLayout>
 

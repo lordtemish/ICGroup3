@@ -75,6 +75,9 @@ public class ClientControlSpinnersAdapter extends RecyclerView.Adapter {
         }
         private void setInfo(final SpinnerForm form){
             index=list.indexOf(form);
+            if(hint.length()>0){
+                nameEditText.setHint(hint);
+            }
             if(changeable){
                 rateTextView0.setVisibility(View.GONE);
                 nameEditTextLayout.setVisibility(View.VISIBLE);
@@ -123,6 +126,7 @@ public class ClientControlSpinnersAdapter extends RecyclerView.Adapter {
     List<SpinnerForm> list;
     Context context;
     boolean changeable=false;
+    public String hint="";
     public ClientControlSpinnersAdapter(List<SpinnerForm> forms){
         list=forms;
     }

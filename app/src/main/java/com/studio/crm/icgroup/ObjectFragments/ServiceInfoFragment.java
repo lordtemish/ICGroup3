@@ -73,7 +73,7 @@ public class ServiceInfoFragment extends Fragment {
     AcceptAdapter acceptAdapter;
     MessageAdapter messageAdapter, messageAdapter1;
     List<String[]> strings;
-    int superadmin=-1,is_executive_permitted=-1, is_technical_permitted=-1, is_chief_permitted=-1, is_contactor_permitted=-1, is_respondent_permitted=0;
+    int superadmin=-1;
     boolean me=false;
 
     public ServiceInfoFragment() {
@@ -418,32 +418,7 @@ public class ServiceInfoFragment extends Fragment {
     }
     private void setInfo(JSONObject object){
         try{
-            if(object.isNull("is_executive_permitted"))
-                is_executive_permitted=-1;
-            else{
-                Boolean b=object.getBoolean("is_executive_permitted");
-                if(b) is_executive_permitted=1;else is_executive_permitted=0;
-            }
-            if(object.isNull("is_contactor_permitted"))
-                is_contactor_permitted=-1;
-            else{ Boolean b=object.getBoolean("is_contactor_permitted");
-                if(b) is_contactor_permitted=1;else is_contactor_permitted=0; }
-            if(object.isNull("is_technical_permitted"))
-                is_technical_permitted=-1;
-            else{ Boolean b=object.getBoolean("is_technical_permitted");
-                if(b) is_technical_permitted=1;else is_technical_permitted=0; }
-            if(object.isNull("is_chief_permitted"))
-                is_chief_permitted=-1;
-            else{ Boolean b=object.getBoolean("is_executive_permitted");
-                if(b) is_chief_permitted=1;else is_chief_permitted=0; }
-                if(true){
-                    Boolean b=object.getBoolean("is_respondent_permitted");
-                    if(b) is_respondent_permitted=1;else is_respondent_permitted=0;
-                }
-                if(((MainActivity)getActivity()).role.equals("SUPERADMIN")){
-                      superadmin=0;
 
-                }
             Log.d("responsInfo",object.toString());
             orderNumIdTextView.setText("IC"+id);
             String priority="низкий";
@@ -627,12 +602,7 @@ public class ServiceInfoFragment extends Fragment {
             headers.put("Authorization", "JWT "+((MainActivity)getActivity()).token);
             return headers;
         }};
-        if(is_executive_permitted!=-1)
-        ((MainActivity) getActivity()).requestQueue.add(admin_execRequest);
-        if(is_technical_permitted!=-1)
-        ((MainActivity) getActivity()).requestQueue.add(admin_techRequest);
-        if(is_contactor_permitted!=-1)
-        ((MainActivity) getActivity()).requestQueue.add(admin_contRequest);
+
     }
     private void setExec(JSONObject re){
         try {
@@ -696,8 +666,6 @@ public class ServiceInfoFragment extends Fragment {
                     return headers;
                 }
             };
-            if(is_chief_permitted!=-1)
-            ((MainActivity)getActivity()).requestQueue.add(chiefRequest);
         }
     }
     private void setChief(JSONObject re){
@@ -723,22 +691,7 @@ public class ServiceInfoFragment extends Fragment {
                 if (i.length > 1) {
                     String status = "Ожидает ответа";
                     boolean a = false;
-                    switch (j) {
-                        case 0:
-                            a = is_executive_permitted == 1;
-                            break;
-                        case 1:
-                            a = is_technical_permitted == 1;
-                            break;
-                        case 2:
-                            a = is_chief_permitted == 1;
-                            break;
-                        case 3:
-                            a = is_contactor_permitted == 1;
-                            break;
-                        default:
-                            a = is_respondent_permitted == 1;
-                    }
+
                     if (a) {
                         status = "Подтвержден";
                     }
@@ -769,23 +722,7 @@ public class ServiceInfoFragment extends Fragment {
     }
     private void checkForAccept(){
         boolean a=false;
-        switch (meType){
-            case "respondent":
-                a=is_respondent_permitted==1;
-                break;
-            case "contactor":
-                a=is_contactor_permitted==1;
-                break;
-            case "executive":
-                a=is_executive_permitted==1;
-                break;
-            case "technical":
-                a=is_technical_permitted==1;
-                break;
-            case "chief":
-                a=is_chief_permitted==1;
-                break;
-        }
+        
         if(superadmin==0){
             a=false;
         }

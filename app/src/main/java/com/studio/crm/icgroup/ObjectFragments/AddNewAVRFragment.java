@@ -70,6 +70,8 @@ public class AddNewAVRFragment extends Fragment {
     String id, author;
     int is_executive_permitted=-1,is_technical_permitted=-1,is_producer_permitted=-1,is_curator_permitted=-1,is_contactor_permitted=-1, taskid=-1;
     List<String[]> strings;
+
+    List<EditText> inputTexts;
     public AddNewAVRFragment() {
         // Required empty public constructor
     }
@@ -98,14 +100,14 @@ public class AddNewAVRFragment extends Fragment {
         arbitaryForms=new ArrayList<>();arbitaryForms.add(new SpinnerForm());
         spinnersAdapter=new ClientControlSpinnersAdapter(spinnerForms);
         arbitaryAdapter=new ClientControlSpinnersAdapter(arbitaryForms);arbitaryAdapter.setChangeable(true);
+        arbitaryAdapter.hint="Комментарий";
         servicesAdapter=new ServicesAdapter(serviceForms);
         taskRecyclerView.setAdapter(servicesAdapter);
         recyclerView.setAdapter(arbitaryAdapter );
 
         spinnersRecycler.setAdapter(spinnersAdapter);
 
-        getPositions();
-        standartRadio.setOnClickListener(new View.OnClickListener() {
+       /* standartRadio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 spinnersRecycler.setVisibility(View.VISIBLE);
@@ -113,13 +115,13 @@ public class AddNewAVRFragment extends Fragment {
                 buttonsLayout.setVisibility(View.GONE);
                 taskLayout.setVisibility(View.GONE);
             }
-        });
+        });*/
         arbitaryRadio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 spinnersRecycler.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
-                buttonsLayout.setVisibility(View.VISIBLE);
+               // buttonsLayout.setVisibility(View.VISIBLE);
                 taskLayout.setVisibility(View.GONE);
             }
         });
@@ -128,7 +130,7 @@ public class AddNewAVRFragment extends Fragment {
             public void onClick(View view) {
                 spinnersRecycler.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
-                buttonsLayout.setVisibility(View.VISIBLE);
+                //buttonsLayout.setVisibility(View.VISIBLE);
                 taskLayout.setVisibility(View.VISIBLE);
             }
         });
@@ -162,6 +164,7 @@ public class AddNewAVRFragment extends Fragment {
                 saveThis();
             }
         });
+        arbitaryRadio.callOnClick();
         return view;
     }
     /*private void spinnerSet(){
@@ -250,16 +253,19 @@ public class AddNewAVRFragment extends Fragment {
         }
         else {
             progressLayout.setVisibility(View.VISIBLE);
-            String url = ((MainActivity) getActivity()).MAIN_URL + "tasks/" + taskEditText.getText()+"/avr/";
+            String url = ((MainActivity) getActivity()).MAIN_URL + "tasks/" + taskEditText.getText()+"/avr";
+            //Log.d("URL AddAVR",url);
             JsonObjectRequest objectRequest=new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     progressLayout.setVisibility(View.GONE);
+                   // Log.d("AVR RESPONSE",response.toString());
                     setTask(response);
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                                                     error.printStackTrace();
                     if(error.networkResponse.statusCode==404){
                         serviceForms.clear();servicesAdapter.notifyDataSetChanged();
                         taskid=-1;
@@ -289,9 +295,8 @@ public class AddNewAVRFragment extends Fragment {
             String fname="", dpStr="";
             if(!object.isNull("respondent")) {
                 JSONObject respondent = object.getJSONObject("respondent");
-                JSONObject user = respondent.getJSONObject("user");
-                JSONObject department = respondent.getJSONObject("department");
-                dpStr=department.getString("name");
+                JSONObject user = respondent;
+
                 fname = user.getString("fullname");
                 String[] a = fname.split(" ");
                 if (fname.length() > 20) {
@@ -300,6 +305,14 @@ public class AddNewAVRFragment extends Fragment {
                     }
                 }
             }
+            if(!object.isNull("department")){
+                JSONObject department = object.getJSONObject("department");
+                               dpStr=department.getString("name");
+
+            }
+
+
+
             String created_at = object.getString("created_at"), deadline = object.getString("deadline");
 
             if(deadline.length()==20 && deadline.length()>1){
@@ -328,7 +341,7 @@ public class AddNewAVRFragment extends Fragment {
             servicesAdapter.notifyDataSetChanged();
         }
         catch (Exception e){
-
+                                       e.printStackTrace();
         }
     }
     private String getPriority(int ss){
@@ -353,6 +366,7 @@ public class AddNewAVRFragment extends Fragment {
                 Toast.makeText(getActivity(), "Укажите id задачи", Toast.LENGTH_SHORT).show();
             }
             else {
+                boolean post=true;
                 progressLayout.setVisibility(View.VISIBLE);
                 String url = ((MainActivity) getActivity()).MAIN_URL + "controls/";
                 JSONObject params = new JSONObject();
@@ -360,63 +374,45 @@ public class AddNewAVRFragment extends Fragment {
                 params.put("author", author);
                 params.put("kind", "PERFORMANCE");
                 params.put("point", id);
-                String avr_type = "STANDART";
-                if (arbitaryRadio.isChecked()) {
-                    avr_type = "ARBITRARY";
-                }
-                if (taskRadio.isChecked()) {
-                    avr_type = "TASK";
-                    params.put("task", taskid);
-                }
-                params.put("avr_type", avr_type);
 
-                if (is_executive_permitted == 0) {
-                    params.put("is_executive_permitted", false);
-                }
-                if (is_contactor_permitted == 0) {
-                    params.put("is_contactor_permitted", false);
-                }
-                if (is_curator_permitted == 0) {
-                    params.put("is_curator_permitted", false);
-                }
-                if (is_producer_permitted == 0) {
-                    params.put("is_producer_permitted", false);
-                }
-                if (is_technical_permitted == 0) {
-                    params.put("is_technical_permitted", false);
-                }
 
-                params.put("permits",permits);
 
-                String comm = commentEditText.getText() + "";
-                if (comm.length() > 0) {
-                    params.put("comment", comm);
-                }
+                String comm = arbitaryForms.get(0).getName();
+                int rate=arbitaryForms.get(0).getNum();
+                params.put("rate",rate);
+
+                String kind=inputTexts.get(0).getText()+"",
+                        service=inputTexts.get(1).getText()+"",
+                       areaT=inputTexts.get(2).getText()+"",
+                       priceT=inputTexts.get(3).getText()+"",
+                       summT=inputTexts.get(4).getText()+""
+                                ;
+
                 JSONArray array = new JSONArray();
-                if (standartRadio.isChecked())
-                    for (SpinnerForm form : spinnerForms) {
-                        JSONObject object = new JSONObject();
+                JSONObject avr_pos=new JSONObject();
+                avr_pos.put("rate",rate);
+                if (comm.length() > 0) {
+                   avr_pos.put("comment", comm);
+                    }
+                avr_pos.put("kind", kind);
+                avr_pos.put("service", service);
+                int  area=0, price=0, summ=0;
 
-                        object.put("position", form.getId());
-                        object.put("rate", form.getNum());
-                        if (form.getText().length() > 0)
-                            object.put("comment", form.getText());
-                        array.put(object);
-                    }
-                else {
-                    for (SpinnerForm form : arbitaryForms) {
-                        JSONObject object = new JSONObject();
-                        if(form.getName().length()==0){
-                            continue;
-                        }
-                        object.put("name", form.getName());
-                        object.put("rate", form.getNum());
-                        if (form.getText().length() > 0)
-                            object.put("comment", form.getText());
-                        array.put(object);
-                    }
-                }
-                params.put("positions", array);
+                if(areaT.length()>0) area=Integer.parseInt(areaT);
+                                else post=false;
+                if(priceT.length()>0) price=Integer.parseInt(priceT);
+                                 else post=false;
+                if(summT.length()>0) summ=Integer.parseInt(areaT);
+                                else post=false;
+                avr_pos.put("area",area);
+                avr_pos.put("price",price);
+                avr_pos.put("amount",summ);
+
+                if(kind.length()==0 || service.length()==0) post=false;
+
+                array.put(avr_pos);
+
+                params.put("avr_positions", array);
                 Log.d("saving " + author, url + "\n" + params.toString());
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
                     @Override
@@ -443,6 +439,11 @@ public class AddNewAVRFragment extends Fragment {
                         return headers;
                     }
                 };
+                if(!post) {
+                    Toast.makeText(getActivity(), "Введите все данные", Toast.LENGTH_SHORT).show();
+                    progressLayout.setVisibility(View.GONE);
+                }
+                else
                 ((MainActivity) getActivity()).requestQueue.add(jsonObjectRequest);
             }
         }
@@ -478,10 +479,17 @@ public class AddNewAVRFragment extends Fragment {
         standartRadio=(RadioButton)view.findViewById(R.id.standartRadio);
         arbitaryRadio=(RadioButton)view.findViewById(R.id.arbitaryRadio);
         taskRadio=(RadioButton)view.findViewById(R.id.taskRadio);
+
+        inputTexts=new ArrayList<>();
+        int[] ids={R.id.serviceTypeTextView, R.id.serviceProcessTypeTextView, R.id.areaTextView, R.id.priceTextView,R.id.summTextView};
+
+        for(int i=0;i<ids.length;i++){
+            inputTexts.add((EditText)view.findViewById(ids[i]));
+        }
     }
 
     private void getAccepts(){
-        String url=((MainActivity)getActivity()).MAIN_URL;
+       /* String url=((MainActivity)getActivity()).MAIN_URL;
         String execUrl=url+"employees/"+ "?user__role=ADMIN_EXECUTIVE";
         JsonArrayRequest admin_execRequest=new JsonArrayRequest(Request.Method.GET, execUrl, null, new Response.Listener<JSONArray>() {
             @Override
@@ -586,7 +594,7 @@ public class AddNewAVRFragment extends Fragment {
         }};
         ((MainActivity)getActivity()).requestQueue.add(admin_execRequest);
         ((MainActivity)getActivity()).requestQueue.add(admin_techRequest);
-        ((MainActivity)getActivity()).requestQueue.add(admin_contRequest);
+        ((MainActivity)getActivity()).requestQueue.add(admin_contRequest);*/
     }
     private void setExec(JSONObject re){
         try {

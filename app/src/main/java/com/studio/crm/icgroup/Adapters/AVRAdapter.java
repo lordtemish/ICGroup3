@@ -1,6 +1,7 @@
 package com.studio.crm.icgroup.Adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -111,6 +112,9 @@ public class AVRAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View view) {
                     AvrInfoFragment fragment=new AvrInfoFragment();
+                    Bundle bundle=new Bundle();
+                    bundle.putString("id",tId);
+                    fragment.setArguments(bundle);
                     ((MainActivity)context).setFragment(R.id.content_frame,fragment);
                 }
             });

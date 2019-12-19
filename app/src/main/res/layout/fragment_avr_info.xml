@@ -135,289 +135,33 @@
                                 />
 
                         </android.support.constraint.ConstraintLayout>
-                        <LinearLayout
-                            android:id="@+id/extraLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:visibility="visible"
-                            android:orientation="vertical"
-                            android:layout_marginBottom="10dp"
-                            >
-                            <FrameLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="2dp"
-                                android:background="@color/light_grey"
-                                android:visibility="gone"
-                                />
-
-                            <LinearLayout
-                                android:layout_marginStart="20dp"
-                                android:layout_marginEnd="20dp"
-                                android:layout_marginTop="20dp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                                <LinearLayout
-                                    android:layout_marginBottom="10dp"
-                                    android:layout_marginTop="10dp"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:minHeight="50dp"
-                                    android:orientation="horizontal"
-                                    >
-                                    <LinearLayout
-
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:minHeight="50dp"
-                                        android:orientation="vertical"
-                                        android:layout_weight="1"
-                                        >
-                                        <TextView
-                                            android:id="@+id/workerLabel"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:gravity="start"
-                                            android:textColor="@color/darkgrey"
-                                            android:textSize="11sp"
-                                            android:text="АВР сдал"
-
-                                            />
-                                        <TextView
-                                            android:id="@+id/workerName"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:textColor="@color/black"
-                                            android:textSize="15sp"
-                                            android:text="Алмасов Темирлан "
-                                            />
-                                        <TextView
-                                            android:id="@+id/workerPosition"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:textColor="@color/darkgrey"
-                                            android:textSize="13sp"
-                                            android:text="Начальник Хоз. части"
-                                            />
-                                    </LinearLayout>
-                                    <LinearLayout
-
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:minHeight="50dp"
-                                        android:orientation="vertical"
-                                        android:layout_weight="1"
-                                        >
-                                        <TextView
-                                            android:id="@+id/clientLabel"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:gravity="start"
-                                            android:textColor="@color/darkgrey"
-                                            android:textSize="11sp"
-                                            android:text="АВР принял"
-
-                                            />
-                                        <TextView
-                                            android:id="@+id/clientName"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:textColor="@color/black"
-                                            android:textSize="15sp"
-                                            android:text="Алмасов Темирлан "
-                                            />
-                                        <TextView
-                                            android:id="@+id/clientPosition"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:textColor="@color/darkgrey"
-                                            android:textSize="13sp"
-                                            android:text="Начальник Хоз. части"
-                                            />
-                                    </LinearLayout>
-                                </LinearLayout>
-                                <LinearLayout
-
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:minHeight="40dp"
-                                    android:orientation="vertical"
-                                    android:layout_weight="1"
-                                    >
-                                    <TextView
-                                        android:id="@+id/serTypeLabel"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:gravity="start"
-                                        android:textColor="@color/darkgrey"
-                                        android:textSize="11sp"
-                                        android:text="Вид услуги"
-
-                                        />
-                                    <TextView
-                                        android:id="@+id/serType"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:textColor="@color/black"
-                                        android:textSize="15sp"
-                                        android:text="Мойка фасада"
-                                        />
-                                </LinearLayout>
-                                <LinearLayout
-                                    android:layout_marginTop="10dp"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:minHeight="40dp"
-                                    android:orientation="vertical"
-                                    android:layout_weight="1"
-                                    >
-                                    <TextView
-                                        android:id="@+id/serProcessTypeLabel"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:gravity="start"
-                                        android:textColor="@color/darkgrey"
-                                        android:textSize="11sp"
-                                        android:text="Вид оказания услуги"
-
-                                        />
-                                    <TextView
-                                        android:id="@+id/serProcessType"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:textColor="@color/black"
-                                        android:textSize="15sp"
-                                        android:text="Мойка фасада тщательно"
-                                        />
-                                </LinearLayout>
-                                <LinearLayout
-                                    android:layout_marginTop="10dp"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    >
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:orientation="vertical"
-                                        android:layout_weight="1"
-                                        >
-                                        <TextView
-                                            android:layout_width="match_parent"
-                                            android:layout_height="20dp"
-                                            android:gravity="center_vertical"
-                                            android:text="Кол-во кв.м"
-                                            android:textColor="@color/darkgrey"
-                                            android:textSize="11sp"
-                                            android:id="@+id/quantityLabel"
-                                            />
-                                        <TextView
-                                            android:id="@+id/quantity"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:minHeight="30dp"
-                                            android:textColor="@color/black"
-                                            android:gravity="center_vertical"
-                                            android:textSize="13sp"
-                                            android:text="4"
-                                            />
-                                    </LinearLayout>
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:orientation="vertical"
-                                        android:layout_weight="1"
-                                        >
-                                        <TextView
-                                            android:layout_width="match_parent"
-                                            android:layout_height="20dp"
-                                            android:gravity="center_vertical"
-                                            android:text="Город"
-                                            android:textColor="@color/darkgrey"
-                                            android:textSize="11sp"
-                                            android:id="@+id/cityLabel"
-                                            />
-                                        <TextView
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:minHeight="30dp"
-                                            android:textColor="@color/black"
-                                            android:gravity="center_vertical"
-                                            android:textSize="13sp"
-                                            android:text="Алматы"
-                                            android:id="@+id/city"
-                                            />
-                                    </LinearLayout>
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:orientation="vertical"
-                                        android:layout_weight="1"
-                                        >
-                                        <TextView
-                                            android:id="@+id/addressLabel"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="20dp"
-                                            android:gravity="center_vertical"
-                                            android:text="Адрес"
-                                            android:textColor="@color/darkgrey"
-                                            android:textSize="11sp"
-                                            />
-                                        <TextView
-                                            android:id="@+id/address"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:minHeight="30dp"
-                                            android:textColor="@color/black"
-                                            android:gravity="center_vertical"
-                                            android:textSize="13sp"
-                                            android:text="ул. Байкадамова 2Д"
-                                            />
-                                    </LinearLayout>
-                                </LinearLayout>
-                            </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:visibility="gone"
-                                >
-                                <TextView
-                                    android:id="@+id/tookLabel"
-                                    android:layout_marginStart="20dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="30dp"
-                                    android:gravity="center_vertical"
-                                    android:text="Приняли результат обзвона"
-                                    android:textSize="11sp"
-
-                                    />
-                                <android.support.v7.widget.RecyclerView
-                                    android:layout_marginBottom="20dp"
-                                    android:id="@+id/acceptRecyclerView"
-                                    android:nestedScrollingEnabled="false"   android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
-
-                                </android.support.v7.widget.RecyclerView>
-                            </LinearLayout>
-                            <android.support.v7.widget.RecyclerView
-                                android:layout_marginTop="20dp"
-                                android:layout_marginBottom="20dp"
-                                android:id="@+id/commentsRecyclerView"
-                                android:nestedScrollingEnabled="false"          android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:visibility="gone"
-                                />
-                        </LinearLayout>
                     </LinearLayout>
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/avrPosRecyclerView"
+                        />
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/tasksRecyclerView"
+                        />
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>
         </LinearLayout>
-
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/icgGreenTra"
+            android:onClick="onClick"
+            android:id="@+id/progressLayout"
+            android:visibility="gone"
+            >
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
+        </FrameLayout>
 </FrameLayout>

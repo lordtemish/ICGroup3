@@ -259,11 +259,19 @@ public class AttendanceMainFragment extends Fragment {
     private void checkRoles(){
         smenasTextView.setText(rolePages[page]);
         Log.d("QWEQEWQEW", rolePages[0]+" "+rolePages[1]+" "+rolePages[2]);
+        if(page==0){
+            reqRecycler.setVisibility(View.VISIBLE);
+        }
+        else{
+            reqRecycler.setVisibility(View.GONE);
+        }
         checkPage();
     }
     private void checkPage(){
         shift=reqAdapter.getClicked()+1;
-        String shift="&shift=" + (this.shift);
+
+        String shift="";
+        if(page==0)shift+="&shift=" + (this.shift);
         String s="workers/?point=" + id + shift;
         getRequest(s);
 
